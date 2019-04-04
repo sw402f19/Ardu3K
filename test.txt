@@ -6,6 +6,7 @@ setup = {
 loop = {
     b = 5;
     c = 1;
+    D = 10.150;
     if b < a do {
         b = b + 1;
     } else do {

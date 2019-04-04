@@ -1,3 +1,5 @@
+import gen.Ardu3kLexer;
+import gen.Ardu3kParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -16,7 +18,7 @@ public class Main {
 
             Ardu3kParser.ProgramUnitContext cst = parser.programUnit();
             System.out.println(cst.toString());
-            //ProgramNode ast = cst.accept(new ASTVisitor());
+            //ProgramNode ast = cst.accept(new ASTVisitor.ASTVisitor());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

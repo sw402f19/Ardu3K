@@ -8,7 +8,7 @@ programUnit
     : defines=define* start=setup body=loop funcs=functions*
     ;
 define
-    : DEFINE id=identifier (str=string | num=number)
+    : DEFINE id=identifier REAL
     ;
 setup
     : SETUP ASSIGN body=block
@@ -37,6 +37,7 @@ stmt
     : iterative_stmt
     | selection_stmt
     | function_stmt
+    | RETURN expression
     ;
 iterative_stmt
     : for_stmt
@@ -70,59 +71,59 @@ args
     ;
 args_list
     : primary_expr
-    | primary_expr COMMA args_list
+    | left=primary_expr op=COMMA right=args_list
     ;
 expression_stmt
     : expression SEMI
     ;
 expression
     : assignment_expr
-    | expression COMMA assignment_expr
+    | left=expression sep=COMMA right=assignment_expr
     ;
 assignment_expr
     : conditional_expr
     | assignment
     ;
 assignment
-    : identifier ASSIGN primary_expr
+    : left=identifier op=ASSIGN right=primary_expr
     ;
 conditional_expr
     : conditional_or_expr
     ;
 conditional_or_expr
-    : conditional_and_expr
-    | conditional_or_expr OR conditional_and_expr
+    : conditional_and_expr                                              #conditionalAndExpr
+    | left=conditional_or_expr op=OR right=conditional_and_expr         #infixCondtionalOrExpr
     ;
 conditional_and_expr
-    : conditional_xor_expr
-    | conditional_and_expr AND conditional_xor_expr
+    : conditional_xor_expr                                              #conditionalXorExpr
+    | left=conditional_and_expr op=AND right=conditional_xor_expr       #infixConditionalAndExpr
     ;
 conditional_xor_expr
-    : conditional_equal_expr
-    | conditional_xor_expr XOR conditional_equal_expr
+    : conditional_equal_expr                                            #conditionalEqualExpr
+    | left=conditional_xor_expr op=XOR right=conditional_equal_expr     #infixConditionalXorExpr
     ;
 conditional_equal_expr
-    : relational_expr
-    | conditional_equal_expr EQUALS relational_expr
-    | conditional_equal_expr NOT additive_expr
+    : relational_expr                                                   #relationalExpr
+    | left=conditional_equal_expr op=EQUALS right=relational_expr       #infixEqualExpr
+    | left=conditional_equal_expr op=NOT right=relational_expr          #infixEqualExpr
     ;
 relational_expr
-    : additive_expr
-    | relational_expr LESSER additive_expr
-    | relational_expr GREATER additive_expr
-    | relational_expr LESSEQUAL additive_expr
-    | relational_expr GREATEREQUAL additive_expr
+    : additive_expr                                                     #additiveExpr
+    | left=relational_expr op=LESSER right=additive_expr                #infixRelationalExpr
+    | left=relational_expr op=GREATER right=additive_expr               #infixRelationalExpr
+    | left=relational_expr op=LESSEQUAL right=additive_expr             #infixRelationalExpr
+    | left=relational_expr op=GREATEREQUAL right=additive_expr          #infixRelationalExpr
     ;
 additive_expr
-    : multiplicative_expr                                               #multiExpr
-    | left=additive_expr op=PLUS right=multiplicative_expr              #plusExpr
-    | left=additive_expr op=MINUS right=multiplicative_expr             #minusExpr
+    : inner=multiplicative_expr                                         #multiplicativeExpr
+    | left=additive_expr op=PLUS right=multiplicative_expr              #infixAdditiveExpr
+    | left=additive_expr op=MINUS right=multiplicative_expr             #infixAdditiveExpr
     ;
 multiplicative_expr
-    : primary                                                           #primaryExpr
-    | left=multiplicative_expr op=TIMES right=primary                   #multiplicativeExpr
-    | left=multiplicative_expr op=DIVIDE right=primary                  #multiplicativeExpr
-    | left=multiplicative_expr op=MODULUS right=primary                 #multiplicativeExpr
+    : inner=primary                                                     #primaryExpr
+    | left=multiplicative_expr op=TIMES right=primary                   #infixMultiplicativeExpr
+    | left=multiplicative_expr op=DIVIDE right=primary                  #infixMultiplicativeExpr
+    | left=multiplicative_expr op=MODULUS right=primary                 #infixMultiplicativeExpr
     ;
 primary
     : literal
@@ -139,28 +140,26 @@ primary_expr
     | assignment_expr
     ;
 identifier
-    : (UNDERSCORE | LETTER) (LETTER | DIGIT | UNDERSCORE)*
+    : value=(UNDERSCORE | LETTER) (LETTER | DIGIT | UNDERSCORE)*
     ;
 string
-    : DQUOTE (LETTER | DIGIT | UNDERSCORE | SPACE)* DQUOTE
+    : DQUOTE string_val* DQUOTE
+    ;
+string_val
+    : (LETTER | DIGIT | UNDERSCORE | SPACE)
     ;
 literal
     : number
     | bool
     ;
 number
-    : sign=MINUS? type=integer                                       #intType
-    | sign=MINUS? type=real                                          #realType
+    : sign=MINUS? integer=INTEGER
+    | sign=MINUS? real=REAL
     ;
-real
-    : (left=DIGIT+ DOT right=DIGIT+)
-    ;
-integer
-    : value=DIGIT+
-    ;
+
 bool
-    : value=TRUE                                                #true
-    | value=FALSE                                               #false
+    : value=TRUE
+    | value=FALSE
     ;
 
 
@@ -209,9 +208,8 @@ ELSE: 'else';
 COMMA : ',';
 DOT : '.';
 SPACE: ' ';
+RETURN: 'return';
 LETTER: [a-zA-Z];
+REAL: DIGIT+ (DOT DIGIT+)?;
+INTEGER: DIGIT+;
 DIGIT: [0-9];
-
-
-
-

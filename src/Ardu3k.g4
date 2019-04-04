@@ -4,34 +4,34 @@ WS
     : [ \r\n\t]+ -> skip
     ;
 
-program
-    : defines=define* start=setup body=loop funcs=functions* #prog
+programUnit
+    : defines=define* start=setup body=loop funcs=functions*
     ;
 define
-    : op=DEFINE id=identifier (str=string | num=number)             #def
+    : DEFINE id=identifier (str=string | num=number)
     ;
 setup
-    : name=SETUP ass=ASSIGN body=block                              #setupbody
+    : SETUP ASSIGN body=block
     ;
 loop
-    : name=LOOP ass=ASSIGN body=block                               #loopbody
+    : LOOP ASSIGN body=block
     ;
 functions
-    : id=identifier para=parameters ass=ASSIGN body=block
+    : identifier parameters ASSIGN block
     ;
 parameters
     : lpar=LPAR para=parameters_list rpar=RPAR
     ;
 parameters_list
     : id=identifier
-    | id=identifier seperator=COMMA parameters_list
+    | id=identifier COMMA parameters_list
     ;
 block
-    : lcur=LCUR bodystmt=block_stmt* RCUR
+    : LCUR block_stmt* RCUR
     ;
 block_stmt
-    : bodyexpr=expression_stmt
-    | bodystmt=stmt
+    : expression_stmt
+    | stmt
     ;
 stmt
     : iterative_stmt
@@ -39,14 +39,14 @@ stmt
     | function_stmt
     ;
 iterative_stmt
-    : for=for_stmt
+    : for_stmt
     ;
 for_stmt
     : FOR expr=expression TO value=number DO body=block
     ;
 selection_stmt
-    : switch=switch_stmt                                        #switch
-    | if=ifdo_stmt                                              #if
+    : switch_stmt
+    | ifdo_stmt
     ;
 switch_stmt
     : SWITCH identifier LCUR case_stmt* case_default? RCUR
@@ -114,15 +114,15 @@ relational_expr
     | relational_expr GREATEREQUAL additive_expr
     ;
 additive_expr
-    : multiplicative_expr
-    | additive_expr PLUS multiplicative_expr
-    | additive_expr MINUS multiplicative_expr
+    : multiplicative_expr                                               #multiExpr
+    | left=additive_expr op=PLUS right=multiplicative_expr              #plusExpr
+    | left=additive_expr op=MINUS right=multiplicative_expr             #minusExpr
     ;
 multiplicative_expr
-    : primary
-    | multiplicative_expr TIMES primary
-    | multiplicative_expr DIVIDE primary
-    | multiplicative_expr MODULUS primary
+    : primary                                                           #primaryExpr
+    | left=multiplicative_expr op=TIMES right=primary                   #multiplicativeExpr
+    | left=multiplicative_expr op=DIVIDE right=primary                  #multiplicativeExpr
+    | left=multiplicative_expr op=MODULUS right=primary                 #multiplicativeExpr
     ;
 primary
     : literal
@@ -149,18 +149,18 @@ literal
     | bool
     ;
 number
-    : MINUS? integer
-    | MINUS? real
+    : sign=MINUS? type=integer                                       #intType
+    | sign=MINUS? type=real                                          #realType
     ;
 real
-    : DIGIT+ DOT DIGIT+
+    : (left=DIGIT+ DOT right=DIGIT+)
     ;
 integer
-    : DIGIT+
+    : value=DIGIT+
     ;
 bool
-    : TRUE
-    | FALSE
+    : value=TRUE                                                #true
+    | value=FALSE                                               #false
     ;
 
 

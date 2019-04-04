@@ -1,0 +1,17 @@
+#define LEDPIN 13
+
+setup = {
+    a = 10;
+}
+loop = {
+    b = 5;
+    c = 1;
+    if b < a do {
+        b = b + 1;
+    } else do {
+        write(1);
+    }
+}
+func (a) = {
+    a = 10;
+}

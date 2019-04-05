@@ -1,4 +1,5 @@
 package ASTVisitor.structure;
 
-public class Define {
+public class Define extends BaseNode {
+    public BaseNode id;
 }

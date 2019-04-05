@@ -17,7 +17,7 @@ loop
     : LOOP ASSIGN body=block
     ;
 functions
-    : identifier parameters ASSIGN block
+    : id=identifier parameter=parameters ASSIGN body=block
     ;
 parameters
     : lpar=LPAR para=parameters_list rpar=RPAR

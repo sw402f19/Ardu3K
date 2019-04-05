@@ -1,14 +1,14 @@
 package ASTVisitor;
 
-
 import ASTVisitor.expression.AbstractInfixExpressionNode;
 import ASTVisitor.expression.condition.AndNode;
 import ASTVisitor.expression.condition.EqualNode;
 import ASTVisitor.expression.condition.NotNode;
 import ASTVisitor.expression.condition.OrNode;
-import ASTVisitor.structure.BaseNode;
+import ASTVisitor.structure.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
+
 
 class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 {
@@ -19,22 +19,32 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 
     @Override
     public BaseNode visitDefine(Ardu3kParser.DefineContext ctx) {
-        return super.visitDefine(ctx);
+        Define node = new Define();
+        node.id = visit(ctx);
+        return node;
     }
 
     @Override
     public BaseNode visitSetup(Ardu3kParser.SetupContext ctx) {
-        return super.visitSetup(ctx);
+        Setup node = new Setup();
+        node.body = visit(ctx);
+        return node;
     }
 
     @Override
     public BaseNode visitLoop(Ardu3kParser.LoopContext ctx) {
-        return super.visitLoop(ctx);
+        Loop node = new Loop();
+        node.body = visit(ctx);
+        return node;
     }
 
     @Override
     public BaseNode visitFunctions(Ardu3kParser.FunctionsContext ctx) {
-        return super.visitFunctions(ctx);
+        Function node = new Function();
+        node.id = visit(ctx.identifier());
+        node.parameter = visit(ctx.parameters());
+        node.body = visit(ctx.block());
+        return node;
     }
 
     @Override

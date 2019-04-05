@@ -80,7 +80,7 @@ expression_stmt
     ;
 expression
     : assignment_expr
-    | left=expression sep=COMMA right=assignment_expr
+    | left=expression op=COMMA right=assignment_expr
     ;
 assignment_expr
     : conditional_expr

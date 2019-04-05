@@ -1,6 +1,6 @@
 package ASTVisitor.primary;
 
-import ASTVisitor.structure.BaseNode;
+import ASTVisitor.structure.RootNode;
 
-public abstract class AbstractPrimaryNode extends BaseNode {
+public abstract class AbstractPrimaryNode extends RootNode {
 }

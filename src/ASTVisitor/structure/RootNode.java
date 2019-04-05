@@ -2,6 +2,6 @@ package ASTVisitor.structure;
 
 enum TYPE {INT, DOUBLE, STRING, TIME}
 
-public abstract class BaseNode {
+public abstract class RootNode {
 
 }

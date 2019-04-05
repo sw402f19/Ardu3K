@@ -1,8 +1,8 @@
 package ASTVisitor.primary;
 
-import ASTVisitor.structure.BaseNode;
+import ASTVisitor.structure.RootNode;
 
-public abstract class AbstractBoolNode extends BaseNode {
+public abstract class AbstractBoolNode extends RootNode {
     public boolean value;
 
     public AbstractBoolNode () { }

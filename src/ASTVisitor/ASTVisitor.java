@@ -8,48 +8,48 @@ import ASTVisitor.expression.condition.NotNode;
 import ASTVisitor.expression.condition.OrNode;
 import ASTVisitor.structure.*;
 import ASTVisitor.primary.*;
-import ASTVisitor.structure.BaseNode;
+import ASTVisitor.structure.RootNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
 
 import java.util.List;
 
 
-class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
+class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 {
     @Override
-    public BaseNode visitCompileUnit(Ardu3kParser.CompileUnitContext ctx) {
+    public RootNode visitCompileUnit(Ardu3kParser.CompileUnitContext ctx) {
         return super.visitCompileUnit(ctx);
     }
 
     @Override
-    public BaseNode visitProgram(Ardu3kParser.ProgramContext ctx) {
+    public RootNode visitProgram(Ardu3kParser.ProgramContext ctx) {
         return super.visitProgram(ctx);
     }
 
     @Override
-    public BaseNode visitDefine(Ardu3kParser.DefineContext ctx) {
+    public RootNode visitDefine(Ardu3kParser.DefineContext ctx) {
         Define node = new Define();
         node.id = visit(ctx);
         return node;
     }
 
     @Override
-    public BaseNode visitSetup(Ardu3kParser.SetupContext ctx) {
+    public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
         Setup node = new Setup();
         node.body = visit(ctx);
         return node;
     }
 
     @Override
-    public BaseNode visitLoop(Ardu3kParser.LoopContext ctx) {
+    public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
         Loop node = new Loop();
         node.body = visit(ctx);
         return node;
     }
 
     @Override
-    public BaseNode visitFunctions(Ardu3kParser.FunctionsContext ctx) {
+    public RootNode visitFunctions(Ardu3kParser.FunctionsContext ctx) {
         Function node = new Function();
         node.id = visit(ctx.identifier());
         node.parameter = visit(ctx.parameters());
@@ -58,105 +58,110 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitParameters(Ardu3kParser.ParametersContext ctx) {
+    public RootNode visitParameters(Ardu3kParser.ParametersContext ctx) {
         List<Ardu3kParser.ParameterContext> list = ctx.parameter();
         Parameters node = new Parameters();
         list.forEach(e -> node.parametersList.add(super.visitParameter(e)));
         return node;
     }
+    // TODO Kristian do not pille.
+    public RootNode joinParameter(Ardu3kParser.ParametersContext ctx) {
+        return new RootNode() {
+        };
+    }
 
     @Override
-    public BaseNode visitBlock(Ardu3kParser.BlockContext ctx) {
+    public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {
         return super.visitBlock(ctx);
     }
 
     @Override
-    public BaseNode visitBlock_stmt(Ardu3kParser.Block_stmtContext ctx) {
+    public RootNode visitBlock_stmt(Ardu3kParser.Block_stmtContext ctx) {
         return super.visitBlock_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitStmt(Ardu3kParser.StmtContext ctx) {
+    public RootNode visitStmt(Ardu3kParser.StmtContext ctx) {
         return super.visitStmt(ctx);
     }
 
     @Override
-    public BaseNode visitIterative_stmt(Ardu3kParser.Iterative_stmtContext ctx) {
+    public RootNode visitIterative_stmt(Ardu3kParser.Iterative_stmtContext ctx) {
         return super.visitIterative_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitFor_stmt(Ardu3kParser.For_stmtContext ctx) {
+    public RootNode visitFor_stmt(Ardu3kParser.For_stmtContext ctx) {
         return super.visitFor_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitSelection_stmt(Ardu3kParser.Selection_stmtContext ctx) {
+    public RootNode visitSelection_stmt(Ardu3kParser.Selection_stmtContext ctx) {
         return super.visitSelection_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
+    public RootNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
         return super.visitSwitch_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitCase_stmt(Ardu3kParser.Case_stmtContext ctx) {
+    public RootNode visitCase_stmt(Ardu3kParser.Case_stmtContext ctx) {
         return super.visitCase_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitCase_default(Ardu3kParser.Case_defaultContext ctx) {
+    public RootNode visitCase_default(Ardu3kParser.Case_defaultContext ctx) {
         return super.visitCase_default(ctx);
     }
 
     @Override
-    public BaseNode visitIfdo_stmt(Ardu3kParser.Ifdo_stmtContext ctx) {
+    public RootNode visitIfdo_stmt(Ardu3kParser.Ifdo_stmtContext ctx) {
         return super.visitIfdo_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitFunction_stmt(Ardu3kParser.Function_stmtContext ctx) {
+    public RootNode visitFunction_stmt(Ardu3kParser.Function_stmtContext ctx) {
         return super.visitFunction_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitArgs(Ardu3kParser.ArgsContext ctx) {
+    public RootNode visitArgs(Ardu3kParser.ArgsContext ctx) {
         return super.visitArgs(ctx);
     }
 
     @Override
-    public BaseNode visitArgs_list(Ardu3kParser.Args_listContext ctx) {
+    public RootNode visitArgs_list(Ardu3kParser.Args_listContext ctx) {
         return super.visitArgs_list(ctx);
     }
 
     @Override
-    public BaseNode visitExpression_stmt(Ardu3kParser.Expression_stmtContext ctx) {
+    public RootNode visitExpression_stmt(Ardu3kParser.Expression_stmtContext ctx) {
         return super.visitExpression_stmt(ctx);
     }
 
     @Override
-    public BaseNode visitExpression(Ardu3kParser.ExpressionContext ctx) {
+    public RootNode visitExpression(Ardu3kParser.ExpressionContext ctx) {
         return super.visitExpression(ctx);
     }
 
     @Override
-    public BaseNode visitAssignment_expr(Ardu3kParser.Assignment_exprContext ctx) {
+    public RootNode visitAssignment_expr(Ardu3kParser.Assignment_exprContext ctx) {
         return super.visitAssignment_expr(ctx);
     }
 
     @Override
-    public BaseNode visitAssignment(Ardu3kParser.AssignmentContext ctx) {
+    public RootNode visitAssignment(Ardu3kParser.AssignmentContext ctx) {
         return super.visitAssignment(ctx);
     }
 
     @Override
-    public BaseNode visitConditional_expr(Ardu3kParser.Conditional_exprContext ctx) {
+    public RootNode visitConditional_expr(Ardu3kParser.Conditional_exprContext ctx) {
         return super.visitConditional_expr(ctx);
     }
 
     @Override
-    public BaseNode visitInfixCondtionalOrExpr(Ardu3kParser.InfixCondtionalOrExprContext ctx) {
+    public RootNode visitInfixCondtionalOrExpr(Ardu3kParser.InfixCondtionalOrExprContext ctx) {
         AbstractInfixExpressionNode node = new OrNode();
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
@@ -164,7 +169,7 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitInfixConditionalAndExpr(Ardu3kParser.InfixConditionalAndExprContext ctx) {
+    public RootNode visitInfixConditionalAndExpr(Ardu3kParser.InfixConditionalAndExprContext ctx) {
         AbstractInfixExpressionNode node = new AndNode();
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
@@ -172,12 +177,12 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitConditionalEqualExpr(Ardu3kParser.ConditionalEqualExprContext ctx) {
+    public RootNode visitConditionalEqualExpr(Ardu3kParser.ConditionalEqualExprContext ctx) {
         return super.visitConditionalEqualExpr(ctx);
     }
 
     @Override
-    public BaseNode visitInfixConditionalXorExpr(Ardu3kParser.InfixConditionalXorExprContext ctx) {
+    public RootNode visitInfixConditionalXorExpr(Ardu3kParser.InfixConditionalXorExprContext ctx) {
         AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
@@ -185,7 +190,7 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitInfixEqualExpr(Ardu3kParser.InfixEqualExprContext ctx) {
+    public RootNode visitInfixEqualExpr(Ardu3kParser.InfixEqualExprContext ctx) {
         AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
         switch (ctx.op.getType()) {
             case Ardu3kParser.EQUALS:
@@ -200,12 +205,12 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitRelationalExpr(Ardu3kParser.RelationalExprContext ctx) {
+    public RootNode visitRelationalExpr(Ardu3kParser.RelationalExprContext ctx) {
         return super.visitRelationalExpr(ctx);
     }
 
     @Override
-    public BaseNode visitInfixRelationalExpr(Ardu3kParser.InfixRelationalExprContext ctx) {
+    public RootNode visitInfixRelationalExpr(Ardu3kParser.InfixRelationalExprContext ctx) {
         AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
@@ -213,12 +218,12 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitAdditiveExpr(Ardu3kParser.AdditiveExprContext ctx) {
+    public RootNode visitAdditiveExpr(Ardu3kParser.AdditiveExprContext ctx) {
         return super.visitAdditiveExpr(ctx);
     }
 
     @Override
-    public BaseNode visitInfixAdditiveExpr(Ardu3kParser.InfixAdditiveExprContext ctx) {
+    public RootNode visitInfixAdditiveExpr(Ardu3kParser.InfixAdditiveExprContext ctx) {
         AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
@@ -226,12 +231,12 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitMultiplicativeExpr(Ardu3kParser.MultiplicativeExprContext ctx) {
+    public RootNode visitMultiplicativeExpr(Ardu3kParser.MultiplicativeExprContext ctx) {
         return super.visitMultiplicativeExpr(ctx);
     }
 
     @Override
-    public BaseNode visitInfixMultiplicativeExpr(Ardu3kParser.InfixMultiplicativeExprContext ctx) {
+    public RootNode visitInfixMultiplicativeExpr(Ardu3kParser.InfixMultiplicativeExprContext ctx) {
         AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
@@ -239,49 +244,52 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitPrimaryExpr(Ardu3kParser.PrimaryExprContext ctx) {
+    public RootNode visitPrimaryExpr(Ardu3kParser.PrimaryExprContext ctx) {
         return super.visitPrimaryExpr(ctx);
     }
 
     @Override
-    public BaseNode visitPrimary(Ardu3kParser.PrimaryContext ctx) {
+    public RootNode visitPrimary(Ardu3kParser.PrimaryContext ctx) {
         return super.visitPrimary(ctx);
     }
 
     @Override
-    public BaseNode visitPrimary_expr(Ardu3kParser.Primary_exprContext ctx) {
+    public RootNode visitPrimary_expr(Ardu3kParser.Primary_exprContext ctx) {
         return super.visitPrimary_expr(ctx);
     }
 
     @Override
-    public BaseNode visitIdentifier(Ardu3kParser.IdentifierContext ctx) {
-        return super.visitIdentifier(ctx);
+    public RootNode visitIdentifier(Ardu3kParser.IdentifierContext ctx) {
+        return new IdentifierNode(ctx);
+    }
+    // TODO Kristian here
+    @Override
+    public RootNode visitString(Ardu3kParser.StringContext ctx) {
+        List<Ardu3kParser.String_valContext> list = ctx.string_val();
+        StringNode node = new StringNode();
+        //list.forEach(e -> node.charList.add(super.visitParameter(e)));
+        return node;
     }
 
     @Override
-    public BaseNode visitString(Ardu3kParser.StringContext ctx) {
-        return super.visitString(ctx);
-    }
-
-    @Override
-    public BaseNode visitString_val(Ardu3kParser.String_valContext ctx) {
+    public RootNode visitString_val(Ardu3kParser.String_valContext ctx) {
         return super.visitString_val(ctx);
     }
 
     @Override
-    public BaseNode visitNumber(Ardu3kParser.NumberContext ctx) {
+    public RootNode visitNumber(Ardu3kParser.NumberContext ctx) {
         AbstractNumberNode node = new AbstractNumberNode() {};
         switch (ctx.value.getType()) {
             case Ardu3kParser.INTEGER:
-                node = new IntegerNode(Integer.valueOf(ctx.getText()));
+                node = new IntegerNode(ctx);
             case Ardu3kParser.REAL:
-                node = new RealNode(Double.valueOf(ctx.getText()));
+                node = new RealNode(ctx);
         }
         return node;
     }
 
     @Override
-    public BaseNode visitBool(Ardu3kParser.BoolContext ctx) {
+    public RootNode visitBool(Ardu3kParser.BoolContext ctx) {
         AbstractBoolNode node = new AbstractBoolNode() {};
         switch (ctx.value.getType()) {
             case Ardu3kParser.TRUE:

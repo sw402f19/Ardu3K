@@ -1,5 +1,5 @@
 package ASTVisitor.structure;
 
-public class Setup extends BaseNode{
-    public BaseNode body;
+public class Setup extends RootNode {
+    public RootNode body;
 }

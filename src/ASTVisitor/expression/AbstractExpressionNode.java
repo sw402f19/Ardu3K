@@ -1,7 +1,7 @@
 package ASTVisitor.expression;
 
-import ASTVisitor.structure.BaseNode;
+import ASTVisitor.structure.RootNode;
 
-public abstract class AbstractExpressionNode extends BaseNode {
+public abstract class AbstractExpressionNode extends RootNode {
 
 }

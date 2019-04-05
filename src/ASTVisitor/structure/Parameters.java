@@ -1,16 +1,13 @@
 package ASTVisitor.structure;
 
-import gen.Ardu3kParser;
-
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Parameters extends BaseNode {
-    public List<BaseNode> parametersList = new ArrayList<>();
+public class Parameters extends RootNode {
+    public List<RootNode> parametersList = new ArrayList<>();
 
-    public Parameters(List<BaseNode> list) {
+    public Parameters(List<RootNode> list) {
         this.parametersList = list;
     }
 

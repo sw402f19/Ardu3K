@@ -1,8 +1,8 @@
 package ASTVisitor.expression;
 
-import ASTVisitor.structure.BaseNode;
+import ASTVisitor.structure.RootNode;
 
 public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode {
-    public BaseNode left;
-    public BaseNode right;
+    public RootNode left;
+    public RootNode right;
 }

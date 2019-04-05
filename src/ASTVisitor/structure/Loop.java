@@ -1,5 +1,5 @@
 package ASTVisitor.structure;
 
-public class Loop extends BaseNode {
-    public BaseNode body;
+public class Loop extends RootNode {
+    public RootNode body;
 }

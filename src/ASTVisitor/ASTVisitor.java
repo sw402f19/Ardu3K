@@ -67,7 +67,10 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 
     @Override
     public BaseNode visitBlock(Ardu3kParser.BlockContext ctx) {
-        return super.visitBlock(ctx);
+        List<Ardu3kParser.Block_stmtContext> list = ctx.block_stmt();
+        Block node = new Block();
+        list.forEach(e -> node.blockStmt.add(super.visitBlock_stmt(e)));
+        return node;
     }
 
     @Override
@@ -132,6 +135,8 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 
     @Override
     public BaseNode visitExpression_stmt(Ardu3kParser.Expression_stmtContext ctx) {
+
+
         return super.visitExpression_stmt(ctx);
     }
 

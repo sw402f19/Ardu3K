@@ -17,17 +17,17 @@ loop
     : LOOP ASSIGN body=block
     ;
 functions
-    : id=identifier parameter=parameters ASSIGN body=block
+    : id=identifier para=parameters ASSIGN body=block
     ;
 parameters
-    : lpar=LPAR para=parameters_list rpar=RPAR
+    : LPAR para=parameter* RPAR
     ;
-parameters_list
-    : id=identifier
-    | id=identifier COMMA parameters_list
+parameter
+    : id=identifier COMMA para=parameter
+    | id=identifier
     ;
 block
-    : LCUR block_stmt* RCUR
+    : LCUR body=block_stmt* RCUR
     ;
 block_stmt
     : expression_stmt

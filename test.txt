@@ -13,6 +13,6 @@ loop = {
         write(1);
     }
 }
-func (a) = {
+func (a, d, d, d, g, hf) = {
     a = 10;
 }

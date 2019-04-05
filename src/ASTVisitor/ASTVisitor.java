@@ -9,6 +9,8 @@ import ASTVisitor.structure.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
 
+import java.util.List;
+
 
 class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 {
@@ -49,17 +51,15 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 
     @Override
     public BaseNode visitParameters(Ardu3kParser.ParametersContext ctx) {
-        return super.visitParameters(ctx);
-    }
-
-    @Override
-    public BaseNode visitParameters_list(Ardu3kParser.Parameters_listContext ctx) {
-        return super.visitParameters_list(ctx);
+        List<Ardu3kParser.ParameterContext> list = ctx.parameter();
+        Parameters node = new Parameters();
+        list.forEach(e -> node.parametersList.add(super.visitParameter(e)));
+        return node;
     }
 
     @Override
     public BaseNode visitBlock(Ardu3kParser.BlockContext ctx) {
-        return super.visitBlock(ctx);
+        return null;
     }
 
     @Override

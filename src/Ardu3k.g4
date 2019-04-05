@@ -3,8 +3,10 @@ grammar Ardu3k;
 WS
     : [ \r\n\t]+ -> skip
     ;
-
-programUnit
+compileUnit:
+    | program EOF
+    ;
+program
     : defines=define* start=setup body=loop funcs=functions*
     ;
 define
@@ -115,12 +117,12 @@ relational_expr
     | left=relational_expr op=GREATEREQUAL right=additive_expr          #infixRelationalExpr
     ;
 additive_expr
-    : inner=multiplicative_expr                                         #multiplicativeExpr
+    : multiplicative_expr                                               #multiplicativeExpr
     | left=additive_expr op=PLUS right=multiplicative_expr              #infixAdditiveExpr
     | left=additive_expr op=MINUS right=multiplicative_expr             #infixAdditiveExpr
     ;
 multiplicative_expr
-    : inner=primary                                                     #primaryExpr
+    : primary                                                           #primaryExpr
     | left=multiplicative_expr op=TIMES right=primary                   #infixMultiplicativeExpr
     | left=multiplicative_expr op=DIVIDE right=primary                  #infixMultiplicativeExpr
     | left=multiplicative_expr op=MODULUS right=primary                 #infixMultiplicativeExpr
@@ -146,15 +148,15 @@ string
     : DQUOTE string_val* DQUOTE
     ;
 string_val
-    : (LETTER | DIGIT | UNDERSCORE | SPACE)
+    : value=(LETTER | DIGIT | UNDERSCORE | SPACE)
     ;
 literal
     : number
     | bool
     ;
 number
-    : sign=MINUS? integer=INTEGER
-    | sign=MINUS? real=REAL
+    : value=INTEGER
+    | value=REAL
     ;
 
 bool
@@ -169,7 +171,7 @@ bool
 
 
 
-DEFINE: '#define';
+DEFINE: '#'?'define';
 DO : 'do';
 SETUP : 'setup';
 LOOP : 'loop';

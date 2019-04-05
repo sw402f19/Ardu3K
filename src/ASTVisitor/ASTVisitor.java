@@ -6,6 +6,7 @@ import ASTVisitor.expression.condition.AndNode;
 import ASTVisitor.expression.condition.EqualNode;
 import ASTVisitor.expression.condition.NotNode;
 import ASTVisitor.expression.condition.OrNode;
+import ASTVisitor.primary.*;
 import ASTVisitor.structure.BaseNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
@@ -13,8 +14,13 @@ import gen.Ardu3kParser;
 class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 {
     @Override
-    public BaseNode visitProgramUnit(Ardu3kParser.ProgramUnitContext ctx) {
-        return super.visitProgramUnit(ctx);
+    public BaseNode visitCompileUnit(Ardu3kParser.CompileUnitContext ctx) {
+        return super.visitCompileUnit(ctx);
+    }
+
+    @Override
+    public BaseNode visitProgram(Ardu3kParser.ProgramContext ctx) {
+        return super.visitProgram(ctx);
     }
 
     @Override
@@ -251,17 +257,27 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitLiteral(Ardu3kParser.LiteralContext ctx) {
-        return super.visitLiteral(ctx);
-    }
-
-    @Override
     public BaseNode visitNumber(Ardu3kParser.NumberContext ctx) {
-        return super.visitNumber(ctx);
+        AbstractNumberNode node = new AbstractNumberNode() {};
+        switch (ctx.value.getType()) {
+            case Ardu3kParser.INTEGER:
+                node = new IntegerNode(Integer.valueOf(ctx.getText()));
+            case Ardu3kParser.REAL:
+                node = new RealNode(Double.valueOf(ctx.getText()));
+        }
+        return node;
     }
 
     @Override
     public BaseNode visitBool(Ardu3kParser.BoolContext ctx) {
-        return super.visitBool(ctx);
+        AbstractBoolNode node = new AbstractBoolNode() {};
+        switch (ctx.value.getType()) {
+            case Ardu3kParser.TRUE:
+                node = new TrueNode(Boolean.valueOf(ctx.getText()));
+            case Ardu3kParser.FALSE:
+                node = new FalseNode(Boolean.valueOf(ctx.getText()));
+        }
+        return node;
     }
+
 }

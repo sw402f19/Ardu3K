@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Parameters extends RootNode {
+public class ParametersNode extends RootNode {
     public List<RootNode> parametersList = new ArrayList<>();
 
-    public Parameters(List<RootNode> list) {
+    public ParametersNode(List<RootNode> list) {
         this.parametersList = list;
     }
 
-    public Parameters() {
+    public ParametersNode() {
     }
 }

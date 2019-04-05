@@ -60,14 +60,16 @@ class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitParameters(Ardu3kParser.ParametersContext ctx) {
         List<Ardu3kParser.ParameterContext> list = ctx.parameter();
-        Parameters node = new Parameters();
+        ParametersNode node = new ParametersNode();
         list.forEach(e -> node.parametersList.add(super.visitParameter(e)));
         return node;
     }
-    // TODO Kristian do not pille.
-    public RootNode joinParameter(Ardu3kParser.ParametersContext ctx) {
-        return new RootNode() {
-        };
+
+    @Override
+    public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
+        if(ctx.para == null)
+            return new ParameterNode(visit(ctx.identifier()));
+        else return super.visitParameter(ctx);
     }
 
     public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {

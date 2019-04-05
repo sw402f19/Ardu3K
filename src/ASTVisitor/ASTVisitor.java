@@ -6,10 +6,14 @@ import ASTVisitor.expression.condition.AndNode;
 import ASTVisitor.expression.condition.EqualNode;
 import ASTVisitor.expression.condition.NotNode;
 import ASTVisitor.expression.condition.OrNode;
+import ASTVisitor.structure.*;
 import ASTVisitor.primary.*;
 import ASTVisitor.structure.BaseNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
+
+import java.util.List;
+
 
 class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 {
@@ -25,32 +29,40 @@ class ASTVisitor extends Ardu3kBaseVisitor<BaseNode>
 
     @Override
     public BaseNode visitDefine(Ardu3kParser.DefineContext ctx) {
-        return super.visitDefine(ctx);
+        Define node = new Define();
+        node.id = visit(ctx);
+        return node;
     }
 
     @Override
     public BaseNode visitSetup(Ardu3kParser.SetupContext ctx) {
-        return super.visitSetup(ctx);
+        Setup node = new Setup();
+        node.body = visit(ctx);
+        return node;
     }
 
     @Override
     public BaseNode visitLoop(Ardu3kParser.LoopContext ctx) {
-        return super.visitLoop(ctx);
+        Loop node = new Loop();
+        node.body = visit(ctx);
+        return node;
     }
 
     @Override
     public BaseNode visitFunctions(Ardu3kParser.FunctionsContext ctx) {
-        return super.visitFunctions(ctx);
+        Function node = new Function();
+        node.id = visit(ctx.identifier());
+        node.parameter = visit(ctx.parameters());
+        node.body = visit(ctx.block());
+        return node;
     }
 
     @Override
     public BaseNode visitParameters(Ardu3kParser.ParametersContext ctx) {
-        return super.visitParameters(ctx);
-    }
-
-    @Override
-    public BaseNode visitParameters_list(Ardu3kParser.Parameters_listContext ctx) {
-        return super.visitParameters_list(ctx);
+        List<Ardu3kParser.ParameterContext> list = ctx.parameter();
+        Parameters node = new Parameters();
+        list.forEach(e -> node.parametersList.add(super.visitParameter(e)));
+        return node;
     }
 
     @Override

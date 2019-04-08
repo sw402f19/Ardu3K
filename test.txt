@@ -10,7 +10,7 @@ loop = {
     if b < a do {
         b = b + 1;
     } else do {
-        write(1);
+        write(1, 5, a);
     }
 }
 func (a, d, d, d, g, hf) = {

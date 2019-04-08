@@ -2,12 +2,9 @@ package ASTVisitor.structure;
 
 import ASTVisitor.ASTVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.RuleContext;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+
 
 enum TYPE {INT, DOUBLE, STRING, TIME}
 

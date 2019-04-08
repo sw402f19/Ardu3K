@@ -1,16 +1,18 @@
 package ASTVisitor.structure;
 
+import gen.Ardu3kParser;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ParametersNode extends RootNode {
-    public List<RootNode> parametersList = new ArrayList<>();
-
-    public ParametersNode(List<RootNode> list) {
-        this.parametersList = list;
-    }
+public class ParametersNode extends SelfRecursiveNode<ParameterNode> {
 
     public ParametersNode() {
+    }
+
+    @Override
+    public ParameterNode newObject() {
+        return new ParameterNode();
     }
 }

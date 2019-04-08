@@ -11,6 +11,7 @@ import ASTVisitor.primary.*;
 import ASTVisitor.structure.RootNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.ArrayList;
@@ -62,39 +63,31 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
         ParametersNode node = new ParametersNode();
-        return visitParameter(ctx, node);
+        return collapse(ctx, node);
+       // return visitParameter(ctx, node);
     }
-    /*
-    @Override
-    public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
-        //int childAmount = ctx.getChildCount();
-        if(ctx.getChildCount() > 0) {
-            ctx.getChild(0).setParent(ctx.getParent());
-            ctx.getParent().getChild(1)..addChild(ctx.id);
-        }
-        return visitParameter(ctx);
 
-        if( ctx.para != null) {
-            for(int i = 0; i < childAmount ; i++) {
-                ctx.getChild(i).setParent(ctx.getParent());
-                ctx.getParent().addChild(new Ardu3kParser.ParameterContext(ctx.para, ctx.para.invokingState));
-            }
-        } else {
 
-        }
-
-        //return super.visitParameter(ctx);
-    }
-    */
-    public RootNode visitParameter(Ardu3kParser.ParameterContext ctx, ParametersNode node) {
-        if(ctx.para != null) {
-            node.parametersList.add(new IdentifierNode(ctx.id));
-            visitChildren(ctx);
-        } else {
-            return node;
-        }
-        return null;
+    private RootNode visitParameter(Ardu3kParser.ParameterContext ctx, ParametersNode node) {
+        node.children.add(new ParameterNode(ctx.id));
+        if(ctx.para != null)
+            visitParameter(ctx.para, node);
+        return node;
         //else return super.visitParameter(ctx);
+    }
+    private <T extends SelfRecursiveNode, V extends RuleContext> T collapse(V ctx, T node) {
+        T nodeToAdd = node.newInstance();
+
+        node.children.add(node.newInstance(node));
+        if(ctx.getChildCount() < 0)
+            collapse(ctx, node);
+        return node;
+
+
+
+    }
+    private <T extends RootNode, V extends RuleContext> T callCollapse(V ctx, T node) {
+        return null;
     }
 
     public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {

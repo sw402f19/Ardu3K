@@ -1,3 +1,5 @@
+import ASTVisitor.structure.RootNode;
+import ASTVisitor.ASTVisitor;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
 import org.antlr.v4.runtime.CharStream;
@@ -16,9 +18,8 @@ public class Main {
 
         try {
 
-            Ardu3kParser.ProgramUnitContext cst = parser.programUnit();
-            System.out.println(cst.toString());
-            //ProgramNode ast = cst.accept(new ASTVisitor.ASTVisitor());
+            Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
+            RootNode ast = cst.accept(new ASTVisitor());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

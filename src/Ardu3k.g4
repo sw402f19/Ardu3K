@@ -7,7 +7,7 @@ compileUnit:
     | program
     ;
 program
-    : define* setup loop functions*
+    : defines=define* setup loop funcs=functions*
     ;
 define
     : DEFINE id=identifier value=number

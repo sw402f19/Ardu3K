@@ -4,19 +4,19 @@ WS
     : [ \r\n\t]+ -> skip
     ;
 compileUnit:
-    | program EOF
+    | program
     ;
 program
-    : defines=define* start=setup body=loop funcs=functions*
+    : define* setup loop functions*
     ;
 define
-    : DEFINE id=identifier REAL
+    : DEFINE id=identifier value=number
     ;
 setup
-    : SETUP ASSIGN body=block
+    : SETUP ASSIGN block
     ;
 loop
-    : LOOP ASSIGN body=block
+    : LOOP ASSIGN block
     ;
 functions
     : id=identifier LPAR para=parameter RPAR ASSIGN block
@@ -49,42 +49,42 @@ selection_stmt
     | ifdo_stmt
     ;
 switch_stmt
-    : SWITCH identifier LCUR case_stmt* case_default? RCUR
+    : SWITCH LPAR expression RPAR LCUR case_stmt* case_default? RCUR
     ;
 case_stmt
-    : CASE (string | identifier | number) COLON block_stmt*
+    : CASE value=expression COLON block_stmt*
     ;
 case_default
     : DEFAULT COLON block_stmt*
     ;
 ifdo_stmt
-    : IF expression DO block
-    | IF expression DO block ELSE DO block
-    | IF expression DO block ELSE ifdo_stmt
+    : IF condition=expression DO upperbody=block
+    | IF condition=expression DO upperbody=block ELSE DO lowerbody=block
+    | IF condition=expression DO upperbody=block ELSE ifdo_stmt
     ;
 function_stmt
-    : identifier args SEMI
+    : id=identifier children=args SEMI
     ;
 args
     : LPAR args_list? RPAR
     ;
 args_list
     : primary_expr
-    | left=primary_expr op=COMMA right=args_list
+    | left=primary_expr COMMA right=args_list
     ;
 expression_stmt
     : expression SEMI
     ;
 expression
     : assignment_expr
-    | left=expression op=COMMA right=assignment_expr
+    | left=expression COMMA right=assignment_expr
     ;
 assignment_expr
     : conditional_expr
     | assignment
     ;
 assignment
-    : left=identifier op=ASSIGN right=primary_expr
+    : left=identifier ASSIGN right=primary_expr
     ;
 conditional_expr
     : conditional_or_expr
@@ -139,7 +139,10 @@ primary_expr
     | assignment_expr
     ;
 identifier
-    : value=(UNDERSCORE | LETTER) (LETTER | DIGIT | UNDERSCORE)*
+    : value=identifier_val
+    ;
+identifier_val
+    : (UNDERSCORE | LETTER) (LETTER | DIGIT | UNDERSCORE)*
     ;
 string
     : DQUOTE string_val* DQUOTE

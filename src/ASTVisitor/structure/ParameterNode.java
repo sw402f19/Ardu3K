@@ -6,4 +6,7 @@ public class ParameterNode extends RootNode {
     public ParameterNode(RootNode idNode) {
         this.idNode = idNode;
     }
+
+    public ParameterNode() {
+    }
 }

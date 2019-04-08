@@ -11,11 +11,13 @@ import ASTVisitor.primary.*;
 import ASTVisitor.structure.RootNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
+import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
+public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 {
     @Override
     public RootNode visitCompileUnit(Ardu3kParser.CompileUnitContext ctx) {
@@ -29,54 +31,74 @@ class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitDefine(Ardu3kParser.DefineContext ctx) {
-        Define node = new Define();
-        node.id = visit(ctx);
+        DefineNode node = new DefineNode();
+        node.id = visit(ctx.id);
         return node;
     }
 
     @Override
     public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
         Setup node = new Setup();
-        node.body = visit(ctx);
+        node.body = visit(ctx.body);
         return node;
     }
 
     @Override
     public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
-        Loop node = new Loop();
-        node.body = visit(ctx);
+        LoopNode node = new LoopNode();
+        node.body = visit(ctx.body);
         return node;
     }
 
     @Override
     public RootNode visitFunctions(Ardu3kParser.FunctionsContext ctx) {
-        Function node = new Function();
+        FunctionNode node = new FunctionNode();
         node.id = visit(ctx.identifier());
-        node.parameter = visit(ctx.parameters());
+        node.parameter = visit(ctx.parameter());
         node.body = visit(ctx.block());
         return node;
     }
 
     @Override
-    public RootNode visitParameters(Ardu3kParser.ParametersContext ctx) {
-        List<Ardu3kParser.ParameterContext> list = ctx.parameter();
+    public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
         ParametersNode node = new ParametersNode();
-        list.forEach(e -> node.parametersList.add(super.visitParameter(e)));
-        return node;
+        return visitParameter(ctx, node);
     }
-
+    /*
     @Override
     public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
-        if(ctx.para == null)
-            return new ParameterNode(visit(ctx.identifier()));
-        else return super.visitParameter(ctx);
+        //int childAmount = ctx.getChildCount();
+        if(ctx.getChildCount() > 0) {
+            ctx.getChild(0).setParent(ctx.getParent());
+            ctx.getParent().getChild(1)..addChild(ctx.id);
+        }
+        return visitParameter(ctx);
+
+        if( ctx.para != null) {
+            for(int i = 0; i < childAmount ; i++) {
+                ctx.getChild(i).setParent(ctx.getParent());
+                ctx.getParent().addChild(new Ardu3kParser.ParameterContext(ctx.para, ctx.para.invokingState));
+            }
+        } else {
+
+        }
+
+        //return super.visitParameter(ctx);
+    }
+    */
+    public RootNode visitParameter(Ardu3kParser.ParameterContext ctx, ParametersNode node) {
+        if(ctx.para != null) {
+            node.parametersList.add(new IdentifierNode(ctx.id));
+            visitChildren(ctx);
+        } else {
+            return node;
+        }
+        return null;
+        //else return super.visitParameter(ctx);
     }
 
     public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {
-        List<Ardu3kParser.Block_stmtContext> list = ctx.block_stmt();
-        Block node = new Block();
-        list.forEach(e -> node.blockStmt.add(super.visitBlock_stmt(e)));
-        return node;
+        return super.visitBlock(ctx);
     }
 
     @Override

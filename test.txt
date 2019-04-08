@@ -1,4 +1,5 @@
 #define LEDPIN 13
+#define ALED 15
 
 setup = {
     a = 10;

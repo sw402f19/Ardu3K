@@ -19,10 +19,7 @@ loop
     : LOOP ASSIGN body=block
     ;
 functions
-    : id=identifier para=parameters ASSIGN body=block
-    ;
-parameters
-    : LPAR para=parameter* RPAR
+    : id=identifier LPAR para=parameter RPAR ASSIGN block
     ;
 parameter
     : id=identifier COMMA para=parameter
@@ -186,8 +183,8 @@ LESSEQUAL : '<=';
 GREATEREQUAL : '>=';
 OR : 'OR';
 AND : 'AND';
-NOT : '!';
-XOR : '^';
+NOT : 'NOT';
+XOR : 'XOR';
 EQUALS : 'EQUALS';
 TRUE : 'true';
 FALSE : 'false';

@@ -12,42 +12,41 @@ import ASTVisitor.structure.RootNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
 import org.antlr.v4.runtime.RuleContext;
-import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 {
     @Override
-    public RootNode visitCompileUnit(Ardu3kParser.CompileUnitContext ctx) {
-        return super.visitCompileUnit(ctx);
-    }
-
-    @Override
     public RootNode visitProgram(Ardu3kParser.ProgramContext ctx) {
-        return super.visitProgram(ctx);
+        ProgramNode node = new ProgramNode();
+        ctx.define().forEach(e -> node.defineNodes.add(visitDefine(e)));
+        node.setupNode = visitSetup(ctx.setup());
+        node.loopNode = visitLoop(ctx.loop());
+        ctx.functions().forEach(e -> node.functionNodes.add(visitFunctions(e)));
+        return node;
     }
 
     @Override
     public RootNode visitDefine(Ardu3kParser.DefineContext ctx) {
         DefineNode node = new DefineNode();
         node.id = visit(ctx.id);
+        node.value = visit(ctx.value);
         return node;
     }
 
     @Override
     public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
-        Setup node = new Setup();
-        node.body = visit(ctx.body);
+        SetupNode node = new SetupNode();
+        ctx.block().block_stmt().forEach(e -> node.blockStatements.add(visitBlock_stmt(e)));
         return node;
     }
 
     @Override
     public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
         LoopNode node = new LoopNode();
-        node.body = visit(ctx.body);
+        ctx.block().block_stmt().forEach(e -> node.blockStatements.add(visitBlock_stmt(e)));
         return node;
     }
 
@@ -56,42 +55,27 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         FunctionNode node = new FunctionNode();
         node.id = visit(ctx.identifier());
         node.parameter = visit(ctx.parameter());
-        node.body = visit(ctx.block());
+        ctx.block().block_stmt().forEach(e -> node.blockStatements.add(visitBlock_stmt(e)));
         return node;
     }
 
     @Override
     public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
-        ParametersNode node = new ParametersNode();
-        return collapse(ctx, node);
-       // return visitParameter(ctx, node);
+        ParameterNode node = new ParameterNode();
+        return visitParameter(ctx, node);
     }
-
-
-    private RootNode visitParameter(Ardu3kParser.ParameterContext ctx, ParametersNode node) {
-        node.children.add(new ParameterNode(ctx.id));
+    private RootNode visitParameter(Ardu3kParser.ParameterContext ctx, ParameterNode node) {
+        node.children.add(new IdentifierNode(ctx.id));
         if(ctx.para != null)
             visitParameter(ctx.para, node);
         return node;
-        //else return super.visitParameter(ctx);
-    }
-    private <T extends SelfRecursiveNode, V extends RuleContext> T collapse(V ctx, T node) {
-        T nodeToAdd = node.newInstance();
-
-        node.children.add(node.newInstance(node));
-        if(ctx.getChildCount() < 0)
-            collapse(ctx, node);
-        return node;
-
-
-
-    }
-    private <T extends RootNode, V extends RuleContext> T callCollapse(V ctx, T node) {
-        return null;
     }
 
+    @Override
     public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {
-        return super.visitBlock(ctx);
+        BlockNode node = new BlockNode();
+        ctx.block_stmt().forEach(e -> node.blockStmt.add(visitBlock_stmt(e)));
+        return node;
     }
 
     @Override
@@ -281,6 +265,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitIdentifier(Ardu3kParser.IdentifierContext ctx) {
         return new IdentifierNode(ctx);
     }
+
     // TODO Kristian here
     @Override
     public RootNode visitString(Ardu3kParser.StringContext ctx) {

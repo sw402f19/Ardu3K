@@ -3,21 +3,19 @@ package ASTVisitor.structure;
 import ASTVisitor.primary.IdentifierNode;
 import gen.Ardu3kParser;
 
-public class ParameterNode extends SelfRecursiveNode<ParameterNode> {
-    public RootNode idNode;
+import java.util.ArrayList;
 
-    public ParameterNode(RootNode idNode) {
-        this.idNode = idNode;
+public class ParameterNode extends RootNode {
+    public ArrayList<RootNode> children = new ArrayList<>();
+
+    public ParameterNode(RootNode node) {
+        children.add(node);
     }
     public ParameterNode(Ardu3kParser.IdentifierContext ctx) {
-        idNode = new IdentifierNode(ctx);
+        children.add(new IdentifierNode(ctx));
     }
 
     public ParameterNode() {
     }
 
-    @Override
-    public ParameterNode newObject() {
-        return new ParameterNode();
-    }
 }

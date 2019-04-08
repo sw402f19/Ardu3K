@@ -11,12 +11,9 @@ import ASTVisitor.primary.*;
 import ASTVisitor.structure.RootNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
-import org.antlr.v4.runtime.RuleContext;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 
 public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 {
@@ -272,15 +269,14 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     // TODO Kristian here
     @Override
     public RootNode visitString(Ardu3kParser.StringContext ctx) {
-        List<Ardu3kParser.String_valContext> list = ctx.string_val();
         StringNode node = new StringNode();
-        //list.forEach(e -> node.charList.add(super.visitParameter(e)));
+        node.collectChildren(ctx.string_val());
         return node;
     }
 
     @Override
     public RootNode visitString_val(Ardu3kParser.String_valContext ctx) {
-        return super.visitString_val(ctx);
+        return new StringValNode(ctx.getText());
     }
 
     @Override

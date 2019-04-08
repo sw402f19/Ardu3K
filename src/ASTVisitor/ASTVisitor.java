@@ -14,6 +14,8 @@ import gen.Ardu3kParser;
 import org.antlr.v4.runtime.RuleContext;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 
 public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
@@ -21,10 +23,10 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitProgram(Ardu3kParser.ProgramContext ctx) {
         ProgramNode node = new ProgramNode();
-        ctx.define().forEach(e -> node.defineNodes.add(visitDefine(e)));
+        node.collectChildren(ctx.define(), node.defineNodes);
         node.setupNode = visitSetup(ctx.setup());
         node.loopNode = visitLoop(ctx.loop());
-        ctx.functions().forEach(e -> node.functionNodes.add(visitFunctions(e)));
+        node.collectChildren(ctx.functions(), node.functionNodes);
         return node;
     }
 
@@ -39,14 +41,14 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
         SetupNode node = new SetupNode();
-        ctx.block().block_stmt().forEach(e -> node.blockStatements.add(visitBlock_stmt(e)));
+        node.collectChildren(ctx.block().block_stmt());
         return node;
     }
 
     @Override
     public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
         LoopNode node = new LoopNode();
-        ctx.block().block_stmt().forEach(e -> node.blockStatements.add(visitBlock_stmt(e)));
+        node.collectChildren(ctx.block().block_stmt());
         return node;
     }
 
@@ -55,9 +57,9 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         FunctionNode node = new FunctionNode();
         node.id = visit(ctx.identifier());
         node.parameter = visit(ctx.parameter());
-        ctx.block().block_stmt().forEach(e -> node.blockStatements.add(visitBlock_stmt(e)));
         return node;
     }
+
 
     @Override
     public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
@@ -74,9 +76,10 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {
         BlockNode node = new BlockNode();
-        ctx.block_stmt().forEach(e -> node.blockStmt.add(visitBlock_stmt(e)));
+        node.collectChildren(ctx.block_stmt());
         return node;
     }
+
 
     @Override
     public RootNode visitBlock_stmt(Ardu3kParser.Block_stmtContext ctx) {
@@ -303,5 +306,6 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         }
         return node;
     }
+
 
 }

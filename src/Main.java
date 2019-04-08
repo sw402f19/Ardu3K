@@ -15,14 +15,15 @@ public class Main {
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);
+        RootNode ast;
 
         try {
 
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
-            RootNode ast = cst.accept(new ASTVisitor());
-
+            ast =  new ASTVisitor().visitCompileUnit(cst);
+            System.out.println("Im here");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

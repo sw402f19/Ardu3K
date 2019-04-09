@@ -160,7 +160,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitExpression_stmt(Ardu3kParser.Expression_stmtContext ctx) {
-        return super.visitExpression_stmt(ctx);
+        return visit(ctx.expression());
     }
 
     @Override
@@ -177,7 +177,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitAssignment(Ardu3kParser.AssignmentContext ctx) {
         AssignmentNode node = new AssignmentNode();
         node.left = visit(ctx.left);
-        node.right = visitPrimary_expr(ctx.right);
+        node.right = visit(ctx.right);
         return node;
     }
 

@@ -6,6 +6,6 @@ public class DefaultNode extends AbstractStatementNode {
 
     @Override
     public String toString() {
-        return "default: ";
+        return "default: "+children.toString();
     }
 }

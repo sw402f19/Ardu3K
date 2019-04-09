@@ -8,4 +8,9 @@ public class ProgramNode extends RootNode {
     public RootNode loopNode;
     public ArrayList<RootNode> functionNodes = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Program";
+    }
+
 }

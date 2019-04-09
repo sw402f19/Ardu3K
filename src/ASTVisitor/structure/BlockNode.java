@@ -4,4 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockNode extends RootNode {
+
+    @Override
+    public String toString() {
+        return children.toString();
+    }
 }

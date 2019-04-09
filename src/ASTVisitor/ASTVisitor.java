@@ -58,6 +58,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         FunctionNode node = new FunctionNode();
         node.id = visit(ctx.identifier());
         node.parameter = visit(ctx.parameter());
+        node.collectChildren(ctx.body.block_stmt());
         return node;
     }
 
@@ -283,7 +284,6 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return new IdentifierNode(ctx);
     }
 
-    // TODO Kristian here
     @Override
     public RootNode visitString(Ardu3kParser.StringContext ctx) {
         StringNode node = new StringNode();

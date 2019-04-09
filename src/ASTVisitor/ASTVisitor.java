@@ -6,6 +6,8 @@ import ASTVisitor.expression.condition.AndNode;
 import ASTVisitor.expression.condition.EqualNode;
 import ASTVisitor.expression.condition.NotNode;
 import ASTVisitor.expression.condition.OrNode;
+import ASTVisitor.statement.ForNode;
+import ASTVisitor.statement.SwitchNode;
 import ASTVisitor.structure.*;
 import ASTVisitor.primary.*;
 import ASTVisitor.structure.RootNode;
@@ -95,7 +97,11 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitFor_stmt(Ardu3kParser.For_stmtContext ctx) {
-        return super.visitFor_stmt(ctx);
+        ForNode node = new ForNode();
+        node.expressionNode = visitExpression(ctx.expr);
+        node.value = visitNumber(ctx.value);
+        node.collectChildren(ctx.body.block_stmt());
+        return node;
     }
 
     @Override
@@ -105,7 +111,11 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
-        return super.visitSwitch_stmt(ctx);
+        SwitchNode node = new SwitchNode();
+        node.expression = visitExpression(ctx.expr);
+        node.collectChildren(ctx.cases.block_stmt());
+        node.defaultnode = visitCase_default(ctx.defaultcase);
+        return node;
     }
 
     @Override

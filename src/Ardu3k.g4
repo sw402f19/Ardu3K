@@ -49,7 +49,7 @@ selection_stmt
     | ifdo_stmt
     ;
 switch_stmt
-    : SWITCH LPAR expression RPAR LCUR case_stmt* case_default? RCUR
+    : SWITCH LPAR expr=expression RPAR LCUR cases=case_stmt* defaultcase=case_default? RCUR
     ;
 case_stmt
     : CASE value=expression COLON block_stmt*

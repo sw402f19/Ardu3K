@@ -12,5 +12,8 @@ public class TrueNode extends AbstractBoolNode {
         super(ctx);
     }
 
-
+    @Override
+    public String toString() {
+        return ""+value;
+    }
 }

@@ -9,5 +9,5 @@ public abstract class AbstractInfixConditionalNode extends AbstractInfixExpressi
     public AbstractInfixConditionalNode(){
 
     }
-    
+
 }

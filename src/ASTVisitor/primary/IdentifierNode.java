@@ -11,6 +11,11 @@ public class IdentifierNode extends AbstractPrimaryNode {
     }
 
     public IdentifierNode(Ardu3kParser.IdentifierContext ctx){
-        super(ctx);
+        value = ctx.value.getText();
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 }

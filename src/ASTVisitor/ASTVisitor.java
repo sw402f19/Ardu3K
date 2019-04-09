@@ -291,14 +291,14 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitString(Ardu3kParser.StringContext ctx) {
-        StringNode node = new StringNode();
+        StringNode node = new StringNode(ctx.string_val());
         node.collectChildren(ctx.string_val());
         return node;
     }
 
     @Override
     public RootNode visitString_val(Ardu3kParser.String_valContext ctx) {
-        return new StringValNode(ctx.getText());
+        return new StringNode(ctx.getText());
     }
 
     @Override

@@ -19,7 +19,7 @@ loop
     : LOOP ASSIGN block
     ;
 functions
-    : id=identifier LPAR para=parameter RPAR ASSIGN body=block
+    : id=identifier LPAR para=parameter RPAR ASSIGN block
     ;
 parameter
     : id=identifier COMMA para=parameter

@@ -2,17 +2,29 @@ package ASTVisitor.structure;
 
 import ASTVisitor.ASTVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RuleContext;
+import org.w3c.dom.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
 enum TYPE {INT, DOUBLE, STRING, TIME}
 
-public abstract class RootNode extends ASTVisitor implements Node {
+public abstract class RootNode<T extends RuleContext> extends ASTVisitor implements Node {
+
     public RootNode parent;
     public ArrayList<RootNode> children = new ArrayList<>();
 
-    public RootNode() { }
+
+    T ctx;
+
+    public RootNode(T ctx) {
+        this.ctx = ctx;
+    }
+
+    public String toString(){
+        return ctx.toString();
+    }
 
     public RootNode(RootNode parent) {
         this.parent = parent;
@@ -51,4 +63,5 @@ public abstract class RootNode extends ASTVisitor implements Node {
                 n.parent = this;
         }
     }
+
 }

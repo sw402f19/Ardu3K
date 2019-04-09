@@ -14,4 +14,6 @@ public class IntegerNode extends AbstractNumberNode {
     public IntegerNode(String str) {
         this.value = Integer.valueOf(str);
     }
+
+
 }

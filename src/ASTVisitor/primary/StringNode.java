@@ -9,4 +9,9 @@ public class StringNode extends AbstractPrimaryNode {
 
     public StringNode() {
     }
+
+    public StringNode(Ardu3kParser.StringContext ctx){
+        super(ctx);
+    }
+
 }

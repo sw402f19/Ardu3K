@@ -11,6 +11,18 @@
     <groupId>Ardu3K</groupId>
     <artifactId>Ardu3K</artifactId>
     <version>1.0.69</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.antlr/antlr4-runtime -->

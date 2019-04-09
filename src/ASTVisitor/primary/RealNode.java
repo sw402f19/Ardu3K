@@ -14,4 +14,9 @@ public class RealNode extends AbstractNumberNode {
     public RealNode(String str) {
         this.value = Double.valueOf(str);
     }
+
+    public RealNode(Ardu3kParser.RelationalExprContext ctx){
+        super(ctx);
+    }
+
 }

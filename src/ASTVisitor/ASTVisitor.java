@@ -3,19 +3,21 @@ package ASTVisitor;
 
 import ASTVisitor.expression.AbstractInfixExpressionNode;
 import ASTVisitor.expression.AssignmentNode;
-import ASTVisitor.expression.condition.AndNode;
-import ASTVisitor.expression.condition.EqualNode;
-import ASTVisitor.expression.condition.NotNode;
-import ASTVisitor.expression.condition.OrNode;
+import ASTVisitor.expression.additive.AbstractInfixAdditiveNode;
+import ASTVisitor.expression.additive.MinusNode;
+import ASTVisitor.expression.additive.PlusNode;
+import ASTVisitor.expression.condition.*;
+import ASTVisitor.expression.multiplicative.AbstractInfixMultiplicativeNode;
+import ASTVisitor.expression.multiplicative.DivideNode;
+import ASTVisitor.expression.multiplicative.ModulusNode;
+import ASTVisitor.expression.multiplicative.TimesNode;
+import ASTVisitor.expression.relation.*;
 import ASTVisitor.statement.*;
 import ASTVisitor.structure.*;
 import ASTVisitor.primary.*;
 import ASTVisitor.structure.RootNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 {
@@ -188,7 +190,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitInfixCondtionalOrExpr(Ardu3kParser.InfixCondtionalOrExprContext ctx) {
-        AbstractInfixExpressionNode node = new OrNode();
+        OrNode node = new OrNode();
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
         return node;
@@ -196,7 +198,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitInfixConditionalAndExpr(Ardu3kParser.InfixConditionalAndExprContext ctx) {
-        AbstractInfixExpressionNode node = new AndNode();
+        AndNode node = new AndNode();
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
         return node;
@@ -209,7 +211,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitInfixConditionalXorExpr(Ardu3kParser.InfixConditionalXorExprContext ctx) {
-        AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
+        XorNode node = new XorNode();
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
         return node;
@@ -217,12 +219,17 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitInfixEqualExpr(Ardu3kParser.InfixEqualExprContext ctx) {
-        AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
+        AbstractInfixExpressionNode node;
         switch (ctx.op.getType()) {
             case Ardu3kParser.EQUALS:
                 node = new EqualNode();
+                break;
             case Ardu3kParser.NOT:
                 node = new NotNode();
+                break;
+
+                default:
+                    throw new IllegalArgumentException();
         }
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
@@ -237,7 +244,24 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitInfixRelationalExpr(Ardu3kParser.InfixRelationalExprContext ctx) {
-        AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
+        AbstractInfixRelationNode node;
+
+        switch (ctx.op.getType()) {
+            case Ardu3kParser.LESSER:
+                node = new LesserNode();
+                break;
+            case Ardu3kParser.GREATER:
+                node = new GreaterNode();
+                break;
+            case Ardu3kParser.GREATEREQUAL:
+                node = new GreaterEqualNode();
+                break;
+            case Ardu3kParser.LESSEQUAL:
+                node = new LesserEqualNode();
+                break;
+                default:
+                    throw new IllegalArgumentException();
+        }
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
         return node;
@@ -250,7 +274,19 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitInfixAdditiveExpr(Ardu3kParser.InfixAdditiveExprContext ctx) {
-        AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
+        AbstractInfixAdditiveNode node;
+
+        switch (ctx.op.getType()) {
+            case Ardu3kParser.PLUS:
+                node = new PlusNode();
+                break;
+            case Ardu3kParser.MINUS:
+                node = new MinusNode();
+                break;
+
+                default:
+                    throw new IllegalArgumentException();
+        }
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
         return node;
@@ -263,7 +299,23 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitInfixMultiplicativeExpr(Ardu3kParser.InfixMultiplicativeExprContext ctx) {
-        AbstractInfixExpressionNode node = new AbstractInfixExpressionNode() {};
+        AbstractInfixMultiplicativeNode node;
+
+        switch (ctx.op.getType()) {
+            case Ardu3kParser.TIMES:
+                node = new TimesNode();
+                break;
+            case Ardu3kParser.DIVIDE:
+                node = new DivideNode();
+                break;
+            case Ardu3kParser.MODULUS:
+                node = new ModulusNode();
+                break;
+
+                default:
+                    throw new IllegalArgumentException();
+        }
+
         node.left = visit(ctx.left);
         node.right = visit(ctx.right);
         return node;
@@ -303,24 +355,33 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitNumber(Ardu3kParser.NumberContext ctx) {
-        AbstractNumberNode node = new AbstractNumberNode() {};
+        AbstractNumberNode node;
         switch (ctx.value.getType()) {
             case Ardu3kParser.INTEGER:
                 node = new IntegerNode(ctx);
+                break;
             case Ardu3kParser.REAL:
                 node = new RealNode(ctx);
+                break;
+                default:
+                    throw new IllegalArgumentException();
         }
         return node;
     }
 
     @Override
     public RootNode visitBool(Ardu3kParser.BoolContext ctx) {
-        AbstractBoolNode node = new AbstractBoolNode() {};
+        AbstractBoolNode node;
         switch (ctx.value.getType()) {
             case Ardu3kParser.TRUE:
                 node = new TrueNode(Boolean.valueOf(ctx.getText()));
+                break;
             case Ardu3kParser.FALSE:
                 node = new FalseNode(Boolean.valueOf(ctx.getText()));
+                break;
+
+                default:
+                    throw new IllegalArgumentException();
         }
         return node;
     }

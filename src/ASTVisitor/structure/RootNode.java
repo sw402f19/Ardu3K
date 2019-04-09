@@ -17,6 +17,9 @@ public abstract class RootNode<T extends RuleContext> extends ASTVisitor impleme
 
     T ctx;
 
+    public RootNode() {
+    }
+
     public RootNode(T ctx) {
         this.ctx = ctx;
     }

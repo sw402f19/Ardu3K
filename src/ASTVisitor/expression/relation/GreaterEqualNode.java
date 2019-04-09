@@ -1,4 +1,4 @@
 package ASTVisitor.expression.relation;
 
-public class GreaterEqualNode {
+public class GreaterEqualNode extends AbstractInfixRelationNode {
 }

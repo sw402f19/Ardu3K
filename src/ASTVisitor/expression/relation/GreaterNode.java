@@ -1,4 +1,4 @@
 package ASTVisitor.expression.relation;
 
-public class GreaterNode {
+public class GreaterNode extends AbstractInfixRelationNode {
 }

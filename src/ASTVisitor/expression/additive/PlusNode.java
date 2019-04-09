@@ -1,4 +1,4 @@
 package ASTVisitor.expression.additive;
 
-public class PlusNode {
+public class PlusNode extends AbstractInfixAdditiveNode{
 }

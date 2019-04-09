@@ -69,7 +69,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return visitParameter(ctx, node);
     }
     private RootNode visitParameter(Ardu3kParser.ParameterContext ctx, ParameterNode node) {
-        node.children.add(new IdentifierNode(ctx.id));
+        node.children.add(visit(ctx.id));
         if(ctx.para != null)
             visitParameter(ctx.para, node);
         return node;
@@ -141,23 +141,30 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         IfElseNode node = new IfElseNode();
         node.condition = visit(ctx.condition);
         node.upperbody = visit(ctx.upperbody);
-        node.lowerbody = visit(ctx.lowerbody);
+        if(ctx.lowerbody != null)
+            node.lowerbody = visit(ctx.lowerbody);
         return node;
     }
 
     @Override
     public RootNode visitFunction_stmt(Ardu3kParser.Function_stmtContext ctx) {
-        return super.visitFunction_stmt(ctx);
+        FunctionStmtNode node = new FunctionStmtNode();
+        node.id = visit(ctx.id);
+        node.arguments = visit(ctx.args);
+        return node;
     }
 
     @Override
-    public RootNode visitArgs(Ardu3kParser.ArgsContext ctx) {
-        return super.visitArgs(ctx);
+    public RootNode visitArgument(Ardu3kParser.ArgumentContext ctx) {
+        ArgumentNode node = new ArgumentNode();
+        return visitArgument(ctx, node);
     }
 
-    @Override
-    public RootNode visitArgs_list(Ardu3kParser.Args_listContext ctx) {
-        return super.visitArgs_list(ctx);
+    public RootNode visitArgument(Ardu3kParser.ArgumentContext ctx, ArgumentNode node) {
+        node.children.add(visit(ctx.left));
+        if(ctx.right != null)
+            visitArgument(ctx.right, node);
+        return node;
     }
 
     @Override

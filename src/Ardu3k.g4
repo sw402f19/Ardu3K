@@ -19,7 +19,7 @@ loop
     : LOOP ASSIGN block
     ;
 functions
-    : id=identifier LPAR para=parameter RPAR ASSIGN block
+    : id=identifier LPAR para=parameter? RPAR ASSIGN block
     ;
 parameter
     : id=identifier COMMA para=parameter
@@ -63,14 +63,11 @@ ifdo_stmt
     | IF condition=expression DO upperbody=block ELSE ifdo_stmt
     ;
 function_stmt
-    : id=identifier children=args SEMI
+    : id=identifier LPAR args=argument? RPAR SEMI
     ;
-args
-    : LPAR args_list? RPAR
-    ;
-args_list
-    : primary_expr
-    | left=primary_expr COMMA right=args_list
+argument
+    : left=primary_expr
+    | left=primary_expr COMMA right=argument
     ;
 expression_stmt
     : expression SEMI

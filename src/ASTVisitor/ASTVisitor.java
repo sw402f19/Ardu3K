@@ -6,6 +6,8 @@ import ASTVisitor.expression.condition.AndNode;
 import ASTVisitor.expression.condition.EqualNode;
 import ASTVisitor.expression.condition.NotNode;
 import ASTVisitor.expression.condition.OrNode;
+import ASTVisitor.statement.CaseNode;
+import ASTVisitor.statement.DefaultNode;
 import ASTVisitor.statement.ForNode;
 import ASTVisitor.statement.SwitchNode;
 import ASTVisitor.structure.*;
@@ -120,12 +122,17 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitCase_stmt(Ardu3kParser.Case_stmtContext ctx) {
-        return super.visitCase_stmt(ctx);
+        CaseNode node = new CaseNode();
+        node.expression = visitExpression(ctx.value);
+        node.collectChildren(ctx.block_stmt());
+        return node;
     }
 
     @Override
     public RootNode visitCase_default(Ardu3kParser.Case_defaultContext ctx) {
-        return super.visitCase_default(ctx);
+        DefaultNode node = new DefaultNode();
+        node.collectChildren(ctx.block_stmt());
+        return node;
     }
 
     @Override

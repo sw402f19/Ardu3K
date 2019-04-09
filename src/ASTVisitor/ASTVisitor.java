@@ -3,19 +3,13 @@ package ASTVisitor;
 
 import ASTVisitor.expression.AbstractInfixExpressionNode;
 import ASTVisitor.expression.AssignmentNode;
-import ASTVisitor.expression.additive.AbstractInfixAdditiveNode;
-import ASTVisitor.expression.additive.MinusNode;
-import ASTVisitor.expression.additive.PlusNode;
+import ASTVisitor.expression.additive.*;
 import ASTVisitor.expression.condition.*;
-import ASTVisitor.expression.multiplicative.AbstractInfixMultiplicativeNode;
-import ASTVisitor.expression.multiplicative.DivideNode;
-import ASTVisitor.expression.multiplicative.ModulusNode;
-import ASTVisitor.expression.multiplicative.TimesNode;
+import ASTVisitor.expression.multiplicative.*;
 import ASTVisitor.expression.relation.*;
 import ASTVisitor.statement.*;
 import ASTVisitor.structure.*;
 import ASTVisitor.primary.*;
-import ASTVisitor.structure.RootNode;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
 

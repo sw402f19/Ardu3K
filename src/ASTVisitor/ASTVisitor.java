@@ -2,14 +2,12 @@ package ASTVisitor;
 
 
 import ASTVisitor.expression.AbstractInfixExpressionNode;
+import ASTVisitor.expression.AssignmentNode;
 import ASTVisitor.expression.condition.AndNode;
 import ASTVisitor.expression.condition.EqualNode;
 import ASTVisitor.expression.condition.NotNode;
 import ASTVisitor.expression.condition.OrNode;
-import ASTVisitor.statement.CaseNode;
-import ASTVisitor.statement.DefaultNode;
-import ASTVisitor.statement.ForNode;
-import ASTVisitor.statement.SwitchNode;
+import ASTVisitor.statement.*;
 import ASTVisitor.structure.*;
 import ASTVisitor.primary.*;
 import ASTVisitor.structure.RootNode;
@@ -58,7 +56,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         FunctionNode node = new FunctionNode();
         node.id = visit(ctx.identifier());
         node.parameter = visit(ctx.parameter());
-        node.collectChildren(ctx.body.block_stmt());
+        node.block = visit(ctx.block());
         return node;
     }
 
@@ -138,7 +136,11 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitIfdo_stmt(Ardu3kParser.Ifdo_stmtContext ctx) {
-        return super.visitIfdo_stmt(ctx);
+        IfElseNode node = new IfElseNode();
+        node.condition = visit(ctx.condition);
+        node.upperbody = visit(ctx.upperbody);
+        node.lowerbody = visit(ctx.lowerbody);
+        return node;
     }
 
     @Override
@@ -173,7 +175,10 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitAssignment(Ardu3kParser.AssignmentContext ctx) {
-        return super.visitAssignment(ctx);
+        AssignmentNode node = new AssignmentNode();
+        node.left = visit(ctx.left);
+        node.right = visitPrimary_expr(ctx.right);
+        return node;
     }
 
     @Override

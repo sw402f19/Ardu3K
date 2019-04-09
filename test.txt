@@ -14,6 +14,9 @@ loop = {
     } else do {
         write(1, 5, a);
     }
+    for a = 1 to 10 do {
+            a = a + 1;
+    }
 }
 func (a, d, d, d, g, hf) = {
     a = 10;

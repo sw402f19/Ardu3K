@@ -15,5 +15,8 @@ public class IntegerNode extends AbstractNumberNode {
         this.value = Integer.valueOf(str);
     }
 
-
+    @Override
+    public String toString() {
+        return ""+value;
+    }
 }

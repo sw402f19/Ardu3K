@@ -14,4 +14,8 @@ public class StringNode extends AbstractPrimaryNode {
         super(ctx);
     }
 
+    @Override
+    public String toString() {
+        return value;
+    }
 }

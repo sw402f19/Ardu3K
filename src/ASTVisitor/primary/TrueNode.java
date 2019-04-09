@@ -8,8 +8,9 @@ public class TrueNode extends AbstractBoolNode {
         super(value);
     }
 
-    public TrueNode(Ardu3kParser.BoolContext ctx){
-        super (ctx);
+    public TrueNode(Ardu3kParser.BoolContext ctx) {
+        super(ctx);
     }
+
 
 }

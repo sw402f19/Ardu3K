@@ -6,4 +6,9 @@ public class StringValNode extends AbstractPrimaryNode{
     public StringValNode(String value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

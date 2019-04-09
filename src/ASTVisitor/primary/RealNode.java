@@ -19,4 +19,8 @@ public class RealNode extends AbstractNumberNode {
         super(ctx);
     }
 
+    @Override
+    public String toString() {
+        return ""+value;
+    }
 }

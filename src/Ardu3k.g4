@@ -3,8 +3,8 @@ grammar Ardu3k;
 WS
     : [ \r\n\t]+ -> skip
     ;
-compileUnit:
-    | program
+compileUnit
+    : program
     ;
 program
     : defines=define* setup loop funcs=function*
@@ -159,6 +159,7 @@ list_stmt
     : GET LPAR argument RPAR
     | REMOVE LPAR argument RPAR
     | ADD LPAR argument RPAR
+    | SIZE LPAR RPAR
     ;
 identifier
     : value=identifier_val
@@ -236,6 +237,7 @@ RETURN: 'return';
 GET: 'get';
 REMOVE: 'remove';
 ADD: 'add';
+SIZE: 'size';
 EMPTYLIST: '[]';
 LETTER: [a-zA-Z];
 REAL: DIGIT+ DOT DIGIT+;

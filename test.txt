@@ -1,21 +1,28 @@
 #define LEDPIN 13
 #define ALED 15
 
-setup = {
+setup () = {
     a = 10;
 }
-loop = {
-    b = 5;
-    c = 1 + b;
+loop () = {
+    b = [];
+    _ = 1 + b;
     ab = "ab";
     D = 10.150;
     if b < a do {
         b = b + 1;
     } else if a > b do {
-        write(1, 5, a);
+        b.add(write(1, 5, a));
+    } else do {
+        write(1, a);
+        for a = 0 to 10 do {
+            func(a, ab, D);
+            a = a + 1;
+        }
     }
     for a = 1 to 10 do {
-            a = a + 1;
+        a = a + 1;
+
     }
     switch (a) {
         case 10:

@@ -7,18 +7,18 @@ compileUnit:
     | program
     ;
 program
-    : defines=define* setup loop funcs=functions*
+    : defines=define* setup loop funcs=function*
     ;
 define
     : DEFINE id=identifier value=number
     ;
 setup
-    : SETUP ASSIGN block
+    : SETUP LPAR RPAR ASSIGN block
     ;
 loop
-    : LOOP ASSIGN block
+    : LOOP LPAR RPAR ASSIGN block
     ;
-functions
+function
     : id=identifier LPAR para=parameter? RPAR ASSIGN block
     ;
 parameter
@@ -58,12 +58,27 @@ case_default
     : DEFAULT COLON block_stmt*
     ;
 ifdo_stmt
-    : IF condition=expression DO upperbody=block
-    | IF condition=expression DO upperbody=block ELSE DO lowerbody=block
-    | IF condition=expression DO upperbody=block ELSE ifdo_stmt
+    : IF condition=expression DO upperbody=block ELSE lowerbody=ifdo_stmt   #elseTrailingIf
+    | IF condition=expression DO upperbody=block ELSE DO lowerbody=block    #ifTrailingElse
+    | IF condition=expression DO upperbody=block                            #ifNoTrailingElse
     ;
+statement
+    : open_statement
+    | closed_statement
+    ;
+open_statement
+    : IF expression stmt
+    | IF expression open_statement
+    | IF expression closed_statement ELSE open_statement
+    ;
+closed_statement
+    : stmt
+    | IF expression closed_statement ELSE closed_statement
+    |
+    ;
+
 function_stmt
-    : id=identifier LPAR args=argument? RPAR SEMI
+    : id=identifier LPAR args=argument? RPAR
     ;
 argument
     : left=primary_expr
@@ -126,6 +141,8 @@ primary
     | identifier
     | LPAR expression RPAR
     | function_stmt
+    | list_expr
+    | EMPTYLIST
     ;
 
 primary_expr
@@ -134,6 +151,14 @@ primary_expr
     | string
     | function_stmt
     | assignment_expr
+    ;
+list_expr
+    : identifier DOT list_stmt
+    ;
+list_stmt
+    : GET LPAR argument RPAR
+    | REMOVE LPAR argument RPAR
+    | ADD LPAR argument RPAR
     ;
 identifier
     : value=identifier_val
@@ -208,7 +233,11 @@ COMMA : ',';
 DOT : '.';
 SPACE: ' ';
 RETURN: 'return';
+GET: 'get';
+REMOVE: 'remove';
+ADD: 'add';
+EMPTYLIST: '[]';
 LETTER: [a-zA-Z];
-REAL: DIGIT+ (DOT DIGIT+)?;
+REAL: DIGIT+ DOT DIGIT+;
 INTEGER: DIGIT+;
 DIGIT: [0-9];

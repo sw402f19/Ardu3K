@@ -21,7 +21,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.collectChildren(ctx.define(), node.defineNodes);
         node.setupNode = visitSetup(ctx.setup());
         node.loopNode = visitLoop(ctx.loop());
-        node.collectChildren(ctx.functions(), node.functionNodes);
+        node.collectChildren(ctx.function(), node.functionNodes);
         return node;
     }
 
@@ -48,14 +48,13 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitFunctions(Ardu3kParser.FunctionsContext ctx) {
+    public RootNode visitFunction(Ardu3kParser.FunctionContext ctx) {
         FunctionNode node = new FunctionNode();
         node.id = visit(ctx.identifier());
         node.parameter = visit(ctx.parameter());
         node.block = visit(ctx.block());
         return node;
     }
-
 
     @Override
     public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
@@ -130,14 +129,29 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return node;
     }
 
-    //todo fix dangling else problem
     @Override
-    public RootNode visitIfdo_stmt(Ardu3kParser.Ifdo_stmtContext ctx) {
-        IfElseNode node = new IfElseNode();
+    public RootNode visitIfNoTrailingElse(Ardu3kParser.IfNoTrailingElseContext ctx) {
+        IfNode node = new IfNode();
         node.condition = visit(ctx.condition);
         node.upperbody = visit(ctx.upperbody);
-        if(ctx.lowerbody != null)
-            node.lowerbody = visit(ctx.lowerbody);
+        return node;
+    }
+
+    @Override
+    public RootNode visitIfTrailingElse(Ardu3kParser.IfTrailingElseContext ctx) {
+        ElifNode node = new ElifNode();
+        node.condition = visit(ctx.condition);
+        node.upperbody = visit(ctx.upperbody);
+        node.lowerbody = visit(ctx.lowerbody);
+        return node;
+    }
+
+    @Override
+    public RootNode visitElseTrailingIf(Ardu3kParser.ElseTrailingIfContext ctx) {
+        ElifNode node = new ElifNode();
+        node.condition = visit(ctx.condition);
+        node.upperbody = visit(ctx.upperbody);
+        node.lowerbody = visit(ctx.lowerbody);
         return node;
     }
 

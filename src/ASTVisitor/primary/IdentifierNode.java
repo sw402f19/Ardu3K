@@ -6,9 +6,6 @@ import gen.Ardu3kParser.IdentifierContext;
 public class IdentifierNode extends AbstractPrimaryNode {
     String value;
 
-    public IdentifierNode(String value) {
-        this.value = value;
-    }
 
     public IdentifierNode(Ardu3kParser.IdentifierContext ctx){
         value = ctx.value.getText();

@@ -10,11 +10,5 @@ public abstract class AbstractInfixRelationNode extends AbstractInfixExpressionN
 
     }
 
-    public AbstractInfixRelationNode(Ardu3kParser.InfixRelationalExprContext ctx){
-        super(ctx);
-    }
 
-    public AbstractInfixRelationNode(Ardu3kParser.ConditionalEqualExprContext ctx) {
-        super(ctx);
-    }
 }

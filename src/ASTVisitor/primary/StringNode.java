@@ -22,9 +22,7 @@ public class StringNode extends AbstractPrimaryNode {
         value = builder.toString();
     }
 
-    public StringNode(Ardu3kParser.StringContext ctx){
-        super(ctx);
-    }
+
 
     @Override
     public String toString() {

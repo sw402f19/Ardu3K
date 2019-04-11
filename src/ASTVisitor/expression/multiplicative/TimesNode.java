@@ -4,6 +4,6 @@ public class TimesNode extends AbstractInfixMultiplicativeNode {
 
     @Override
     public String toString() {
-        return left.toString() +" * "+ right.toString();
+        return "*";
     }
 }

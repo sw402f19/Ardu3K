@@ -1,25 +1,19 @@
 package ASTVisitor.expression;
 
 import ASTVisitor.structure.RootNode;
-import gen.Ardu3kParser;
 
 public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode {
-    public RootNode left;
-    public RootNode right;
 
-    public AbstractInfixExpressionNode(Ardu3kParser.ExpressionContext ctx){
-        super(ctx);
+    public RootNode getLeft() {
+        return children.get(0);
     }
-
-    public AbstractInfixExpressionNode(){
-
+    public RootNode getRight() {
+        return children.get(1);
     }
-
-    public AbstractInfixExpressionNode(Ardu3kParser.InfixRelationalExprContext ctx) {
-        super(ctx);
+    public void setLeft(RootNode left) {
+        children.set(0, left);
     }
-
-    public AbstractInfixExpressionNode(Ardu3kParser.ConditionalEqualExprContext ctx) {
-        super(ctx);
+    public void setRight(RootNode right) {
+        children.set(1, right);
     }
 }

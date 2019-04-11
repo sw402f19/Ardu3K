@@ -11,22 +11,31 @@ public class FunctionNode extends RootNode {
     public RootNode getId() {
         return children.get(0);
     }
-    public void setId(RootNode id) {
-        children.set(0, id);
+    public void setId(RootNode node) {
+        if(children.size() > 0)
+            children.set(0, node);
+        else
+            children.add(node);
     }
 
     public RootNode getParameter() {
         return children.get(1);
     }
-    public void setParameter(RootNode parameter) {
-        children.set(1, parameter);
+    public void setParameter(RootNode node) {
+        if(children.size() > 1)
+            children.set(1, node);
+        else
+            children.add(node);
     }
 
     public RootNode getBlock() {
         return children.get(2);
     }
-    public void setBlock(RootNode block) {
-        children.set(2, block);
+    public void setBlock(RootNode node) {
+        if(children.size() > 2)
+            children.set(2, node);
+        else
+            children.add(node);
     }
 
 

@@ -1,5 +1,6 @@
 package ASTVisitor.structure;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class PrettyASTPrinter extends AbstractASTVisitor implements ASTVisitor {
@@ -7,8 +8,14 @@ public class PrettyASTPrinter extends AbstractASTVisitor implements ASTVisitor {
 
     @Override
     public void visitChildren(RootNode node) {
+        System.out.print(node.toString());
+        //System.out.println("");
         super.visitChildren(node);
-        System.out.println(node.toString());
+        spacesToPrint++;
+        //System.out.print(node.toString());
+        for(int a = 0; a < spacesToPrint; a++);
+
+
     }
 
     public void visitChildren(ArrayList<RootNode> nodes) {

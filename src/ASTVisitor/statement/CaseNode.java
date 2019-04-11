@@ -9,4 +9,11 @@ public class CaseNode extends AbstractStatementNode {
     public String toString() {
         return "case "+expression.toString();
     }
+
+    public RootNode getExpression() {
+        return children.get(0);
+    }
+    public void setExpression(RootNode expression) {
+        children.set(0, expression);
+    }
 }

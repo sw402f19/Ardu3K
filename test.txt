@@ -7,6 +7,7 @@ setup () = {
 loop () = {
     b = [];
     _ = 1 + b;
+    b = 1;
     ab = "ab";
     D = 10.150;
     if b < a do {

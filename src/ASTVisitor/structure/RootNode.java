@@ -21,11 +21,11 @@ public abstract class RootNode implements Node {
     public RootNode() {
     }
 
-    public <T> void accept(ASTVisitor<? extends T> visitor){
+    /*public <T> void accept(ASTVisitor<? extends T> visitor){
         if (visitor instanceof AbstractASTVisitor)
             ((AbstractASTVisitor)visitor).visitRootNode(this);
         else
             visitor.visitChildren(this);
-    }
+    }*/
 
 }

@@ -342,6 +342,11 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
+    public RootNode visitUnary_expr(Ardu3kParser.Unary_exprContext ctx) {
+        return super.visitUnary_expr(ctx);
+    }
+
+    @Override
     public RootNode visitPrimaryExpr(Ardu3kParser.PrimaryExprContext ctx) {
         return super.visitPrimaryExpr(ctx);
     }

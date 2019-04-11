@@ -13,4 +13,12 @@ public class ProgramNode extends RootNode {
         return "Program";
     }
 
+    public <T> void accept(ASTVisitor<? extends T> visitor){
+        if (visitor instanceof AbstractASTVisitor)
+            ((AbstractASTVisitor)visitor).visitProgramNode(this);
+        else
+            visitor.visitChildren(this);
+    }
+
+
 }

@@ -7,6 +7,6 @@ public class BlockNode extends RootNode {
 
     @Override
     public String toString() {
-        return children.toString();
+        return "block";
     }
 }

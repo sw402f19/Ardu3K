@@ -12,16 +12,20 @@ import ASTVisitor.structure.*;
 import ASTVisitor.primary.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 
-public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
+import java.util.ArrayList;
+import java.util.List;
+
+public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
 {
     @Override
     public RootNode visitProgram(Ardu3kParser.ProgramContext ctx) {
         ProgramNode node = new ProgramNode();
-        node.collectChildren(ctx.define(), node.defineNodes);
+        collectChildren(node, ctx.define(), node.defineNodes);
         node.setupNode = visitSetup(ctx.setup());
         node.loopNode = visitLoop(ctx.loop());
-        node.collectChildren(ctx.function(), node.functionNodes);
+        collectChildren(node, ctx.function(), node.functionNodes);
         return node;
     }
 
@@ -36,14 +40,14 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
         SetupNode node = new SetupNode();
-        node.collectChildren(ctx.block().block_stmt());
+        collectChildren(node, ctx.block().block_stmt());
         return node;
     }
 
     @Override
     public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
         LoopNode node = new LoopNode();
-        node.collectChildren(ctx.block().block_stmt());
+        collectChildren(node, ctx.block().block_stmt());
         return node;
     }
 
@@ -71,7 +75,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {
         BlockNode node = new BlockNode();
-        node.collectChildren(ctx.block_stmt());
+        collectChildren(node, ctx.block_stmt());
         return node;
     }
 
@@ -96,7 +100,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         ForNode node = new ForNode();
         node.expressionNode = visitExpression(ctx.expr);
         node.value = visitNumber(ctx.value);
-        node.collectChildren(ctx.body.block_stmt());
+        collectChildren(node, ctx.body.block_stmt());
         return node;
     }
 
@@ -109,7 +113,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
         SwitchNode node = new SwitchNode();
         node.expression = visitExpression(ctx.expr);
-        node.collectChildren(ctx.case_stmt());
+        collectChildren(node, ctx.case_stmt());
         node.defaultnode = visitCase_default(ctx.defaultcase);
         return node;
     }
@@ -118,14 +122,14 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitCase_stmt(Ardu3kParser.Case_stmtContext ctx) {
         CaseNode node = new CaseNode();
         node.expression = visitExpression(ctx.value);
-        node.collectChildren(ctx.block_stmt());
+        collectChildren(node, ctx.block_stmt());
         return node;
     }
 
     @Override
     public RootNode visitCase_default(Ardu3kParser.Case_defaultContext ctx) {
         DefaultNode node = new DefaultNode();
-        node.collectChildren(ctx.block_stmt());
+        collectChildren(node, ctx.block_stmt());
         return node;
     }
 
@@ -360,7 +364,7 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitString(Ardu3kParser.StringContext ctx) {
         StringNode node = new StringNode(ctx.string_val());
-        node.collectChildren(ctx.string_val());
+        collectChildren(node, ctx.string_val());
         return node;
     }
 
@@ -402,5 +406,33 @@ public class ASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return node;
     }
 
+    /**
+     * Collects children from a given list of type T extending ParserRulerContext to
+     * the this node's childen and adds this as parent to its children.
+     * @param list to collect from
+     * @param <T> type of list to collect from
+     */
+    public <T extends ParserRuleContext> void collectChildren(RootNode node, List<T> list) {
+        if(!list.isEmpty())
+            list.forEach(e -> node.children.add(super.visit(e)));
+        for(RootNode n : node.children)
+            if(n != null)
+                n.parent = node;
+    }
+    /**
+     * Collects children from a given list of type T extending ParserRuleContext to the supplied
+     * list. Adds this node as parent.
+     * @param source to collect from
+     * @param target to collect to
+     * @param <T> type of list to collect from
+     */
+    public <T extends ParserRuleContext> void collectChildren(RootNode node, List<T> source, ArrayList<RootNode> target) {
+        if(!source.isEmpty())
+            source.forEach(e -> target.add(super.visit(e)));
+        for(RootNode n : target) {
+            if (n != null)
+                n.parent = node;
+        }
+    }
 
 }

@@ -7,10 +7,6 @@ public abstract class AbstractStatementNode extends RootNode {
     public AbstractStatementNode() {
     }
 
-    public AbstractStatementNode(RuleContext ctx) {
-        super(ctx);
-    }
-
     public AbstractStatementNode(RootNode parent) {
         super(parent);
     }

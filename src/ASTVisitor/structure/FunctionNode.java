@@ -9,6 +9,15 @@ public class FunctionNode extends RootNode {
 
     @Override
     public String toString() {
-        return id + " " +parameter.toString();
+        return "Function ";
     }
+
+    public RootNode getId() {
+        return children.get(0);
+    }
+    public void setId(RootNode id) {
+        children.set(0, id);
+    }
+
+  
 }

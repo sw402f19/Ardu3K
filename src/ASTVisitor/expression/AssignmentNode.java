@@ -2,12 +2,10 @@ package ASTVisitor.expression;
 
 import ASTVisitor.structure.RootNode;
 
-public class AssignmentNode extends AbstractExpressionNode {
-    public RootNode left;
-    public RootNode right;
+public class AssignmentNode extends AbstractInfixExpressionNode {
 
     @Override
     public String toString() {
-        return left.toString() +" = "+ right.toString();
+        return "=";
     }
 }

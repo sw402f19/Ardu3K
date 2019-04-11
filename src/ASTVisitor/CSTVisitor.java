@@ -32,8 +32,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitDefine(Ardu3kParser.DefineContext ctx) {
         DefineNode node = new DefineNode();
-        node.id = visit(ctx.id);
-        node.value = visit(ctx.value);
+        node.setId(visit(ctx.id));
+        node.setValue(visit(ctx.value));
         return node;
     }
 

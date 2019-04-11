@@ -33,7 +33,7 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitDefines(List<Ardu3kParser.DefineContext> ctx) {
         DefinesNode node = new DefinesNode();
         collectChildren(node, ctx);
-        return node;
+        return (node.children.size() > 0 ? node : null);
     }
 
     @Override
@@ -48,22 +48,15 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
         SetupNode node = new SetupNode();
         collectChildren(node, ctx.block().block_stmt());
-        return node;
+        return (node.children.size() > 0 ? node : null);
     }
 
     @Override
     public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
         LoopNode node = new LoopNode();
         collectChildren(node, ctx.block().block_stmt());
-        return node;
+        return (node.children.size() > 0 ? node : null);
     }
-
-    public RootNode visitFunctions(List<Ardu3kParser.FunctionContext> ctx) {
-        FunctionsNode node = new FunctionsNode();
-        collectChildren(node, ctx);
-        return node;
-    }
-
 
     @Override
     public RootNode visitFunction(Ardu3kParser.FunctionContext ctx) {
@@ -71,7 +64,7 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.setId(visit(ctx.identifier()));
         node.setParameter(visit(ctx.parameter()));
         node.setBlock(visit(ctx.block()));
-        return node;
+        return (node.children.size() > 0 ? node : null);
     }
 
     @Override

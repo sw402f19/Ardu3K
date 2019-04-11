@@ -3,11 +3,11 @@ grammar Ardu3k;
 WS
     : [ \r\n\t]+ -> skip
     ;
-compileUnit:
-    | program
+compileUnit
+    : program
     ;
 program
-    : defines=define* setup loop funcs=function*
+    : define* setup loop funcs=function*
     ;
 define
     : DEFINE id=identifier value=number
@@ -132,9 +132,15 @@ additive_expr
     ;
 multiplicative_expr
     : primary                                                           #primaryExpr
-    | left=multiplicative_expr op=TIMES right=primary                   #infixMultiplicativeExpr
-    | left=multiplicative_expr op=DIVIDE right=primary                  #infixMultiplicativeExpr
-    | left=multiplicative_expr op=MODULUS right=primary                 #infixMultiplicativeExpr
+    | left=multiplicative_expr op=TIMES right=unary_expr                #infixMultiplicativeExpr
+    | left=multiplicative_expr op=DIVIDE right=unary_expr               #infixMultiplicativeExpr
+    | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
+    ;
+unary_expr
+    : op=PLUS right=unary_expr
+    | op=MINUS right=unary_expr
+    | op=NEGATE right=unary_expr
+    | primary
     ;
 primary
     : literal
@@ -208,9 +214,10 @@ LESSEQUAL : '<=';
 GREATEREQUAL : '>=';
 OR : 'OR';
 AND : 'AND';
-NOT : 'NOT';
+NOT : '!=';
 XOR : 'XOR';
-EQUALS : 'EQUALS';
+EQUALS : '==';
+NEGATE: '!';
 TRUE : 'true';
 FALSE : 'false';
 LPAR: '(';

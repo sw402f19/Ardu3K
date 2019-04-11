@@ -8,7 +8,7 @@ public class ProgramNode extends RootNode {
         return "Program";
     }
 
-    public RootNode getDefineNode() {
+    public RootNode getDefinesNode() {
         return children.get(0);
     }
     public void setDefineNode(RootNode defineNode) {

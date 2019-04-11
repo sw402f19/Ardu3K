@@ -22,10 +22,17 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitProgram(Ardu3kParser.ProgramContext ctx) {
         ProgramNode node = new ProgramNode();
-        collectChildren(node, ctx.define(), node.defineNodes);
-        node.setupNode = visitSetup(ctx.setup());
-        node.loopNode = visitLoop(ctx.loop());
-        collectChildren(node, ctx.function(), node.functionNodes);
+        node.setDefineNode(visitDefines(ctx.define()));
+        node.setSetupNode(visitSetup(ctx.setup()));
+        node.setLoopNode(visitLoop(ctx.loop()));
+        node.setFunctionNode(visitFunction(ctx.funcs));
+        return node;
+    }
+
+
+    public RootNode visitDefines(List<Ardu3kParser.DefineContext> ctx) {
+        DefinesNode node = new DefinesNode();
+        collectChildren(node, ctx);
         return node;
     }
 
@@ -51,12 +58,19 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
         return node;
     }
 
+    public RootNode visitFunctions(List<Ardu3kParser.FunctionContext> ctx) {
+        FunctionsNode node = new FunctionsNode();
+        collectChildren(node, ctx);
+        return node;
+    }
+
+
     @Override
     public RootNode visitFunction(Ardu3kParser.FunctionContext ctx) {
         FunctionNode node = new FunctionNode();
-        node.id = visit(ctx.identifier());
-        node.parameter = visit(ctx.parameter());
-        node.block = visit(ctx.block());
+        node.setId(visit(ctx.identifier()));
+        node.setParameter(visit(ctx.parameter()));
+        node.setBlock(visit(ctx.block()));
         return node;
     }
 

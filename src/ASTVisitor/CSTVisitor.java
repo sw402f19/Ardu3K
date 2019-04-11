@@ -126,9 +126,9 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
         SwitchNode node = new SwitchNode();
-        node.expression = visitExpression(ctx.expr);
+        node.setExpression(visitExpression(ctx.expression()));
         collectChildren(node, ctx.case_stmt());
-        node.defaultnode = visitCase_default(ctx.defaultcase);
+        node.setDefaultnode(visitCase_default(ctx.defaultcase));
         return node;
     }
 
@@ -150,8 +150,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitIfNoTrailingElse(Ardu3kParser.IfNoTrailingElseContext ctx) {
         IfNode node = new IfNode();
-        node.condition = visit(ctx.condition);
-        node.upperbody = visit(ctx.upperbody);
+        node.setCondition(visit(ctx.condition));
+        node.setUpperbody(visit(ctx.upperbody));
         return node;
     }
 
@@ -167,9 +167,9 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitElseTrailingIf(Ardu3kParser.ElseTrailingIfContext ctx) {
         ElifNode node = new ElifNode();
-        node.condition = visit(ctx.condition);
-        node.upperbody = visit(ctx.upperbody);
-        node.lowerbody = visit(ctx.lowerbody);
+        node.setCondition(visit(ctx.condition));
+        node.setUpperbody(visit(ctx.upperbody));
+        node.setLowerbody(visit(ctx.lowerbody));
         return node;
     }
 
@@ -225,8 +225,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitInfixCondtionalOrExpr(Ardu3kParser.InfixCondtionalOrExprContext ctx) {
         OrNode node = new OrNode();
-        node.left = visit(ctx.left);
-        node.right = visit(ctx.right);
+        node.setLeft(visit(ctx.left));
+        node.setRight(visit(ctx.right));
         return node;
     }
 

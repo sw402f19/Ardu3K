@@ -4,6 +4,6 @@ public class ArgumentNode extends AbstractStatementNode {
 
     @Override
     public String toString() {
-        return children.toString();
+        return "Argument";
     }
 }

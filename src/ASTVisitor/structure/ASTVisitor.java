@@ -6,9 +6,9 @@ import ASTVisitor.primary.*;
 import ASTVisitor.statement.*;
 
 public interface ASTVisitor<T> {
-    void visitChildren(RootNode node);
+    T visitChildren(RootNode node);
 
-   /* void visitRootNode(RootNode node);
+   /*void visitRootNode(RootNode node);
 
     void visitProgramNode(ProgramNode node);
 

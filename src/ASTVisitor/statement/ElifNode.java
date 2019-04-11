@@ -4,10 +4,10 @@ import ASTVisitor.structure.RootNode;
 
 public class ElifNode extends IfNode {
 
-   /* @Override
+    @Override
     public String toString() {
-        return "if "+condition.toString()+" do "+upperbody.toString()+" else "+lowerbody.toString();
-    }*/
+        return "if do else ";
+    }
 
     public RootNode getLowerbody() {
         return children.get(0);

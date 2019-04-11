@@ -4,10 +4,10 @@ import ASTVisitor.structure.RootNode;
 
 public class IfNode extends AbstractStatementNode {
 
-    /*@Override
+    @Override
     public String toString() {
-        return "if "+condition.toString()+" do "+upperbody.toString();
-    }*/
+        return "if do ";
+    }
 
     public RootNode getCondition() {
         return children.get(0);

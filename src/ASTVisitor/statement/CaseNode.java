@@ -7,7 +7,7 @@ public class CaseNode extends AbstractStatementNode {
 
     @Override
     public String toString() {
-        return "case "+expression.toString();
+        return "case ";
     }
 
     public RootNode getExpression() {

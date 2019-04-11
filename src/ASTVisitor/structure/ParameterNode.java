@@ -12,6 +12,6 @@ public class ParameterNode extends RootNode {
 
     @Override
     public String toString() {
-        return children.toString();
+        return "Parameter";
     }
 }

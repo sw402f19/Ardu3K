@@ -1,6 +1,3 @@
-import ASTVisitor.structure.ASTVisitor;
-import ASTVisitor.structure.AbstractASTVisitor;
-import ASTVisitor.structure.PrettyASTPrinter;
 import ASTVisitor.structure.RootNode;
 import ASTVisitor.CSTVisitor;
 import gen.Ardu3kLexer;
@@ -24,8 +21,8 @@ public class Main {
 
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
             ast =  new CSTVisitor().visitCompileUnit(cst);
-            ast.accept(new PrettyASTPrinter());
-            System.out.println("Im here");
+            //ast.print(0);
+            //System.out.println("Im here");
 
         } catch (Exception e) {
             e.printStackTrace();

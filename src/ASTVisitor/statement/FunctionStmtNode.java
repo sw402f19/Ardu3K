@@ -4,10 +4,10 @@ import ASTVisitor.structure.RootNode;
 
 public class FunctionStmtNode extends AbstractStatementNode {
 
-    /*@Override
+    @Override
     public String toString() {
-        return id.toString()+"( "+arguments.toString()+")";
-    }*/
+        return "( )";
+    }
 
     public RootNode getId() {
         return children.get(0);

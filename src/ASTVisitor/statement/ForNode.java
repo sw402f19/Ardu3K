@@ -5,10 +5,10 @@ import ASTVisitor.primary.AbstractNumberNode;
 import ASTVisitor.structure.RootNode;
 
 public class ForNode extends AbstractStatementNode {
-  /*  @Override
+    @Override
     public String toString() {
-        return "for " + expressionNode.toString() + " to" + value + " do ";
-    }*/
+        return "for to do ";
+    }
 
     public RootNode getExpressionNode() {
         return children.get(0);

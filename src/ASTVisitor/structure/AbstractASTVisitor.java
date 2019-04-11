@@ -1,18 +1,20 @@
 package ASTVisitor.structure;
 
-public abstract class AbstractASTVisitor implements ASTVisitor {
-    public void visitChildren(RootNode node){
+public abstract class AbstractASTVisitor<T> implements ASTVisitor<T> {
+
+    public T visitChildren(RootNode node){
+
+        T dast = null;
 
         if(node.children.size() > 0) {
-            System.out.println();
             for (RootNode n : node.children)
                 if (n != null) {
-                    n.accept(this);
-                    System.out.print("    ");
+                    dast = n.accept(this);
                 }
-            System.out.println();
         }
+        return dast;
     }
-
-
+    public T visit(RootNode node) {
+        return node.accept(this);
+    }
 }

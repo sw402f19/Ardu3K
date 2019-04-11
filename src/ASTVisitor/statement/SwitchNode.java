@@ -4,13 +4,10 @@ import ASTVisitor.structure.RootNode;
 
 public class SwitchNode extends AbstractStatementNode {
 
-   /* @Override
+    @Override
     public String toString() {
-        if (defaultnode != null)
-            return "switch "+expression.toString()+" default "+defaultnode.toString();
-        else
-            return "switch "+expression.toString();
-    }*/
+        return "switch ";
+    }
     public RootNode getExpression() {
         return children.get(0);
     }

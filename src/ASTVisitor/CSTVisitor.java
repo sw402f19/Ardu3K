@@ -128,7 +128,7 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
         SwitchNode node = new SwitchNode();
         node.setExpression(visitExpression(ctx.expression()));
         collectChildren(node, ctx.case_stmt());
-        node.setDefaultnode(visitCase_default(ctx.defaultcase));
+        node.setDefaultNode(visitCase_default(ctx.defaultcase));
         return node;
     }
 

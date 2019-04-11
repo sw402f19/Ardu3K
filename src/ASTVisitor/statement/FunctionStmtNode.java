@@ -12,14 +12,20 @@ public class FunctionStmtNode extends AbstractStatementNode {
     public RootNode getId() {
         return children.get(0);
     }
-    public void setId(RootNode id) {
-        children.set(0, id);
+    public void setId(RootNode node) {
+        if(children.size() > 0)
+            children.set(0, node);
+        else
+            children.add(node);;
     }
 
     public RootNode getArguments() {
         return children.get(1);
     }
-    public void setArguments(RootNode arguments) {
-        children.set(1, arguments);
+    public void setArguments(RootNode node) {
+        if(children.size() > 1)
+            children.set(1, node);
+        else
+            children.add(node);
     }
 }

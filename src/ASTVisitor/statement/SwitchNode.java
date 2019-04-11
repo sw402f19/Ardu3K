@@ -14,14 +14,20 @@ public class SwitchNode extends AbstractStatementNode {
     public RootNode getExpression() {
         return children.get(0);
     }
-    public void setExpression(RootNode expression) {
-        children.set(0, expression);
+    public void setExpression(RootNode node) {
+        if(children.size() > 0)
+            children.set(0, node);
+        else
+            children.add(node);
     }
 
     public RootNode getDefaultnode() {
         return children.get(1);
     }
-    public void setDefaultnode(RootNode defaultnode) {
-        children.set(1, defaultnode);
+    public void setDefaultNode(RootNode node) {
+        if(children.size() > 1)
+            children.set(1, node);
+        else
+            children.add(node);
     }
 }

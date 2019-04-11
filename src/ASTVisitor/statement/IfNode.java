@@ -12,14 +12,20 @@ public class IfNode extends AbstractStatementNode {
     public RootNode getCondition() {
         return children.get(0);
     }
-    public void setCondition(RootNode condition) {
-        children.set(0, condition);
+    public void setCondition(RootNode node) {
+        if(children.size() > 0)
+            children.set(0, node);
+        else
+            children.add(node);
     }
 
     public RootNode getUpperbody() {
         return children.get(1);
     }
-    public void setUpperbody(RootNode upperbody) {
-        children.set(1, upperbody);
+    public void setUpperbody(RootNode node) {
+        if(children.size() > 0)
+            children.set(0, node);
+        else
+            children.add(node);
     }
 }

@@ -10,10 +10,16 @@ public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode
     public RootNode getRight() {
         return children.get(1);
     }
-    public void setLeft(RootNode left) {
-        children.set(0, left);
+    public void setLeft(RootNode node) {
+        if(children.size() > 0)
+            children.set(0, node);
+        else
+            children.add(node);
     }
-    public void setRight(RootNode right) {
-        children.set(1, right);
+    public void setRight(RootNode node) {
+        if(children.size() > 1)
+            children.set(1, node);
+        else
+            children.add(node);
     }
 }

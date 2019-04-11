@@ -2,7 +2,16 @@ package ASTVisitor.structure;
 
 public abstract class AbstractASTVisitor implements ASTVisitor {
     public void visitChildren(RootNode node){
-       node.children.forEach(e -> e.accept(this));
+
+        if(node.children.size() > 0) {
+            System.out.println();
+            for (RootNode n : node.children)
+                if (n != null) {
+                    n.accept(this);
+                    System.out.print("    ");
+                }
+            System.out.println();
+        }
     }
 
 

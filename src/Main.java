@@ -1,5 +1,5 @@
-import ASTVisitor.structure.RootNode;
-import ASTVisitor.CSTVisitor;
+import node.structure.RootNode;
+import visitor.BuildASTVisitor;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
 import org.antlr.v4.runtime.CharStream;
@@ -20,7 +20,7 @@ public class Main {
         try {
 
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
-            ast =  new CSTVisitor().visitCompileUnit(cst);
+            ast =  new BuildASTVisitor().visitCompileUnit(cst);
             //ast.print(0);
             //System.out.println("Im here");
 

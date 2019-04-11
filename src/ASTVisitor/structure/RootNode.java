@@ -9,6 +9,7 @@ import java.util.List;
 
 enum TYPE {INT, DOUBLE, STRING, TIME}
 
+@SuppressWarnings (value="unchecked")
 public abstract class RootNode implements Node {
 
     public RootNode parent;
@@ -21,11 +22,21 @@ public abstract class RootNode implements Node {
     public RootNode() {
     }
 
-    public <T> void accept(ASTVisitor<? extends T> visitor){
+    public <T> T accept(ASTVisitor<? extends T> visitor){
         if (visitor instanceof AbstractASTVisitor)
-            ((AbstractASTVisitor)visitor).visitChildren(this);
+            return ((AbstractASTVisitor<T>)visitor).visitChildren(this);
         else
-            visitor.visitChildren(this);
+            return visitor.visitChildren(this);
+    }
+    public void print(int level) {
+        for (int i = 1; i < level; i++) {
+            System.out.print("\t");
+        }
+        System.out.println(toString());
+        for (RootNode child : children) {
+            if(child != null)
+                child.print(level + 1);
+        }
     }
 
 }

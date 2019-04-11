@@ -112,9 +112,9 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitFor_stmt(Ardu3kParser.For_stmtContext ctx) {
         ForNode node = new ForNode();
-        node.expressionNode = visitExpression(ctx.expr);
-        node.value = visitNumber(ctx.value);
-        collectChildren(node, ctx.body.block_stmt());
+        node.setExpressionNode(visitExpression(ctx.expr));
+        node.setValue(visitNumber(ctx.value));
+        node.setBlock(visitBlock(ctx.block()));
         return node;
     }
 
@@ -158,9 +158,9 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitIfTrailingElse(Ardu3kParser.IfTrailingElseContext ctx) {
         ElifNode node = new ElifNode();
-        node.condition = visit(ctx.condition);
-        node.upperbody = visit(ctx.upperbody);
-        node.lowerbody = visit(ctx.lowerbody);
+        node.setCondition(visit(ctx.condition));
+        node.setUpperbody(visit(ctx.upperbody));
+        node.setLowerbody(visit(ctx.lowerbody));
         return node;
     }
 
@@ -176,8 +176,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitFunction_stmt(Ardu3kParser.Function_stmtContext ctx) {
         FunctionStmtNode node = new FunctionStmtNode();
-        node.id = visit(ctx.id);
-        node.arguments = visit(ctx.args);
+        node.setId(visit(ctx.id));
+        node.setArguments(visit(ctx.args));
         return node;
     }
 
@@ -212,8 +212,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitAssignment(Ardu3kParser.AssignmentContext ctx) {
         AssignmentNode node = new AssignmentNode();
-        node.left = visit(ctx.left);
-        node.right = visit(ctx.right);
+        node.setLeft(visit(ctx.left));
+        node.setRight(visit(ctx.right));
         return node;
     }
 
@@ -233,8 +233,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitInfixConditionalAndExpr(Ardu3kParser.InfixConditionalAndExprContext ctx) {
         AndNode node = new AndNode();
-        node.left = visit(ctx.left);
-        node.right = visit(ctx.right);
+        node.setLeft(visit(ctx.left));
+        node.setRight(visit(ctx.right));
         return node;
     }
 
@@ -246,8 +246,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitInfixConditionalXorExpr(Ardu3kParser.InfixConditionalXorExprContext ctx) {
         XorNode node = new XorNode();
-        node.left = visit(ctx.left);
-        node.right = visit(ctx.right);
+        node.setLeft(visit(ctx.left));
+        node.setRight(visit(ctx.right));
         return node;
     }
 
@@ -265,11 +265,12 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
                 default:
                     throw new IllegalArgumentException();
         }
-        node.left = visit(ctx.left);
-        node.right = visit(ctx.right);
+        node.setLeft(visit(ctx.left));
+        node.setRight(visit(ctx.right));
 
         return node;
     }
+
 
     @Override
     public RootNode visitRelationalExpr(Ardu3kParser.RelationalExprContext ctx) {
@@ -296,8 +297,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
                 default:
                     throw new IllegalArgumentException();
         }
-        node.left = visit(ctx.left);
-        node.right = visit(ctx.right);
+        node.setLeft(visit(ctx.left));
+        node.setRight(visit(ctx.right));
         return node;
     }
 
@@ -321,8 +322,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
                 default:
                     throw new IllegalArgumentException();
         }
-        node.left = visit(ctx.left);
-        node.right = visit(ctx.right);
+        node.setLeft(visit(ctx.left));
+        node.setRight(visit(ctx.right));
         return node;
     }
 
@@ -350,8 +351,8 @@ public class CSTVisitor extends Ardu3kBaseVisitor<RootNode>
                     throw new IllegalArgumentException();
         }
 
-        node.left = visit(ctx.left);
-        node.right = visit(ctx.right);
+        node.setLeft(visit(ctx.left));
+        node.setRight(visit(ctx.right));
         return node;
     }
 

@@ -23,4 +23,10 @@ public class ForNode extends AbstractStatementNode {
     public void setValue(RootNode value) {
         children.set(1, value);
     }
+    public RootNode getBlock() {
+        children.get(2);
+    }
+    public void setBlock(RootNode node) {
+        children.set(2, node);
+    }
 }

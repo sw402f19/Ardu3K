@@ -1,6 +1,6 @@
 package node.statement;
 
-import node.structure.RootNode;
+import node.RootNode;
 
 public class FunctionStmtNode extends AbstractStatementNode {
 

@@ -1,5 +1,7 @@
 package node.structure;
 
+import node.RootNode;
+
 public class FunctionNode extends RootNode {
     @Override
     public String toString() {

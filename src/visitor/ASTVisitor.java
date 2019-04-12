@@ -1,6 +1,6 @@
 package visitor;
 
-import node.structure.RootNode;
+import node.RootNode;
 
 public interface ASTVisitor<T> {
     T visitChildren(RootNode node);

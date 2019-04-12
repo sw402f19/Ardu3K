@@ -1,4 +1,4 @@
-package node.structure;
+package node;
 
 public interface Node {
     String toString();

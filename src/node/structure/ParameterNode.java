@@ -1,5 +1,7 @@
 package node.structure;
 
+import node.RootNode;
+
 public class ParameterNode extends RootNode {
 
     public ParameterNode() {

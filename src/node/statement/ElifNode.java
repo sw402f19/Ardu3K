@@ -1,6 +1,6 @@
 package node.statement;
 
-import node.structure.RootNode;
+import node.RootNode;
 
 public class ElifNode extends IfNode {
 

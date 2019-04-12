@@ -1,6 +1,6 @@
 package node.statement;
 
-import node.structure.RootNode;
+import node.RootNode;
 
 public class CaseNode extends AbstractStatementNode {
     public RootNode expression;

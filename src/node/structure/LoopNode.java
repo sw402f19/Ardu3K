@@ -1,5 +1,7 @@
 package node.structure;
 
+import node.RootNode;
+
 public class LoopNode extends RootNode {
 
     @Override

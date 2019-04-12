@@ -1,6 +1,6 @@
 package node.expression;
 
-import node.structure.RootNode;
+import node.RootNode;
 
 public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode {
 

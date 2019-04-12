@@ -1,6 +1,7 @@
 package visitor;
 
 
+import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.additive.*;

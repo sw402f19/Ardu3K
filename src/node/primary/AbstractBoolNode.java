@@ -1,6 +1,6 @@
 package node.primary;
 
-import node.structure.RootNode;
+import node.RootNode;
 
 public abstract class AbstractBoolNode extends RootNode {
     public boolean value;

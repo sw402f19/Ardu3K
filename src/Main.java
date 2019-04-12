@@ -1,4 +1,4 @@
-import node.structure.RootNode;
+import node.RootNode;
 import visitor.BuildASTVisitor;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
@@ -21,7 +21,7 @@ public class Main {
 
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
-            //ast.print(0);
+            ast.print(0);
             //System.out.println("Im here");
 
         } catch (Exception e) {

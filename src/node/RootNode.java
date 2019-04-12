@@ -1,4 +1,4 @@
-package node.structure;
+package node;
 
 import visitor.ASTVisitor;
 import visitor.AbstractASTVisitor;

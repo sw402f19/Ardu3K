@@ -21,7 +21,7 @@ public interface ASTVisitor<T> {
 
     void visitAssignmentNode(AssignmentNode node);
 
-    void visitAbstractBoolNode(AbstractBoolNode node);
+    void visitAbstractBoolNode(BoolNode node);
 
     void visitIdentifierNode(IdentifierNode node);
 

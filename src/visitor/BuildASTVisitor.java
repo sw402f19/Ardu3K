@@ -1,7 +1,6 @@
 package visitor;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;

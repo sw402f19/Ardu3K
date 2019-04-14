@@ -121,8 +121,8 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
         SwitchNode node = new SwitchNode();
         node.setExpression(visitExpression(ctx.expression()));
-        collectChildren(node, ctx.case_stmt());
         node.setDefaultNode(visitCase_default(ctx.defaultcase));
+        collectChildren(node, ctx.case_stmt());
         return node;
     }
 

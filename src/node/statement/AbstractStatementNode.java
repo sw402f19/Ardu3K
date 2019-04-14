@@ -3,7 +3,7 @@ package node.statement;
 import node.RootNode;
 import node.structure.BlockNode;
 
-public abstract class AbstractStatementNode extends BlockNode {
+public abstract class AbstractStatementNode extends RootNode {
     public AbstractStatementNode() {
     }
 

@@ -17,7 +17,7 @@ public class HashTable<K, V> {
     }
 
     private int getIndex(K key) {
-        return key.hashCode() % capacity;
+        return Math.floorMod(key.hashCode(), capacity);
     }
 
     public void add(K key, V value) {
@@ -82,14 +82,21 @@ public class HashTable<K, V> {
 
     public V get(K key) {
         int index = getIndex(key);
-        HashElement<K, V> element = table.get(index);
+        System.out.println("index: "+index);
+        HashElement<K, V> headElement = table.get(index);
 
-        while (key != null) {
-            if(element.key.equals(key))
-                return element.value;
-            element = element.next;
+
+        while (headElement != null) {
+            if(headElement.key.equals(key))
+                return headElement.value;
+            headElement = headElement.next;
         }
         return null;
+    }
+    public V getNext(K key) {
+        int index = getIndex(key);
+        HashElement<K, V> headElement = table.get(index);
+        return headElement.next.value;
     }
 
     private void populateNulls(ArrayList<HashElement<K, V>> table) {

@@ -2,7 +2,9 @@ package symbol;
 
 import node.RootNode;
 import node.expression.AssignmentNode;
+import node.statement.SwitchNode;
 import node.structure.BlockNode;
+import node.structure.FunctionNode;
 import node.structure.LoopNode;
 import node.structure.SetupNode;
 import symbol.hashtable.HashTable;
@@ -22,13 +24,19 @@ public class SymbolTable {
 
     public void buildSymbolTable (RootNode root) {
         processNode(root);
+
+        System.out.println("Table done");
     }
     private void processNode(RootNode node) {
         if(node != null) {
             handle(node);
             for (RootNode child : node.children)
                 processNode(child);
-            if(node instanceof BlockNode)
+            if(node instanceof BlockNode ||
+                    node instanceof SetupNode ||
+                    node instanceof LoopNode ||
+                    node instanceof FunctionNode
+            )
                 closeScope();
         }
     }
@@ -37,7 +45,7 @@ public class SymbolTable {
         if(scopeDisplay.size() <= depth)
             scopeDisplay.add(new ArrayList<>());
         else
-            scopeDisplay.set(depth-1, null);
+            scopeDisplay.set(depth-1, new ArrayList<>());
     }
     private static void closeScope() {
         Symbol prevSym;
@@ -77,6 +85,10 @@ public class SymbolTable {
                 handleSetup((SetupNode) n));
         dispatch.put(LoopNode.class, n ->
                 handleLoop((LoopNode) n));
+        dispatch.put(SwitchNode.class, n ->
+                handleSwitch((SwitchNode) n));
+        dispatch.put(FunctionNode.class, n ->
+                handleFunction((FunctionNode) n));
     }
 
     private static void handleAssignment(AssignmentNode n) {
@@ -89,6 +101,12 @@ public class SymbolTable {
         openScope();
     }
     private static void handleLoop(LoopNode node) {
+        openScope();
+    }
+    private static void handleSwitch(SwitchNode node) {
+        openScope();
+    }
+    private static void handleFunction(FunctionNode node) {
         openScope();
     }
 

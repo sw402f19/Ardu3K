@@ -33,7 +33,6 @@ public class SymbolTable {
             for (RootNode child : node.children)
                 processNode(child);
             if(node instanceof BlockNode ||
-                    node instanceof SetupNode ||
                     node instanceof LoopNode ||
                     node instanceof FunctionNode
             )
@@ -50,7 +49,7 @@ public class SymbolTable {
     private static void closeScope() {
         Symbol prevSym;
         for(Symbol sym : scopeDisplay.get(depth-1)) {
-            prevSym = symTable.getNext(sym.getName().toString());
+            prevSym = sym.getVar();
             symTable.remove(sym.getName().toString());
             if(prevSym != null)
                 symTable.add(prevSym.getName().toString(), prevSym);
@@ -61,17 +60,18 @@ public class SymbolTable {
         Symbol oldsymbol = retrieveSymbol(newSymbol);
         if(oldsymbol != null && oldsymbol.getDepth() == depth)
             error("Duplicate identifier of name: "+newSymbol.getName());
-
+        newSymbol.setLevel(scopeDisplay.get(depth-1));
         scopeDisplay.get(depth-1).add(newSymbol);
         symTable.add(newSymbol.getName().toString(), newSymbol);
+        newSymbol.setVar(oldsymbol);
     }
-
+    // TODO this shit dont work.
     private static Symbol retrieveSymbol(Symbol name) {
         Symbol symbol = symTable.get(name.getName().toString());
         while (symbol != null) {
-            if (symbol.getName() == name.getName())
+            if (symbol.getName().toString().equals(name.getName().toString()))
                 return symbol;
-            symbol = symbol.getHash();
+            symbol = symTable.getNext(symbol.getName().toString());
         }
         return null;
     }

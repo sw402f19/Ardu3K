@@ -2,7 +2,6 @@ package symbol.hashtable;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("IntegerDivisionInFloatingPointContext")
 public class HashTable<K, V> {
 
     private int capacity;

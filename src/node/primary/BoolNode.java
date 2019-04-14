@@ -2,10 +2,10 @@ package node.primary;
 
 import node.RootNode;
 
-public abstract class AbstractBoolNode extends RootNode {
+public class BoolNode extends AbstractPrimaryNode {
     public boolean value;
 
-    public AbstractBoolNode(boolean value) {
+    public BoolNode(boolean value) {
         this.value = value;
     }
 

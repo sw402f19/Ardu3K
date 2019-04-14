@@ -405,19 +405,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitBool(Ardu3kParser.BoolContext ctx) {
-        AbstractBoolNode node;
-        switch (ctx.value.getType()) {
-            case Ardu3kParser.TRUE:
-                node = new TrueNode(Boolean.valueOf(ctx.getText()));
-                break;
-            case Ardu3kParser.FALSE:
-                node = new FalseNode(Boolean.valueOf(ctx.getText()));
-                break;
-
-                default:
-                    throw new IllegalArgumentException();
-        }
-        return node;
+        return new BoolNode(Boolean.valueOf(ctx.getText()));
     }
 
     /**

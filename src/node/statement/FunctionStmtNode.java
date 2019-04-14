@@ -2,7 +2,7 @@ package node.statement;
 
 import node.RootNode;
 
-public class FunctionStmtNode extends AbstractStatementNode {
+public class FunctionStmtNode extends RootNode {
 
     @Override
     public String toString() {

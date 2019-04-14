@@ -1,6 +1,8 @@
 package node.statement;
 
-public class ArgumentNode extends AbstractStatementNode {
+import node.RootNode;
+
+public class ArgumentNode extends RootNode {
 
     @Override
     public String toString() {

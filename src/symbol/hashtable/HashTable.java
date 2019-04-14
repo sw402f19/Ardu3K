@@ -10,7 +10,7 @@ public class HashTable<K, V> {
     private int size;
 
     public HashTable() {
-        capacity = 100;
+        capacity = 10;
         table = new ArrayList<>();
         size = 0;
         populateNulls(table);
@@ -64,7 +64,7 @@ public class HashTable<K, V> {
     }
 
     private void updateCapacity() {
-        if((size / capacity) >= 0.7) {
+        if((double)size / capacity >= 0.7) {
             ArrayList<HashElement<K, V>> temp = table;
             table = new ArrayList<>();
             capacity *= 2;
@@ -75,6 +75,7 @@ public class HashTable<K, V> {
                 while (element != null) {
                     add(element.key, element.value);
                     element = element.next;
+                    size++;
                 }
             }
         }
@@ -96,7 +97,7 @@ public class HashTable<K, V> {
     public V getNext(K key) {
         int index = getIndex(key);
         HashElement<K, V> headElement = table.get(index);
-        return headElement.next.value;
+        return headElement.next != null ? headElement.next.value : null;
     }
 
     private void populateNulls(ArrayList<HashElement<K, V>> table) {

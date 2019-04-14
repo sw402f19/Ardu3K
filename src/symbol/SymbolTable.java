@@ -69,9 +69,9 @@ public class SymbolTable {
     private static Symbol retrieveSymbol(Symbol name) {
         Symbol symbol = symTable.get(name.getName().toString());
         while (symbol != null) {
-            if (symbol.getName() == name.getName())
+            if (symbol.getName().toString().equals(name.getName().toString()))
                 return symbol;
-            symbol = symbol.getHash();
+            symbol = symTable.getNext(symbol.getName().toString());
         }
         return null;
     }

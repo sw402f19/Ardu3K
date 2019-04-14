@@ -1,6 +1,8 @@
 package node.statement;
 
-public class DefaultNode extends AbstractStatementNode {
+import node.RootNode;
+
+public class DefaultNode extends RootNode {
 
     @Override
     public String toString() {

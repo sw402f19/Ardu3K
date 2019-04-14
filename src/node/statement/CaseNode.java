@@ -2,7 +2,7 @@ package node.statement;
 
 import node.RootNode;
 
-public class CaseNode extends AbstractStatementNode {
+public class CaseNode extends RootNode {
     public RootNode expression;
 
     @Override

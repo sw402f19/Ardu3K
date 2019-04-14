@@ -2,15 +2,14 @@ package symbol;
 
 import node.RootNode;
 
-import java.util.Stack;
-
 import static java.util.Objects.hash;
 
 public class Symbol {
     private RootNode name;
     private RootNode type;
-    private Stack<RootNode> var = new Stack<>();
+    private Symbol var;
     private int depth;
+    private Symbol hash;
 
 
     public Symbol(RootNode name, RootNode type, int depth) {
@@ -19,28 +18,31 @@ public class Symbol {
         this.depth = depth;
     }
 
-    public void push(RootNode var) {
-        this.var.push(var);
-    }
-
-    @Override
-    public int hashCode() {
-        return hash(name, type);
-    }
 
     public RootNode getName() {
         return name;
     }
-
     public RootNode getType() {
         return type;
     }
-
     public int getDepth() {
         return depth;
     }
-
-    public Stack<RootNode> getVar() {
+    public Symbol getVar() {
         return var;
+    }
+    public Symbol getHash() {
+        return hash;
+    }
+    public void setVar(Symbol var) {
+        this.var = var;
+    }
+    public void setHash(Symbol hash) {
+        this.hash = hash;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash(name);
     }
 }

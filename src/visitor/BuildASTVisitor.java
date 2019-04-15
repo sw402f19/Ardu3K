@@ -366,11 +366,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitPrimary_expr(Ardu3kParser.Primary_exprContext ctx) {
-        return super.visitPrimary_expr(ctx);
-    }
-
-    @Override
     public RootNode visitIdentifier(Ardu3kParser.IdentifierContext ctx) {
         return new IdentifierNode(ctx);
     }

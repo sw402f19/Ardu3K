@@ -51,6 +51,7 @@ selection_stmt
 switch_stmt
     : SWITCH LPAR expr=expression RPAR LCUR cases=case_stmt* defaultcase=case_default? RCUR
     ;
+// todo add expression , expression to case value
 case_stmt
     : CASE value=expression COLON block_stmt*
     ;

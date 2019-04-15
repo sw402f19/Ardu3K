@@ -2,13 +2,11 @@
 #define ALED 15
 
 setup () = {
-    a = 10;
+
 }
 loop () = {
-    b = [];
-    _ = 1 + b;
-    b = -1;
-    b = 1;
+    b = []
+    b = 1 + 5 * (5+5*5);
     ab = "ab";
     D = 10.150;
     if b < a do {

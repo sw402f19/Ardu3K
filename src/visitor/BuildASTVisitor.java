@@ -2,6 +2,7 @@ package visitor;
 
 
 import node.RootNode;
+import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.additive.*;
@@ -355,14 +356,40 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return super.visitUnary_expr(ctx);
     }
 
+    // todo fix unary
     @Override
-    public RootNode visitPrimaryExpr(Ardu3kParser.PrimaryExprContext ctx) {
-        return super.visitPrimaryExpr(ctx);
+    public RootNode visitUnaryExpr(Ardu3kParser.UnaryExprContext ctx) {
+        return super.visitUnaryExpr(ctx);
     }
 
     @Override
-    public RootNode visitPrimary(Ardu3kParser.PrimaryContext ctx) {
-        return super.visitPrimary(ctx);
+    public RootNode visitPrimaryLit(Ardu3kParser.PrimaryLitContext ctx) {
+        return super.visitPrimaryLit(ctx);
+    }
+
+    @Override
+    public RootNode visitPrimaryId(Ardu3kParser.PrimaryIdContext ctx) {
+        return super.visitPrimaryId(ctx);
+    }
+
+    @Override
+    public RootNode visitPrimaryLexprR(Ardu3kParser.PrimaryLexprRContext ctx) {
+        return visit(ctx.expression());
+    }
+
+    @Override
+    public RootNode visitPrimaryFuncStmt(Ardu3kParser.PrimaryFuncStmtContext ctx) {
+        return super.visitPrimaryFuncStmt(ctx);
+    }
+
+    @Override
+    public RootNode visitPrimaryListExpr(Ardu3kParser.PrimaryListExprContext ctx) {
+        return super.visitPrimaryListExpr(ctx);
+    }
+
+    @Override
+    public RootNode visitPrimaryEmptyList(Ardu3kParser.PrimaryEmptyListContext ctx) {
+        return new ListNode();
     }
 
     @Override

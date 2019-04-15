@@ -132,7 +132,7 @@ additive_expr
     | left=additive_expr op=MINUS right=multiplicative_expr             #infixAdditiveExpr
     ;
 multiplicative_expr
-    : primary                                                           #primaryExpr
+    : primary                                                           #unaryExpr
     | left=multiplicative_expr op=TIMES right=unary_expr                #infixMultiplicativeExpr
     | left=multiplicative_expr op=DIVIDE right=unary_expr               #infixMultiplicativeExpr
     | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
@@ -143,12 +143,12 @@ unary_expr
     | primary
     ;
 primary
-    : literal
-    | identifier
-    | LPAR expression RPAR
-    | function_stmt
-    | list_expr
-    | EMPTYLIST
+    : child=literal                                                 #primaryLit
+    | child=identifier                                              #primaryId
+    | LPAR child=expression RPAR                                    #primaryLexprR
+    | child=function_stmt                                           #primaryFuncStmt
+    | child=list_expr                                               #primaryListExpr
+    | child=EMPTYLIST                                               #primaryEmptyList
     ;
 list_expr
     : identifier DOT list_stmt
@@ -240,6 +240,6 @@ ADD: 'add';
 SIZE: 'size';
 EMPTYLIST: '[]';
 LETTER: [a-zA-Z];
-REAL: DIGIT+ DOT DIGIT+;
+REAL: '-'?DIGIT+ DOT DIGIT+;
 INTEGER: '-'?DIGIT+;
 DIGIT: [0-9];

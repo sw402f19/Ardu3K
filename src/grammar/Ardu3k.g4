@@ -81,8 +81,8 @@ function_stmt
     : id=identifier LPAR args=argument? RPAR
     ;
 argument
-    : left=primary_expr
-    | left=primary_expr COMMA right=argument
+    : left=primary
+    | left=primary COMMA right=argument
     ;
 expression_stmt
     : expression SEMI
@@ -96,7 +96,7 @@ assignment_expr
     | assignment
     ;
 assignment
-    : left=identifier ASSIGN right=primary_expr
+    : left=identifier ASSIGN right=assignment_expr
     ;
 conditional_expr
     : conditional_or_expr
@@ -137,9 +137,8 @@ multiplicative_expr
     | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
     ;
 unary_expr
-    : op=PLUS right=unary_expr
-    | op=MINUS right=unary_expr
-    | op=NEGATE right=unary_expr
+    : op=MINUS right=primary
+    | op=NEGATE right=primary
     | primary
     ;
 primary
@@ -149,14 +148,6 @@ primary
     | function_stmt
     | list_expr
     | EMPTYLIST
-    ;
-
-primary_expr
-    : identifier
-    | number
-    | string
-    | function_stmt
-    | assignment_expr
     ;
 list_expr
     : identifier DOT list_stmt
@@ -182,6 +173,7 @@ string_val
 literal
     : number
     | bool
+    | string
     ;
 number
     : value=INTEGER
@@ -248,5 +240,5 @@ SIZE: 'size';
 EMPTYLIST: '[]';
 LETTER: [a-zA-Z];
 REAL: DIGIT+ DOT DIGIT+;
-INTEGER: DIGIT+;
+INTEGER: '-'?DIGIT+;
 DIGIT: [0-9];

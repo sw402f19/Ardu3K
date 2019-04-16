@@ -48,6 +48,7 @@ selection_stmt
     : switch_stmt
     | ifdo_stmt
     ;
+// todo cases to invividual node
 switch_stmt
     : SWITCH LPAR expr=expression RPAR LCUR cases=case_stmt* defaultcase=case_default? RCUR
     ;
@@ -142,6 +143,7 @@ unary_expr
     | op=NEGATE right=primary
     | primary
     ;
+
 primary
     : child=literal                                                 #primaryLit
     | child=identifier                                              #primaryId

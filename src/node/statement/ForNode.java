@@ -27,10 +27,10 @@ public class ForNode extends AbstractStatementNode {
         else
             children.add(node);
     }
-    public RootNode getBlock() {
+    public RootNode getStmt() {
         return children.get(2);
     }
-    public void setBlock(RootNode node) {
+    public void setStmt(RootNode node) {
         if(children.size() > 2)
             children.set(2, node);
         else

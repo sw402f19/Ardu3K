@@ -1,44 +1,48 @@
 package visitor;
 
 import node.RootNode;
+import node.expression.AbstractInfixExpressionNode;
+import node.expression.AssignmentNode;
+import node.primary.*;
+import node.statement.*;
+import node.structure.*;
 
 public interface ASTVisitor<T> {
     T visitChildren(RootNode node);
 
-   /*void visitRootNode(RootNode node);
+    T visitRootNode(RootNode node);
 
-    void visitProgramNode(ProgramNode node);
+    T visitProgramNode(ProgramNode node);
 
-    void visitFunctionNode(FunctionNode node);
+    T visitFunctionNode(FunctionNode node);
 
-    void visitDefineNode(DefineNode node);
+    T visitDefineNode(DefineNode node);
 
-    void visitLoopNode(LoopNode node);
+    T visitLoopNode(LoopNode node);
 
-    void visitSetupNode(SetupNode node);
+    T visitSetupNode(SetupNode node);
 
-    void visitAbstractInfixExpressionNode(AbstractInfixExpressionNode node);
+    T visitAbstractInfixExpressionNode(AbstractInfixExpressionNode node);
 
-    void visitAssignmentNode(AssignmentNode node);
+    T visitAssignmentNode(AssignmentNode node);
 
-    void visitAbstractBoolNode(BoolNode node);
+    T visitAbstractBoolNode(BoolNode node);
 
-    void visitIdentifierNode(IdentifierNode node);
+    T visitIdentifierNode(IdentifierNode node);
 
-    void visitIntegerNode(IntegerNode node);
+    T visitIntegerNode(IntegerNode node);
 
-    void visitRealNode(RealNode node);
+    T visitRealNode(RealNode node);
 
-    void visitStringNode(StringNode node);
+    T visitStringNode(StringNode node);
 
-    void visitElifNode(ElifNode node);
+    T visitElifNode(ElifNode node);
 
-    void visitForNode(ForNode node);
+    T visitForNode(ForNode node);
 
-    void visitFunctionStmtNode(FunctionStmtNode node);
+    T visitFunctionStmtNode(FunctionStmtNode node);
 
-    void visitIfNode(IfNode node);
+    T visitIfNode(IfNode node);
 
-    void visitSwitchNode(SwitchNode node);*/
-
+    T visitSwitchNode(SwitchNode node);
 }

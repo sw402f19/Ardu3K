@@ -1,7 +1,7 @@
 package node;
 
 import visitor.ASTVisitor;
-import visitor.AbstractASTVisitor;
+import visitor.BaseASTVisitor;
 
 import java.util.ArrayList;
 
@@ -21,8 +21,8 @@ public abstract class RootNode implements Node {
     }
 
     public <T> T accept(ASTVisitor<? extends T> visitor){
-        if (visitor instanceof AbstractASTVisitor)
-            return ((AbstractASTVisitor<T>)visitor).visitChildren(this);
+        if (visitor instanceof BaseASTVisitor)
+            return ((BaseASTVisitor<T>)visitor).visitChildren(this);
         else
             return visitor.visitChildren(this);
     }

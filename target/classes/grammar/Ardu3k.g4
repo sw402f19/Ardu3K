@@ -25,42 +25,46 @@ parameter
     : id=identifier COMMA para=parameter
     | id=identifier
     ;
-block
-    : LCUR body=block_stmt* RCUR
-    ;
-block_stmt
-    : expression_stmt
-    | stmt
-    ;
 stmt
-    : iterative_stmt
+    : block
+    | iterative_stmt
     | selection_stmt
     | function_stmt
+    | expression_stmt
     | RETURN expression
+    ;
+block
+    : LCUR body=stmt* RCUR
     ;
 iterative_stmt
     : for_stmt
+    | while_stmt
     ;
 for_stmt
-    : FOR expr=expression TO value=number DO body=block
+    : FOR expr=expression TO value=number DO body=stmt
+    ;
+while_stmt
+    : WHILE expr=expression DO body=stmt
     ;
 selection_stmt
     : switch_stmt
     | ifdo_stmt
     ;
+// todo cases to invividual node
 switch_stmt
     : SWITCH LPAR expr=expression RPAR LCUR cases=case_stmt* defaultcase=case_default? RCUR
     ;
+// todo add expression , expression to case value
 case_stmt
-    : CASE value=expression COLON block_stmt*
+    : CASE value=expression COLON stmt*
     ;
 case_default
-    : DEFAULT COLON block_stmt*
+    : DEFAULT COLON stmt*
     ;
 ifdo_stmt
-    : IF condition=expression DO upperbody=block ELSE lowerbody=ifdo_stmt   #elseTrailingIf
-    | IF condition=expression DO upperbody=block ELSE DO lowerbody=block    #ifTrailingElse
-    | IF condition=expression DO upperbody=block                            #ifNoTrailingElse
+    : IF condition=expression DO upperbody=stmt ELSE lowerbody=ifdo_stmt   #elseTrailingIf
+    | IF condition=expression DO upperbody=stmt ELSE DO lowerbody=stmt    #ifTrailingElse
+    | IF condition=expression DO upperbody=stmt                            #ifNoTrailingElse
     ;
 statement
     : open_statement
@@ -81,8 +85,8 @@ function_stmt
     : id=identifier LPAR args=argument? RPAR
     ;
 argument
-    : left=primary_expr
-    | left=primary_expr COMMA right=argument
+    : left=primary
+    | left=primary COMMA right=argument
     ;
 expression_stmt
     : expression SEMI
@@ -96,7 +100,7 @@ assignment_expr
     | assignment
     ;
 assignment
-    : left=identifier ASSIGN right=primary_expr
+    : left=identifier ASSIGN right=assignment_expr
     ;
 conditional_expr
     : conditional_or_expr
@@ -131,32 +135,24 @@ additive_expr
     | left=additive_expr op=MINUS right=multiplicative_expr             #infixAdditiveExpr
     ;
 multiplicative_expr
-    : primary                                                           #primaryExpr
+    : primary                                                           #unaryExpr
     | left=multiplicative_expr op=TIMES right=unary_expr                #infixMultiplicativeExpr
     | left=multiplicative_expr op=DIVIDE right=unary_expr               #infixMultiplicativeExpr
     | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
     ;
 unary_expr
-    : op=PLUS right=unary_expr
-    | op=MINUS right=unary_expr
-    | op=NEGATE right=unary_expr
+    : op=MINUS right=primary
+    | op=NEGATE right=primary
     | primary
     ;
-primary
-    : literal
-    | identifier
-    | LPAR expression RPAR
-    | function_stmt
-    | list_expr
-    | EMPTYLIST
-    ;
 
-primary_expr
-    : identifier
-    | number
-    | string
-    | function_stmt
-    | assignment_expr
+primary
+    : child=literal                                                 #primaryLit
+    | child=identifier                                              #primaryId
+    | LPAR child=expression RPAR                                    #primaryLexprR
+    | child=function_stmt                                           #primaryFuncStmt
+    | child=list_expr                                               #primaryListExpr
+    | child=EMPTYLIST                                               #primaryEmptyList
     ;
 list_expr
     : identifier DOT list_stmt
@@ -182,6 +178,7 @@ string_val
 literal
     : number
     | bool
+    | string
     ;
 number
     : value=INTEGER
@@ -233,6 +230,7 @@ MODULUS : '%';
 ASSIGN: '=';
 DQUOTE : '"';
 FOR: 'for' ;
+WHILE: 'while';
 TO: 'to'  ;
 SEMI: ';';
 IF: 'if'  ;
@@ -247,8 +245,6 @@ ADD: 'add';
 SIZE: 'size';
 EMPTYLIST: '[]';
 LETTER: [a-zA-Z];
-REAL: DIGIT+ DOT DIGIT+;
-INTEGER: DIGIT+;
+REAL: '-'?DIGIT+ DOT DIGIT+;
+INTEGER: '-'?DIGIT+;
 DIGIT: [0-9];
-CONTINUE: 'continue';
-BREAK: 'break';

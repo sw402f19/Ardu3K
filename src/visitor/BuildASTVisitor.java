@@ -49,14 +49,14 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
         SetupNode node = new SetupNode();
-        collectChildren(node, ctx.block().block_stmt());
+        node.setBlock(visit(ctx.block()));
         return (node.children.size() > 0 ? node : null);
     }
 
     @Override
     public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
         LoopNode node = new LoopNode();
-        collectChildren(node, ctx.block().block_stmt());
+        collectChildren(node, ctx.block().stmt());
         return (node.children.size() > 0 ? node : null);
     }
 
@@ -84,14 +84,8 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {
         BlockNode node = new BlockNode();
-        collectChildren(node, ctx.block_stmt());
+        collectChildren(node, ctx.stmt());
         return node;
-    }
-
-
-    @Override
-    public RootNode visitBlock_stmt(Ardu3kParser.Block_stmtContext ctx) {
-        return super.visitBlock_stmt(ctx);
     }
 
     @Override
@@ -109,7 +103,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         ForNode node = new ForNode();
         node.setExpressionNode(visitExpression(ctx.expr));
         node.setValue(visitNumber(ctx.value));
-        node.setBlock(visitBlock(ctx.block()));
+        node.setBlock(visitBlock(ctx.stmt().block()));
         return node;
     }
 
@@ -131,14 +125,14 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitCase_stmt(Ardu3kParser.Case_stmtContext ctx) {
         CaseNode node = new CaseNode();
         node.expression = visitExpression(ctx.value);
-        collectChildren(node, ctx.block_stmt());
+        collectChildren(node, ctx.stmt());
         return node;
     }
 
     @Override
     public RootNode visitCase_default(Ardu3kParser.Case_defaultContext ctx) {
         DefaultNode node = new DefaultNode();
-        collectChildren(node, ctx.block_stmt());
+        collectChildren(node, ctx.stmt());
         return node;
     }
 

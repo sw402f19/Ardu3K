@@ -9,17 +9,14 @@ loop () = {
     b = 1 + 5 * (5+5*5);
     ab = "ab";
     D = 10.150;
-    if b < a do {
-        b = b + 1;
-    } else if a > b do {
-        b.add(write(1, 5, a));
-    } else do {
-        write(1, a);
-        for a = 0 to 10 do {
-            func(a, ab, D);
-            a = a + 1;
-        }
-    }
+    if true do
+        if true do
+            if true do
+                a = 1;
+            else do
+                k = 2;
+        else do
+            a = 5;
     for a = 1 to 10 do {
         a = a + 10;
 

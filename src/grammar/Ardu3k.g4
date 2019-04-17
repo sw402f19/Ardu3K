@@ -25,28 +25,26 @@ parameter
     : id=identifier COMMA para=parameter
     | id=identifier
     ;
-block
-    : LCUR body=block_stmt* RCUR
-    ;
-block_stmt
-    : expression_stmt
-    | stmt
-    ;
 stmt
-    : iterative_stmt
+    : block
+    | iterative_stmt
     | selection_stmt
     | function_stmt
+    | expression_stmt
     | RETURN expression
+    ;
+block
+    : LCUR body=stmt* RCUR
     ;
 iterative_stmt
     : for_stmt
     | while_stmt
     ;
 for_stmt
-    : FOR expr=expression TO value=number DO body=block
+    : FOR expr=expression TO value=number DO body=stmt
     ;
 while_stmt
-    : WHILE expr=expression DO body=block
+    : WHILE expr=expression DO body=stmt
     ;
 selection_stmt
     : switch_stmt
@@ -58,15 +56,15 @@ switch_stmt
     ;
 // todo add expression , expression to case value
 case_stmt
-    : CASE value=expression COLON block_stmt*
+    : CASE value=expression COLON stmt*
     ;
 case_default
-    : DEFAULT COLON block_stmt*
+    : DEFAULT COLON stmt*
     ;
 ifdo_stmt
-    : IF condition=expression DO upperbody=block ELSE lowerbody=ifdo_stmt   #elseTrailingIf
-    | IF condition=expression DO upperbody=block ELSE DO lowerbody=block    #ifTrailingElse
-    | IF condition=expression DO upperbody=block                            #ifNoTrailingElse
+    : IF condition=expression DO upperbody=stmt ELSE lowerbody=ifdo_stmt   #elseTrailingIf
+    | IF condition=expression DO upperbody=stmt ELSE DO lowerbody=stmt    #ifTrailingElse
+    | IF condition=expression DO upperbody=stmt                            #ifNoTrailingElse
     ;
 statement
     : open_statement

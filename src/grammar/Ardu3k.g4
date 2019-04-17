@@ -63,7 +63,7 @@ case_default
     ;
 ifdo_stmt
     : IF condition=expression DO upperbody=stmt ELSE lowerbody=ifdo_stmt   #elseTrailingIf
-    | IF condition=expression DO upperbody=stmt ELSE DO lowerbody=stmt    #ifTrailingElse
+    | IF condition=expression DO upperbody=stmt ELSE DO lowerbody=stmt     #ifTrailingElse
     | IF condition=expression DO upperbody=stmt                            #ifNoTrailingElse
     ;
 statement

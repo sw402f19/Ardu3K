@@ -89,13 +89,18 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitStmt(Ardu3kParser.StmtContext ctx) {
-        return super.visitStmt(ctx);
-    }
+    public RootNode visitStmt(Ardu3kParser.StmtContext ctx) {return super.visitStmt(ctx);}
 
     @Override
     public RootNode visitIterative_stmt(Ardu3kParser.Iterative_stmtContext ctx) {
         return super.visitIterative_stmt(ctx);
+    }
+
+    @Override public RootNode visitWhile_stmt(Ardu3kParser.While_stmtContext ctx) {
+        WhileNode node = new WhileNode();
+        node.setExpressionNode(visitExpression(ctx.expr));
+        node.setStmt(visitStmt(ctx.stmt()));
+        return node;
     }
 
     @Override

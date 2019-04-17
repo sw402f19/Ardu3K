@@ -150,15 +150,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitIfTrailingElse(Ardu3kParser.IfTrailingElseContext ctx) {
-        ElifNode node = new ElifNode();
-        node.setCondition(visit(ctx.condition));
-        node.setUpperbody(visit(ctx.upperbody));
-        node.setLowerbody(visit(ctx.lowerbody));
-        return node;
-    }
-
-    @Override
     public RootNode visitElseTrailingIf(Ardu3kParser.ElseTrailingIfContext ctx) {
         ElifNode node = new ElifNode();
         node.setCondition(visit(ctx.condition));

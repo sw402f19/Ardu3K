@@ -14,10 +14,9 @@ loop () = {
         if true do
             if true do
                 a = 1;
-            else do
+            else
                 k = 2;
-        else do
-            a = 5;
+        else if true do a = 5;
 
 
     for a = 1 to 10 do {

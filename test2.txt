@@ -6,8 +6,9 @@ loop () = {
         if true do
             if true do
                 a = 1;
-            else do
+            else
                 k = 2;
-        else do
-            a = 5;
+        else if false do
+            a = 1;
+            else  something();
 }

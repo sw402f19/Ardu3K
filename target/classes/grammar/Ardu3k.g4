@@ -62,25 +62,9 @@ case_default
     : DEFAULT COLON stmt*
     ;
 ifdo_stmt
-    : IF condition=expression DO upperbody=stmt ELSE lowerbody=ifdo_stmt   #elseTrailingIf
-    | IF condition=expression DO upperbody=stmt ELSE DO lowerbody=stmt     #ifTrailingElse
-    | IF condition=expression DO upperbody=stmt                            #ifNoTrailingElse
+    : IF condition=expression DO upperbody=stmt                       #ifNoTrailingElse
+    | IF condition=expression DO upperbody=stmt ELSE lowerbody=stmt   #elseTrailingIf
     ;
-statement
-    : open_statement
-    | closed_statement
-    ;
-open_statement
-    : IF expression stmt
-    | IF expression open_statement
-    | IF expression closed_statement ELSE open_statement
-    ;
-closed_statement
-    : stmt
-    | IF expression closed_statement ELSE closed_statement
-    |
-    ;
-
 function_stmt
     : id=identifier LPAR args=argument? RPAR
     ;

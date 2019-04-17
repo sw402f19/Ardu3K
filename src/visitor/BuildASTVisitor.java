@@ -108,7 +108,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         ForNode node = new ForNode();
         node.setExpressionNode(visitExpression(ctx.expr));
         node.setValue(visitNumber(ctx.value));
-        node.setBlock(visitBlock(ctx.stmt().block()));
+        node.setStmt(visitStmt(ctx.stmt()));
         return node;
     }
 

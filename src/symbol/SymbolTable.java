@@ -6,7 +6,7 @@ import node.primary.IdentifierNode;
 
 import java.util.HashMap;
 
-public class SymbolTable {
+public class SymbolTable implements SymbolTableInterface{
 
     private static SymbolTable thisInstance;
     private static HashMap<? super RootNode, Symbol> symTable = new HashMap<>();
@@ -23,10 +23,10 @@ public class SymbolTable {
     public void enterSymbol(DeclarationNode node) {
         symTable.put(node.getLeft(), new Symbol(node.getLeft(), node.getRight(), depth));
     }
-    public Symbol retrieveSymbol(IdentifierNode name) {
+    public Symbol retrieveSymbol(RootNode name) {
         return symTable.get(name);
     }
-    public boolean declaredLocally(DeclarationNode node) {
+    public boolean declaredLocally(RootNode node) {
         return symTable.get(node).getDepth() == depth;
     }
 

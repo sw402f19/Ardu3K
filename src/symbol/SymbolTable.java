@@ -33,10 +33,10 @@ public class SymbolTable implements SymbolTableInterface{
 
     private SymbolTable() {
     }
-    public SymbolTable getInstance() {
+    public static SymbolTable getInstance() {
         return thisInstance;
     }
-    public SymbolTable getNewInstance() {
+    public static SymbolTable getNewInstance() {
         return new SymbolTable();
     }
 }

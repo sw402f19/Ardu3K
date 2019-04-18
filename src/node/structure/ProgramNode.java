@@ -50,8 +50,8 @@ public class ProgramNode extends RootNode {
 
     /*
     public <T> void accept(visitor<? extends T> visitor){
-        if (visitor instanceof AbstractASTVisitor)
-            ((AbstractASTVisitor)visitor).visitProgramNode(this);
+        if (visitor instanceof BaseASTVisitor)
+            ((BaseASTVisitor)visitor).visitProgramNode(this);
         else
             visitor.visitChildren(this);
     }*/

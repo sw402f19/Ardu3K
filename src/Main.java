@@ -1,5 +1,4 @@
 import node.RootNode;
-import symbol.SymbolTable;
 import visitor.BuildASTVisitor;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
@@ -22,7 +21,6 @@ public class Main {
 
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
-            SymbolTable.getInstance().buildSymbolTable(ast);
             //System.out.println("Im here");
             ast.print(0);
 

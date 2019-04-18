@@ -123,6 +123,7 @@ multiplicative_expr
     | left=multiplicative_expr op=TIMES right=unary_expr                #infixMultiplicativeExpr
     | left=multiplicative_expr op=DIVIDE right=unary_expr               #infixMultiplicativeExpr
     | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
+    | left=multiplicative_expr op=EXPONENTIAL right=unary_expr          #infixMultiplicativeExpr
     ;
 unary_expr
     : op=MINUS right=primary
@@ -194,6 +195,7 @@ LESSER : '<';
 GREATER : '>';
 LESSEQUAL : '<=';
 GREATEREQUAL : '>=';
+EXPONENTIAL: '^';
 OR : 'OR';
 AND : 'AND';
 NOT : '!=';

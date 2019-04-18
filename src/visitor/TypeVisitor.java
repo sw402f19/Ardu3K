@@ -26,6 +26,13 @@ public class TypeVisitor extends TopDeclVisitor<RootNode>{
         return node;
     }
 
+    // TODO: We need to figure out if we need 8.6.5, and in case we do, then how we implement it as it is...
+    // TODO: ...different in our language
+
+    // 3.6.6 struct and records do not exist in ARDU3k :)
+
+    // TODO: Do we want to have enums?
+
     @Override
     public RootNode visitDeclarationNode(DeclarationNode node) {
         return null;

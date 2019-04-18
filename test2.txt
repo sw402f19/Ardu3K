@@ -1,0 +1,14 @@
+setup () = {
+
+}
+loop () = {
+    if true do
+        if true do
+            if true do
+                a = 1;
+            else
+                k = 2;
+        else if false do
+            a = 1;
+            else  something();
+}

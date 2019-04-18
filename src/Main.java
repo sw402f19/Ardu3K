@@ -24,6 +24,7 @@ public class Main {
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
             SymbolTable.getInstance().buildSymbolTable(ast);
             //System.out.println("Im here");
+            ast.print(0);
 
         } catch (Exception e) {
             e.printStackTrace();

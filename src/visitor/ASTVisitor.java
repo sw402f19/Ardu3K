@@ -3,6 +3,7 @@ package visitor;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
+import node.expression.DeclarationNode;
 import node.primary.*;
 import node.statement.*;
 import node.structure.*;
@@ -45,4 +46,6 @@ public interface ASTVisitor<T> {
     T visitIfNode(IfNode node);
 
     T visitSwitchNode(SwitchNode node);
+
+    T visitDeclarationNode(DeclarationNode node);
 }

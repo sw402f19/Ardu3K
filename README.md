@@ -1,4 +1,4 @@
-# Ardu3K
+# ARDU3k
 # ACTUALLY READ.ME
 Right click on Ardu3k.g4, press 'Configure ANTLR' and set the generated source folder to 'src'.
 

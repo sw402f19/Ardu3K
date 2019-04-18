@@ -1,5 +1,4 @@
 import node.RootNode;
-import symbol.OldSymbolTable;
 import visitor.BuildASTVisitor;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;

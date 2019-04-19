@@ -1,10 +1,22 @@
 package visitor;
 
 import node.RootNode;
+import node.composite.ListNode;
 import node.expression.AbstractExpressionNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
+import node.expression.additive.MinusNode;
+import node.expression.additive.PlusNode;
+import node.expression.condition.*;
+import node.expression.multiplicative.DivideNode;
+import node.expression.multiplicative.ModulusNode;
+import node.expression.multiplicative.TimesNode;
+import node.expression.relation.GreaterEqualNode;
+import node.expression.relation.GreaterNode;
+import node.expression.relation.LesserEqualNode;
+import node.expression.relation.LesserNode;
+import node.expression.unary.UnaryNode;
 import node.primary.*;
 import node.statement.*;
 import node.structure.*;
@@ -14,21 +26,41 @@ public interface ASTVisitor<T> {
 
     T visitRootNode(RootNode node);
 
+    /**
+     * Composite
+     */
+    T visitListNode(ListNode node);
+
+    /**
+     * Structure
+     */
+
+    T visitBlockNode(BlockNode node);
+
     T visitProgramNode(ProgramNode node);
 
     T visitFunctionNode(FunctionNode node);
 
     T visitDefineNode(DefineNode node);
 
+    T visitDefinesNode(DefinesNode node);
+
+    T visitFunctionsNode(FunctionsNode node);
+
+    T visitParameterNode(ParameterNode node);
+
     T visitLoopNode(LoopNode node);
 
     T visitSetupNode(SetupNode node);
 
-    T visitAbstractInfixExpressionNode(AbstractInfixExpressionNode node);
-
-    T visitAssignmentNode(AssignmentNode node);
-
+    /**
+     * Primaries
+     */
     T visitAbstractBoolNode(BoolNode node);
+
+    T visitAbstractPrimaryNode(AbstractPrimaryNode node);
+
+    T visitBoolNode(BoolNode node);
 
     T visitIdentifierNode(IdentifierNode node);
 
@@ -37,6 +69,20 @@ public interface ASTVisitor<T> {
     T visitRealNode(RealNode node);
 
     T visitStringNode(StringNode node);
+
+    T visitStringValNode(StringValNode node);
+
+    /**
+     * Statements
+     */
+
+    T visitAbstractStatementNode(AbstractStatementNode node);
+
+    T visitArgumentNode(ArgumentNode node);
+
+    T visitCaseNode(CaseNode node);
+
+    T visitDefaultNode(DefaultNode node);
 
     T visitElifNode(ElifNode node);
 
@@ -48,17 +94,64 @@ public interface ASTVisitor<T> {
 
     T visitSwitchNode(SwitchNode node);
 
-    T visitDeclarationNode(DeclarationNode node);
+    T visitWhileNode(WhileNode node);
 
-    T visitIdentifier(IdentifierNode node);
-
+    /**
+     * Expressions
+     */
     T visitAbstractExpressionNode(AbstractExpressionNode node);
 
-    T visitDefinesNode(DefinesNode node);
+    T visitAbstractInfixExpressionNode(AbstractInfixExpressionNode node);
 
-    T visitFunctionsNode(FunctionsNode node);
+    T visitDeclarationNode(DeclarationNode node);
 
-    T visitParameterNode(ParameterNode node);
+    T visitAssignmentNode(AssignmentNode node);
 
+    /**
+     * Additive
+     */
+    T visitMinusNode(MinusNode node);
+
+    T visitPlusNode(PlusNode node);
+
+    /**
+     * Condition
+     */
+    T visitAndNode(AndNode node);
+
+    T visitEqualNode(EqualNode node);
+
+    T visitNotNode(NotNode node);
+
+    T visitOrNode(OrNode node);
+
+    T visitXorNode(XorNode node);
+
+    /**
+     * Multiplicative
+     */
+    T visitDivideNode(DivideNode node);
+
+    T visitTimesNode(TimesNode node);
+
+    T visitModulusNode(ModulusNode node);
+
+    /**
+     * Relational
+     */
+
+    T visitGreaterEqualNode(GreaterEqualNode node);
+
+    T visitGreaterNode(GreaterNode node);
+
+    T visitLesserEqualNode(LesserEqualNode node);
+    
+    T visitLesserNode(LesserNode node);
+
+    /**
+     * Unary
+     */
+
+    T visitUnaryNode(UnaryNode node);
 
 }

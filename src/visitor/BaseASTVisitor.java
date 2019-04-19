@@ -1,6 +1,7 @@
 package visitor;
 
 import node.RootNode;
+import node.expression.AbstractExpressionNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
@@ -120,6 +121,26 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visitIdentifier(IdentifierNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitAbstractExpressionNode(AbstractExpressionNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitDefinesNode(DefinesNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitFunctionsNode(FunctionsNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitParameterNode(ParameterNode node) {
         return visitChildren(node);
     }
 

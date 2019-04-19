@@ -1,6 +1,7 @@
 package visitor;
 
 import node.RootNode;
+import node.expression.AbstractExpressionNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
@@ -50,4 +51,14 @@ public interface ASTVisitor<T> {
     T visitDeclarationNode(DeclarationNode node);
 
     T visitIdentifier(IdentifierNode node);
+
+    T visitAbstractExpressionNode(AbstractExpressionNode node);
+
+    T visitDefinesNode(DefinesNode node);
+
+    T visitFunctionsNode(FunctionsNode node);
+
+    T visitParameterNode(ParameterNode node);
+
+
 }

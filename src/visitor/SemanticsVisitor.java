@@ -21,10 +21,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         if(!symbolTable.isPresent(node.getLeft()))
             return visitDeclarationNode(new DeclarationNode(node));
         else {
-            if(!visitAbstractExpressionNode((AbstractExpressionNode) node.getRight()).getClass().equals(
-                    symbolTable.retrieveSymbol(node).getType()))
-                //todo temporary error handling
-                System.out.println("Imcompatible types");
+            //todo check if type compatible
         }
 
         return node;

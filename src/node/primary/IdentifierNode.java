@@ -4,6 +4,8 @@ import gen.Ardu3kParser;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
+import static java.util.Objects.hash;
+
 public class IdentifierNode extends AbstractPrimaryNode {
     String value;
 
@@ -15,6 +17,16 @@ public class IdentifierNode extends AbstractPrimaryNode {
     @Override
     public String toString() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((IdentifierNode) obj).value.equals(value);
+    }
+
+    @Override
+    public int hashCode() {
+        return hash(value);
     }
 
     @Override

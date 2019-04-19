@@ -29,6 +29,9 @@ public class SymbolTable implements SymbolTableInterface{
     public boolean declaredLocally(RootNode node) {
         return symTable.get(node).getDepth() == depth;
     }
+    public boolean isPresent(RootNode n) {
+        return symTable.containsKey(n);
+    }
 
 
     private SymbolTable() {

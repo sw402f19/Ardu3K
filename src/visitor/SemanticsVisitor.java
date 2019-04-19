@@ -3,6 +3,7 @@ package visitor;
 import node.RootNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
+import node.primary.IdentifierNode;
 import symbol.SymbolTable;
 
 public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
@@ -14,7 +15,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         if(symbolTable.retrieveSymbol(node) == null)
             return visitDeclarationNode(new DeclarationNode(node));
         else
-            node.getRight().accept(new TypeVisitor());
+            new TypeVisitor().visitAssignmentNode(node);
 
         return node;
     }
@@ -24,6 +25,16 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         symbolTable.enterSymbol(node);
         new TypeVisitor().visitDeclarationNode(node);
 
-        return node;
+        return visitChildren(node);
+    }
+
+    // todo temporary error handling
+    @Override
+    public RootNode visitIdentifier(IdentifierNode node) {
+        if(symbolTable.retrieveSymbol(node) == null)
+            System.out.println("Unknown identifier");
+        else
+            return node;
+        return null;
     }
 }

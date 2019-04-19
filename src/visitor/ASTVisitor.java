@@ -48,4 +48,6 @@ public interface ASTVisitor<T> {
     T visitSwitchNode(SwitchNode node);
 
     T visitDeclarationNode(DeclarationNode node);
+
+    T visitIdentifier(IdentifierNode node);
 }

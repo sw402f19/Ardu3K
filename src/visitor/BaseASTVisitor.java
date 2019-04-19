@@ -1,10 +1,22 @@
 package visitor;
 
 import node.RootNode;
+import node.composite.ListNode;
 import node.expression.AbstractExpressionNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
+import node.expression.additive.MinusNode;
+import node.expression.additive.PlusNode;
+import node.expression.condition.*;
+import node.expression.multiplicative.DivideNode;
+import node.expression.multiplicative.ModulusNode;
+import node.expression.multiplicative.TimesNode;
+import node.expression.relation.GreaterEqualNode;
+import node.expression.relation.GreaterNode;
+import node.expression.relation.LesserEqualNode;
+import node.expression.relation.LesserNode;
+import node.expression.unary.UnaryNode;
 import node.primary.*;
 import node.statement.*;
 import node.structure.*;
@@ -26,6 +38,11 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visitRootNode(RootNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitListNode(ListNode node) {
         return visitChildren(node);
     }
 
@@ -55,6 +72,11 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
     }
 
     @Override
+    public T visitAbstractNumberNode(AbstractNumberNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
     public T visitAbstractInfixExpressionNode(AbstractInfixExpressionNode node) {
         return visitChildren(node);
     }
@@ -65,7 +87,87 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
     }
 
     @Override
-    public T visitAbstractBoolNode(BoolNode node) {
+    public T visitMinusNode(MinusNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitPlusNode(PlusNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitAndNode(AndNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitEqualNode(EqualNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitNotNode(NotNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitOrNode(OrNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitXorNode(XorNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitDivideNode(DivideNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitTimesNode(TimesNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitModulusNode(ModulusNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitGreaterEqualNode(GreaterEqualNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitGreaterNode(GreaterNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitLesserEqualNode(LesserEqualNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitLesserNode(LesserNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitUnaryNode(UnaryNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitAbstractPrimaryNode(AbstractPrimaryNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitBoolNode(BoolNode node) {
         return visitChildren(node);
     }
 
@@ -86,6 +188,31 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visitStringNode(StringNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitStringValNode(StringValNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitAbstractStatementNode(AbstractStatementNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitArgumentNode(ArgumentNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitCaseNode(CaseNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitDefaultNode(DefaultNode node) {
         return visitChildren(node);
     }
 
@@ -120,11 +247,6 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
     }
 
     @Override
-    public T visitIdentifier(IdentifierNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
     public T visitAbstractExpressionNode(AbstractExpressionNode node) {
         return visitChildren(node);
     }
@@ -141,6 +263,16 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visitParameterNode(ParameterNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitWhileNode(WhileNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitBlockNode(BlockNode node) {
         return visitChildren(node);
     }
 

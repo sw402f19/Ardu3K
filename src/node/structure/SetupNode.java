@@ -1,6 +1,8 @@
 package node.structure;
 
 import node.RootNode;
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
 public class SetupNode extends RootNode {
 
@@ -15,5 +17,11 @@ public class SetupNode extends RootNode {
         } else {
             children.add(n);
         }
+    }
+
+    @Override
+    public <T> T accept(ASTVisitor<? extends T> visitor) {
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitSetupNode(this);
+        else return visitor.visitChildren(this);
     }
 }

@@ -1,6 +1,8 @@
 package node.statement;
 
 import node.RootNode;
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
 public class ForNode extends AbstractStatementNode {
     @Override
@@ -35,5 +37,10 @@ public class ForNode extends AbstractStatementNode {
             children.set(2, node);
         else
             children.add(node);
+    }
+    @Override
+    public <T> T accept(ASTVisitor<? extends T> visitor) {
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitForNode(this);
+        else return visitor.visitChildren(this);
     }
 }

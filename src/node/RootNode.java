@@ -20,12 +20,8 @@ public abstract class RootNode implements Node {
     public RootNode() {
     }
 
-    public <T> T accept(ASTVisitor<? extends T> visitor){
-        if (visitor instanceof BaseASTVisitor)
-            return ((BaseASTVisitor<T>)visitor).visitChildren(this);
-        else
-            return visitor.visitChildren(this);
-    }
+    public abstract <T> T accept(ASTVisitor<? extends T> visitor);
+
     public void print(int level) {
         for (int i = 1; i < level; i++) {
             System.out.print("\t");

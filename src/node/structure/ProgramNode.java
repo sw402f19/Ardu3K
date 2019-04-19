@@ -40,10 +40,10 @@ public class ProgramNode extends RootNode {
             children.add(node);
     }
 
-    public RootNode getFunctionNode(){
+    public RootNode getFunctionsNode(){
         return children.get(3);
     }
-    public void setFunctionNode(RootNode node) {
+    public void setFunctionsNode(RootNode node) {
         if(children.size() > 3)
             children.set(3, node);
         else

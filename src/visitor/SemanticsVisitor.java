@@ -18,7 +18,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
 
     @Override
     public RootNode visitAssignmentNode(AssignmentNode node) {
-        if(symbolTable.retrieveSymbol(node) == null)
+        if(!symbolTable.isPresent(node.getLeft()))
             return visitDeclarationNode(new DeclarationNode(node));
         else {
             if(!visitAbstractExpressionNode((AbstractExpressionNode) node.getRight()).getClass().equals(
@@ -35,7 +35,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         symbolTable.enterSymbol(node);
         new TypeVisitor().visitDeclarationNode(node);
 
-        return visitChildren(node);
+        return node;
     }
 
     // todo temporary error handling

@@ -277,6 +277,6 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
     }
 
     public T visit(RootNode node) {
-        return node.accept(this);
+        return visitChildren(node);
     }
 }

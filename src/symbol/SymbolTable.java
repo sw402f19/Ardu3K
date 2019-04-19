@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class SymbolTable implements SymbolTableInterface{
 
-    private static SymbolTable thisInstance;
+    private static SymbolTable thisInstance = new SymbolTable();
     private static HashMap<? super RootNode, Symbol> symTable = new HashMap<>();
     private static int depth;
 

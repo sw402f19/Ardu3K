@@ -287,9 +287,11 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
             case Ardu3kParser.MODULUS:
                 node = new ModulusNode();
                 break;
-
-                default:
-                    throw new IllegalArgumentException();
+            case Ardu3kParser.EXPONENTIAL:
+                node = new ExponentialNode();
+                break;
+            default:
+                throw new IllegalArgumentException();
         }
 
         node.setLeft(visit(ctx.left));

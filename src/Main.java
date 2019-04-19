@@ -25,7 +25,6 @@ public class Main {
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
             dast = new SemanticsVisitor().visit(ast);
             //System.out.println("Im here");
-            ast.print(0);
 
         } catch (Exception e) {
             e.printStackTrace();

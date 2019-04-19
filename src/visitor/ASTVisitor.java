@@ -56,7 +56,8 @@ public interface ASTVisitor<T> {
     /**
      * Primaries
      */
-    T visitAbstractBoolNode(BoolNode node);
+
+    T visitAbstractNumberNode(AbstractNumberNode node);
 
     T visitAbstractPrimaryNode(AbstractPrimaryNode node);
 
@@ -145,7 +146,7 @@ public interface ASTVisitor<T> {
     T visitGreaterNode(GreaterNode node);
 
     T visitLesserEqualNode(LesserEqualNode node);
-    
+
     T visitLesserNode(LesserNode node);
 
     /**

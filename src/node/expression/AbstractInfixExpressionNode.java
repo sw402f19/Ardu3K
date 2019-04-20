@@ -5,10 +5,14 @@ import node.RootNode;
 public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode {
 
     public RootNode getLeft() {
-        return children.get(0);
+        if (children.size() > 0) {
+            return children.get(0);
+        } else return null;
     }
     public RootNode getRight() {
-        return children.get(1);
+        if (children.size() > 1) {
+            return children.get(1);
+        } else return null;
     }
     public void setLeft(RootNode node) {
         if(children.size() > 0)

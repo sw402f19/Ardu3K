@@ -11,7 +11,7 @@ public class TopDeclVisitor extends SemanticsVisitor {
     private RootNode variableAttributes; // TODO: How do we imagine these? As node types?
     /* ============ */
 
-    public RootNode templateVarDeclVisit(VariableListDeclaring vld){ // TODO: Figure out which class to handle vld
+   /* public RootNode templateVarDeclVisit(VariableListDeclaring vld){ // TODO: Figure out which class to handle vld
         TypeVisitor tv = new TypeVisitor();
         // Symbol attr = st.retrieveSymbol(node.name); // TODO: Node does currently not have a name
         // vld.typeName.accept(tv);
@@ -29,6 +29,6 @@ public class TopDeclVisitor extends SemanticsVisitor {
             }
         }
         // return vld; // TODO: Define what return should be
-    }
+    }*/
 
 }

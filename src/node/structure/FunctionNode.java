@@ -1,6 +1,8 @@
 package node.structure;
 
 import node.RootNode;
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
 public class FunctionNode extends RootNode {
     @Override
@@ -36,6 +38,12 @@ public class FunctionNode extends RootNode {
             children.set(2, node);
         else
             children.add(node);
+    }
+
+    @Override
+    public <T> T accept(ASTVisitor<? extends T> visitor) {
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitFunctionNode(this);
+        else return visitor.visitChildren(this);
     }
 
 

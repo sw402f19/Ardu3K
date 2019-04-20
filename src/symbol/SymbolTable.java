@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class SymbolTable implements SymbolTableInterface{
 
-    private static SymbolTable thisInstance;
-    private static HashMap<? super RootNode, Symbol> symTable = new HashMap<>();
+    private static SymbolTable thisInstance = new SymbolTable();
+    private static HashMap<RootNode, Symbol> symTable = new HashMap<>();
     private static int depth;
 
     public void openScope() {
@@ -28,6 +28,9 @@ public class SymbolTable implements SymbolTableInterface{
     }
     public boolean declaredLocally(RootNode node) {
         return symTable.get(node).getDepth() == depth;
+    }
+    public boolean isPresent(RootNode n) {
+        return symTable.containsKey(n);
     }
 
 

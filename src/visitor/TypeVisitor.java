@@ -10,9 +10,7 @@ import node.primary.*;
 import node.primary.IntegerNode;
 import symbol.*;
 
-/* Sec 8.6.2 (p304) + 8.6.5 (p311) + 8.6.6 (p312) + 8.6.7 (p313) */
-public class TypeVisitor extends TopDeclVisitor {
-
+public class TypeVisitor extends TopDeclVisitor{
     // This function checks if the types of Primary nodes in an expression is compatible
     // It will return the type for the expression
     // TODO: Shall this handle Identifier nodes?

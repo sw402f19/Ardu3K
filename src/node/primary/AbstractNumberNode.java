@@ -1,6 +1,8 @@
 package node.primary;
 
-public abstract class AbstractNumberNode extends AbstractPrimaryNode{
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
+public abstract class AbstractNumberNode extends AbstractPrimaryNode {
 
 }

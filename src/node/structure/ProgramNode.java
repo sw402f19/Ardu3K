@@ -1,6 +1,8 @@
 package node.structure;
 
 import node.RootNode;
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
 public class ProgramNode extends RootNode {
     @Override
@@ -38,23 +40,20 @@ public class ProgramNode extends RootNode {
             children.add(node);
     }
 
-    public RootNode getFunctionNode(){
+    public RootNode getFunctionsNode(){
         return children.get(3);
     }
-    public void setFunctionNode(RootNode node) {
+    public void setFunctionsNode(RootNode node) {
         if(children.size() > 3)
             children.set(3, node);
         else
             children.add(node);
     }
 
-    /*
-    public <T> void accept(visitor<? extends T> visitor){
-        if (visitor instanceof BaseASTVisitor)
-            ((BaseASTVisitor)visitor).visitProgramNode(this);
-        else
-            visitor.visitChildren(this);
-    }*/
-
+    @Override
+    public <T> T accept(ASTVisitor<? extends T> visitor) {
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitProgramNode(this);
+        else return visitor.visitChildren(this);
+    }
 
 }

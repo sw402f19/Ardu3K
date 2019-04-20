@@ -1,6 +1,8 @@
 package node.statement;
 
 import node.RootNode;
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
 public class WhileNode extends AbstractStatementNode {
     @Override
@@ -20,5 +22,11 @@ public class WhileNode extends AbstractStatementNode {
             children.set(1, node);
         else
             children.add(node);
+    }
+
+    @Override
+    public <T> T accept(ASTVisitor<? extends T> visitor) {
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitWhileNode(this);
+        else return visitor.visitChildren(this);
     }
 }

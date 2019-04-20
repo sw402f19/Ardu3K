@@ -1,6 +1,8 @@
 package node.primary;
 
 import gen.Ardu3kParser;
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
 public class IntegerNode extends AbstractNumberNode {
     public int value;
@@ -18,5 +20,11 @@ public class IntegerNode extends AbstractNumberNode {
     @Override
     public String toString() {
         return ""+value;
+    }
+
+    @Override
+    public <T> T accept(ASTVisitor<? extends T> visitor) {
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitIntegerNode(this);
+        else return visitor.visitChildren(this);
     }
 }

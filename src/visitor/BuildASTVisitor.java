@@ -27,7 +27,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.setDefineNode(visitDefines(ctx.define()));
         node.setSetupNode(visitSetup(ctx.setup()));
         node.setLoopNode(visitLoop(ctx.loop()));
-        node.setFunctionNode(visitFunction(ctx.funcs));
+        node.setFunctionsNode(visitFunctions(ctx.function()));
         return node;
     }
 
@@ -60,6 +60,11 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return (node.children.size() > 0 ? node : null);
     }
 
+    public RootNode visitFunctions(List<Ardu3kParser.FunctionContext> ctx) {
+        FunctionsNode node = new FunctionsNode();
+        collectChildren(node, ctx);
+        return (node.children.size() > 0 ? node : null);
+    }
     @Override
     public RootNode visitFunction(Ardu3kParser.FunctionContext ctx) {
         FunctionNode node = new FunctionNode();

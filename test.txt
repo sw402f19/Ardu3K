@@ -5,11 +5,12 @@ setup () = {
 
 }
 loop () = {
-    b = [] + 5;
+    b = [];
     b = 1 + 5 * (5+5*5);
     ab = "ab" + 5;
     D = 10.150;
     b;
+    a = 1;
 
     if true do
         if true do

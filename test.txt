@@ -32,9 +32,8 @@ loop () = {
         default:
             c = 0;
     }
-    while a = 1 do {
-        something;
-        SomethingElse;
+    while a < 10 OR a < 5 do {
+        a = a + 1;
     }
 
 }

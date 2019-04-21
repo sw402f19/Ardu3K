@@ -52,15 +52,15 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
 
     @Override
     public RootNode visitProgramNode(ProgramNode node) {
-        visit(node.getDefinesNode());
-        visit(node.getFunctionsNode());
-        visit(node.getSetupNode());
-        visit(node.getLoopNode());
+        super.visit(node.getDefinesNode());
+        super.visit(node.getFunctionsNode());
+        super.visit(node.getSetupNode());
+        super.visit(node.getLoopNode());
         return node;
     }
     public RootNode visitSetupNode(SetupNode node) {
         symbolTable.openScope();
-        // todo typecheck children
+        visitBlockNode(node.getBlock());
         return node;
     }
 

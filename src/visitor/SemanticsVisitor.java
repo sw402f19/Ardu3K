@@ -2,8 +2,10 @@ package visitor;
 
 import node.RootNode;
 import node.expression.AbstractExpressionNode;
+import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
+import node.expression.type.IllegalTypeException;
 import node.primary.IdentifierNode;
 import node.statement.ElifNode;
 import node.statement.ForNode;
@@ -15,6 +17,26 @@ import symbol.SymbolTable;
 public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
+
+    @Override
+    public RootNode visitChildren(RootNode node){
+        RootNode dast = null;
+
+        if(node.children.size() > 0) {
+            for (RootNode n : node.children)
+                if (n != null) {
+                    if(n instanceof AbstractInfixExpressionNode)
+                        try {
+                            dast = ((AbstractInfixExpressionNode) n.accept(new TypeChecker()));
+                        } catch (IllegalTypeException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    else
+                        dast = n.accept(this);
+                }
+        }
+        return dast;
+    }
 
     @Override
     public RootNode visitAssignmentNode(AssignmentNode node) {
@@ -30,7 +52,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitDeclarationNode(DeclarationNode node) {
         symbolTable.enterSymbol(node);
-        new TypeVisitor().visitDeclarationNode(node);
+        //new TypeVisitor().visitDeclarationNode(node);
 
         return node;
     }

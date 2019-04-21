@@ -1,6 +1,8 @@
 package node.expression;
 
 import node.RootNode;
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
 public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode {
 
@@ -25,5 +27,11 @@ public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode
             children.set(1, node);
         else
             children.add(node);
+    }
+
+    @Override
+    public <T> T accept(ASTVisitor<? extends T> visitor) {
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitAbstractInfixExpressionNode(this);
+        else return visitor.visitChildren(this);
     }
 }

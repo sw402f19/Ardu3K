@@ -60,7 +60,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitIdentifierNode(IdentifierNode node) {
         if(symbolTable.retrieveSymbol(node) == null)
-            System.out.println("Identifier not declared");
+            System.out.println(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
         else
             return node;
         return null;

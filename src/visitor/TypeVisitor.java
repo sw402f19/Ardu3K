@@ -137,18 +137,18 @@ public class TypeVisitor extends BaseASTVisitor<RootNode> {
     }
     public void isNumeral(AbstractInfixExpressionNode node) {
         if(!(node.getLeft() instanceof NumeralType))
-            throw new IllegalTypeException("Illegal type: "+node.getLeft().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
         if(!(node.getRight() instanceof NumeralType))
-            throw new IllegalTypeException("Illegal type: "+node.getRight().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
     }
     public void isBoolean(AbstractInfixExpressionNode node) {
         if(!(node.getLeft() instanceof BooleanType))
-            throw new IllegalTypeException("Illegal type: "+node.getLeft().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
         if(!(node.getRight() instanceof BooleanType))
-            throw new IllegalTypeException("Illegal type: "+node.getRight().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
     }
 }

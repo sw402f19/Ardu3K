@@ -4,6 +4,7 @@ import node.RootNode;
 import node.expression.*;
 import node.expression.type.IllegalTypeException;
 import node.primary.IdentifierNode;
+import node.primary.UndefinedNode;
 import node.statement.*;
 import node.scope.*;
 import symbol.SymbolTable;
@@ -33,10 +34,15 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
 
     @Override
     public RootNode visitAssignmentNode(AssignmentNode node) {
-        if(!symbolTable.isPresent(node.getLeft()))
+        if(!(symbolTable.isPresent(node.getLeft())) ||
+                symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode)
             return visitDeclarationNode(new DeclarationNode(node));
         else {
-            //todo check if type compatible
+            try {
+                node.accept(new AssignmentVisitor());
+            } catch (IllegalTypeException e) {
+                e.printStackTrace();
+            }
         }
 
         return node;

@@ -1,5 +1,7 @@
 package node;
 
+import gen.Ardu3kParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
@@ -10,13 +12,22 @@ public abstract class RootNode implements Node {
 
     public RootNode parent;
     public ArrayList<RootNode> children = new ArrayList<>();
+    public String line;
 
     public RootNode(RootNode parent) {
         this.parent = parent;
     }
 
-    public RootNode() {
+    public RootNode(ParserRuleContext ctx) {
+        this.line = "Line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
     }
+
+    public RootNode(RootNode parent, ParserRuleContext ctx) {
+        this.parent = parent;
+        this.line = "Line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
+    }
+
+    public RootNode() { }
 
     public abstract <T> T accept(ASTVisitor<? extends T> visitor);
 
@@ -31,4 +42,7 @@ public abstract class RootNode implements Node {
         }
     }
 
+    public String getLine() {
+        return line;
+    }
 }

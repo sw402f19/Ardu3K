@@ -1,10 +1,15 @@
 package node.structure;
 
+import gen.Ardu3kParser;
 import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 public class FunctionNode extends RootNode {
+    public FunctionNode(Ardu3kParser.FunctionContext ctx) {
+        super(ctx);
+    }
+
     @Override
     public String toString() {
         return "Function ";

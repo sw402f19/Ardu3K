@@ -11,6 +11,7 @@ public class IntegerNode extends AbstractNumberNode {
         this.value = value;
     }
     public IntegerNode(Ardu3kParser.NumberContext ctx) {
+        super(ctx);
         this.value = Integer.valueOf(ctx.getText());
     }
     public IntegerNode(String str) {

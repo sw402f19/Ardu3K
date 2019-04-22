@@ -1,6 +1,7 @@
 package node.primary;
 
 import gen.Ardu3kParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
@@ -11,6 +12,7 @@ public class IdentifierNode extends AbstractPrimaryNode {
 
 
     public IdentifierNode(Ardu3kParser.IdentifierContext ctx){
+        super(ctx);
         value = ctx.value.getText();
     }
 

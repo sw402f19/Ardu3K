@@ -1,10 +1,15 @@
 package node.structure;
 
 import node.RootNode;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 public class SetupNode extends RootNode {
+
+    public SetupNode(ParserRuleContext ctx) {
+        super(ctx);
+    }
 
     @Override
     public String toString() { return "Setup"; }

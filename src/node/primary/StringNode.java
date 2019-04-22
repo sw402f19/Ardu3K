@@ -1,6 +1,7 @@
 package node.primary;
 
 import gen.Ardu3kParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
@@ -14,13 +15,13 @@ public class StringNode extends AbstractPrimaryNode {
     public StringNode(String str) {
         value = str;
     }
-    public StringNode(List<Ardu3kParser.String_valContext> list) {
+
+    public StringNode(Ardu3kParser.StringContext ctx) {
+        super(ctx);
         StringBuilder builder = new StringBuilder();
-        list.forEach(e -> builder.append(e.getText()));
+        ctx.string_val().forEach(e -> builder.append(e.getText()));
         value = builder.toString();
     }
-
-
 
     @Override
     public String toString() {

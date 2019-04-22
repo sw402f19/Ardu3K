@@ -1,10 +1,12 @@
 package node.structure;
 
 import node.RootNode;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 public class DefinesNode extends RootNode {
+
 
     @Override
     public String toString() {

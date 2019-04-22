@@ -2,7 +2,6 @@ package symbol;
 
 import node.RootNode;
 import node.expression.DeclarationNode;
-import node.primary.IdentifierNode;
 
 import java.util.HashMap;
 

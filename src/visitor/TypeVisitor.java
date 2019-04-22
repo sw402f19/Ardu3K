@@ -14,7 +14,6 @@ import node.expression.relation.GreaterNode;
 import node.expression.relation.LesserEqualNode;
 import node.expression.relation.LesserNode;
 import node.expression.type.BooleanType;
-import node.expression.type.ExpressionType;
 import node.expression.type.IllegalTypeException;
 import node.expression.type.NumeralType;
 import node.primary.IdentifierNode;
@@ -22,7 +21,7 @@ import symbol.SymbolTable;
 
 public class TypeVisitor extends BaseASTVisitor<RootNode> {
 
-    SymbolTable symbolTable = SymbolTable.getInstance();
+    private SymbolTable symbolTable = SymbolTable.getInstance();
 
     @Override
     public RootNode visitMinusNode(MinusNode node) {
@@ -136,7 +135,7 @@ public class TypeVisitor extends BaseASTVisitor<RootNode> {
             return node;
     }
     public void isNumeral(AbstractInfixExpressionNode node) {
-        removeIdentifiers(node);
+        checkIdentifierType(node);
         if(!(node.getLeft() instanceof NumeralType))
             throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
@@ -145,7 +144,7 @@ public class TypeVisitor extends BaseASTVisitor<RootNode> {
                     " for type "+node.getClass().getSimpleName());
     }
     public void isBoolean(AbstractInfixExpressionNode node) {
-        removeIdentifiers(node);
+        checkIdentifierType(node);
         if(!(node.getLeft() instanceof BooleanType))
             throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
@@ -153,7 +152,7 @@ public class TypeVisitor extends BaseASTVisitor<RootNode> {
             throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
     }
-    private void removeIdentifiers(AbstractInfixExpressionNode n) {
+    private void checkIdentifierType(AbstractInfixExpressionNode n) {
         if(n.getLeft() instanceof IdentifierNode)
             n.setLeft(visitIdentifierNode((IdentifierNode) n.getLeft()));
 

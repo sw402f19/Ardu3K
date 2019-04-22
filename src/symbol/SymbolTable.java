@@ -4,6 +4,8 @@ import node.RootNode;
 import node.expression.DeclarationNode;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
+import node.structure.DefineNode;
+import node.structure.DefinesNode;
 import node.structure.FunctionNode;
 import node.structure.ParameterNode;
 
@@ -34,6 +36,9 @@ public class SymbolTable implements SymbolTableInterface{
     public void enterSymbol(IdentifierNode node){
         symTable.put(node, new Symbol(node, new UndefinedNode(), depth));
 
+    }
+    public void enterSymbol(DefineNode node) {
+        symTable.put(node.getId(), new Symbol(node.getId(), node.getValue(), depth));
     }
 
     public Symbol retrieveSymbol(RootNode name) {

@@ -67,10 +67,10 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
 
     @Override
     public RootNode visitProgramNode(ProgramNode node) {
-        super.visit(node.getDefinesNode());
-        super.visit(node.getFunctionsNode());
-        super.visit(node.getSetupNode());
-        super.visit(node.getLoopNode());
+        node.getDefinesNode().accept(this);
+        node.getFunctionsNode().accept(this);
+        node.getSetupNode().accept(this);
+        node.getLoopNode().accept(this);
         return node;
     }
     public RootNode visitSetupNode(SetupNode node) {
@@ -82,20 +82,20 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitDefinesNode(DefinesNode node) {
         symbolTable.openScope();
-        super.visit(node);
+        visit(node);
         return node;
     }
 
     @Override
     public RootNode visitDefineNode(DefineNode node) {
-        // todo typecheck children
+        symbolTable.enterSymbol(node);
         return node;
     }
 
     @Override
     public RootNode visitLoopNode(LoopNode node) {
         symbolTable.openScope();
-        super.visit(node);
+        visit(node);
         //symbolTable.closeScope();
         return node;
     }
@@ -103,7 +103,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitForNode(ForNode node) {
         symbolTable.openScope();
-        super.visit(node);
+        visit(node);
         symbolTable.closeScope();
         return node;
     }
@@ -111,7 +111,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitSwitchNode(SwitchNode node) {
         symbolTable.openScope();
-        super.visit(node);
+        visit(node);
         symbolTable.closeScope();
         return node;
     }
@@ -119,7 +119,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitIfNode(IfNode node) {
         symbolTable.openScope();
-        super.visit(node);
+        visit(node);
         symbolTable.closeScope();
         return node;
     }
@@ -127,7 +127,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitBlockNode(BlockNode node) {
         symbolTable.openScope();
-        super.visitBlockNode(node);
+        visit(node);
         symbolTable.closeScope();
         return node;
     }
@@ -135,7 +135,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitElifNode(ElifNode node) {
         symbolTable.openScope();
-        super.visit(node);
+        visit(node);
         symbolTable.closeScope();
         return node;
     }
@@ -170,7 +170,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     public RootNode visitParameterNode(ParameterNode node) {
         symbolTable.openScope();
         node.children.forEach(e -> symbolTable.enterSymbol((IdentifierNode) e));
-        return super.visitParameterNode(node);
+        return node;
     }
 
     /*

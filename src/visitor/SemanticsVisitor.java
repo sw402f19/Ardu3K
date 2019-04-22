@@ -1,16 +1,11 @@
 package visitor;
 
 import node.RootNode;
-import node.expression.AbstractExpressionNode;
-import node.expression.AbstractInfixExpressionNode;
-import node.expression.AssignmentNode;
-import node.expression.DeclarationNode;
+import node.expression.*;
 import node.expression.type.IllegalTypeException;
 import node.primary.IdentifierNode;
-import node.statement.ElifNode;
-import node.statement.ForNode;
-import node.statement.IfNode;
-import node.statement.SwitchNode;
+import node.primary.UndefinedNode;
+import node.statement.*;
 import node.structure.*;
 import symbol.SymbolTable;
 
@@ -137,5 +132,57 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         symbolTable.closeScope();
         return node;
     }
+
+    @Override
+    public RootNode visitFunctionNode(FunctionNode node) {
+        symbolTable.enterSymbol(node);
+        symbolTable.openScope();
+
+
+        node.getParameter().accept(this);
+        node.getBlock().accept(this);
+
+
+
+
+       // System.out.println(node.getParameter().children.size());
+        //System.out.println(node.getParameter().children);
+
+        symbolTable.closeScope();
+        return node;
+    }
+
+    @Override
+    public RootNode visitFunctionsNode(FunctionsNode node) {
+        symbolTable.openScope();
+
+        return super.visitFunctionsNode(node);
+    }
+
+    @Override
+    public RootNode visitParameterNode(ParameterNode node) {
+        symbolTable.openScope();
+
+        if ()
+
+        node.children.forEach(e -> symbolTable.enterSymbol((IdentifierNode) e));
+
+
+
+
+
+
+        return super.visitParameterNode(node);
+    }
+
+    /*
+
+
+
+    @Override
+    public RootNode visitFunctionStmtNode(FunctionStmtNode node) {
+        return super.visitFunctionStmtNode(node);
+    }*/
+
 
 }

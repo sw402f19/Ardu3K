@@ -38,6 +38,11 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
     }
 
     @Override
+    public T visitUndefindedNode(UndefinedNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
     public T visitRootNode(RootNode node) {
         return visitChildren(node);
     }

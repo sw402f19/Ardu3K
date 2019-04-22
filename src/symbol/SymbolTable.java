@@ -3,6 +3,9 @@ package symbol;
 import node.RootNode;
 import node.expression.DeclarationNode;
 import node.primary.IdentifierNode;
+import node.primary.UndefinedNode;
+import node.structure.FunctionNode;
+import node.structure.ParameterNode;
 
 import java.util.HashMap;
 
@@ -23,6 +26,16 @@ public class SymbolTable implements SymbolTableInterface{
     public void enterSymbol(DeclarationNode node) {
         symTable.put(node.getLeft(), new Symbol(node.getLeft(), node.getRight(), depth));
     }
+
+    public void enterSymbol(FunctionNode node){
+        symTable.put(node.getId(), new Symbol(node.getId(), node, depth));
+    }
+
+    public void enterSymbol(IdentifierNode node){
+        symTable.put(node, new Symbol(node, new UndefinedNode(), depth));
+        
+    }
+
     public Symbol retrieveSymbol(RootNode name) {
         return symTable.get(name);
     }
@@ -32,6 +45,7 @@ public class SymbolTable implements SymbolTableInterface{
     public boolean isPresent(RootNode n) {
         return symTable.containsKey(n);
     }
+
 
 
     private SymbolTable() {

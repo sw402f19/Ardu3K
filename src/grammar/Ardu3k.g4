@@ -84,7 +84,16 @@ assignment_expr
     | assignment
     ;
 assignment
-    : left=identifier ASSIGN right=assignment_expr
+    : list_assignment
+    | left=identifier ASSIGN right=assignment_expr
+    ;
+list_assignment
+    : left=identifier ASSIGN EMPTYLIST
+    | left=identifier ASSIGN LBRACKET primary RBRACKET
+    | left=identifier ASSIGN LBRACKET list_element* primary RBRACKET
+    ;
+list_element
+    : primary COMMA
     ;
 conditional_expr
     : conditional_or_expr
@@ -230,6 +239,8 @@ REMOVE: 'remove';
 ADD: 'add';
 SIZE: 'size';
 EMPTYLIST: '[]';
+LBRACKET: '[';
+RBRACKET: ']';
 LETTER: [a-zA-Z];
 REAL: '-'?DIGIT+ DOT DIGIT+;
 INTEGER: '-'?DIGIT+;

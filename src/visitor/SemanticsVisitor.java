@@ -30,7 +30,6 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitDeclarationNode(DeclarationNode node) {
         symbolTable.enterSymbol(node);
-        new TypeVisitor().visitDeclarationNode(node);
 
         return node;
     }

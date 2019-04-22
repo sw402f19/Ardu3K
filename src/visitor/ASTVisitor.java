@@ -2,10 +2,7 @@ package visitor;
 
 import node.RootNode;
 import node.composite.ListNode;
-import node.expression.AbstractExpressionNode;
-import node.expression.AbstractInfixExpressionNode;
-import node.expression.AssignmentNode;
-import node.expression.DeclarationNode;
+import node.expression.*;
 import node.expression.additive.MinusNode;
 import node.expression.additive.PlusNode;
 import node.expression.condition.*;
@@ -74,6 +71,8 @@ public interface ASTVisitor<T> {
 
     T visitStringValNode(StringValNode node);
 
+    T visitUndefindedNode(UndefinedNode node);
+
     /**
      * Statements
      */
@@ -108,6 +107,7 @@ public interface ASTVisitor<T> {
     T visitDeclarationNode(DeclarationNode node);
 
     T visitAssignmentNode(AssignmentNode node);
+
 
     /**
      * Additive

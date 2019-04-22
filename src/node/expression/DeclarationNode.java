@@ -1,5 +1,7 @@
 package node.expression;
 
+import node.RootNode;
+import node.structure.FunctionNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 

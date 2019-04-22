@@ -1,7 +1,5 @@
 package node.primary;
 
-import node.RootNode;
-import node.structure.ParameterNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 

@@ -1,4 +1,4 @@
-package node.structure;
+package node.scope;
 
 import node.RootNode;
 import visitor.ASTVisitor;

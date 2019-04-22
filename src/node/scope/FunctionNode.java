@@ -1,4 +1,4 @@
-package node.structure;
+package node.scope;
 
 import gen.Ardu3kParser;
 import node.RootNode;

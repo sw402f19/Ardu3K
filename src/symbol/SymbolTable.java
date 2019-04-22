@@ -4,10 +4,8 @@ import node.RootNode;
 import node.expression.DeclarationNode;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
-import node.structure.DefineNode;
-import node.structure.DefinesNode;
-import node.structure.FunctionNode;
-import node.structure.ParameterNode;
+import node.scope.DefineNode;
+import node.scope.FunctionNode;
 
 import java.util.HashMap;
 

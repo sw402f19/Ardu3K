@@ -17,7 +17,7 @@ import node.expression.relation.LesserNode;
 import node.expression.unary.UnaryNode;
 import node.primary.*;
 import node.statement.*;
-import node.structure.*;
+import node.scope.*;
 
 public interface ASTVisitor<T> {
     T visitChildren(RootNode node);

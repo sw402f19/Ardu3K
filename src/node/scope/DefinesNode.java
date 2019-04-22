@@ -1,7 +1,6 @@
-package node.structure;
+package node.scope;
 
 import node.RootNode;
-import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 

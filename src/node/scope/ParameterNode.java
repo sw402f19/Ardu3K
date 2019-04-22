@@ -1,24 +1,27 @@
-package node.structure;
+package node.scope;
 
 import gen.Ardu3kParser;
 import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class LoopNode extends RootNode {
+public class ParameterNode extends RootNode {
 
-    public LoopNode(Ardu3kParser.LoopContext ctx) {
+    public ParameterNode() {
+    }
+
+    public ParameterNode(Ardu3kParser.ParameterContext ctx) {
         super(ctx);
     }
 
     @Override
     public String toString() {
-        return "Loop";
+        return "Parameter";
     }
 
     @Override
     public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitLoopNode(this);
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitParameterNode(this);
         else return visitor.visitChildren(this);
     }
 }

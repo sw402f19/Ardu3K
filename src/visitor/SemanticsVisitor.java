@@ -4,9 +4,8 @@ import node.RootNode;
 import node.expression.*;
 import node.expression.type.IllegalTypeException;
 import node.primary.IdentifierNode;
-import node.primary.UndefinedNode;
 import node.statement.*;
-import node.structure.*;
+import node.scope.*;
 import symbol.SymbolTable;
 
 public class SemanticsVisitor extends BaseASTVisitor<RootNode> {

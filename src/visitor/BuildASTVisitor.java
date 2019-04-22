@@ -10,7 +10,7 @@ import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.statement.*;
-import node.structure.*;
+import node.scope.*;
 import node.primary.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;

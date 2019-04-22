@@ -1,14 +1,20 @@
 package node.expression;
 
 import node.RootNode;
+import visitor.ASTVisitor;
+import visitor.BaseASTVisitor;
 
 public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode {
 
     public RootNode getLeft() {
-        return children.get(0);
+        if (children.size() > 0) {
+            return children.get(0);
+        } else return null;
     }
     public RootNode getRight() {
-        return children.get(1);
+        if (children.size() > 1) {
+            return children.get(1);
+        } else return null;
     }
     public void setLeft(RootNode node) {
         if(children.size() > 0)
@@ -21,5 +27,11 @@ public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode
             children.set(1, node);
         else
             children.add(node);
+    }
+
+    @Override
+    public <T> T accept(ASTVisitor<? extends T> visitor) {
+        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitAbstractInfixExpressionNode(this);
+        else return visitor.visitChildren(this);
     }
 }

@@ -5,8 +5,6 @@ import visitor.BaseASTVisitor;
 
 import java.util.ArrayList;
 
-enum TYPE {INT, DOUBLE, STRING, TIME}
-
 @SuppressWarnings (value="unchecked")
 public abstract class RootNode implements Node {
 

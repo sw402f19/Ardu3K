@@ -10,6 +10,7 @@ import node.expression.additive.MinusNode;
 import node.expression.additive.PlusNode;
 import node.expression.condition.*;
 import node.expression.multiplicative.DivideNode;
+import node.expression.multiplicative.ExponentialNode;
 import node.expression.multiplicative.ModulusNode;
 import node.expression.multiplicative.TimesNode;
 import node.expression.relation.GreaterEqualNode;
@@ -136,6 +137,8 @@ public interface ASTVisitor<T> {
     T visitTimesNode(TimesNode node);
 
     T visitModulusNode(ModulusNode node);
+
+    T visitExponentialNode(ExponentialNode node);
 
     /**
      * Relational

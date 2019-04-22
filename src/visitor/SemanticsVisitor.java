@@ -26,8 +26,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
                         } catch (IllegalTypeException e) {
                             System.out.println(e.getMessage());
                         }
-                    else
-                        dast = n.accept(this);
+                    dast = n.accept(this);
                 }
         }
         return dast;
@@ -97,7 +96,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     public RootNode visitLoopNode(LoopNode node) {
         symbolTable.openScope();
         super.visit(node);
-        symbolTable.closeScope();
+        //symbolTable.closeScope();
         return node;
     }
 
@@ -121,6 +120,14 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     public RootNode visitIfNode(IfNode node) {
         symbolTable.openScope();
         super.visit(node);
+        symbolTable.closeScope();
+        return node;
+    }
+
+    @Override
+    public RootNode visitBlockNode(BlockNode node) {
+        symbolTable.openScope();
+        super.visitBlockNode(node);
         symbolTable.closeScope();
         return node;
     }
@@ -162,16 +169,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     @Override
     public RootNode visitParameterNode(ParameterNode node) {
         symbolTable.openScope();
-
-        if ()
-
         node.children.forEach(e -> symbolTable.enterSymbol((IdentifierNode) e));
-
-
-
-
-
-
         return super.visitParameterNode(node);
     }
 

@@ -21,7 +21,7 @@ import node.expression.type.NumeralType;
 import node.primary.IdentifierNode;
 import symbol.SymbolTable;
 
-public class TypeChecker extends BaseASTVisitor<RootNode> {
+public class TypeVisitor extends BaseASTVisitor<RootNode> {
 
     SymbolTable symbolTable = SymbolTable.getInstance();
 

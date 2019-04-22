@@ -1,10 +1,11 @@
 package node.primary;
 
 import node.RootNode;
+import node.expression.type.BooleanType;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class BoolNode extends AbstractPrimaryNode {
+public class BoolNode extends AbstractPrimaryNode implements BooleanType {
     public boolean value;
 
     public BoolNode(boolean value) {

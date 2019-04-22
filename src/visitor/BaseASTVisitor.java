@@ -10,6 +10,7 @@ import node.expression.additive.MinusNode;
 import node.expression.additive.PlusNode;
 import node.expression.condition.*;
 import node.expression.multiplicative.DivideNode;
+import node.expression.multiplicative.ExponentialNode;
 import node.expression.multiplicative.ModulusNode;
 import node.expression.multiplicative.TimesNode;
 import node.expression.relation.GreaterEqualNode;
@@ -133,6 +134,11 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
     @Override
     public T visitModulusNode(ModulusNode node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public T visitExponentialNode(ExponentialNode node) {
         return visitChildren(node);
     }
 

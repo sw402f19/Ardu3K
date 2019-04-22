@@ -23,7 +23,7 @@ public class Main {
 
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
-            dast = new SemanticsVisitor().visit(ast);
+            ast.accept(new SemanticsVisitor());
             System.out.println("Im here");
 
         } catch (Exception e) {

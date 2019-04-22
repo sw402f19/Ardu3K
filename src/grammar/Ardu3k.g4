@@ -88,9 +88,9 @@ assignment
     : left=identifier ASSIGN right=assignment_expr
     ;
 list_assignment
-    : left=identifier ASSIGN EMPTYLIST                                  #emptyListAssignment
-    | left=identifier ASSIGN LBRACKET element=primary RBRACKET                  #singleListAssignment
-    | left=identifier ASSIGN LBRACKET elements=list_element* lastElement=primary RBRACKET    #listAssignment
+    : left=identifier ASSIGN EMPTYLIST                                                      #emptyListAssignment
+    | left=identifier ASSIGN LBRACKET element=primary RBRACKET                              #singleListAssignment
+    | left=identifier ASSIGN LBRACKET elements=list_element* lastElement=primary RBRACKET   #listAssignment
     ;
 list_element
     : element=primary COMMA

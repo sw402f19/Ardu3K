@@ -18,4 +18,5 @@ public class ListNode extends RootNode {
     public void addElement(RootNode node) { elements.add(node); }
     public void setElement (int index, RootNode node) { elements.set(index, node); }
     public RootNode getElement (int index) { return elements.get(index); }
+    public ArrayList<RootNode> getElementsCpy () { return new ArrayList<RootNode>(elements); }
 }

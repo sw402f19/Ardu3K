@@ -1,6 +1,7 @@
 package visitor;
 
 import node.RootNode;
+import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.additive.MinusNode;
 import node.expression.additive.PlusNode;
@@ -135,6 +136,19 @@ public class TypeChecker extends BaseASTVisitor<RootNode> {
         else
             return node;
     }
+
+    @Override
+    public RootNode visitListNode(ListNode node) {
+        int i = 0;
+        for (RootNode n: node.getElementsCpy()){
+            if (!(n.getClass().getSimpleName().equals(node.getElement(0).getClass().getSimpleName()))){
+                throw new IllegalTypeException("Illegal type ["+n.getClass().getSimpleName()+"] at index "+i+" in list");
+            }
+            i++;
+        }
+        return node;
+    }
+
     public void isNumeral(AbstractInfixExpressionNode node) {
         if(!(node.getLeft() instanceof NumeralType))
             throw new IllegalTypeException("Illegal type: "+node.getLeft().getClass().getSimpleName()+

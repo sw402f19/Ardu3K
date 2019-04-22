@@ -81,19 +81,19 @@ expression
     ;
 assignment_expr
     : conditional_expr
+    | list_assignment
     | assignment
     ;
 assignment
-    : list_assignment
-    | left=identifier ASSIGN right=assignment_expr
+    : left=identifier ASSIGN right=assignment_expr
     ;
 list_assignment
-    : left=identifier ASSIGN EMPTYLIST
-    | left=identifier ASSIGN LBRACKET primary RBRACKET
-    | left=identifier ASSIGN LBRACKET list_element* primary RBRACKET
+    : left=identifier ASSIGN EMPTYLIST                                  #emptyListAssignment
+    | left=identifier ASSIGN LBRACKET element=primary RBRACKET                  #singleListAssignment
+    | left=identifier ASSIGN LBRACKET elements=list_element* lastElement=primary RBRACKET    #listAssignment
     ;
 list_element
-    : primary COMMA
+    : element=primary COMMA
     ;
 conditional_expr
     : conditional_or_expr

@@ -27,7 +27,7 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
                 if (n != null) {
                     if(n instanceof AbstractInfixExpressionNode)
                         try {
-                            dast = ((AbstractInfixExpressionNode) n.accept(new TypeChecker()));
+                            dast = ((AbstractInfixExpressionNode) n.accept(new TypeVisitor()));
                         } catch (IllegalTypeException e) {
                             System.out.println(e.getMessage());
                         }

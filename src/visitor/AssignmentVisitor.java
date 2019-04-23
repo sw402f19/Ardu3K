@@ -10,15 +10,16 @@ public class AssignmentVisitor extends BaseASTVisitor<RootNode> {
     private RootNode expectedType;
     private SymbolTable symbolTable = SymbolTable.getInstance();
 
-    @Override
-    public RootNode visitAssignmentNode(AssignmentNode node) {
+    public RootNode visit(AssignmentNode node) throws IllegalTypeException {
         expectedType = symbolTable.retrieveSymbol(node.getLeft()).getType();
         RootNode expressionTree = visit(node.getRight());
-        if(expressionTree.getClass() != null &&
-                isInstanceOf(expressionTree.getClass(), expectedType))
+
+        if(expressionTree == null)
+            throw new IllegalTypeException("Expression returned null, incomplete visit methods");
+        if(isInstanceOf(expressionTree.getClass(), expectedType))
             return node;
         else
-            throw new IllegalTypeException(expressionTree.getLine()+" Illegal type for "+node.toString());
+            throw new IllegalTypeException(node.getLine()+" Illegal type: "+expressionTree.toString()+" for "+node.toString());
     }
 
 

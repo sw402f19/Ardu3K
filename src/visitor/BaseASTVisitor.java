@@ -7,17 +7,12 @@ import node.expression.AbstractExpressionNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
+import node.expression.additive.AbstractInfixAdditiveNode;
 import node.expression.additive.MinusNode;
 import node.expression.additive.PlusNode;
 import node.expression.condition.*;
-import node.expression.multiplicative.DivideNode;
-import node.expression.multiplicative.ExponentialNode;
-import node.expression.multiplicative.ModulusNode;
-import node.expression.multiplicative.TimesNode;
-import node.expression.relation.GreaterEqualNode;
-import node.expression.relation.GreaterNode;
-import node.expression.relation.LesserEqualNode;
-import node.expression.relation.LesserNode;
+import node.expression.multiplicative.*;
+import node.expression.relation.*;
 import node.expression.unary.UnaryNode;
 import node.primary.*;
 import node.statement.*;
@@ -28,6 +23,15 @@ import java.lang.reflect.Method;
 
 public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
+    public T visit(Node node) {
+        try {
+            return this.dispatch(node);
+        } catch (Throwable t) {
+            System.out.println(t.getMessage());
+        }
+        return null;
+    }
+
     public T visitChildren(RootNode node){
 
         T dast = null;
@@ -35,30 +39,33 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
         if(node.children.size() > 0) {
             for (RootNode n : node.children)
                 if (n != null) {
-                    dast = n.accept(this);
+                    dast = visit(n);
                 }
         }
         return dast;
     }
-    public T visit(RootNode node) {
+    public T dispatch(Node node) throws Throwable {
         try {
             Method m = findMethod(node);
             Object o = m.invoke(this, node);
-            return (T) o;
-        } catch (IllegalAccessException | InvocationTargetException e) {
+            if(o != null)
+                return (T) o;
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
         } catch (NoSuchMethodException m) {
-            return visitChildren(node);
+            return visitChildren((RootNode) node);
         }
-        return null;
+        return visitChildren((RootNode) node);
     }
 
-    private Method findMethod(RootNode n) throws NoSuchMethodException {
-        String methodName = "accept";
+    public Method findMethod(Node n) throws NoSuchMethodException {
+        String methodName = "visit";
         Class node = n.getClass();
-        while (isAncestorOf("node.RootNode", node)) {
+        while (isAncestorOf("node.Node", node)) {
             Class visitor = getClass();
-            while (isAncestorOf("visitor.ASTVisitor", visitor)) {
+            while (isAncestorOf("visitor.BaseASTVisitor", visitor)) {
                 try {
                     Method method = visitor.getDeclaredMethod(methodName,
                             node);
@@ -68,266 +75,17 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
                 }
             }
             node = node.getSuperclass();
+            if(node.equals(RootNode.class))
+                throw new NoSuchMethodException();
         }
         throw new NoSuchMethodException("No declared accept method for any subclass");
     }
-    private boolean isAncestorOf(String ancestorName, Class descendant) {
+    public boolean isAncestorOf(String ancestorName, Class descendant) {
         try{
             return Class.forName(ancestorName).isAssignableFrom(descendant);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
             return false;
         }
-    }
-
-    @Override
-    public T visitUndefindedNode(UndefinedNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitRootNode(RootNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitListNode(ListNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitProgramNode(ProgramNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitFunctionNode(FunctionNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitDefineNode(DefineNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitLoopNode(LoopNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitSetupNode(SetupNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitAbstractNumberNode(AbstractNumberNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitAbstractInfixExpressionNode(AbstractInfixExpressionNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitAssignmentNode(AssignmentNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitMinusNode(MinusNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitPlusNode(PlusNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitAndNode(AndNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitEqualNode(EqualNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitNotNode(NotNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitOrNode(OrNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitXorNode(XorNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitDivideNode(DivideNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitTimesNode(TimesNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitModulusNode(ModulusNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitExponentialNode(ExponentialNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitGreaterEqualNode(GreaterEqualNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitGreaterNode(GreaterNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitLesserEqualNode(LesserEqualNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitLesserNode(LesserNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitUnaryNode(UnaryNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitAbstractPrimaryNode(AbstractPrimaryNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitBoolNode(BoolNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitIdentifierNode(IdentifierNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitIntegerNode(IntegerNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitRealNode(RealNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitStringNode(StringNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitStringValNode(StringValNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitAbstractStatementNode(AbstractStatementNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitArgumentNode(ArgumentNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitCaseNode(CaseNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitDefaultNode(DefaultNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitElifNode(ElifNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitForNode(ForNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitFunctionStmtNode(FunctionStmtNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitIfNode(IfNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitSwitchNode(SwitchNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitDeclarationNode(DeclarationNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitAbstractExpressionNode(AbstractExpressionNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitDefinesNode(DefinesNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitFunctionsNode(FunctionsNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitParameterNode(ParameterNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitWhileNode(WhileNode node) {
-        return visitChildren(node);
-    }
-
-    @Override
-    public T visitBlockNode(BlockNode node) {
-        return visitChildren(node);
     }
 
 }

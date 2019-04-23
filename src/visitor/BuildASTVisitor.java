@@ -185,29 +185,30 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitEmptyListAssignment(Ardu3kParser.EmptyListAssignmentContext ctx) {
-        ListNode node = new ListNode();
-        return node;
+    public RootNode visitPrimaryListAssignment(Ardu3kParser.PrimaryListAssignmentContext ctx) {
+        return visitList_assignment(ctx.child);
     }
 
     @Override
-    public RootNode visitSingleListAssignment(Ardu3kParser.SingleListAssignmentContext ctx) {
+    public RootNode visitList_assignment(Ardu3kParser.List_assignmentContext ctx) {
         ListNode node = new ListNode();
-        node.addElement(visit(ctx.element));
-        return node;
-    }
-
-    @Override
-    public RootNode visitListAssignment(Ardu3kParser.ListAssignmentContext ctx) {
-        ListNode node = new ListNode();
-        node.addElement(visit(ctx.elements));
-        node.addElement(visit(ctx.lastElement));
+        node.setID(visit(ctx.id));
+        node.addFirstElement(visit(ctx.elements));
         return node;
     }
 
     @Override
     public RootNode visitList_element(Ardu3kParser.List_elementContext ctx) {
-        return visit(ctx.element);
+        ListElement node = new ListElement();
+        return visitList_element(ctx, node);
+    }
+
+    public RootNode visitList_element(Ardu3kParser.List_elementContext ctx, ListElement node){
+        node.children.add(visit(ctx.element));
+        if (ctx.next != null){
+            visitList_element(ctx.next, node);
+        }
+        return node;
     }
 
     @Override
@@ -328,11 +329,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitPrimaryLexprR(Ardu3kParser.PrimaryLexprRContext ctx) {
         return visit(ctx.expression());
-    }
-
-    @Override
-    public RootNode visitPrimaryEmptyList(Ardu3kParser.PrimaryEmptyListContext ctx) {
-        return new ListNode();
     }
 
     @Override

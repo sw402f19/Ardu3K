@@ -81,19 +81,10 @@ expression
     ;
 assignment_expr
     : conditional_expr
-    | list_assignment
     | assignment
     ;
 assignment
     : left=identifier ASSIGN right=assignment_expr
-    ;
-list_assignment
-    : left=identifier ASSIGN EMPTYLIST                                                      #emptyListAssignment
-    | left=identifier ASSIGN LBRACKET element=primary RBRACKET                              #singleListAssignment
-    | left=identifier ASSIGN LBRACKET elements=list_element* lastElement=primary RBRACKET   #listAssignment
-    ;
-list_element
-    : element=primary COMMA
     ;
 conditional_expr
     : conditional_or_expr
@@ -146,7 +137,14 @@ primary
     | LPAR child=expression RPAR                                    #primaryLexprR
     | child=function_stmt                                           #primaryFuncStmt
     | child=list_expr                                               #primaryListExpr
-    | child=EMPTYLIST                                               #primaryEmptyList
+    | child=list_assignment                                         #primaryListAssignment
+    ;
+list_assignment
+    : id=identifier ASSIGN LBRACKET elements=list_element? RBRACKET
+    ;
+list_element
+    : element=primary COMMA next=list_element
+    | element=primary
     ;
 list_expr
     : identifier DOT list_stmt
@@ -238,7 +236,6 @@ GET: 'get';
 REMOVE: 'remove';
 ADD: 'add';
 SIZE: 'size';
-EMPTYLIST: '[]';
 LBRACKET: '[';
 RBRACKET: ']';
 LETTER: [a-zA-Z];

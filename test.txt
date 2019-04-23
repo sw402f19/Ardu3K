@@ -38,6 +38,6 @@ loop () = {
     }
 
 }
-func (a, d, d, d, g, hf) = {
+func (a d d d, g, hf) = {
     a = 10;
 }

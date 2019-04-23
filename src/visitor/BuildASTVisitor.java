@@ -99,7 +99,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override public RootNode visitWhile_stmt(Ardu3kParser.While_stmtContext ctx) {
         WhileNode node = new WhileNode();
         node.setExpressionNode(visitExpression(ctx.expr));
-        node.setStmt(visitLoop_stmt(ctx.loop_stmt()));
+        node.setStmt(visit(ctx.body));
         return node;
     }
 
@@ -108,26 +108,9 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         ForNode node = new ForNode();
         node.setExpressionNode(visitExpression(ctx.expr));
         node.setValue(visitNumber(ctx.value));
-        node.setStmt(visitLoop_stmt(ctx.loop_stmt()));
+        node.setStmt(visit(ctx.body));
         return node;
     }
-
-    @Override
-    public RootNode visitLoop_stmt(Ardu3kParser.Loop_stmtContext ctx) {
-        if (ctx.brk != null){
-            return new BreakNode();
-        } else if (ctx.contin != null){
-            return new ContinueNode();
-        } else return super.visitLoop_stmt(ctx);
-    }
-
-    @Override
-    public RootNode visitLoop_block(Ardu3kParser.Loop_blockContext ctx) {
-        BlockNode node = new BlockNode();
-        collectChildren(node, ctx.loop_stmt());
-        return node;
-    }
-
     @Override
     public RootNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
         SwitchNode node = new SwitchNode();
@@ -188,6 +171,19 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         if(ctx.right != null)
             visitArgument(ctx.right, node);
         return node;
+    }
+    @Override
+    public RootNode visitNotailStatement(Ardu3kParser.NotailStatementContext ctx) {
+        switch (ctx.notail.getType()) {
+                case Ardu3kParser.RETURN:
+                    return new ReturnNode(visit(ctx.expression_stmt()), ctx);
+                case Ardu3kParser.BREAK:
+                    return new BreakNode(ctx);
+                case Ardu3kParser.CONTINUE:
+                    return new ContinueNode(ctx);
+                    default:
+                        return null;
+        }
     }
 
     @Override

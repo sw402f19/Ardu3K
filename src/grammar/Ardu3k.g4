@@ -26,12 +26,14 @@ parameter
     | id=identifier
     ;
 stmt
-    : block
-    | iterative_stmt
-    | selection_stmt
-    | function_stmt
-    | expression_stmt
-    | RETURN expression
+    : block                                                         #statement
+    | iterative_stmt                                                #statement
+    | selection_stmt                                                #statement
+    | function_stmt                                                 #statement
+    | expression_stmt                                               #statement
+    | notail=RETURN expression_stmt                                 #notailStatement
+    | notail=BREAK SEMI                                             #notailStatement
+    | notail=CONTINUE SEMI                                          #notailStatement
     ;
 block
     : LCUR body=stmt* RCUR
@@ -41,23 +43,10 @@ iterative_stmt
     | while_stmt
     ;
 for_stmt
-    : FOR expr=expression TO value=number DO body=loop_stmt
+    : FOR expr=expression TO value=number DO body=stmt
     ;
 while_stmt
-    : WHILE expr=expression DO body=loop_stmt
-    ;
-loop_stmt
-    : loop_block
-    | brk=BREAK
-    | contin=CONTINUE
-    | iterative_stmt
-    | selection_stmt
-    | function_stmt
-    | expression_stmt
-    | RETURN expression
-    ;
-loop_block
-    : LCUR body=loop_stmt* RCUR
+    : WHILE expr=expression DO body=stmt
     ;
 selection_stmt
     : switch_stmt

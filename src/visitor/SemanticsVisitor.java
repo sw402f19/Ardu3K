@@ -5,8 +5,8 @@ import node.expression.*;
 import node.expression.type.IllegalTypeException;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
-import node.statement.*;
 import node.scope.*;
+import node.statement.control.*;
 import symbol.SymbolTable;
 
 public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
@@ -67,34 +67,10 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
     public RootNode visit(LoopNode node) {
         symbolTable.openScope();
         visitChildren(node);
-        //symbolTable.closeScope();
-        return node;
-    }
-    public RootNode visit(ForNode node) {
-        symbolTable.openScope();
-        visitChildren(node);
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(SwitchNode node) {
-        symbolTable.openScope();
-        visitChildren(node);
-        symbolTable.closeScope();
-        return node;
-    }
-    public RootNode visit(IfNode node) {
-        symbolTable.openScope();
-        visitChildren(node);
-        symbolTable.closeScope();
-        return node;
-    }
-    public RootNode visit(BlockNode node) {
-        symbolTable.openScope();
-        visitChildren(node);
-        symbolTable.closeScope();
-        return node;
-    }
-    public RootNode visit(ElifNode node) {
+    public RootNode visit(AbstractControlNode node) {
         symbolTable.openScope();
         visitChildren(node);
         symbolTable.closeScope();

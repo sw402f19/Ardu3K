@@ -1,5 +1,6 @@
 package node.composite;
 
+import gen.Ardu3kParser;
 import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
@@ -7,20 +8,17 @@ import visitor.BaseASTVisitor;
 import java.util.ArrayList;
 
 public class ListNode extends RootNode {
+    public ListNode(Ardu3kParser.List_assignmentContext ctx) {
+        super(ctx);
+    }
+
     @Override
     public String toString() { return "[LIST]"; }
-
-    public void setID(RootNode node){
-        if (children.size() > 0){
-            children.set(0, node);
-        } else children.add(node);
-    }
-    public RootNode getID(){ return children.get(0); }
 
     public void addFirstElement(RootNode node){
         if (children.size() != 0){
             children.add(node);
-        } else children.add(children.size(), node);
+        } else children.add(node);
     }
     // Throws exception if invalid ID
     public RootNode getFirstElement() {

@@ -27,9 +27,9 @@ parameter
     ;
 stmt
     : block                                                         #statement
+    | function_stmt                                                 #statement
     | iterative_stmt                                                #statement
     | selection_stmt                                                #statement
-    | function_stmt                                                 #statement
     | expression_stmt                                               #statement
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK SEMI                                             #notailStatement
@@ -42,6 +42,9 @@ iterative_stmt
     : for_stmt
     | while_stmt
     ;
+/** todo ANTLR recognizes the token TO before identifier toggle.
+  * making the function 'toggle' unusable.
+  */
 for_stmt
     : FOR expr=expression TO value=number DO body=stmt
     ;
@@ -135,14 +138,14 @@ unary_expr
 
 primary
     : child=literal                                                 #primaryLit
+    | child=function_stmt                                           #primaryFuncStmt
     | child=identifier                                              #primaryId
     | LPAR child=expression RPAR                                    #primaryLexprR
-    | child=function_stmt                                           #primaryFuncStmt
     | child=list_expr                                               #primaryListExpr
     | child=list_assignment                                         #primaryListAssignment
     ;
 list_assignment
-    : id=identifier ASSIGN LBRACKET elements=list_element? RBRACKET
+    : LBRACKET elements=list_element? RBRACKET
     ;
 list_element
     : element=primary COMMA next=list_element
@@ -190,7 +193,10 @@ bool
 
 
 
-
+LETTER: [a-zA-Z];
+REAL: '-'?DIGIT+ DOT DIGIT+;
+INTEGER: '-'?DIGIT+;
+DIGIT: [0-9];
 DEFINE: '#'?'define';
 DO : 'do';
 SETUP : 'setup';
@@ -228,7 +234,7 @@ FOR: 'for' ;
 WHILE: 'while';
 BREAK: 'break;';
 CONTINUE: 'continue;';
-TO: 'to'  ;
+TO: 'to';
 SEMI: ';';
 IF: 'if'  ;
 ELSE: 'else';
@@ -242,7 +248,4 @@ ADD: 'add';
 SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
-LETTER: [a-zA-Z];
-REAL: '-'?DIGIT+ DOT DIGIT+;
-INTEGER: '-'?DIGIT+;
-DIGIT: [0-9];
+

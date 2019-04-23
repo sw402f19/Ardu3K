@@ -72,7 +72,8 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitFunction(Ardu3kParser.FunctionContext ctx) {
         FunctionNode node = new FunctionNode(ctx);
         node.setId(visit(ctx.identifier()));
-        node.setParameter(visit(ctx.parameter()));
+        if(ctx.para != null)
+            node.setParameter(visit(ctx.parameter()));
         node.setBlock(visit(ctx.block()));
         return (node.children.size() > 0 ? node : null);
     }
@@ -156,7 +157,8 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitFunction_stmt(Ardu3kParser.Function_stmtContext ctx) {
         FunctionStmtNode node = new FunctionStmtNode();
         node.setId(visit(ctx.id));
-        node.setArguments(visit(ctx.args));
+        if(ctx.args != null)
+            node.setArguments(visit(ctx.args));
         return node;
     }
 
@@ -200,26 +202,14 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitPrimaryListAssignment(Ardu3kParser.PrimaryListAssignmentContext ctx) {
-        return visitList_assignment(ctx.child);
-    }
-
-    @Override
     public RootNode visitList_assignment(Ardu3kParser.List_assignmentContext ctx) {
-        ListNode node = new ListNode();
-        node.setID(visit(ctx.id));
+        ListNode node = new ListNode(ctx);
         if(ctx.elements != null)
-            node.addFirstElement(visit(ctx.elements));
+            return visitList_element(ctx.elements, node);
         return node;
     }
 
-    @Override
-    public RootNode visitList_element(Ardu3kParser.List_elementContext ctx) {
-        ListElement node = new ListElement();
-        return visitList_element(ctx, node);
-    }
-
-    public RootNode visitList_element(Ardu3kParser.List_elementContext ctx, ListElement node){
+    public RootNode visitList_element(Ardu3kParser.List_elementContext ctx, ListNode node){
         node.children.add(visit(ctx.element));
         if (ctx.next != null){
             visitList_element(ctx.next, node);

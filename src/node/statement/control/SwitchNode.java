@@ -1,10 +1,8 @@
-package node.statement;
+package node.statement.control;
 
 import node.RootNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
-public class SwitchNode extends AbstractStatementNode {
+public class SwitchNode extends AbstractControlNode {
 
     @Override
     public String toString() {

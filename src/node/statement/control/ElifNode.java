@@ -1,8 +1,7 @@
-package node.statement;
+package node.statement.control;
 
 import node.RootNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
+import node.statement.control.IfNode;
 
 public class ElifNode extends IfNode {
 

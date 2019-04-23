@@ -1,10 +1,8 @@
-package node.statement;
+package node.statement.control;
 
 import node.RootNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
-public class ForNode extends AbstractStatementNode {
+public class ForNode extends AbstractControlNode {
     @Override
     public String toString() {
         return "for to do ";

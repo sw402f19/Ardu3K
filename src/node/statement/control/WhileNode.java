@@ -1,10 +1,8 @@
-package node.statement;
+package node.statement.control;
 
 import node.RootNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
-public class WhileNode extends AbstractStatementNode {
+public class WhileNode extends AbstractControlNode {
     @Override
     public String toString() { return "While do"; }
 

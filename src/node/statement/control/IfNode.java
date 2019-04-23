@@ -1,10 +1,8 @@
-package node.statement;
+package node.statement.control;
 
 import node.RootNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
-public class IfNode extends AbstractStatementNode {
+public class IfNode extends AbstractControlNode {
 
     @Override
     public String toString() {

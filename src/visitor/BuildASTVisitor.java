@@ -72,8 +72,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitFunction(Ardu3kParser.FunctionContext ctx) {
         FunctionNode node = new FunctionNode(ctx);
         node.setId(visit(ctx.identifier()));
-        if(ctx.para != null)
-            node.setParameter(visit(ctx.parameter()));
+        node.setParameter(ctx.para != null ? visit(ctx.para) : new ParameterNode());
         node.setBlock(visit(ctx.block()));
         return (node.children.size() > 0 ? node : null);
     }

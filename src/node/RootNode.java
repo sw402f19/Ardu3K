@@ -1,10 +1,7 @@
 package node;
 
-import gen.Ardu3kParser;
-import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import java.util.ArrayList;
 
 @SuppressWarnings (value="unchecked")

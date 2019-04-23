@@ -2,22 +2,6 @@ package visitor;
 
 import node.Node;
 import node.RootNode;
-import node.composite.ListNode;
-import node.expression.AbstractExpressionNode;
-import node.expression.AbstractInfixExpressionNode;
-import node.expression.AssignmentNode;
-import node.expression.DeclarationNode;
-import node.expression.additive.AbstractInfixAdditiveNode;
-import node.expression.additive.MinusNode;
-import node.expression.additive.PlusNode;
-import node.expression.condition.*;
-import node.expression.multiplicative.*;
-import node.expression.relation.*;
-import node.expression.unary.UnaryNode;
-import node.primary.*;
-import node.statement.*;
-import node.scope.*;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

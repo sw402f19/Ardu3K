@@ -15,10 +15,11 @@ import node.expression.relation.GreaterNode;
 import node.expression.relation.LesserEqualNode;
 import node.expression.relation.LesserNode;
 import node.expression.type.BooleanType;
-import node.expression.type.ExpressionType;
 import node.expression.type.IllegalTypeException;
 import node.expression.type.NumeralType;
+import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
+import node.primary.ListElement;
 import symbol.SymbolTable;
 
 public class TypeVisitor extends BaseASTVisitor<RootNode> {
@@ -139,8 +140,27 @@ public class TypeVisitor extends BaseASTVisitor<RootNode> {
 
     @Override
     public RootNode visitListNode(ListNode node) {
-        // TODO: Make this :)
+        RootNode firstElement = node.getFirstElement();
+
+        if (firstElement instanceof AbstractPrimaryNode){
+            visitListElement(firstElement, firstElement);
+        } else throw new IllegalTypeException("INVALID first type in list");
+
         return node;
+    }
+
+    // Visitor used to ensure that all elements is the same type as the first element in a ListNode
+    public void visitListElement(RootNode element, RootNode firstElement) {
+        if (element != null) {
+            if (element.getClass().getSimpleName().equals(firstElement.getClass().getSimpleName())){
+
+                // Recursively run down the list and check if types are compatible
+                if (element.children.size() > 0){
+                    visitListElement(element.children.get(0), firstElement);
+                }
+
+            } else throw new IllegalTypeException("Types in list are not the same!");
+        }
     }
 
     public void isNumeral(AbstractInfixExpressionNode node) {

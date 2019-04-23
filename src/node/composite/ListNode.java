@@ -23,15 +23,20 @@ public class ListNode extends RootNode {
     }
     public RootNode getID(){ return children.get(0); }
 
-    public void addValue(RootNode node){
+    public void addFirstElement(RootNode node){
         if (children.size() != 0){
             children.add(node);
         } else children.add(children.size(), node);
     }
     // Throws exception if invalid ID
-    public RootNode getValue(int index) throws Exception {
-        if (children.size() < index){
-            return  children.get(index);
-        } else throw new Exception("INVALID index of list value");
+    public RootNode getFirstElement() {
+        try {
+            if (children.size() > 1) {
+                return children.get(1);
+            } else throw new Exception("INVALID index of list value");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

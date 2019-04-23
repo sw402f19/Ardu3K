@@ -185,10 +185,15 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
+    public RootNode visitPrimaryListAssignment(Ardu3kParser.PrimaryListAssignmentContext ctx) {
+        return visitList_assignment(ctx.child);
+    }
+
+    @Override
     public RootNode visitList_assignment(Ardu3kParser.List_assignmentContext ctx) {
         ListNode node = new ListNode();
         node.setID(visit(ctx.id));
-        node.addValue(visit(ctx.elements));
+        node.addFirstElement(visit(ctx.elements));
         return node;
     }
 

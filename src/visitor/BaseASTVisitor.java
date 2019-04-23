@@ -48,6 +48,9 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
     }
 
     @Override
+    public T visitListElement(ListElement node) { return visitChildren(node); }
+
+    @Override
     public T visitProgramNode(ProgramNode node) {
         return visitChildren(node);
     }

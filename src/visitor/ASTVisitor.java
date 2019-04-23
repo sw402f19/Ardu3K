@@ -74,6 +74,8 @@ public interface ASTVisitor<T> {
 
     T visitStringValNode(StringValNode node);
 
+    T visitListElement(ListElement node);
+
     /**
      * Statements
      */

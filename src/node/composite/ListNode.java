@@ -7,7 +7,8 @@ import visitor.BaseASTVisitor;
 import java.util.ArrayList;
 
 public class ListNode extends RootNode {
-    private ArrayList<RootNode> elements = new ArrayList<>();
+    @Override
+    public String toString() { return "[LIST]"; }
 
     @Override
     public <T> T accept(ASTVisitor<? extends T> visitor) {
@@ -15,8 +16,22 @@ public class ListNode extends RootNode {
         else return visitor.visitChildren(this);
     }
 
-    public void addElement(RootNode node) { elements.add(node); }
-    public void setElement (int index, RootNode node) { elements.set(index, node); }
-    public RootNode getElement (int index) { return elements.get(index); }
-    public ArrayList<RootNode> getElementsCpy () { return new ArrayList<RootNode>(elements); }
+    public void setID(RootNode node){
+        if (children.size() > 0){
+            children.set(0, node);
+        } else children.add(node);
+    }
+    public RootNode getID(){ return children.get(0); }
+
+    public void addValue(RootNode node){
+        if (children.size() != 0){
+            children.add(node);
+        } else children.add(children.size(), node);
+    }
+    // Throws exception if invalid ID
+    public RootNode getValue(int index) throws Exception {
+        if (children.size() < index){
+            return  children.get(index);
+        } else throw new Exception("INVALID index of list value");
+    }
 }

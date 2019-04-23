@@ -139,13 +139,7 @@ public class TypeVisitor extends BaseASTVisitor<RootNode> {
 
     @Override
     public RootNode visitListNode(ListNode node) {
-        int i = 0;
-        for (RootNode n: node.getElementsCpy()){
-            if (!(n.getClass().getSimpleName().equals(node.getElement(0).getClass().getSimpleName()))){
-                throw new IllegalTypeException("Illegal type ["+n.getClass().getSimpleName()+"] at index "+i+" in list");
-            }
-            i++;
-        }
+        // TODO: Make this :)
         return node;
     }
 

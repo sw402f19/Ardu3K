@@ -49,25 +49,14 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         visit(node.getLoopNode());
         return node;
     }
-    public RootNode visit(SetupNode node) {
-        symbolTable.openScope();
-        visit(node.getBlock());
-        return node;
-    }
 
-    public RootNode visit(DefinesNode node) {
-        symbolTable.openScope();
-        visitChildren(node);
-        return node;
-    }
     public RootNode visit(DefineNode node) {
         symbolTable.enterSymbol(node);
         return node;
     }
-    public RootNode visit(LoopNode node) {
+    public RootNode visit(AbstractScopeNode node) {
         symbolTable.openScope();
         visitChildren(node);
-        symbolTable.closeScope();
         return node;
     }
     public RootNode visit(AbstractControlNode node) {
@@ -83,10 +72,6 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         visit(node.getBlock());
         symbolTable.closeScope();
         return node;
-    }
-    public RootNode visit(FunctionsNode node) {
-        symbolTable.openScope();
-        return visitChildren(node);
     }
     public RootNode visit(ParameterNode node) {
         symbolTable.openScope();

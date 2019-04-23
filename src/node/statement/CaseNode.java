@@ -18,10 +18,4 @@ public class CaseNode extends RootNode {
     public void setExpression(RootNode expression) {
         children.set(0, expression);
     }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitCaseNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

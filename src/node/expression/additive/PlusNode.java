@@ -10,9 +10,4 @@ public class PlusNode extends AbstractInfixAdditiveNode{
         return  " + " ;
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitPlusNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

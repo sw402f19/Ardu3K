@@ -1,6 +1,7 @@
 package node.primary;
 
 import gen.Ardu3kParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
@@ -11,6 +12,7 @@ public class IdentifierNode extends AbstractPrimaryNode {
 
 
     public IdentifierNode(Ardu3kParser.IdentifierContext ctx){
+        super(ctx);
         value = ctx.value.getText();
     }
 
@@ -27,11 +29,5 @@ public class IdentifierNode extends AbstractPrimaryNode {
     @Override
     public int hashCode() {
         return hash(value);
-    }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitIdentifierNode(this);
-        else return visitor.visitChildren(this);
     }
 }

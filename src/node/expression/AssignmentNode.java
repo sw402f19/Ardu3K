@@ -1,5 +1,7 @@
 package node.expression;
 
+import node.RootNode;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
@@ -10,9 +12,18 @@ public class AssignmentNode extends AbstractInfixExpressionNode {
         return "=";
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitAssignmentNode(this);
-        else return visitor.visitChildren(this);
+    public AssignmentNode(RootNode parent) {
+        super(parent);
+    }
+
+    public AssignmentNode(ParserRuleContext ctx) {
+        super(ctx);
+    }
+
+    public AssignmentNode(RootNode parent, ParserRuleContext ctx) {
+        super(parent, ctx);
+    }
+
+    public AssignmentNode() {
     }
 }

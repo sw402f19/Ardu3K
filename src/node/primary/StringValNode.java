@@ -15,9 +15,4 @@ public class StringValNode extends AbstractPrimaryNode{
         return value;
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitStringValNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

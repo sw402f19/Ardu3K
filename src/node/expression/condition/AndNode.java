@@ -10,9 +10,4 @@ public class AndNode extends AbstractInfixConditionalNode{
         return  "AND";
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitAndNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

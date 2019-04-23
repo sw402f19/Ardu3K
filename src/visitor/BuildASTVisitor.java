@@ -10,7 +10,7 @@ import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.statement.*;
-import node.structure.*;
+import node.scope.*;
 import node.primary.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
@@ -40,7 +40,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitDefine(Ardu3kParser.DefineContext ctx) {
-        DefineNode node = new DefineNode();
+        DefineNode node = new DefineNode(ctx);
         node.setId(visit(ctx.id));
         node.setValue(visit(ctx.value));
         return node;
@@ -48,14 +48,14 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
-        SetupNode node = new SetupNode();
+        SetupNode node = new SetupNode(ctx);
         node.setBlock(visit(ctx.block()));
         return (node.children.size() > 0 ? node : null);
     }
 
     @Override
     public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
-        LoopNode node = new LoopNode();
+        LoopNode node = new LoopNode(ctx);
         collectChildren(node, ctx.block().stmt());
         return (node.children.size() > 0 ? node : null);
     }
@@ -67,7 +67,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
     @Override
     public RootNode visitFunction(Ardu3kParser.FunctionContext ctx) {
-        FunctionNode node = new FunctionNode();
+        FunctionNode node = new FunctionNode(ctx);
         node.setId(visit(ctx.identifier()));
         node.setParameter(visit(ctx.parameter()));
         node.setBlock(visit(ctx.block()));
@@ -76,7 +76,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitParameter(Ardu3kParser.ParameterContext ctx) {
-        ParameterNode node = new ParameterNode();
+        ParameterNode node = new ParameterNode(ctx);
         return visitParameter(ctx, node);
     }
     private RootNode visitParameter(Ardu3kParser.ParameterContext ctx, ParameterNode node) {
@@ -194,7 +194,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitAssignment(Ardu3kParser.AssignmentContext ctx) {
-        AssignmentNode node = new AssignmentNode();
+        AssignmentNode node = new AssignmentNode(ctx);
         node.setLeft(visit(ctx.left));
         node.setRight(visit(ctx.right));
         return node;
@@ -354,7 +354,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitString(Ardu3kParser.StringContext ctx) {
-        StringNode node = new StringNode(ctx.string_val());
+        StringNode node = new StringNode(ctx);
         collectChildren(node, ctx.string_val());
         return node;
     }

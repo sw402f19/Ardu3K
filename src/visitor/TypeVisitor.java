@@ -3,17 +3,12 @@ package visitor;
 import node.RootNode;
 import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
+import node.expression.additive.AbstractInfixAdditiveNode;
 import node.expression.additive.MinusNode;
 import node.expression.additive.PlusNode;
 import node.expression.condition.*;
-import node.expression.multiplicative.DivideNode;
-import node.expression.multiplicative.ExponentialNode;
-import node.expression.multiplicative.ModulusNode;
-import node.expression.multiplicative.TimesNode;
-import node.expression.relation.GreaterEqualNode;
-import node.expression.relation.GreaterNode;
-import node.expression.relation.LesserEqualNode;
-import node.expression.relation.LesserNode;
+import node.expression.multiplicative.*;
+import node.expression.relation.*;
 import node.expression.type.BooleanType;
 import node.expression.type.IllegalTypeException;
 import node.expression.type.NumeralType;
@@ -24,119 +19,43 @@ import symbol.SymbolTable;
 
 public class TypeVisitor extends BaseASTVisitor<RootNode> {
 
-    SymbolTable symbolTable = SymbolTable.getInstance();
+    private SymbolTable symbolTable = SymbolTable.getInstance();
 
-    @Override
-    public RootNode visitMinusNode(MinusNode node) {
+    public RootNode visit(AbstractInfixAdditiveNode node) throws IllegalTypeException{
         isNumeral(node);
-        visit(node);
+        visitChildren(node);
         return node;
     }
 
-    @Override
-    public RootNode visitPlusNode(PlusNode node) {
-        isNumeral(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitAndNode(AndNode node) {
+    public RootNode visit(AbstractInfixConditionalNode node) throws IllegalTypeException{
         isBoolean(node);
-        visit(node);
+        visitChildren(node);
         return node;
     }
-
-    @Override
-    public RootNode visitEqualNode(EqualNode node) {
-        isBoolean(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitNotNode(NotNode node) {
-        isBoolean(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitOrNode(OrNode node) {
-        isBoolean(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitXorNode(XorNode node) {
-        isBoolean(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitDivideNode(DivideNode node) {
+    public RootNode visit(AbstractInfixMultiplicativeNode node) throws IllegalTypeException{
         isNumeral(node);
-        visit(node);
+        visitChildren(node);
         return node;
     }
 
-    @Override
-    public RootNode visitTimesNode(TimesNode node) {
+    public RootNode visit(AbstractInfixRelationNode node) throws IllegalTypeException{
         isNumeral(node);
-        visit(node);
+        visitChildren(node);
         return node;
     }
 
-    @Override
-    public RootNode visitModulusNode(ModulusNode node) {
-        isNumeral(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitExponentialNode(ExponentialNode node) {
-        isNumeral(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitGreaterEqualNode(GreaterEqualNode node) {
-        isNumeral(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitGreaterNode(GreaterNode node) {
-        isNumeral(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitLesserEqualNode(LesserEqualNode node) {
-        isNumeral(node);
-        visit(node);
-        return node;
-    }
-
-    @Override
-    public RootNode visitLesserNode(LesserNode node) {
-        isNumeral(node);
-        visit(node);
-        return node;
-    }
-    @Override
-    public RootNode visitIdentifierNode(IdentifierNode node) {
+    public RootNode visit(IdentifierNode node) {
         if(symbolTable.isPresent(node))
             return symbolTable.retrieveSymbol(node).getType();
         else
             return node;
     }
+
+
+
+
+    public void isNumeral(AbstractInfixExpressionNode node) throws IllegalTypeException {
+        checkIdentifierType(node);
 
     @Override
     public RootNode visitListNode(ListNode node) {
@@ -165,18 +84,27 @@ public class TypeVisitor extends BaseASTVisitor<RootNode> {
 
     public void isNumeral(AbstractInfixExpressionNode node) {
         if(!(node.getLeft() instanceof NumeralType))
-            throw new IllegalTypeException("Illegal type: "+node.getLeft().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
         if(!(node.getRight() instanceof NumeralType))
-            throw new IllegalTypeException("Illegal type: "+node.getRight().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
     }
-    public void isBoolean(AbstractInfixExpressionNode node) {
+    public void isBoolean(AbstractInfixExpressionNode node) throws IllegalTypeException {
+        checkIdentifierType(node);
         if(!(node.getLeft() instanceof BooleanType))
-            throw new IllegalTypeException("Illegal type: "+node.getLeft().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
         if(!(node.getRight() instanceof BooleanType))
-            throw new IllegalTypeException("Illegal type: "+node.getRight().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());
+    }
+    private void checkIdentifierType(AbstractInfixExpressionNode n) {
+        if(n.getLeft() instanceof IdentifierNode)
+            n.setLeft(visit((IdentifierNode) n.getLeft()));
+
+        if(n.getRight() instanceof IdentifierNode)
+            n.setRight(visit((IdentifierNode) n.getRight()));
+
     }
 }

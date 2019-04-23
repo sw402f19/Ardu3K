@@ -10,12 +10,6 @@ public class ListNode extends RootNode {
     @Override
     public String toString() { return "[LIST]"; }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitListNode(this);
-        else return visitor.visitChildren(this);
-    }
-
     public void setID(RootNode node){
         if (children.size() > 0){
             children.set(0, node);

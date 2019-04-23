@@ -1,14 +1,15 @@
-package node.statement;
+package node.scope;
 
 import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class ArgumentNode extends RootNode {
+public class DefinesNode extends RootNode {
+
 
     @Override
     public String toString() {
-        return "Argument";
+        return "Defines";
     }
 
 }

@@ -11,6 +11,7 @@ public class IntegerNode extends AbstractNumberNode {
         this.value = value;
     }
     public IntegerNode(Ardu3kParser.NumberContext ctx) {
+        super(ctx);
         this.value = Integer.valueOf(ctx.getText());
     }
     public IntegerNode(String str) {
@@ -22,9 +23,4 @@ public class IntegerNode extends AbstractNumberNode {
         return ""+value;
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitIntegerNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

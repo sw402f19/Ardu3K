@@ -1,10 +1,16 @@
-package node.structure;
+package node.scope;
 
 import node.RootNode;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 public class DefineNode extends RootNode {
+
+
+    public DefineNode(ParserRuleContext ctx) {
+        super(ctx);
+    }
 
     @Override
     public String toString() {
@@ -27,11 +33,5 @@ public class DefineNode extends RootNode {
             children.set(1, value);
         else
             children.add(value);
-    }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitDefineNode(this);
-        else return visitor.visitChildren(this);
     }
 }

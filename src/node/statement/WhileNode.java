@@ -23,10 +23,4 @@ public class WhileNode extends AbstractStatementNode {
         else
             children.add(node);
     }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitWhileNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

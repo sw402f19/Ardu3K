@@ -285,6 +285,12 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
         return visitChildren(node);
     }
 
+    @Override
+    public T visitBreakNode(BreakNode node) { return visitChildren(node); }
+
+    @Override
+    public T visitContinueNode(ContinueNode node) { return visitChildren(node); }
+
     public T visit(RootNode node) {
         return visitChildren(node);
     }

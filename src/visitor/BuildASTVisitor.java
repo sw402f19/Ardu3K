@@ -96,7 +96,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override public RootNode visitWhile_stmt(Ardu3kParser.While_stmtContext ctx) {
         WhileNode node = new WhileNode();
         node.setExpressionNode(visitExpression(ctx.expr));
-        node.setStmt(visitStmt(ctx.stmt()));
+        node.setStmt(visitLoop_stmt(ctx.loop_stmt()));
         return node;
     }
 
@@ -105,7 +105,23 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         ForNode node = new ForNode();
         node.setExpressionNode(visitExpression(ctx.expr));
         node.setValue(visitNumber(ctx.value));
-        node.setStmt(visitStmt(ctx.stmt()));
+        node.setStmt(visitLoop_stmt(ctx.loop_stmt()));
+        return node;
+    }
+
+    @Override
+    public RootNode visitLoop_stmt(Ardu3kParser.Loop_stmtContext ctx) {
+        if (ctx.brk != null){
+            return new BreakNode();
+        } else if (ctx.contin != null){
+            return new ContinueNode();
+        } else return super.visitLoop_stmt(ctx);
+    }
+
+    @Override
+    public RootNode visitLoop_block(Ardu3kParser.Loop_blockContext ctx) {
+        BlockNode node = new BlockNode();
+        collectChildren(node, ctx.loop_stmt());
         return node;
     }
 

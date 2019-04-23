@@ -41,10 +41,23 @@ iterative_stmt
     | while_stmt
     ;
 for_stmt
-    : FOR expr=expression TO value=number DO body=stmt
+    : FOR expr=expression TO value=number DO body=loop_stmt
     ;
 while_stmt
-    : WHILE expr=expression DO body=stmt
+    : WHILE expr=expression DO body=loop_stmt
+    ;
+loop_stmt
+    : loop_block
+    | brk=BREAK
+    | contin=CONTINUE
+    | iterative_stmt
+    | selection_stmt
+    | function_stmt
+    | expression_stmt
+    | RETURN expression
+    ;
+loop_block
+    : LCUR body=loop_stmt* RCUR
     ;
 selection_stmt
     : switch_stmt
@@ -224,6 +237,8 @@ ASSIGN: '=';
 DQUOTE : '"';
 FOR: 'for' ;
 WHILE: 'while';
+BREAK: 'break;';
+CONTINUE: 'continue;';
 TO: 'to'  ;
 SEMI: ';';
 IF: 'if'  ;

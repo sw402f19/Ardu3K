@@ -14,6 +14,9 @@ import node.scope.*;
 import node.primary.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
+import node.statement.BreakNode;
+import node.statement.ContinueNode;
+import node.statement.control.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.ArrayList;
@@ -209,7 +212,8 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitList_assignment(Ardu3kParser.List_assignmentContext ctx) {
         ListNode node = new ListNode();
         node.setID(visit(ctx.id));
-        node.addFirstElement(visit(ctx.elements));
+        if(ctx.elements != null)
+            node.addFirstElement(visit(ctx.elements));
         return node;
     }
 

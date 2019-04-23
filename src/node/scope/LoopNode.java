@@ -5,7 +5,7 @@ import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class LoopNode extends RootNode {
+public class LoopNode extends AbstractScopeNode {
 
     public LoopNode(Ardu3kParser.LoopContext ctx) {
         super(ctx);

@@ -4,5 +4,5 @@ import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class FunctionsNode extends RootNode {
+public class FunctionsNode extends AbstractScopeNode {
 }

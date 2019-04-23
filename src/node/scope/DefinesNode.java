@@ -4,7 +4,7 @@ import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class DefinesNode extends RootNode {
+public class DefinesNode extends AbstractScopeNode {
 
 
     @Override

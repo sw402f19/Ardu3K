@@ -24,7 +24,8 @@ public class Main {
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
             dast = new SemanticsVisitor().visit(ast);
-            System.out.println("Successful :)");
+            System.out.println("==============\nSuccessful :)\n==============\n");
+            ast.print(0);
 
         } catch (Exception e) {
             e.printStackTrace();

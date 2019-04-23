@@ -54,6 +54,10 @@ public interface ASTVisitor<T> {
 
     T visitSetupNode(SetupNode node);
 
+    T visitBreakNode(BreakNode node);
+
+    T visitContinueNode(ContinueNode node);
+
     /**
      * Primaries
      */

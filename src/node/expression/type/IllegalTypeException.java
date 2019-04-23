@@ -1,6 +1,6 @@
 package node.expression.type;
 
-public class IllegalTypeException extends RuntimeException {
+public class IllegalTypeException extends Exception {
     public IllegalTypeException() {
     }
 

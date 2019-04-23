@@ -1,10 +1,26 @@
 package node.expression;
 
 import node.RootNode;
+import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode {
+
+    public AbstractInfixExpressionNode(RootNode parent) {
+        super(parent);
+    }
+
+    public AbstractInfixExpressionNode(ParserRuleContext ctx) {
+        super(ctx);
+    }
+
+    public AbstractInfixExpressionNode(RootNode parent, ParserRuleContext ctx) {
+        super(parent, ctx);
+    }
+
+    public AbstractInfixExpressionNode() {
+    }
 
     public RootNode getLeft() {
         if (children.size() > 0) {
@@ -27,11 +43,5 @@ public abstract class AbstractInfixExpressionNode extends AbstractExpressionNode
             children.set(1, node);
         else
             children.add(node);
-    }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitAbstractInfixExpressionNode(this);
-        else return visitor.visitChildren(this);
     }
 }

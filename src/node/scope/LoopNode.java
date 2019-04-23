@@ -15,10 +15,4 @@ public class LoopNode extends RootNode {
     public String toString() {
         return "Loop";
     }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitLoopNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

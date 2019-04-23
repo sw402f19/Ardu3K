@@ -23,9 +23,4 @@ public class BoolNode extends AbstractPrimaryNode implements BooleanType {
         return ""+value;
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitBoolNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

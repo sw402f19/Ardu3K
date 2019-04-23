@@ -10,10 +10,4 @@ public class DefaultNode extends RootNode {
     public String toString() {
         return "default ";
     }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitDefaultNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

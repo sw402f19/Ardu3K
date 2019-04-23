@@ -11,9 +11,4 @@ public class ArgumentNode extends RootNode {
         return "Argument";
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitArgumentNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

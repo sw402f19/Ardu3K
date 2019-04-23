@@ -26,9 +26,4 @@ public class RealNode extends AbstractNumberNode {
         return ""+value;
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitRealNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

@@ -23,9 +23,4 @@ public class IntegerNode extends AbstractNumberNode {
         return ""+value;
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitIntegerNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

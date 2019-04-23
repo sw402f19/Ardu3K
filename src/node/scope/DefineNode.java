@@ -34,10 +34,4 @@ public class DefineNode extends RootNode {
         else
             children.add(value);
     }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitDefineNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

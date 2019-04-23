@@ -30,10 +30,4 @@ public class IfNode extends AbstractStatementNode {
         else
             children.add(node);
     }
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitIfNode(this);
-        else return visitor.visitChildren(this);
-    }
-
 }

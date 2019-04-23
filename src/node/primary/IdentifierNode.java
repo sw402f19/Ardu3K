@@ -30,10 +30,4 @@ public class IdentifierNode extends AbstractPrimaryNode {
     public int hashCode() {
         return hash(value);
     }
-
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitIdentifierNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

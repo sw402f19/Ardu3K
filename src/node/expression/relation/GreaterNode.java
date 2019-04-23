@@ -10,9 +10,4 @@ public class GreaterNode extends AbstractInfixRelationNode {
         return  " > "  ;
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitGreaterNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

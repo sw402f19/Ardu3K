@@ -18,9 +18,4 @@ public class BlockNode extends RootNode {
         return "block";
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitBlockNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

@@ -10,9 +10,4 @@ public class GreaterEqualNode extends AbstractInfixRelationNode {
         return ">=";
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitGreaterEqualNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

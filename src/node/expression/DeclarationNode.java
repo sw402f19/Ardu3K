@@ -15,9 +15,4 @@ public class DeclarationNode extends AbstractInfixExpressionNode {
         return getLeft().toString();
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitDeclarationNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

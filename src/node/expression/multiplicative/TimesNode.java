@@ -10,9 +10,4 @@ public class TimesNode extends AbstractInfixMultiplicativeNode {
         return "*";
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitTimesNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

@@ -10,9 +10,4 @@ public class OrNode extends AbstractInfixConditionalNode {
         return "OR";
     }
 
-    @Override
-    public <T> T accept(ASTVisitor<? extends T> visitor) {
-        if ( visitor instanceof BaseASTVisitor) return ((BaseASTVisitor<? extends T>)visitor).visitOrNode(this);
-        else return visitor.visitChildren(this);
-    }
 }

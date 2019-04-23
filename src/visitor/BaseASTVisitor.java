@@ -1,5 +1,6 @@
 package visitor;
 
+import node.Node;
 import node.RootNode;
 import node.composite.ListNode;
 import node.expression.AbstractExpressionNode;
@@ -22,6 +23,9 @@ import node.primary.*;
 import node.statement.*;
 import node.scope.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
     public T visitChildren(RootNode node){
@@ -35,6 +39,45 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
                 }
         }
         return dast;
+    }
+    public T visit(RootNode node) {
+        try {
+            Method m = findMethod(node);
+            Object o = m.invoke(this, node);
+            return (T) o;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException m) {
+            return visitChildren(node);
+        }
+        return null;
+    }
+
+    private Method findMethod(RootNode n) throws NoSuchMethodException {
+        String methodName = "accept";
+        Class node = n.getClass();
+        while (isAncestorOf("node.RootNode", node)) {
+            Class visitor = getClass();
+            while (isAncestorOf("visitor.ASTVisitor", visitor)) {
+                try {
+                    Method method = visitor.getDeclaredMethod(methodName,
+                            node);
+                    return method;
+                } catch (NoSuchMethodException e) {
+                    visitor = visitor.getSuperclass();
+                }
+            }
+            node = node.getSuperclass();
+        }
+        throw new NoSuchMethodException("No declared accept method for any subclass");
+    }
+    private boolean isAncestorOf(String ancestorName, Class descendant) {
+        try{
+            return Class.forName(ancestorName).isAssignableFrom(descendant);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -287,7 +330,4 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
         return visitChildren(node);
     }
 
-    public T visit(RootNode node) {
-        return visitChildren(node);
-    }
 }

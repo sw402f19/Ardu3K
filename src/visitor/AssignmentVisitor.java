@@ -20,6 +20,8 @@ public class AssignmentVisitor extends BaseASTVisitor<RootNode> {
         else
             throw new IllegalTypeException(expressionTree.getLine()+" Illegal type for "+node.toString());
     }
+
+
     public boolean isInstanceOf(Class clazz, Object obj) {
         return clazz.isInstance(obj);
     }

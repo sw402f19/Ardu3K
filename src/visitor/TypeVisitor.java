@@ -51,38 +51,31 @@ public class TypeVisitor extends BaseASTVisitor<RootNode> {
             return node;
     }
 
-
-
-
-    public void isNumeral(AbstractInfixExpressionNode node) throws IllegalTypeException {
-        checkIdentifierType(node);
-
-    @Override
-    public RootNode visitListNode(ListNode node) {
+    public RootNode visit(ListNode node) throws IllegalTypeException {
         RootNode firstElement = node.getFirstElement();
 
         if (firstElement instanceof AbstractPrimaryNode){
-            visitListElement(firstElement, firstElement);
+            visit(firstElement, firstElement);
         } else throw new IllegalTypeException("INVALID first type in list");
 
         return node;
     }
 
     // Visitor used to ensure that all elements is the same type as the first element in a ListNode
-    public void visitListElement(RootNode element, RootNode firstElement) {
+    public void visit(RootNode element, RootNode firstElement) throws IllegalTypeException {
         if (element != null) {
             if (element.getClass().getSimpleName().equals(firstElement.getClass().getSimpleName())){
 
                 // Recursively run down the list and check if types are compatible
                 if (element.children.size() > 0){
-                    visitListElement(element.children.get(0), firstElement);
+                    visit(element.children.get(0), firstElement);
                 }
 
             } else throw new IllegalTypeException("Types in list are not the same!");
         }
     }
 
-    public void isNumeral(AbstractInfixExpressionNode node) {
+    public void isNumeral(AbstractInfixExpressionNode node) throws IllegalTypeException {
         if(!(node.getLeft() instanceof NumeralType))
             throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
                     " for type "+node.getClass().getSimpleName());

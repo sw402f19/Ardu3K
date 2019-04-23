@@ -178,7 +178,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitAssignment(Ardu3kParser.AssignmentContext ctx) {
-        AssignmentNode node = new AssignmentNode();
+        AssignmentNode node = new AssignmentNode(ctx);
         node.setLeft(visit(ctx.left));
         node.setRight(visit(ctx.right));
         return node;

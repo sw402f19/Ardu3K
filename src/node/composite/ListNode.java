@@ -15,6 +15,8 @@ public class ListNode extends RootNode {
     @Override
     public String toString() { return "[LIST]"; }
 
+    public RootNode identifier;
+
     public void addFirstElement(RootNode node){
         if (children.size() != 0){
             children.add(node);

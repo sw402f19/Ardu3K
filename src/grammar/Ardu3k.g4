@@ -95,7 +95,6 @@ primary
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt // TODO: Do we want this as a part of expression?
     | child=list_expr                               #primaryListExpr // TODO: Do we want this as a part of expression?
-    | child=list_assignment                         #primaryListAssignment // TODO: Do we want this as a part of expression?
     ;
 second
     : unary_expr // If we want to suport casting, then it will be at this stage
@@ -163,13 +162,14 @@ conditional_or_expr
     : left=primary op=OR right=primary              #infixCondtionalOrExpr
     ;
 tenth
-    : assignment
+    : list_assignment
+    | assignment
     ;
 assignment
     : left=identifier ASSIGN right=primary
     ;
 list_assignment
-    : LBRACKET elements=list_element? RBRACKET
+    : id=identifier ASSIGN LBRACKET elements=list_element? RBRACKET
     ;
 list_element
     : element=primary COMMA next=list_element

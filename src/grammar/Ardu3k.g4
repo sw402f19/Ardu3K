@@ -81,68 +81,92 @@ expression_stmt
     : expression SEMI
     ;
 expression
-    : assignment_expr
-    | left=expression COMMA right=assignment_expr
+    : first
+//    | left=expression COMMA right=expression // TODO: What is the usecase for this?
+//                                                If decided to keep, then it's last step
     ;
-assignment_expr
-    : conditional_expr
-    | assignment
+first
+    : primary
+    | second
     ;
-assignment
-    : left=identifier ASSIGN right=assignment_expr
+primary
+    : LPAR child=expression RPAR                    #primaryLexprR
+    | child=literal                                 #primaryLit
+    | child=identifier                              #primaryId
+    | child=function_stmt                           #primaryFuncStmt // TODO: Do we want this as a part of expression?
+    | child=list_expr                               #primaryListExpr // TODO: Do we want this as a part of expression?
+    | child=list_assignment                         #primaryListAssignment // TODO: Do we want this as a part of expression?
     ;
-conditional_expr
-    : conditional_or_expr
-    ;
-conditional_or_expr
-    : conditional_and_expr                                              #conditionalAndExpr
-    | left=conditional_or_expr op=OR right=conditional_and_expr         #infixCondtionalOrExpr
-    ;
-conditional_and_expr
-    : conditional_xor_expr                                              #conditionalXorExpr
-    | left=conditional_and_expr op=AND right=conditional_xor_expr       #infixConditionalAndExpr
-    ;
-conditional_xor_expr
-    : conditional_equal_expr                                            #conditionalEqualExpr
-    | left=conditional_xor_expr op=XOR right=conditional_equal_expr     #infixConditionalXorExpr
-    ;
-conditional_equal_expr
-    : relational_expr                                                   #relationalExpr
-    | left=conditional_equal_expr op=EQUALS right=relational_expr       #infixEqualExpr
-    | left=conditional_equal_expr op=NOT right=relational_expr          #infixEqualExpr
-    ;
-relational_expr
-    : additive_expr                                                     #additiveExpr
-    | left=relational_expr op=LESSER right=additive_expr                #infixRelationalExpr
-    | left=relational_expr op=GREATER right=additive_expr               #infixRelationalExpr
-    | left=relational_expr op=LESSEQUAL right=additive_expr             #infixRelationalExpr
-    | left=relational_expr op=GREATEREQUAL right=additive_expr          #infixRelationalExpr
-    ;
-additive_expr
-    : multiplicative_expr                                               #multiplicativeExpr
-    | left=additive_expr op=PLUS right=multiplicative_expr              #infixAdditiveExpr
-    | left=additive_expr op=MINUS right=multiplicative_expr             #infixAdditiveExpr
-    ;
-multiplicative_expr
-    : primary                                                           #unaryExpr
-    | left=multiplicative_expr op=TIMES right=unary_expr                #infixMultiplicativeExpr
-    | left=multiplicative_expr op=DIVIDE right=unary_expr               #infixMultiplicativeExpr
-    | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
-    | left=multiplicative_expr op=EXPONENTIAL right=unary_expr          #infixMultiplicativeExpr
+second
+    : unary_expr // If we want to suport casting, then it will be at this stage
+    | third
     ;
 unary_expr
     : op=MINUS right=primary
     | op=NEGATE right=primary
-    | primary
     ;
-
-primary
-    : child=literal                                                 #primaryLit
-    | child=function_stmt                                           #primaryFuncStmt
-    | child=identifier                                              #primaryId
-    | LPAR child=expression RPAR                                    #primaryLexprR
-    | child=list_expr                                               #primaryListExpr
-    | child=list_assignment                                         #primaryListAssignment
+third
+    : multiplicative_expr
+    | fourth
+    ;
+multiplicative_expr
+    : left=primary op=TIMES right=primary           #infixMultiplicativeExpr
+    | left=primary op=DIVIDE right=primary          #infixMultiplicativeExpr
+    | left=primary op=MODULUS right=primary         #infixMultiplicativeExpr
+    | left=primary op=EXPONENTIAL right=primary     #infixMultiplicativeExpr
+    ;
+fourth
+    : additive_expr
+    | fifth
+    ;
+additive_expr
+    : left=primary op=PLUS right=primary            #infixAdditiveExpr
+    | left=primary op=MINUS right=primary           #infixAdditiveExpr
+    ;
+fifth
+    : relational_expr
+    | sixth
+    ;
+relational_expr
+    : left=primary op=LESSER right=primary          #infixRelationalExpr
+    | left=primary op=GREATER right=primary         #infixRelationalExpr
+    | left=primary op=LESSEQUAL right=primary       #infixRelationalExpr
+    | left=primary op=GREATEREQUAL right=primary    #infixRelationalExpr
+    ;
+sixth
+    : conditional_equal_expr
+    | seventh
+    ;
+conditional_equal_expr
+    : left=primary op=EQUALS right=primary          #infixEqualExpr
+    | left=primary op=NOT right=primary             #infixEqualExpr
+    ;
+seventh
+    : conditional_xor_expr
+    | eighth
+    ;
+conditional_xor_expr // If other bitwise is desired, then they should be before
+    : left=primary op=XOR right=primary             #infixConditionalXorExpr
+    ;
+eighth
+    : conditional_and_expr
+    | ninth
+    ;
+conditional_and_expr
+    : left=primary op=AND right=primary             #infixConditionalAndExpr
+    ;
+ninth
+    : conditional_or_expr
+    | tenth
+    ;
+conditional_or_expr
+    : left=primary op=OR right=primary              #infixCondtionalOrExpr
+    ;
+tenth
+    : assignment
+    ;
+assignment
+    : left=identifier ASSIGN right=primary
     ;
 list_assignment
     : LBRACKET elements=list_element? RBRACKET

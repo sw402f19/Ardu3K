@@ -2,13 +2,9 @@ setup () = {
 
 }
 loop () = {
-    for i = 1 to 4 do {
-        a = 2;
-        b = "hello";
-        break;
-        {
-            c = 4.5;
-            continue;
-        }
-    }
+    if ((b < (a = 3)) >= (a >= c)) do
+      a = 32;
+
+
+    b = ((1 + 5) * ((5+5)*5));
 }

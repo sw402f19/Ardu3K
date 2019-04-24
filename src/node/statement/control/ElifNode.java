@@ -16,10 +16,13 @@ public class ElifNode extends IfNode {
     }
 
     public RootNode getLowerbody() {
-        return children.get(0);
+        return children.get(2);
     }
     public void setLowerbody(RootNode lowerbody) {
-        children.set(0, lowerbody);
+        if(children.size() > 2)
+            children.set(2, lowerbody);
+        else
+            children.add(lowerbody);
     }
 
 }

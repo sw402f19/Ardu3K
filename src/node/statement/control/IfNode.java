@@ -18,8 +18,8 @@ public class IfNode extends AbstractControlNode {
         return children.get(1);
     }
     public void setUpperbody(RootNode node) {
-        if(children.size() > 0)
-            children.set(0, node);
+        if(children.size() > 1)
+            children.set(1, node);
         else
             children.add(node);
     }

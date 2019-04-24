@@ -18,6 +18,7 @@ setup
 loop
     : LOOP LPAR RPAR ASSIGN block
     ;
+
 function
     : id=identifier LPAR para=parameter? RPAR ASSIGN block
     ;
@@ -25,6 +26,7 @@ parameter
     : id=identifier COMMA para=parameter
     | id=identifier
     ;
+
 stmt
     : block                                                         #statement
     | function_stmt                                                 #statement
@@ -77,6 +79,7 @@ argument
     : left=primary
     | left=primary COMMA right=argument
     ;
+
 expression_stmt
     : expression SEMI
     ;
@@ -93,8 +96,8 @@ primary
     : LPAR child=expression RPAR                    #primaryLexprR
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
-    | child=function_stmt                           #primaryFuncStmt // TODO: Do we want this as a part of expression?
-    | child=list_expr                               #primaryListExpr // TODO: Do we want this as a part of expression?
+    | child=function_stmt                           #primaryFuncStmt
+    | child=list_expr                               #primaryListExpr
     ;
 second
     : unary_expr // If we want to suport casting, then it will be at this stage
@@ -184,6 +187,7 @@ list_stmt
     | ADD LPAR argument RPAR
     | SIZE LPAR RPAR
     ;
+
 identifier
     : value=identifier_val
     ;
@@ -205,17 +209,12 @@ number
     : value=INTEGER
     | value=REAL
     ;
-
 bool
     : value=TRUE
     | value=FALSE
     ;
 
-
-
-
-
-
+// =========== //
 
 LETTER: [a-zA-Z];
 REAL: '-'?DIGIT+ DOT DIGIT+;
@@ -272,4 +271,3 @@ ADD: 'add';
 SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
-

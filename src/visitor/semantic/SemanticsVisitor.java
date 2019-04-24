@@ -3,6 +3,8 @@ package visitor.semantic;
 import node.RootNode;
 import node.expression.*;
 import exception.IllegalTypeException;
+import node.expression.type.BooleanType;
+import node.expression.type.NumeralType;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
@@ -10,7 +12,7 @@ import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.BaseASTVisitor;
 
-public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
+public class SemanticsVisitor extends PrimaryVisitor {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
     
@@ -32,14 +34,6 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
 
         return node;
     }
-    // todo temporary error handling
-    public RootNode visit(IdentifierNode node) {
-        if(symbolTable.retrieveSymbol(node) == null)
-            System.out.println(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
-        else
-            return node;
-        return null;
-    }
     public RootNode visit(ProgramNode node) {
         visit(node.getDefinesNode());
         visit(node.getFunctionsNode());
@@ -47,7 +41,6 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         visit(node.getLoopNode());
         return node;
     }
-
     public RootNode visit(DefineNode node) {
         symbolTable.enterSymbol(node);
         return node;
@@ -57,8 +50,48 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         visitChildren(node);
         return node;
     }
-    public RootNode visit(AbstractControlNode node) {
+    // todo temp error handling
+    public RootNode visit(IfNode node) {
         symbolTable.openScope();
+        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+        if(!(type instanceof BooleanType))
+            System.out.println("Expression for If cannot evaluate to boolean got :"+type.toString());
+        visitChildren(node);
+        symbolTable.closeScope();
+        return node;
+    }
+    public RootNode visit(ElifNode node) {
+        symbolTable.openScope();
+        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+        if(!(type instanceof BooleanType))
+            System.out.println("Expression for If-else cannot evaluate to boolean got :"+type.toString());
+        visitChildren(node);
+        symbolTable.closeScope();
+        return node;
+    }
+    public RootNode visit(SwitchNode node) {
+        symbolTable.openScope();
+        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+        if(!(type instanceof NumeralType))
+            System.out.println("Expression for Switch cannot evaluate to boolean got :"+type.toString());
+        visitChildren(node);
+        symbolTable.closeScope();
+        return node;
+    }
+    public RootNode visit(ForNode node) {
+        symbolTable.openScope();
+        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+        if(!(type instanceof NumeralType))
+            System.out.println("Expression for For-loop cannot evaluate to literal got :"+type.toString());
+        visitChildren(node);
+        symbolTable.closeScope();
+        return node;
+    }
+    public RootNode visit(WhileNode node) {
+        symbolTable.openScope();
+        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+        if(!(type instanceof BooleanType))
+            System.out.println("Expression for While-loop cannot evaluate to boolean got :"+type.toString());
         visitChildren(node);
         symbolTable.closeScope();
         return node;

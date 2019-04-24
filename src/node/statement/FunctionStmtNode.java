@@ -13,7 +13,7 @@ public class FunctionStmtNode extends RootNode {
 
     @Override
     public String toString() {
-        return "( )";
+        return getId().toString();
     }
 
     public RootNode getId() {

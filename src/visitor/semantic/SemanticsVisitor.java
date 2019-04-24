@@ -1,13 +1,14 @@
-package visitor;
+package visitor.semantic;
 
 import node.RootNode;
 import node.expression.*;
-import node.expression.type.IllegalTypeException;
+import exception.IllegalTypeException;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
 import node.statement.control.*;
 import symbol.SymbolTable;
+import visitor.BaseASTVisitor;
 
 public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
 
@@ -38,9 +39,6 @@ public class SemanticsVisitor extends BaseASTVisitor<RootNode> {
         else
             return node;
         return null;
-    }
-    public RootNode visit(AbstractInfixExpressionNode node) {
-        return new TypeVisitor().visit(node);
     }
     public RootNode visit(ProgramNode node) {
         visit(node.getDefinesNode());

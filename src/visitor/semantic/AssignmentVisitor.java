@@ -1,13 +1,12 @@
-package visitor;
+package visitor.semantic;
 
 import node.RootNode;
-import node.expression.AbstractExpressionNode;
-import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
-import node.expression.type.IllegalTypeException;
+import exception.IllegalTypeException;
 import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
 import symbol.SymbolTable;
+import visitor.BaseASTVisitor;
 
 public class AssignmentVisitor extends BaseASTVisitor<RootNode> {
 
@@ -16,19 +15,21 @@ public class AssignmentVisitor extends BaseASTVisitor<RootNode> {
 
     public RootNode visit(AssignmentNode node) throws IllegalTypeException {
         expectedType = symbolTable.retrieveSymbol(node.getLeft()).getType();
-        RootNode expressionTree = visit(node.getRight());
+        RootNode expressionType = new ExpressionTypeVisitor().visit(node.getRight());
 
-        if(expressionTree == null)
+        if(expressionType == null)
             throw new IllegalTypeException("Expression returned null, incomplete visit methods");
-        if(isInstanceOf(expressionTree.getClass(), expectedType))
+        if(isInstanceOf(expressionType.getClass(), expectedType))
             return node;
         else
-            throw new IllegalTypeException(node.getLine()+" Illegal type: "+expressionTree.toString()+" for "+node.toString());
+            throw new IllegalTypeException(node.getLine()+" Illegal type: "
+                    +expressionType.toString()+" for identifier "+node.getLeft()
+                    +", expected " +expectedType.toString());
     }
     public RootNode visit(AbstractPrimaryNode node) throws IllegalTypeException {
         if(!isInstanceOf(expectedType.getClass(), node))
             throw new IllegalTypeException(
-                    node.getLine()+" Incompatible types "+node.getClass().getSimpleName()+", expected "+expectedType.getClass().getSimpleName());
+                    node.getLine()+" Incompatible types "+node.toString()+", expected "+expectedType.toString());
         return node;
     }
     public RootNode visit(IdentifierNode node) {

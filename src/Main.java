@@ -5,7 +5,7 @@ import gen.Ardu3kParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import visitor.SemanticsVisitor;
+import visitor.semantic.SemanticsVisitor;
 
 import java.io.IOException;
 

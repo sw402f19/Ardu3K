@@ -95,40 +95,40 @@ conditional_expr
     : conditional_or_expr
     ;
 conditional_or_expr
-    : conditional_and_expr                                              #conditionalAndExpr
-    | left=conditional_or_expr op=OR right=conditional_and_expr         #infixCondtionalOrExpr
+    : conditional_and_expr                          #conditionalAndExpr
+    | left=primary op=OR right=primary              #infixCondtionalOrExpr
     ;
 conditional_and_expr
-    : conditional_xor_expr                                              #conditionalXorExpr
-    | left=conditional_and_expr op=AND right=conditional_xor_expr       #infixConditionalAndExpr
+    : conditional_xor_expr                          #conditionalXorExpr
+    | left=primary op=AND right=primary             #infixConditionalAndExpr
     ;
 conditional_xor_expr
-    : conditional_equal_expr                                            #conditionalEqualExpr
-    | left=conditional_xor_expr op=XOR right=conditional_equal_expr     #infixConditionalXorExpr
+    : conditional_equal_expr                        #conditionalEqualExpr
+    | left=primary op=XOR right=primary             #infixConditionalXorExpr
     ;
 conditional_equal_expr
-    : relational_expr                                                   #relationalExpr
-    | left=conditional_equal_expr op=EQUALS right=relational_expr       #infixEqualExpr
-    | left=conditional_equal_expr op=NOT right=relational_expr          #infixEqualExpr
+    : relational_expr                               #relationalExpr
+    | left=primary op=EQUALS right=primary          #infixEqualExpr
+    | left=primary op=NOT right=primary             #infixEqualExpr
     ;
 relational_expr
-    : additive_expr                                                     #additiveExpr
-    | left=relational_expr op=LESSER right=additive_expr                #infixRelationalExpr
-    | left=relational_expr op=GREATER right=additive_expr               #infixRelationalExpr
-    | left=relational_expr op=LESSEQUAL right=additive_expr             #infixRelationalExpr
-    | left=relational_expr op=GREATEREQUAL right=additive_expr          #infixRelationalExpr
+    : additive_expr                                 #additiveExpr
+    | left=primary op=LESSER right=primary          #infixRelationalExpr
+    | left=primary op=GREATER right=primary         #infixRelationalExpr
+    | left=primary op=LESSEQUAL right=primary       #infixRelationalExpr
+    | left=primary op=GREATEREQUAL right=primary    #infixRelationalExpr
     ;
 additive_expr
-    : multiplicative_expr                                               #multiplicativeExpr
-    | left=additive_expr op=PLUS right=multiplicative_expr              #infixAdditiveExpr
-    | left=additive_expr op=MINUS right=multiplicative_expr             #infixAdditiveExpr
+    : multiplicative_expr                           #multiplicativeExpr
+    | left=primary op=PLUS right=primary            #infixAdditiveExpr
+    | left=primary op=MINUS right=primary           #infixAdditiveExpr
     ;
 multiplicative_expr
-    : primary                                                           #unaryExpr
-    | left=multiplicative_expr op=TIMES right=unary_expr                #infixMultiplicativeExpr
-    | left=multiplicative_expr op=DIVIDE right=unary_expr               #infixMultiplicativeExpr
-    | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
-    | left=multiplicative_expr op=EXPONENTIAL right=unary_expr          #infixMultiplicativeExpr
+    : primary                                       #unaryExpr
+    | left=primary op=TIMES right=primary           #infixMultiplicativeExpr
+    | left=primary op=DIVIDE right=primary          #infixMultiplicativeExpr
+    | left=primary op=MODULUS right=primary         #infixMultiplicativeExpr
+    | left=primary op=EXPONENTIAL right=primary     #infixMultiplicativeExpr
     ;
 unary_expr
     : op=MINUS right=primary
@@ -137,12 +137,12 @@ unary_expr
     ;
 
 primary
-    : child=literal                                                 #primaryLit
-    | child=function_stmt                                           #primaryFuncStmt
-    | child=identifier                                              #primaryId
-    | LPAR child=expression RPAR                                    #primaryLexprR
-    | child=list_expr                                               #primaryListExpr
-    | child=list_assignment                                         #primaryListAssignment
+    : child=literal                                 #primaryLit
+    | child=function_stmt                           #primaryFuncStmt
+    | child=identifier                              #primaryId
+    | LPAR child=expression RPAR                    #primaryLexprR
+    | child=list_expr                               #primaryListExpr
+    | child=list_assignment                         #primaryListAssignment
     ;
 list_assignment
     : LBRACKET elements=list_element? RBRACKET

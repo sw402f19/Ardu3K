@@ -1,21 +1,16 @@
 package node.statement.control;
 
+import gen.Ardu3kParser;
 import node.RootNode;
 
 public class ForNode extends AbstractControlNode {
+    public ForNode(Ardu3kParser.For_stmtContext ctx) {
+        super(ctx);
+    }
+
     @Override
     public String toString() {
         return "for to do ";
-    }
-
-    public RootNode getExpressionNode() {
-        return children.get(0);
-    }
-    public void setExpressionNode(RootNode node) {
-        if(children.size() > 0)
-            children.set(0, node);
-        else
-            children.add(node);
     }
 
     public RootNode getValue() {

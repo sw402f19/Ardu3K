@@ -1,18 +1,15 @@
 package node.statement.control;
 
+import gen.Ardu3kParser;
 import node.RootNode;
 
 public class WhileNode extends AbstractControlNode {
+    public WhileNode(Ardu3kParser.While_stmtContext ctx) {
+        super(ctx);
+    }
+
     @Override
     public String toString() { return "While do"; }
-
-    public RootNode getExpressionNode() { return children.get(0); }
-    public void setExpressionNode(RootNode node) {
-        if(children.size() > 0)
-            children.set(0, node);
-        else
-            children.add(node);
-    }
 
     public RootNode getStmt() { return children.get(1); }
     public void setStmt(RootNode node) {

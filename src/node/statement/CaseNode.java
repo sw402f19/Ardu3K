@@ -1,11 +1,16 @@
 package node.statement;
 
+import gen.Ardu3kParser;
 import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 public class CaseNode extends RootNode {
     public RootNode expression;
+
+    public CaseNode(Ardu3kParser.Case_stmtContext ctx) {
+        super(ctx);
+    }
 
     @Override
     public String toString() {

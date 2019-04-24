@@ -1,5 +1,6 @@
 package node.primary;
 
+import gen.Ardu3kParser;
 import node.RootNode;
 import node.expression.type.BooleanType;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,6 +17,11 @@ public class BoolNode extends AbstractPrimaryNode implements BooleanType {
     public BoolNode(ParserRuleContext ctx, boolean value) {
         super(ctx);
         this.value = value;
+    }
+
+    public BoolNode(Ardu3kParser.BoolContext ctx) {
+        super(ctx);
+        this.value = Boolean.valueOf(ctx.value.getText());
     }
 
     @Override

@@ -18,6 +18,7 @@ setup
 loop
     : LOOP LPAR RPAR ASSIGN block
     ;
+
 function
     : id=identifier LPAR para=parameter? RPAR ASSIGN block
     ;
@@ -25,6 +26,7 @@ parameter
     : id=identifier COMMA para=parameter
     | id=identifier
     ;
+
 stmt
     : block                                                         #statement
     | function_stmt                                                 #statement
@@ -184,6 +186,7 @@ list_stmt
     | ADD LPAR argument RPAR
     | SIZE LPAR RPAR
     ;
+
 identifier
     : value=identifier_val
     ;
@@ -205,7 +208,6 @@ number
     : value=INTEGER
     | value=REAL
     ;
-
 bool
     : value=TRUE
     | value=FALSE
@@ -272,4 +274,3 @@ ADD: 'add';
 SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
-

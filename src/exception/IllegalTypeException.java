@@ -1,4 +1,4 @@
-package node.expression.type;
+package exception;
 
 public class IllegalTypeException extends Exception {
     public IllegalTypeException() {

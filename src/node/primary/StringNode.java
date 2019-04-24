@@ -25,6 +25,6 @@ public class StringNode extends AbstractPrimaryNode {
 
     @Override
     public String toString() {
-        return value;
+        return "String";
     }
 }

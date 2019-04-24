@@ -26,7 +26,7 @@ public class BoolNode extends AbstractPrimaryNode implements BooleanType {
 
     @Override
     public String toString() {
-        return ""+value;
+        return "Boolean";
     }
 
 }

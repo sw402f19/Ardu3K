@@ -23,7 +23,6 @@ public class RealNode extends AbstractNumberNode {
 
     @Override
     public String toString() {
-        return ""+value;
+        return "Double";
     }
-
 }

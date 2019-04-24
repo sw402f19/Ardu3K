@@ -41,7 +41,7 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
         } catch (NoSuchMethodException m) {
             return visitChildren((RootNode) node);
         }
-        return visitChildren((RootNode) node);
+        return null;
     }
 
     public Method findMethod(Node n) throws NoSuchMethodException {

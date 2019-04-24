@@ -1,14 +1,19 @@
 package node.statement;
 
+import gen.Ardu3kParser;
 import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 public class FunctionStmtNode extends RootNode {
 
+    public FunctionStmtNode(Ardu3kParser.Function_stmtContext ctx) {
+        super(ctx);
+    }
+
     @Override
     public String toString() {
-        return "( )";
+        return getId().toString();
     }
 
     public RootNode getId() {

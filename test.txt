@@ -10,7 +10,8 @@ loop () = {
     b = ((1 + 5) * ((5+5)*5));
     ab = "ab";
     D = 10.150;
-    a = 1;
+    a = 10;
+    b.add(a);
 
     if true do
         if true do
@@ -18,7 +19,8 @@ loop () = {
                 a = 1;
             else
                 k = 2;
-        else if true do a = 5;
+        else if true do
+            a = 5;
 
 
     for a = 1 to 10 do {
@@ -27,7 +29,7 @@ loop () = {
     }
     switch (a) {
         case 10:
-            expo ^ 20;
+            expo = 10 ^ 20;
         case 20:
             c = 10;
         default:

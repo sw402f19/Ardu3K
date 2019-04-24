@@ -20,7 +20,7 @@ public class IntegerNode extends AbstractNumberNode {
 
     @Override
     public String toString() {
-        return ""+value;
+        return "Integer";
     }
 
 }

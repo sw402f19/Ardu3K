@@ -37,6 +37,7 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
             throw e.getCause();
         } catch (NoSuchMethodException m) {
             return visitChildren((RootNode) node);

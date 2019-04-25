@@ -6,6 +6,7 @@ import node.Node;
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
+import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
 import symbol.SymbolTable;
 import visitor.BaseASTVisitor;
@@ -25,9 +26,10 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
     }
     // todo should return the return type of the function.
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
-        if(symbolTable.isPresent(node.getId()))
-            return symbolTable.retrieveSymbol(node.getId()).getType();
-        else
+        if(symbolTable.isPresent(node.getId())) {
+            FunctionNode symbolType = ((FunctionNode)symbolTable.retrieveSymbol(node.getId()).getType());
+                return symbolType.getReturnType();
+        } else
             throw new UndeclaredIdentifierException(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
     }
 }

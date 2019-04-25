@@ -29,7 +29,7 @@ loop () = {
     }
     switch (a) {
         case 10:
-            expo = 10 ^ 20;
+            expo = (10 ^ 20);
         case 20:
             c = 10;
         default:

@@ -26,7 +26,7 @@ public class EnclosedExpressionNode extends AbstractExpressionNode {
         else
             children.add(node);
     }
-    public RootNode getExpression(RootNode node) {
+    public RootNode getExpression() {
         if (children.size() > 0) {
             return children.get(0);
         } else return null;

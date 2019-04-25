@@ -15,7 +15,7 @@ loop = {
 
     if true do
         if true do
-            if 1 do
+            if true do
                 a = 1;
             else
                 k = 2;

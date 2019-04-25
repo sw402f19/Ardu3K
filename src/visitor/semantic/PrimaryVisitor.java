@@ -21,13 +21,13 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
         if(symbolTable.isPresent(node))
             return symbolTable.retrieveSymbol(node).getType();
         else
-            throw new UndeclaredIdentifierException("Identifier \""+node.toString()+"\" not declared");
+            throw new UndeclaredIdentifierException(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
     }
     // todo should return the return type of the function.
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
         if(symbolTable.isPresent(node))
             return symbolTable.retrieveSymbol(node).getType();
         else
-            throw new UndeclaredIdentifierException("Identifier \""+node.toString()+"\" not declared");
+            throw new UndeclaredIdentifierException(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
     }
 }

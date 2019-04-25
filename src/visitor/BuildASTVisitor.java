@@ -207,6 +207,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return visit(ctx.expression());
     }
 
+
     @Override
     public RootNode visitAssignment(Ardu3kParser.AssignmentContext ctx) {
         AssignmentNode node = new AssignmentNode(ctx);
@@ -345,11 +346,11 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.setRight(visit(ctx.right));
         return node;
     }
-
-    // todo maybe revamp so it collects all children?
     @Override
     public RootNode visitPrimaryLexprR(Ardu3kParser.PrimaryLexprRContext ctx) {
-        return visit(ctx.expression());
+        EnclosedExpressionNode node = new EnclosedExpressionNode(ctx);
+        node.setExpression(visit(ctx.expression()));
+        return node;
     }
 
     @Override

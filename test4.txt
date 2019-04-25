@@ -3,5 +3,16 @@ setup () = {
 }
 loop () = {
     // LISTS //
-
+    {
+        list = [1,2];
+        list.get(0);
+        list.add(0);
+        list.remove(2);
+        list.size();
+    }
+    {
+        read(2);
+        write(2, 4);
+        toggle();
+    }
 }

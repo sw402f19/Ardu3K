@@ -29,6 +29,7 @@ parameter
 
 stmt
     : block                                                         #statement
+    | pin_stmt                                                      #statement
     | function_stmt                                                 #statement
     | iterative_stmt                                                #statement
     | selection_stmt                                                #statement
@@ -37,6 +38,11 @@ stmt
     | notail=BREAK SEMI                                             #notailStatement
     | notail=CONTINUE SEMI                                          #notailStatement
     | comment                                                       #stmtComment
+    ;
+pin_stmt
+    : TOGGLE LPAR RPAR SEMI
+    | READ LPAR INTEGER RPAR SEMI
+    | WRITE LPAR INTEGER COMMA INTEGER RPAR SEMI
     ;
 comment
     : COMMENT LETTER* COMMENT
@@ -48,9 +54,6 @@ iterative_stmt
     : for_stmt
     | while_stmt
     ;
-/** todo ANTLR recognizes the token TO before identifier toggle.
-  * making the function 'toggle' unusable.
-  */
 for_stmt
     : FOR expr=expression TO value=number DO body=stmt
     ;
@@ -276,3 +279,6 @@ SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
 COMMENT: '//';
+READ: 'read';
+WRITE: 'write';
+TOGGLE: 'toggle';

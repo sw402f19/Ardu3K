@@ -13,6 +13,7 @@ import node.expression.type.BooleanType;
 import exception.IllegalTypeException;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;
+import node.primary.EnclosedExpressionNode;
 import symbol.SymbolTable;
 import visitor.semantic.typecast.TypeCaster;
 
@@ -23,6 +24,10 @@ import visitor.semantic.typecast.TypeCaster;
 public class ExpressionTypeVisitor extends PrimaryVisitor {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
+
+    public RootNode visit(EnclosedExpressionNode node) {
+        return visit(node.getExpression());
+    }
 
     public RootNode visit(AbstractInfixAdditiveNode node) throws IllegalTypeException {
         isNumeral(node);

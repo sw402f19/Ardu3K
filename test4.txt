@@ -1,7 +1,7 @@
-setup () = {
+setup = {
 
 }
-loop () = {
+loop = {
     // LISTS //
     {
         list = [1,2];

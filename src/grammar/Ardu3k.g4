@@ -13,10 +13,10 @@ define
     : DEFINE id=identifier value=number
     ;
 setup
-    : SETUP LPAR RPAR ASSIGN block
+    : SETUP ASSIGN block
     ;
 loop
-    : LOOP LPAR RPAR ASSIGN block
+    : LOOP ASSIGN block
     ;
 
 function
@@ -40,9 +40,13 @@ stmt
     | comment                                                       #stmtComment
     ;
 pin_stmt
-    : TOGGLE LPAR RPAR SEMI
-    | READ LPAR INTEGER RPAR SEMI
-    | WRITE LPAR INTEGER COMMA INTEGER RPAR SEMI
+    : TOGGLE LPAR RPAR SEMI                                         #pinToggle
+    | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
+    | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR SEMI        #pinWrite
+    ;
+pin_index
+    : index=INTEGER
+    | analog=A index=INTEGER
     ;
 comment
     : COMMENT LETTER* COMMENT
@@ -91,13 +95,62 @@ expression_stmt
     : expression SEMI
     ;
 expression
-    : first
+    : unary_expr
 //    | left=expression COMMA right=expression // TODO: What is the usecase for this?
 //                                                If decided to keep, then it's last step
     ;
-first
-    : primary
-    | second
+unary_expr
+    : op=MINUS right=multiplicative_expr
+    | op=NEGATE right=multiplicative_expr
+    | multiplicative_expr
+    ;
+multiplicative_expr
+    : left=additive_expr op=TIMES right=additive_expr               #infixMultiplicativeExpr
+    | left=additive_expr op=DIVIDE right=additive_expr              #infixMultiplicativeExpr
+    | left=additive_expr op=MODULUS right=additive_expr             #infixMultiplicativeExpr
+    | left=additive_expr op=EXPONENTIAL right=additive_expr         #infixMultiplicativeExpr
+    | additive_expr                                                 #additiveExpr
+    ;
+additive_expr
+    : left=relational_expr op=PLUS right=relational_expr            #infixAdditiveExpr
+    | left=relational_expr op=MINUS right=relational_expr           #infixAdditiveExpr
+    | relational_expr                                               #relationalExpr
+    ;
+relational_expr
+    : left=conditional_equal_expr op=LESSER right=conditional_equal_expr            #infixRelationalExpr
+    | left=conditional_equal_expr op=GREATER right=conditional_equal_expr           #infixRelationalExpr
+    | left=conditional_equal_expr op=LESSEQUAL right=conditional_equal_expr         #infixRelationalExpr
+    | left=conditional_equal_expr op=GREATEREQUAL right=conditional_equal_expr      #infixRelationalExpr
+    | conditional_equal_expr                                                        #equalExpr
+    ;
+conditional_equal_expr
+    : left=conditional_xor_expr op=EQUALS right=conditional_xor_expr            #infixEqualExpr
+    | left=conditional_xor_expr op=NOT right=conditional_xor_expr               #infixEqualExpr
+    | conditional_xor_expr                                                      #xorExpr
+    ;
+conditional_xor_expr
+    : left=primary op=XOR right=primary             #infixConditionalXorExpr
+    | conditional_and_expr                          #andExpr
+    ;
+conditional_and_expr
+    : left=conditional_or_expr op=AND right=conditional_or_expr             #infixConditionalAndExpr
+    | conditional_or_expr                                                   #orExpr
+    ;
+conditional_or_expr
+    : left=assignment op=OR right=assignment                #infixCondtionalOrExpr
+    | assignment                                            #assign
+    ;
+assignment
+    : left=list_assignment ASSIGN right=list_assignment
+    | list_assignment
+    ;
+list_assignment
+    : id=identifier ASSIGN LBRACKET elements=list_element? RBRACKET
+    | primary
+    ;
+list_element
+    : element=primary COMMA next=list_element
+    | element=primary
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
@@ -105,85 +158,6 @@ primary
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt
     | child=list_expr                               #primaryListExpr
-    ;
-second
-    : unary_expr // If we want to suport casting, then it will be at this stage
-    | third
-    ;
-unary_expr
-    : op=MINUS right=primary
-    | op=NEGATE right=primary
-    ;
-third
-    : multiplicative_expr
-    | fourth
-    ;
-multiplicative_expr
-    : left=primary op=TIMES right=primary           #infixMultiplicativeExpr
-    | left=primary op=DIVIDE right=primary          #infixMultiplicativeExpr
-    | left=primary op=MODULUS right=primary         #infixMultiplicativeExpr
-    | left=primary op=EXPONENTIAL right=primary     #infixMultiplicativeExpr
-    ;
-fourth
-    : additive_expr
-    | fifth
-    ;
-additive_expr
-    : left=primary op=PLUS right=primary            #infixAdditiveExpr
-    | left=primary op=MINUS right=primary           #infixAdditiveExpr
-    ;
-fifth
-    : relational_expr
-    | sixth
-    ;
-relational_expr
-    : left=primary op=LESSER right=primary          #infixRelationalExpr
-    | left=primary op=GREATER right=primary         #infixRelationalExpr
-    | left=primary op=LESSEQUAL right=primary       #infixRelationalExpr
-    | left=primary op=GREATEREQUAL right=primary    #infixRelationalExpr
-    ;
-sixth
-    : conditional_equal_expr
-    | seventh
-    ;
-conditional_equal_expr
-    : left=primary op=EQUALS right=primary          #infixEqualExpr
-    | left=primary op=NOT right=primary             #infixEqualExpr
-    ;
-seventh
-    : conditional_xor_expr
-    | eighth
-    ;
-conditional_xor_expr // If other bitwise is desired, then they should be before
-    : left=primary op=XOR right=primary             #infixConditionalXorExpr
-    ;
-eighth
-    : conditional_and_expr
-    | ninth
-    ;
-conditional_and_expr
-    : left=primary op=AND right=primary             #infixConditionalAndExpr
-    ;
-ninth
-    : conditional_or_expr
-    | tenth
-    ;
-conditional_or_expr
-    : left=primary op=OR right=primary              #infixCondtionalOrExpr
-    ;
-tenth
-    : list_assignment
-    | assignment
-    ;
-assignment
-    : left=identifier ASSIGN right=primary
-    ;
-list_assignment
-    : id=identifier ASSIGN LBRACKET elements=list_element? RBRACKET
-    ;
-list_element
-    : element=primary COMMA next=list_element
-    | element=primary
     ;
 list_expr
     : identifier DOT list_stmt
@@ -282,3 +256,4 @@ COMMENT: '//';
 READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
+A: 'A';

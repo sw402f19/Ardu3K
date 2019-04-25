@@ -162,6 +162,21 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
+    public RootNode visitPinToggle(Ardu3kParser.PinToggleContext ctx) {
+        return super.visitPinToggle(ctx);
+    }
+
+    @Override
+    public RootNode visitPinRead(Ardu3kParser.PinReadContext ctx) {
+        return super.visitPinRead(ctx);
+    }
+
+    @Override
+    public RootNode visitPinWrite(Ardu3kParser.PinWriteContext ctx) {
+        return super.visitPinWrite(ctx);
+    }
+
+    @Override
     public RootNode visitArgument(Ardu3kParser.ArgumentContext ctx) {
         ArgumentNode node = new ArgumentNode(ctx);
         return visitArgument(ctx, node);

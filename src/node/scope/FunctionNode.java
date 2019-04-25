@@ -2,10 +2,13 @@ package node.scope;
 
 import gen.Ardu3kParser;
 import node.RootNode;
+import node.expression.type.ExpressionType;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 public class FunctionNode extends RootNode {
+    RootNode type;
+
     public FunctionNode(Ardu3kParser.FunctionContext ctx) {
         super(ctx);
     }
@@ -43,6 +46,12 @@ public class FunctionNode extends RootNode {
             children.set(2, node);
         else
             children.add(node);
+    }
+    public void setReturnType(RootNode type) {
+        this.type = type;
+    }
+    public RootNode getReturnType() {
+        return this.type;
     }
 
 

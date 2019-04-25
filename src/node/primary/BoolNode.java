@@ -14,6 +14,8 @@ public class BoolNode extends AbstractPrimaryNode implements BooleanType {
         this.value = value;
     }
 
+    public BoolNode() { }
+
     public BoolNode(ParserRuleContext ctx, boolean value) {
         super(ctx);
         this.value = value;

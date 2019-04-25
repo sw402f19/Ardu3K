@@ -1,5 +1,6 @@
 package visitor.semantic;
 
+import exception.UndeclaredIdentifierException;
 import node.RootNode;
 import node.expression.*;
 import exception.IllegalTypeException;
@@ -8,6 +9,7 @@ import node.expression.type.NumeralType;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
+import node.statement.FunctionStmtNode;
 import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.BaseASTVisitor;
@@ -41,6 +43,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         visit(node.getLoopNode());
         return node;
     }
+
     public RootNode visit(DefineNode node) {
         symbolTable.enterSymbol(node);
         return node;
@@ -96,6 +99,18 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+    public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
+        int argIndex = 0;
+        RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
+
+        if(function instanceof FunctionNode) {
+            for (RootNode n : node.getArguments().children) {
+
+            }
+        }
+        else throw new UndeclaredIdentifierException("Identifier "+node.getId()+" not declared.");
+        return null;
+    }
     public RootNode visit(FunctionNode node) {
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
@@ -105,7 +120,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     public RootNode visit(ParameterNode node) {
-        symbolTable.openScope();
         node.children.forEach(e -> symbolTable.enterSymbol((IdentifierNode) e));
         return node;
     }

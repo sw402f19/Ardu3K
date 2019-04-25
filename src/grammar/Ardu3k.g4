@@ -13,10 +13,10 @@ define
     : DEFINE id=identifier value=number
     ;
 setup
-    : SETUP LPAR RPAR ASSIGN block
+    : SETUP ASSIGN block
     ;
 loop
-    : LOOP LPAR RPAR ASSIGN block
+    : LOOP ASSIGN block
     ;
 
 function

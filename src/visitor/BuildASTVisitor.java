@@ -203,7 +203,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitList_assignment(Ardu3kParser.List_assignmentContext ctx) {
         ListNode node = new ListNode(ctx);
-        node.identifier = visit(ctx.id);
         if(ctx.elements != null)
             return visitList_element(ctx.elements, node);
         return node;

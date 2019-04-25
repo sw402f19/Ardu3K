@@ -95,55 +95,61 @@ expression_stmt
     : expression SEMI
     ;
 expression
-    : unary_expr
-//    | left=expression COMMA right=expression // TODO: What is the usecase for this?
-//                                                If decided to keep, then it's last step
+    : assignment_expr
+    | left=expression COMMA right=assignment_expr
     ;
-unary_expr
-    : op=MINUS right=multiplicative_expr
-    | op=NEGATE right=multiplicative_expr
-    | multiplicative_expr
-    ;
-multiplicative_expr
-    : left=additive_expr op=TIMES right=additive_expr               #infixMultiplicativeExpr
-    | left=additive_expr op=DIVIDE right=additive_expr              #infixMultiplicativeExpr
-    | left=additive_expr op=MODULUS right=additive_expr             #infixMultiplicativeExpr
-    | left=additive_expr op=EXPONENTIAL right=additive_expr         #infixMultiplicativeExpr
-    | additive_expr                                                 #additiveExpr
-    ;
-additive_expr
-    : left=relational_expr op=PLUS right=relational_expr            #infixAdditiveExpr
-    | left=relational_expr op=MINUS right=relational_expr           #infixAdditiveExpr
-    | relational_expr                                               #relationalExpr
-    ;
-relational_expr
-    : left=conditional_equal_expr op=LESSER right=conditional_equal_expr            #infixRelationalExpr
-    | left=conditional_equal_expr op=GREATER right=conditional_equal_expr           #infixRelationalExpr
-    | left=conditional_equal_expr op=LESSEQUAL right=conditional_equal_expr         #infixRelationalExpr
-    | left=conditional_equal_expr op=GREATEREQUAL right=conditional_equal_expr      #infixRelationalExpr
-    | conditional_equal_expr                                                        #equalExpr
-    ;
-conditional_equal_expr
-    : left=conditional_xor_expr op=EQUALS right=conditional_xor_expr            #infixEqualExpr
-    | left=conditional_xor_expr op=NOT right=conditional_xor_expr               #infixEqualExpr
-    | conditional_xor_expr                                                      #xorExpr
-    ;
-conditional_xor_expr
-    : left=primary op=XOR right=primary             #infixConditionalXorExpr
-    | conditional_and_expr                          #andExpr
-    ;
-conditional_and_expr
-    : left=conditional_or_expr op=AND right=conditional_or_expr             #infixConditionalAndExpr
-    | conditional_or_expr                                                   #orExpr
-    ;
-conditional_or_expr
-    : left=assignment op=OR right=assignment                #infixCondtionalOrExpr
-    | assignment                                            #assign
-    ;
-assignment
-    : left=list_assignment ASSIGN right=list_assignment
+assignment_expr
+    : conditional_expr
+    | assignment
     | list_assignment
     ;
+assignment
+    : left=identifier ASSIGN right=assignment_expr
+    ;
+conditional_expr
+    : conditional_or_expr
+    ;
+conditional_or_expr
+    : conditional_and_expr                                              #conditionalAndExpr
+    | left=conditional_or_expr op=OR right=conditional_and_expr         #infixCondtionalOrExpr
+    ;
+conditional_and_expr
+    : conditional_xor_expr                                              #conditionalXorExpr
+    | left=conditional_and_expr op=AND right=conditional_xor_expr       #infixConditionalAndExpr
+    ;
+conditional_xor_expr
+    : conditional_equal_expr                                            #conditionalEqualExpr
+    | left=conditional_xor_expr op=XOR right=conditional_equal_expr     #infixConditionalXorExpr
+    ;
+conditional_equal_expr
+    : relational_expr                                                   #relationalExpr
+    | left=conditional_equal_expr op=EQUALS right=relational_expr       #infixEqualExpr
+    | left=conditional_equal_expr op=NOT right=relational_expr          #infixEqualExpr
+    ;
+relational_expr
+    : additive_expr                                                     #additiveExpr
+    | left=relational_expr op=LESSER right=additive_expr                #infixRelationalExpr
+    | left=relational_expr op=GREATER right=additive_expr               #infixRelationalExpr
+    | left=relational_expr op=LESSEQUAL right=additive_expr             #infixRelationalExpr
+    | left=relational_expr op=GREATEREQUAL right=additive_expr          #infixRelationalExpr
+    ;
+additive_expr
+    : multiplicative_expr                                               #multiplicativeExpr
+    | left=additive_expr op=PLUS right=multiplicative_expr              #infixAdditiveExpr
+    | left=additive_expr op=MINUS right=multiplicative_expr             #infixAdditiveExpr
+    ;
+multiplicative_expr
+    : primary                                                           #unaryExpr
+    | left=multiplicative_expr op=TIMES right=unary_expr                #infixMultiplicativeExpr
+    | left=multiplicative_expr op=DIVIDE right=unary_expr               #infixMultiplicativeExpr
+    | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
+    | left=multiplicative_expr op=EXPONENTIAL right=unary_expr          #infixMultiplicativeExpr
+    ;
+unary_expr
+    : op=MINUS right=primary
+    | op=NEGATE right=primary
+    | primary
+;
 list_assignment
     : id=identifier ASSIGN LBRACKET elements=list_element? RBRACKET
     | primary

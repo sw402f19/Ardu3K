@@ -33,12 +33,10 @@ public class SymbolTable implements SymbolTableInterface{
 
     public void enterSymbol(IdentifierNode node){
         symTable.put(node, new Symbol(node, new UndefinedNode(), depth));
-
     }
     public void enterSymbol(DefineNode node) {
         symTable.put(node.getId(), new Symbol(node.getId(), node.getValue(), depth));
     }
-
     public Symbol retrieveSymbol(RootNode name) {
         return symTable.get(name);
     }
@@ -48,9 +46,6 @@ public class SymbolTable implements SymbolTableInterface{
     public boolean isPresent(RootNode n) {
         return symTable.containsKey(n);
     }
-
-
-
     private SymbolTable() {
     }
     public static SymbolTable getInstance() {

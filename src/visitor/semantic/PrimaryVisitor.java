@@ -25,8 +25,8 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
     }
     // todo should return the return type of the function.
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
-        if(symbolTable.isPresent(node))
-            return symbolTable.retrieveSymbol(node).getType();
+        if(symbolTable.isPresent(node.getId()))
+            return symbolTable.retrieveSymbol(node.getId()).getType();
         else
             throw new UndeclaredIdentifierException(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
     }

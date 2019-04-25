@@ -1,13 +1,14 @@
 package node.primary;
 
 import gen.Ardu3kParser;
+import node.expression.type.StringType;
 import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 import java.util.List;
 
-public class StringNode extends AbstractPrimaryNode {
+public class StringNode extends AbstractPrimaryNode implements StringType {
     public String value;
 
     public StringNode() {

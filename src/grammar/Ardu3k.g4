@@ -36,6 +36,10 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK SEMI                                             #notailStatement
     | notail=CONTINUE SEMI                                          #notailStatement
+    | comment                                                       #stmtComment
+    ;
+comment
+    : COMMENT LETTER* COMMENT
     ;
 block
     : LCUR body=stmt* RCUR
@@ -271,3 +275,4 @@ ADD: 'add';
 SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
+COMMENT: '//';

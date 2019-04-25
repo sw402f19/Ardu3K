@@ -121,10 +121,12 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     public RootNode visit(FunctionNode node) {
+
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
         visit(node.getParameter());
         visit(node.getBlock());
+        node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
         symbolTable.closeScope();
         return node;
     }

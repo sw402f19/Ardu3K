@@ -1,7 +1,7 @@
-setup () = {
+setup = {
 
 }
-loop () = {
+loop = {
     if true do
         if true do
             if true do

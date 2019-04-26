@@ -24,6 +24,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
             return visit(new DeclarationNode(node));
         else {
             try {
+                this.visit(node.getRight());
                 new AssignmentVisitor().visit(node);
             } catch (IllegalTypeException e) {
                 System.out.println(e.getMessage());
@@ -105,7 +106,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 RootNode expectedType =
                         new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
                 // todo here be dragons hehe
-                if(!(expectedType.getClass().isInstance(visit(node.getArguments().children.get(i)))));
+                RootNode argType = visit(node.getArguments().children.get(i));
+                if(!(expectedType.getClass().isInstance(argType)))
                     throw new IllegalArgumentException(node.getLine()+" Illegal argument type for "
                             +node.getArguments().children.get(i).toString() +" got "
                             +node.getArguments().children.get(i).toString()+", expected "

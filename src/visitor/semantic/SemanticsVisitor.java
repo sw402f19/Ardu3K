@@ -57,7 +57,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof BooleanType))
-            System.out.println("Expression for If cannot evaluate to boolean got :"+type.toString());
+            System.out.println(node.getLine()+" Expression for If cannot evaluate to boolean got :"+type.toString());
         visitChildren(node);
         symbolTable.closeScope();
         return node;
@@ -66,7 +66,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof BooleanType))
-            System.out.println("Expression for If-else cannot evaluate to boolean got :"+type.toString());
+            System.out.println(node.getLine()+" Expression for If-else cannot evaluate to boolean got :"+type.toString());
         visitChildren(node);
         symbolTable.closeScope();
         return node;
@@ -75,7 +75,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof NumeralType))
-            System.out.println("Expression for Switch cannot evaluate to boolean got :"+type.toString());
+            System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
         visitChildren(node);
         symbolTable.closeScope();
         return node;

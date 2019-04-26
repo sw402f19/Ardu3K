@@ -6,6 +6,7 @@ import node.Node;
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
+import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
 import symbol.SymbolTable;
 import visitor.BaseASTVisitor;

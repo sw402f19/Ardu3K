@@ -30,6 +30,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
             return visit(new DeclarationNode(node));
         else {
             try {
+                this.visit(node.getRight());
                 new AssignmentVisitor().visit(node);
             } catch (IllegalTypeException e) {
                 System.out.println(e.getMessage());
@@ -63,7 +64,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof BooleanType))
-            System.out.println("Expression for If cannot evaluate to boolean got :"+type.toString());
+            System.out.println(node.getLine()+" Expression for If cannot evaluate to boolean got :"+type.toString());
         visitChildren(node);
         symbolTable.closeScope();
         return node;
@@ -72,7 +73,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof BooleanType))
-            System.out.println("Expression for If-else cannot evaluate to boolean got :"+type.toString());
+            System.out.println(node.getLine()+" Expression for If-else cannot evaluate to boolean got :"+type.toString());
         visitChildren(node);
         symbolTable.closeScope();
         return node;
@@ -81,7 +82,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof NumeralType))
-            System.out.println("Expression for Switch cannot evaluate to boolean got :"+type.toString());
+            System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
         visitChildren(node);
         symbolTable.closeScope();
         return node;
@@ -110,7 +111,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
             for (int i = 0; i < node.getArguments().children.size(); i++) {
                 RootNode expectedType =
                         new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
-                if(!(expectedType.getClass().isInstance(expectedType)))
+                // todo here be dragons hehe
+                RootNode argType = visit(node.getArguments().children.get(i));
+                if(!(expectedType.getClass().isInstance(argType)))
                     throw new IllegalArgumentException(node.getLine()+" Illegal argument type for "
                             +node.getArguments().children.get(i).toString() +" got "
                             +node.getArguments().children.get(i).toString()+", expected "

@@ -44,7 +44,7 @@ func (a) = {
     a = 10;
     return a;
 }
-funcc(a) = {
+funcc(a, a, a) = {
     a = func(a);
     return a;
 }

@@ -1,5 +1,6 @@
 package visitor.semantic;
 
+import exception.DuplicatedParameterIdentifier;
 import exception.UndeclaredIdentifierException;
 import node.RootNode;
 import node.expression.*;
@@ -13,6 +14,11 @@ import node.statement.FunctionStmtNode;
 import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.BaseASTVisitor;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SemanticsVisitor extends PrimaryVisitor {
 
@@ -131,6 +137,14 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     public RootNode visit(ParameterNode node) {
+        symbolTable.openScope();
+        if(node.children.size() > 0) {
+            Set<String> hs1 = new LinkedHashSet(node.children);
+            List<String> al2 = new ArrayList<>(hs1);
+            if (node.children.size() > al2.size()) {
+                throw new DuplicatedParameterIdentifier(node);
+            }
+        }
         node.children.forEach(e -> symbolTable.enterSymbol((IdentifierNode) e));
         return node;
     }

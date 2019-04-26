@@ -4,12 +4,9 @@ import node.RootNode;
 import node.expression.AssignmentNode;
 import exception.IllegalTypeException;
 import node.expression.type.BooleanType;
-import node.expression.type.ExpressionType;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
-import node.primary.IntegerNode;
-import node.primary.RealNode;
 import symbol.SymbolTable;
 import visitor.BaseASTVisitor;
 

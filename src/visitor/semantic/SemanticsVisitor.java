@@ -34,6 +34,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
     public RootNode visit(DeclarationNode node) {
         symbolTable.enterSymbol(node);
+        visit(node.getRight());
         return node;
     }
     public RootNode visit(ProgramNode node) {
@@ -113,18 +114,10 @@ public class SemanticsVisitor extends PrimaryVisitor {
                             +node.getArguments().children.get(i).toString()+", expected "
                             +expectedType.toString());
             }
-        }
-
-        if(function instanceof FunctionNode) {
-            for (RootNode n : node.getArguments().children) {
-
-            }
-        }
-        else throw new UndeclaredIdentifierException("Identifier "+node.getId()+" not declared.");
+        } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
         return node;
     }
     public RootNode visit(FunctionNode node) {
-
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
         visit(node.getParameter());

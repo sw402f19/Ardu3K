@@ -1,13 +1,11 @@
 package visitor.semantic.typecast;
 
 import exception.ErrorNode;
-import exception.NotCastableException;
 import node.RootNode;
 import node.primary.IntegerNode;
-import node.primary.RealNode;
+import node.primary.FloatNode;
 import node.primary.StringNode;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,8 +13,8 @@ public class TypeCaster {
 
     private static HashMap<Class, List<Class>> dispatch = new HashMap<>();
     static {
-        dispatch.put(IntegerNode.class, List.of(RealNode.class, StringNode.class));
-        dispatch.put(RealNode.class, List.of(RealNode.class, StringNode.class));
+        dispatch.put(IntegerNode.class, List.of(FloatNode.class, StringNode.class));
+        dispatch.put(FloatNode.class, List.of(FloatNode.class, StringNode.class));
     }
     public static boolean canCast(RootNode source, RootNode target) {
         return dispatch.get(source.getClass()).contains(target.getClass());
@@ -28,22 +26,22 @@ public class TypeCaster {
     private static HashMap<Class, Handler> dispatch2 = new HashMap<>();
     static {
         dispatch2.put(IntegerNode.class, (n, c) -> handleInteger((IntegerNode) n,c));
-        dispatch2.put(RealNode.class, (n, c) -> handleReal((RealNode)n, c));
+        dispatch2.put(FloatNode.class, (n, c) -> handleReal((FloatNode)n, c));
     }
     // todo temp errornode
     private static RootNode handleInteger(IntegerNode node, Class clazz) {
         if(clazz.isInstance(StringNode.class))
             return new StringNode(node.value);
-        else if(clazz.isInstance(RealNode.class))
-            return new RealNode(node.value);
+        else if(clazz.isInstance(FloatNode.class))
+            return new FloatNode(node.value);
         else return new ErrorNode(clazz);
     }
 
-    private static RootNode handleReal(RealNode node, Class clazz) {
+    private static RootNode handleReal(FloatNode node, Class clazz) {
         if(clazz.isInstance(StringNode.class))
             return new StringNode(node.value);
-        else if(clazz.isInstance(RealNode.class))
-            return new RealNode(node.value);
+        else if(clazz.isInstance(FloatNode.class))
+            return new FloatNode(node.value);
         else return new ErrorNode(clazz);
     }
     private static RootNode handle(Object o, Class target) {

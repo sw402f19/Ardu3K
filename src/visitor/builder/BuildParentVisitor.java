@@ -4,7 +4,7 @@ import node.Node;
 import node.RootNode;
 import visitor.BaseASTVisitor;
 
-public class ParentVisitor extends BaseASTVisitor<RootNode> {
+public class BuildParentVisitor extends BaseASTVisitor<RootNode> {
 
     public RootNode visit(RootNode node) {
         for(RootNode n : node.children)

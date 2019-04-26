@@ -13,6 +13,7 @@ import node.statement.FunctionStmtNode;
 import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.BaseASTVisitor;
+import visitor.builder.ParentVisitor;
 
 public class SemanticsVisitor extends PrimaryVisitor {
 
@@ -38,6 +39,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     public RootNode visit(ProgramNode node) {
+        node = (ProgramNode) new ParentVisitor().visit(node);
         visit(node.getDefinesNode());
         visit(node.getFunctionsNode());
         visit(node.getSetupNode());

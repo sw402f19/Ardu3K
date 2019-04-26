@@ -136,6 +136,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+    
     public RootNode visit(ParameterNode node) {
         symbolTable.openScope();
         if(node.children.size() > 0) {

@@ -33,7 +33,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
     public RootNode visit(DeclarationNode node) {
         symbolTable.enterSymbol(node);
-
         return node;
     }
     public RootNode visit(ProgramNode node) {
@@ -100,8 +99,19 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
-        int argIndex = 0;
         RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
+        if(function instanceof FunctionNode) {
+            for (int i = 0; i < node.getArguments().children.size(); i++) {
+                RootNode expectedType =
+                        new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
+                // todo here be dragons hehe
+                if(!(expectedType.getClass().isInstance(visit(node.getArguments().children.get(i)))));
+                    throw new IllegalArgumentException(node.getLine()+" Illegal argument type for "
+                            +node.getArguments().children.get(i).toString() +" got "
+                            +node.getArguments().children.get(i).toString()+", expected "
+                            +expectedType.toString());
+            }
+        }
 
         if(function instanceof FunctionNode) {
             for (RootNode n : node.getArguments().children) {
@@ -109,13 +119,15 @@ public class SemanticsVisitor extends PrimaryVisitor {
             }
         }
         else throw new UndeclaredIdentifierException("Identifier "+node.getId()+" not declared.");
-        return null;
+        return node;
     }
     public RootNode visit(FunctionNode node) {
+
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
         visit(node.getParameter());
         visit(node.getBlock());
+        node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
         symbolTable.closeScope();
         return node;
     }

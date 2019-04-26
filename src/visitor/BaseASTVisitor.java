@@ -11,7 +11,7 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
         try {
             return this.dispatch(node);
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            t.printStackTrace();
         }
         return null;
     }

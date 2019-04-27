@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public abstract class RootNode implements Node {
 
     public RootNode parent;
+    public ArrayList<RootNode> children = new ArrayList<>();
     public String line;
 
     public RootNode(RootNode parent) {

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public abstract class RootNode implements Node {
 
     public RootNode parent;
-    public ArrayList<RootNode> children = new ArrayList<>();
     public String line;
 
     public RootNode(RootNode parent) {
@@ -16,12 +15,12 @@ public abstract class RootNode implements Node {
     }
 
     public RootNode(ParserRuleContext ctx) {
-        this.line = "Line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
+        this.line = "line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
     }
 
     public RootNode(RootNode parent, ParserRuleContext ctx) {
         this.parent = parent;
-        this.line = "Line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
+        this.line = "line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
     }
 
     public RootNode() { }

@@ -23,27 +23,23 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
         infixTypes[0] = visit(node.getLeft());
         infixTypes[1] = visit(node.getRight());
 
-        try {
-            if (!infixTypes[0].getClass().isInstance(expectedType)) {
-                try {
-                    infixTypes[0] = TypeCaster.cast(infixTypes[0], expectedType);
-                } catch (IllegalTypeException e) {
-                    throw new IncompatibleTypeExpection(infixTypes[0].line +
-                            "Incompatible types: got " + infixTypes[0].toString() +
-                            ", expected " + expectedType.toString());
-                }
+        if (infixTypes[0] != null && !infixTypes[0].getClass().isInstance(expectedType)) {
+            try {
+                infixTypes[0] = TypeCaster.cast(infixTypes[0], expectedType);
+            } catch (IllegalTypeException e) {
+                throw new IncompatibleTypeExpection(infixTypes[0].line +
+                        "Incompatible types: got " + infixTypes[0].toString() +
+                        ", expected " + expectedType.toString());
             }
-            if (!infixTypes[1].getClass().isInstance(expectedType)) {
-                try {
-                    infixTypes[1] = TypeCaster.cast(infixTypes[1], expectedType);
-                } catch (IllegalTypeException e) {
-                    throw new IncompatibleTypeExpection(infixTypes[1].line +
-                            "Incompatible types: got " + infixTypes[1].toString() +
-                            ", expected " + expectedType.toString());
-                }
+        }
+        if (infixTypes[1] != null && !infixTypes[1].getClass().isInstance(expectedType)) {
+            try {
+                infixTypes[1] = TypeCaster.cast(infixTypes[1], expectedType);
+            } catch (IllegalTypeException e) {
+                throw new IncompatibleTypeExpection(infixTypes[1].line +
+                        "Incompatible types: got " + infixTypes[1].toString() +
+                        ", expected " + expectedType.toString());
             }
-        } catch (Exception e) {
-
         }
         return expectedType;
     }

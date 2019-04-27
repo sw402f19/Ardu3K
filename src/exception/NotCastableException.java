@@ -1,6 +1,9 @@
 package exception;
 
-public class NotCastableException extends Exception {
+import exception.factory.SemanticException;
+import node.RootNode;
+
+public class NotCastableException extends Exception implements SemanticException {
     public NotCastableException() {
     }
 
@@ -18,5 +21,10 @@ public class NotCastableException extends Exception {
 
     public NotCastableException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    @Override
+    public String setErrorMessage(RootNode source, RootNode target) {
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package visitor;
 
+import exception.IgnorableInvocationException;
 import node.Node;
 import node.RootNode;
 import java.lang.reflect.InvocationTargetException;
@@ -12,6 +13,8 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
             return this.dispatch(node);
         } catch (NullPointerException n) {
             n.printStackTrace();
+        } catch (IgnorableInvocationException e){
+            return null;
         } catch (Throwable t) {
             System.out.println(t.getMessage());
         }

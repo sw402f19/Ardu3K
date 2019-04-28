@@ -1,9 +1,7 @@
 package visitor.semantic;
 
-import exception.NotCastableException;
 import node.RootNode;
 import node.composite.ListNode;
-import node.expression.AbstractExpressionNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.additive.AbstractInfixAdditiveNode;
 import node.expression.condition.*;
@@ -13,21 +11,12 @@ import node.expression.type.BooleanType;
 import exception.IllegalTypeException;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;
-import node.primary.EnclosedExpressionNode;
-import symbol.SymbolTable;
-import visitor.semantic.typecast.TypeCaster;
 
 
 /**
  * Returns the type of a given expression.
  */
 public class ExpressionTypeVisitor extends PrimaryVisitor {
-
-    private SymbolTable symbolTable = SymbolTable.getInstance();
-
-    public RootNode visit(EnclosedExpressionNode node) {
-        return visit(node.getExpression());
-    }
 
     public RootNode visit(AbstractInfixAdditiveNode node) throws IllegalTypeException {
         isNumeral(node);
@@ -69,21 +58,20 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
             } else throw new IllegalTypeException("Types in list are not the same!");
         }
     }
-    // todo should check if able to cast if they are not of the same type.
     protected void isNumeral(AbstractInfixExpressionNode node) throws IllegalTypeException {
         if(!(visit(node.getLeft()) instanceof NumeralType))
-            throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
-                    " for type "+node.getClass().getSimpleName());
+            throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().toString()+
+                    " for type "+node.toString());
         else if(!(visit(node.getRight()) instanceof NumeralType))
-            throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().getClass().getSimpleName()+
-                    " for type "+node.getClass().getSimpleName());
+            throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().toString()+
+                    " for type "+node.toString());
     }
     protected void isBoolean(AbstractInfixExpressionNode node) throws IllegalTypeException {
         if(!(visit(node.getLeft()) instanceof BooleanType))
-            throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().getClass().getSimpleName()+
+            throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().toString()+
                     " for type "+node.getClass().getSimpleName());
         else if(!(visit(node.getRight()) instanceof BooleanType))
-            throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().getClass().getSimpleName()+
-                    " for type "+node.getClass().getSimpleName());
+            throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().toString()+
+                    " for type "+node.toString());
     }
 }

@@ -6,11 +6,10 @@ import exception.IllegalTypeException;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;
-import node.primary.IdentifierNode;
 import symbol.SymbolTable;
-import visitor.BaseASTVisitor;
+import visitor.semantic.typecast.ExpressionCastVisitor;
 
-public class AssignmentVisitor extends BaseASTVisitor<RootNode> {
+public class AssignmentVisitor extends PrimaryVisitor {
 
     private RootNode expectedType;
     private SymbolTable symbolTable = SymbolTable.getInstance();
@@ -34,9 +33,6 @@ public class AssignmentVisitor extends BaseASTVisitor<RootNode> {
             throw new IllegalTypeException(
                     node.getLine()+" Incompatible types "+node.toString()+", expected "+expectedType.toString());
         return node;
-    }
-    public RootNode visit(IdentifierNode node) {
-        return symbolTable.retrieveSymbol(node).getType();
     }
 
     private boolean isInstanceOf(RootNode expected, RootNode source) {

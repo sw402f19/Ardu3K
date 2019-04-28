@@ -1,6 +1,8 @@
 package visitor.semantic.typecast;
 
 import exception.IllegalTypeException;
+import exception.factory.ExceptionFactory;
+import exception.factory.SemanticException;
 import node.RootNode;
 import node.primary.IntegerNode;
 import node.primary.FloatNode;
@@ -20,11 +22,10 @@ public class TypeCaster {
     private static boolean canCast(RootNode source, RootNode target) {
         return castable.get(source.getClass()).contains(target.getClass());
     }
-    public static RootNode cast(RootNode source, RootNode target) throws IllegalTypeException {
+    public static RootNode cast(RootNode source, RootNode target) throws SemanticException {
         if (canCast(source, target))
             return handle(source, target.getClass());
-        else throw new IllegalTypeException(source.getLine()+" Incompatible types, cannot cast "+source.toString()+
-                    " to "+target.toString());
+        else throw ExceptionFactory.produce("incompatibletypes", source, target);
     }
 
     private static HashMap<Class, Handler> dispatch = new HashMap<>();

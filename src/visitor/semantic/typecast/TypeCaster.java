@@ -14,7 +14,7 @@ public class TypeCaster {
     private static HashMap<Class, List<Class>> castable = new HashMap<>();
     static {
         castable.put(IntegerNode.class, List.of(FloatNode.class, StringNode.class));
-        castable.put(FloatNode.class, List.of(FloatNode.class, StringNode.class));
+        castable.put(FloatNode.class, List.of(IntegerNode.class, StringNode.class));
         castable.put(StringNode.class, List.of());
     }
     private static boolean canCast(RootNode source, RootNode target) {
@@ -34,17 +34,25 @@ public class TypeCaster {
     }
     // todo temp errornode
     private static RootNode handleInteger(IntegerNode node, Class clazz) {
-        if(clazz.isInstance(StringNode.class))
+        if(clazz.isInstance(StringNode.class)) {
+            System.out.println("Casted int to string");
             return new StringNode(node.value);
-        else
+        }
+        else {
+            System.out.println("Casted int to float");
             return new FloatNode(node.value);
+        }
     }
 
     private static RootNode handleReal(FloatNode node, Class clazz) {
-        if(clazz.isInstance(StringNode.class))
+        if(clazz.isInstance(StringNode.class)) {
+            System.out.println("Casted float to string");
             return new StringNode(node.value);
-        else
-            return new FloatNode(node.value);
+        }
+        else {
+            System.out.println("Casted float to int");
+            return new IntegerNode(node.value);
+        }
     }
     private static RootNode handle(Object o, Class target) throws IllegalTypeException {
         Handler h = dispatch.get(o.getClass());

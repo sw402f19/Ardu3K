@@ -150,10 +150,6 @@ unary_expr
     | op=NEGATE right=primary
     | primary
 ;
-list_assignment
-    : id=identifier ASSIGN LBRACKET elements=list_element? RBRACKET
-    | primary
-    ;
 list_element
     : element=primary COMMA next=list_element
     | element=primary
@@ -164,9 +160,13 @@ primary
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt
     | child=list_expr                               #primaryListExpr
+    | child=list_assignment                         #primaryListAssignment
     ;
 list_expr
     : identifier DOT list_stmt
+    ;
+list_assignment
+    : LBRACKET elements=list_element? RBRACKET
     ;
 list_stmt
     : GET LPAR argument RPAR

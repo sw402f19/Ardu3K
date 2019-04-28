@@ -16,12 +16,12 @@ public abstract class RootNode implements Node {
     }
 
     public RootNode(ParserRuleContext ctx) {
-        this.line = "line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
+        this.line = "Line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
     }
 
     public RootNode(RootNode parent, ParserRuleContext ctx) {
         this.parent = parent;
-        this.line = "line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
+        this.line = "Line "+ctx.start.getLine()+": "+ctx.start.getCharPositionInLine();
     }
 
     public RootNode() { }

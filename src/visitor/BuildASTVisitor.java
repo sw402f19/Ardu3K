@@ -1,4 +1,4 @@
-package visitor.builder;
+package visitor;
 
 
 import node.RootNode;
@@ -378,7 +378,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
                 node = new IntegerNode(ctx);
                 break;
             case Ardu3kParser.REAL:
-                node = new FloatNode(ctx);
+                node = new RealNode(ctx);
                 break;
                 default:
                     throw new IllegalArgumentException();

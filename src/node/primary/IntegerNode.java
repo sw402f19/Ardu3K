@@ -10,9 +10,6 @@ public class IntegerNode extends AbstractNumberNode {
     public IntegerNode(int value) {
         this.value = value;
     }
-    public IntegerNode(double value) {
-        this.value = (int) value;
-    }
     public IntegerNode(Ardu3kParser.NumberContext ctx) {
         super(ctx);
         this.value = Integer.valueOf(ctx.getText());

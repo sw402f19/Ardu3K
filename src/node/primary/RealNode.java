@@ -5,18 +5,18 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class FloatNode extends AbstractNumberNode {
+public class RealNode extends AbstractNumberNode {
     public double value;
 
-    public FloatNode(double value) {
+    public RealNode(double value) {
         this.value = value;
     }
-    public FloatNode(Ardu3kParser.NumberContext ctx) {
+    public RealNode(Ardu3kParser.NumberContext ctx) {
         super(ctx);
         this.value = Double.valueOf(ctx.getText());
     }
 
-    public FloatNode(String str) {
+    public RealNode(String str) {
         this.value = Double.valueOf(str);
     }
 

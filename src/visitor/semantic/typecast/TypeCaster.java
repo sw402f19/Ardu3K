@@ -1,65 +1,55 @@
 package visitor.semantic.typecast;
 
-import exception.IllegalTypeException;
+import exception.ErrorNode;
+import exception.NotCastableException;
 import node.RootNode;
 import node.primary.IntegerNode;
-import node.primary.FloatNode;
+import node.primary.RealNode;
 import node.primary.StringNode;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class TypeCaster {
 
-    private static HashMap<Class, List<Class>> castable = new HashMap<>();
+    private static HashMap<Class, List<Class>> dispatch = new HashMap<>();
     static {
-        castable.put(IntegerNode.class, List.of(FloatNode.class, StringNode.class));
-        castable.put(FloatNode.class, List.of(IntegerNode.class, StringNode.class));
-        castable.put(StringNode.class, List.of());
+        dispatch.put(IntegerNode.class, List.of(RealNode.class, StringNode.class));
+        dispatch.put(RealNode.class, List.of(RealNode.class, StringNode.class));
     }
-    private static boolean canCast(RootNode source, RootNode target) {
-        return castable.get(source.getClass()).contains(target.getClass());
+    public static boolean canCast(RootNode source, RootNode target) {
+        return dispatch.get(source.getClass()).contains(target.getClass());
     }
-    public static RootNode cast(RootNode source, RootNode target) throws IllegalTypeException {
-        if (canCast(source, target))
-            return handle(source, target.getClass());
-        else throw new IllegalTypeException(source.getLine()+" Incompatible types, cannot cast "+source.toString()+
-                    " to "+target.toString());
+    public static RootNode cast(RootNode source, RootNode target) {
+        return handle(source, target.getClass());
     }
 
-    private static HashMap<Class, Handler> dispatch = new HashMap<>();
+    private static HashMap<Class, Handler> dispatch2 = new HashMap<>();
     static {
-        dispatch.put(IntegerNode.class, (n, c) -> handleInteger((IntegerNode) n,c));
-        dispatch.put(FloatNode.class, (n, c) -> handleReal((FloatNode)n, c));
+        dispatch2.put(IntegerNode.class, (n, c) -> handleInteger((IntegerNode) n,c));
+        dispatch2.put(RealNode.class, (n, c) -> handleReal((RealNode)n, c));
     }
     // todo temp errornode
     private static RootNode handleInteger(IntegerNode node, Class clazz) {
-        if(clazz.isInstance(StringNode.class)) {
-            System.out.println("Casted int to string");
+        if(clazz.isInstance(StringNode.class))
             return new StringNode(node.value);
-        }
-        else {
-            System.out.println("Casted int to float");
-            return new FloatNode(node.value);
-        }
+        else if(clazz.isInstance(RealNode.class))
+            return new RealNode(node.value);
+        else return new ErrorNode(clazz);
     }
 
-    private static RootNode handleReal(FloatNode node, Class clazz) {
-        if(clazz.isInstance(StringNode.class)) {
-            System.out.println("Casted float to string");
+    private static RootNode handleReal(RealNode node, Class clazz) {
+        if(clazz.isInstance(StringNode.class))
             return new StringNode(node.value);
-        }
-        else {
-            System.out.println("Casted float to int");
-            return new IntegerNode(node.value);
-        }
+        else if(clazz.isInstance(RealNode.class))
+            return new RealNode(node.value);
+        else return new ErrorNode(clazz);
     }
-    private static RootNode handle(Object o, Class target) throws IllegalTypeException {
-        Handler h = dispatch.get(o.getClass());
-        if (h != null)
+    private static RootNode handle(Object o, Class target) {
+        Handler h = dispatch2.get(o.getClass());
+        if(h != null)
             return h.handle(o, target);
-        else
-            throw new IllegalTypeException();
-
+        return null;
     }
 }

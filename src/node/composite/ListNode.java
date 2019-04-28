@@ -2,13 +2,12 @@ package node.composite;
 
 import gen.Ardu3kParser;
 import node.RootNode;
-import node.primary.AbstractPrimaryNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
 import java.util.ArrayList;
 
-public class ListNode extends AbstractPrimaryNode {
+public class ListNode extends RootNode {
     public ListNode(Ardu3kParser.List_assignmentContext ctx) {
         super(ctx);
     }

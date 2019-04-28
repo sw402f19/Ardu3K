@@ -10,10 +10,8 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
     public T visit(Node node) {
         try {
             return this.dispatch(node);
-        } catch (NullPointerException n) {
-            n.printStackTrace();
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            t.printStackTrace();
         }
         return null;
     }
@@ -61,6 +59,8 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
                 }
             }
             node = node.getSuperclass();
+            if(node.equals(RootNode.class))
+                throw new NoSuchMethodException();
         }
         throw new NoSuchMethodException("No declared accept method for any subclass");
     }

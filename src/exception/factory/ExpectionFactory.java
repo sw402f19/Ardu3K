@@ -1,16 +1,23 @@
 package exception.factory;
 
-import exception.IllegalTypeException;
+import exception.DuplicateParameterException;
+import exception.UndeclaredIdentifierException;
+import node.RootNode;
+import node.primary.IdentifierNode;
+import node.scope.ParameterNode;
 
 public class ExpectionFactory {
 
-    public static SemanticException produce(String excp) throws NoProductException {
-        switch (excp.toUpperCase()) {
-            case "IllegalType":
-                return new IllegalTypeException();
+    public static SemanticException produce(String exceptionClassName, RootNode node) throws NoProductException {
+        switch (exceptionClassName.toUpperCase()) {
+            case "ILLEGALTYPE":
+                return new UndeclaredIdentifierException((IdentifierNode)node);
+
+            case "DUPLICATEPARAMETER":
+                return new DuplicateParameterException((ParameterNode) node);
 
                 default:
-                    throw new NoProductException("");
+                    throw new NoProductException(exceptionClassName);
         }
     }
 }

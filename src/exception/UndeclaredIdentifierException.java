@@ -2,6 +2,7 @@ package exception;
 
 import exception.factory.SemanticException;
 import node.RootNode;
+import node.primary.IdentifierNode;
 
 public class UndeclaredIdentifierException extends Exception implements SemanticException {
     public UndeclaredIdentifierException() {
@@ -9,6 +10,10 @@ public class UndeclaredIdentifierException extends Exception implements Semantic
 
     public UndeclaredIdentifierException(String message) {
         super(message);
+    }
+    public UndeclaredIdentifierException(IdentifierNode node) {
+        super(node.getLine()+"UndeclaredIdentifierException - identifier \""
+                +node.toString()+"\" not declared");
     }
 
     public UndeclaredIdentifierException(String message, Throwable cause) {

@@ -6,7 +6,7 @@ public class NoProductException extends RuntimeException {
     }
 
     public NoProductException(String message) {
-        super("NoProductException: "+message);
+        super("Unknown exception \""+message+"\"");
 
     }
 

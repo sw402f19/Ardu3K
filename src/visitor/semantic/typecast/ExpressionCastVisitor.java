@@ -26,20 +26,20 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
             try {
                 infixTypes[0] = TypeCaster.cast(infixTypes[0], expectedType);
             } catch (IllegalTypeException e) {
-                throw ExceptionFactory.produce("incompatibletypes", infixTypes[0], expectedType);
+                throw ExceptionFactory.produce("incompatibletypes", expectedType, infixTypes[0]);
             }
         }
         if (infixTypes[1] != null && !infixTypes[1].getClass().isInstance(expectedType)) {
             try {
                 infixTypes[1] = TypeCaster.cast(infixTypes[1], expectedType);
             } catch (IllegalTypeException e) {
-                throw ExceptionFactory.produce("incompatibletypes", infixTypes[1], expectedType);
+                throw ExceptionFactory.produce("incompatibletypes", expectedType, infixTypes[1]);
             }
         }
         return expectedType;
     }
 
-    public RootNode visit(AbstractPrimaryNode node) throws IllegalTypeException {
+    public RootNode visit(AbstractPrimaryNode node) throws SemanticException {
         if(expectedType.getClass().isInstance(node))
             return super.visit(node);
         else

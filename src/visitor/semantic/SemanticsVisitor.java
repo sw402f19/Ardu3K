@@ -1,5 +1,6 @@
 package visitor.semantic;
 
+import exception.IncompatibleTypeExpection;
 import exception.UndeclaredIdentifierException;
 import node.RootNode;
 import node.expression.*;
@@ -23,12 +24,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode)
             return visit(new DeclarationNode(node));
         else {
-            try {
-                this.visit(node.getRight());
-                new AssignmentVisitor().visit(node);
-            } catch (IllegalTypeException e) {
-                System.out.println(e.getMessage());
-            }
+            this.visit(node.getRight());
+            new AssignmentVisitor().visit(node);
         }
         return node;
     }

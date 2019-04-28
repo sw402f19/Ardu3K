@@ -24,7 +24,7 @@ public class IncompatibleTypeExpection extends SemanticException{
     }
 
     public IncompatibleTypeExpection(RootNode src, RootNode target) {
-        super(src.getLine()+" IncompatibleTypeException: got "+target.toString()+" " +
-                "expected "+src.toString());
+        super(src.getLine()+" IncompatibleTypeException: expected "+src.toString()+"" +
+                ", got "+target.toString());
     }
 }

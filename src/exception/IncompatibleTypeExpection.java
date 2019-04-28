@@ -3,7 +3,7 @@ package exception;
 import exception.factory.SemanticException;
 import node.RootNode;
 
-public class IncompatibleTypeExpection extends AbstractException implements SemanticException {
+public class IncompatibleTypeExpection extends SemanticException{
     public IncompatibleTypeExpection() {
     }
 
@@ -23,8 +23,8 @@ public class IncompatibleTypeExpection extends AbstractException implements Sema
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
-    @Override
-    public String setErrorMessage(RootNode source, RootNode target) {
-        return null;
+    public IncompatibleTypeExpection(RootNode src, RootNode target) {
+        super(src.getLine()+" IncompatibleTypeException: got "+target.toString()+" " +
+                "expected "+src.toString());
     }
 }

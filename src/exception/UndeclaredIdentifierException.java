@@ -4,7 +4,7 @@ import exception.factory.SemanticException;
 import node.RootNode;
 import node.primary.IdentifierNode;
 
-public class UndeclaredIdentifierException extends Exception implements SemanticException {
+public class UndeclaredIdentifierException extends SemanticException {
     public UndeclaredIdentifierException() {
     }
 
@@ -12,7 +12,7 @@ public class UndeclaredIdentifierException extends Exception implements Semantic
         super(message);
     }
     public UndeclaredIdentifierException(IdentifierNode node) {
-        super(node.getLine()+"UndeclaredIdentifierException - identifier \""
+        super(node.getLine()+" UndeclaredIdentifierException - identifier \""
                 +node.toString()+"\" not declared");
     }
 
@@ -26,10 +26,5 @@ public class UndeclaredIdentifierException extends Exception implements Semantic
 
     public UndeclaredIdentifierException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
-    }
-
-    @Override
-    public String setErrorMessage(RootNode source, RootNode target) {
-        return null;
     }
 }

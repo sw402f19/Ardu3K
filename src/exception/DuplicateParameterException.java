@@ -2,13 +2,15 @@ package exception;
 
 import exception.factory.SemanticException;
 import node.RootNode;
+import node.primary.IdentifierNode;
 import node.scope.ParameterNode;
+import symbol.SymbolTable;
 
-public class DuplicateParameterException extends Exception implements SemanticException {
+public class DuplicateParameterException extends SemanticException {
 
-    public DuplicateParameterException(ParameterNode node){
-        super(node.getLine()+"DuplicateParameterException- identifier \""
-                +node.toString()+"\" already declared. ");
+    public DuplicateParameterException(IdentifierNode node){
+        super(node.getLine()+" DuplicateParameterException: identifier \""
+                +node.toString()+"\" already declared at "+ SymbolTable.getInstance().retrieveSymbol(node).getName().line);
     }
 
     public DuplicateParameterException() {
@@ -28,10 +30,5 @@ public class DuplicateParameterException extends Exception implements SemanticEx
 
     public DuplicateParameterException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
-    }
-
-    @Override
-    public String setErrorMessage(RootNode source, RootNode target) {
-        return null;
     }
 }

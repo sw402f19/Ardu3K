@@ -9,7 +9,9 @@ loop = {
     arr = [1, 4, 2, 6];
     b = ((1 + 5) * ((5+5)*5));
     ab = "ab";
+    ab = ab + "ab";
     D = 10.150;
+    D = 10;
     a = 10;
     b.add(a);
 
@@ -41,10 +43,12 @@ loop = {
 
 }
 func (a) = {
-    a = 10;
+    a = 10.5;
     return a;
 }
 funcc(a, a, a) = {
     a = func(a);
+    b = "b";
+    a = 1 + (5 * 5 * b);
     return a;
 }

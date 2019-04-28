@@ -15,7 +15,8 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
 
     public RootNode initVisit(RootNode expectedType, RootNode node) {
         this.expectedType = expectedType;
-        return visit(node);
+        visit(node);
+        return node;
     }
     public RootNode visit(AbstractInfixExpressionNode node) throws SemanticException {
         RootNode[] infixTypes = new RootNode[2];

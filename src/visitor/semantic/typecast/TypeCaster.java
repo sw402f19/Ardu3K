@@ -25,7 +25,7 @@ public class TypeCaster {
     public static RootNode cast(RootNode source, RootNode target) throws SemanticException {
         if (canCast(source, target))
             return handle(source, target.getClass());
-        else throw ExceptionFactory.produce("incompatibletypes", source, target);
+        else throw ExceptionFactory.produce("notcastable", target, source);
     }
 
     private static HashMap<Class, Handler> dispatch = new HashMap<>();

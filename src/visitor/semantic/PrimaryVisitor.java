@@ -1,6 +1,6 @@
 package visitor.semantic;
 
-import exception.ErrorNode;
+import exception.IllegalTypeException;
 import exception.UndeclaredIdentifierException;
 import node.Node;
 import node.RootNode;
@@ -15,7 +15,7 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
 
     SymbolTable symbolTable = SymbolTable.getInstance();
 
-    public RootNode visit(AbstractPrimaryNode node) {
+    public RootNode visit(AbstractPrimaryNode node) throws IllegalTypeException {
         return node;
     }
     public RootNode visit(IdentifierNode node) throws UndeclaredIdentifierException {

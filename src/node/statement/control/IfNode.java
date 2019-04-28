@@ -11,7 +11,7 @@ public class IfNode extends AbstractControlNode {
 
     @Override
     public String toString() {
-        return "if do ";
+        return "if";
     }
 
     public RootNode getUpperbody() {

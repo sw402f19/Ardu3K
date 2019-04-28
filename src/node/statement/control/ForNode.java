@@ -10,7 +10,7 @@ public class ForNode extends AbstractControlNode {
 
     @Override
     public String toString() {
-        return "for to do ";
+        return "for-loop";
     }
 
     public RootNode getValue() {

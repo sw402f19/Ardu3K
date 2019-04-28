@@ -9,7 +9,7 @@ public class WhileNode extends AbstractControlNode {
     }
 
     @Override
-    public String toString() { return "While do"; }
+    public String toString() { return "While-loop"; }
 
     public RootNode getStmt() { return children.get(1); }
     public void setStmt(RootNode node) {

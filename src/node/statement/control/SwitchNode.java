@@ -11,7 +11,7 @@ public class SwitchNode extends AbstractControlNode {
 
     @Override
     public String toString() {
-        return "switch ";
+        return "Switch";
     }
 
     public RootNode getDefaultnode() {

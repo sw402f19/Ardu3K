@@ -12,7 +12,7 @@ public class ElifNode extends IfNode {
 
     @Override
     public String toString() {
-        return "if do else ";
+        return "if-else";
     }
 
     public RootNode getLowerbody() {

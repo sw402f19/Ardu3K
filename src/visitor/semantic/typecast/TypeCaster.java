@@ -35,22 +35,22 @@ public class TypeCaster {
     // todo temp errornode
     private static RootNode handleInteger(IntegerNode node, Class clazz) {
         if(clazz.isInstance(StringNode.class)) {
-            System.out.println("Casted int to string");
+            System.out.println(node.getLine()+" casted int to string");
             return new StringNode(node.value);
         }
         else {
-            System.out.println("Casted int to float");
+            System.out.println(node.getLine()+" casted int to float");
             return new FloatNode(node.value);
         }
     }
 
     private static RootNode handleReal(FloatNode node, Class clazz) {
         if(clazz.isInstance(StringNode.class)) {
-            System.out.println("Casted float to string");
+            System.out.println(node.getLine()+" casted float to string");
             return new StringNode(node.value);
         }
         else {
-            System.out.println("Casted float to int");
+            System.out.println(node.getLine()+" casted float to int");
             return new IntegerNode(node.value);
         }
     }

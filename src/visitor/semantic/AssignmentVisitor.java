@@ -14,19 +14,10 @@ public class AssignmentVisitor extends PrimaryVisitor {
     private RootNode expectedType;
     private SymbolTable symbolTable = SymbolTable.getInstance();
 
-    public RootNode visit(AssignmentNode node) throws IllegalTypeException {
+    public RootNode visit(AssignmentNode node) {
         expectedType = symbolTable.retrieveSymbol(node.getLeft()).getType();
-        RootNode expressionType = new ExpressionTypeVisitor().visit(node.getRight());
-
-        if(expressionType == null)
-            throw new IllegalTypeException("DEV ERROR: Expression returned null, incomplete visit methods in AssignmentVisitor");
-        //if(isInstanceOf(expressionType.getClass(), expectedType))
-        if(isInstanceOf(expectedType, expressionType))
-            return node;
-        else
-            throw new IllegalTypeException(node.getLine()+" Illegal type: "
-                    +expressionType.toString()+" for identifier "+node.getLeft()
-                    +", expected " +expectedType.toString());
+        new ExpressionCastVisitor().initVisit(expectedType, node.getRight());
+        return node;
     }
     public RootNode visit(AbstractPrimaryNode node) throws IllegalTypeException {
         if(!isInstanceOf(expectedType, node))

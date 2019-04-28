@@ -1,11 +1,11 @@
 package visitor.semantic;
 
-import exception.IncompatibleTypeExpection;
-import exception.DuplicatedParameterIdentifier;
+import exception.DuplicateParameterException;
 import exception.UndeclaredIdentifierException;
+import exception.factory.ExceptionFactory;
+import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.*;
-import exception.IllegalTypeException;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.primary.IdentifierNode;
@@ -59,20 +59,20 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     // todo temp error handling
-    public RootNode visit(IfNode node) {
+    public RootNode visit(IfNode node) throws SemanticException {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof BooleanType))
-            System.out.println(node.getLine()+" Expression for If cannot evaluate to boolean got :"+type.toString());
+            throw ExceptionFactory.produce("needsbooleanpredicate", node);
         visitChildren(node);
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(ElifNode node) {
+    public RootNode visit(ElifNode node) throws SemanticException {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof BooleanType))
-            System.out.println(node.getLine()+" Expression for If-else cannot evaluate to boolean got :"+type.toString());
+            throw ExceptionFactory.produce("needsbooleanpredicate", node);
         visitChildren(node);
         symbolTable.closeScope();
         return node;
@@ -95,11 +95,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(WhileNode node) {
+    public RootNode visit(WhileNode node) throws SemanticException {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
         if(!(type instanceof BooleanType))
-            System.out.println("Expression for While-loop cannot evaluate to boolean got :"+type.toString());
+            throw ExceptionFactory.produce("needsbooleanpredicate", node);
         visitChildren(node);
         symbolTable.closeScope();
         return node;
@@ -130,16 +130,14 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(ParameterNode node) {
+    public RootNode visit(ParameterNode node) throws DuplicateParameterException {
         symbolTable.openScope();
-        if(node.children.size() > 0) {
-            Set<String> hs1 = new LinkedHashSet(node.children);
-            List<String> al2 = new ArrayList<>(hs1);
-            if (node.children.size() > al2.size()) {
-                throw new DuplicatedParameterIdentifier(node);
-            }
+        for(RootNode n : node.children) {
+            if(symbolTable.isPresent(n))
+                throw new DuplicateParameterException((IdentifierNode)n);
+            else
+                symbolTable.enterSymbol((IdentifierNode) n);
         }
-        node.children.forEach(e -> symbolTable.enterSymbol((IdentifierNode) e));
         return node;
     }
 }

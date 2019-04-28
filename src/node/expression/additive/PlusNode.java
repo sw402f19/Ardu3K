@@ -12,7 +12,7 @@ public class PlusNode extends AbstractInfixAdditiveNode{
 
     @Override
     public String toString() {
-        return  " + " ;
+        return  "+" ;
     }
 
 }

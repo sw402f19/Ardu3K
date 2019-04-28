@@ -26,14 +26,14 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
         if (infixTypes[0] != null && !infixTypes[0].getClass().isInstance(expectedType)) {
             try {
                 infixTypes[0] = TypeCaster.cast(infixTypes[0], expectedType);
-            } catch (IllegalTypeException e) {
+            } catch (SemanticException e) {
                 throw ExceptionFactory.produce("incompatibletypes", expectedType, infixTypes[0]);
             }
         }
         if (infixTypes[1] != null && !infixTypes[1].getClass().isInstance(expectedType)) {
             try {
                 infixTypes[1] = TypeCaster.cast(infixTypes[1], expectedType);
-            } catch (IllegalTypeException e) {
+            } catch (SemanticException e) {
                 throw ExceptionFactory.produce("incompatibletypes", expectedType, infixTypes[1]);
             }
         }

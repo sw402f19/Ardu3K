@@ -4,18 +4,29 @@
 setup = {
 
 }
+
 loop = {
     b = [];
     c = func(1);
 
 }
 func (a) = {
-    funcc(1, 3);
+    funcc(1, 3, 5);
     return a;
 }
 funcc(a, b, c) = {
-    a = func(a);
     b = "b";
+    funky(1);
     a = 1 + (5 * 5 * b);
     return a;
+}
+
+funky (d) = {
+    fancy(1);
+    return 1;
+}
+
+fancy (x) = {
+    func("ddw");
+    return x;
 }

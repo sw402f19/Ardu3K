@@ -1,6 +1,7 @@
 package visitor.semantic;
 
 import exception.DuplicateParameterException;
+import exception.RecursionException;
 import exception.UndeclaredIdentifierException;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
@@ -119,15 +120,17 @@ public class SemanticsVisitor extends PrimaryVisitor {
                             +expectedType.toString());
             }
         } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
+
         return node;
     }
-    public RootNode visit(FunctionNode node) {
+    public RootNode visit(FunctionNode node) throws RecursionException {
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
         visit(node.getParameter());
         visit(node.getBlock());
         node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
         symbolTable.closeScope();
+        RecursionChecker.checkForRecursion(node);
         return node;
     }
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {

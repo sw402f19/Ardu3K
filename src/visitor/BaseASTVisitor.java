@@ -1,6 +1,9 @@
 package visitor;
 
 import exception.IgnorableInvocationException;
+import exception.factory.ExceptionFactory;
+import exception.factory.NoProductException;
+import exception.factory.SemanticException;
 import node.Node;
 import node.RootNode;
 import java.lang.reflect.InvocationTargetException;
@@ -9,20 +12,21 @@ import java.lang.reflect.Method;
 public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
     // todo Exceptions should be thrown here, and handled individually after the visit.
-    public T visit(Node node) {
+    public T visit(Node node) throws SemanticException {
         try {
             return this.dispatch(node);
-        } catch (NullPointerException n) {
+        } catch (NullPointerException | NoProductException n) {
             n.printStackTrace();
         } catch (IgnorableInvocationException e){
             return null;
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            throw ExceptionFactory.produce(t);
+            //System.out.println(t.getMessage());
         }
         return null;
     }
 
-    public T visitChildren(RootNode node){
+    public T visitChildren(RootNode node) throws SemanticException {
 
         T dast = null;
 

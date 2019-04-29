@@ -1,5 +1,6 @@
 package visitor.semantic;
 
+import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.AbstractExpressionNode;
 import node.expression.VoidNode;
@@ -17,7 +18,7 @@ public class ReturnTypeVisitor extends PrimaryVisitor {
 
     private ArrayList<RootNode> returnTypes = new ArrayList<>();
 
-    public RootNode visit(ReturnNode node) {
+    public RootNode visit(ReturnNode node) throws SemanticException {
         if(node.getExpression() != null)
             returnTypes.add(new ExpressionTypeVisitor().visit(node.getExpression()));
         return aggregateResult();

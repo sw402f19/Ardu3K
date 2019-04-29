@@ -13,7 +13,7 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
 
     private RootNode expectedType;
 
-    public RootNode initVisit(RootNode expectedType, RootNode node) {
+    public RootNode initVisit(RootNode expectedType, RootNode node) throws SemanticException {
         this.expectedType = expectedType;
         visit(node);
         return node;

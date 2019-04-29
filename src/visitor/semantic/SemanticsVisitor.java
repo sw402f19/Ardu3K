@@ -16,36 +16,44 @@ import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
+@SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
-    
-    public RootNode visit(AssignmentNode node) {
-        if(!(symbolTable.isPresent(node.getLeft())) ||
-                symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode)
-            return visit(new DeclarationNode(node));
-        else {
-            this.visit(node.getRight());
-            new AssignmentVisitor().visit(node);
+
+    public RootNode visit(AssignmentNode node)  {
+        try {
+            if(!(symbolTable.isPresent(node.getLeft())) ||
+                    symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode)
+                return visit(new DeclarationNode(node));
+            else {
+                this.visit(node.getRight());
+                new AssignmentVisitor().visit(node);
+            }
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
         }
         return node;
     }
     public RootNode visit(DeclarationNode node) {
         symbolTable.enterSymbol(node);
-        visit(node.getRight());
+        try {
+            visit(node.getRight());
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         return node;
     }
-    public RootNode visit(ProgramNode node) {
+    public RootNode visit(ProgramNode node) throws SemanticException {
         node = (ProgramNode) new BuildParentVisitor().visit(node);
-        visit(node.getDefinesNode());
-        visit(node.getFunctionsNode());
-        visit(node.getSetupNode());
-        visit(node.getLoopNode());
+        try {
+            visit(node.getDefinesNode());
+            visit(node.getFunctionsNode());
+            visit(node.getSetupNode());
+            visit(node.getLoopNode());
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         return node;
     }
 
@@ -55,78 +63,118 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
     public RootNode visit(AbstractScopeNode node) {
         symbolTable.openScope();
-        visitChildren(node);
+        try {
+            visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         return node;
     }
     // todo temp error handling
-    public RootNode visit(IfNode node) throws SemanticException {
+    public RootNode visit(IfNode node) {
         symbolTable.openScope();
-        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
-        if(!(type instanceof BooleanType))
-            throw ExceptionFactory.produce("needsbooleanpredicate", node);
-        visitChildren(node);
+        try {
+            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            if (!(type instanceof BooleanType))
+                throw ExceptionFactory.produce("needsbooleanpredicate", node);
+            visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(ElifNode node) throws SemanticException {
+    public RootNode visit(ElifNode node)  {
         symbolTable.openScope();
-        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
-        if(!(type instanceof BooleanType))
-            throw ExceptionFactory.produce("needsbooleanpredicate", node);
-        visitChildren(node);
+        try {
+            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            if(!(type instanceof BooleanType))
+                throw ExceptionFactory.produce("needsbooleanpredicate", node);
+            visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(SwitchNode node) {
+    public RootNode visit(SwitchNode node)  {
         symbolTable.openScope();
-        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
-        if(!(type instanceof NumeralType))
-            System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
-        visitChildren(node);
+        try {
+            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            if(!(type instanceof NumeralType))
+                System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
+            visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(ForNode node) {
+    public RootNode visit(ForNode node)  {
         symbolTable.openScope();
-        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
-        if(!(type instanceof NumeralType))
-            System.out.println("Expression for For-loop cannot evaluate to literal got :"+type.toString());
-        visitChildren(node);
+        try {
+            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            if(!(type instanceof NumeralType))
+                System.out.println("Expression for For-loop cannot evaluate to literal got :"+type.toString());
+            visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(WhileNode node) throws SemanticException {
+    public RootNode visit(WhileNode node) {
         symbolTable.openScope();
-        RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
-        if(!(type instanceof BooleanType))
-            throw ExceptionFactory.produce("needsbooleanpredicate", node);
-        visitChildren(node);
+        try {
+            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            if (!(type instanceof BooleanType))
+                throw ExceptionFactory.produce("needsbooleanpredicate", node);
+            visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
-        RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
-        if(function instanceof FunctionNode) {
-            for (int i = 0; i < node.getArguments().children.size(); i++) {
-                RootNode expectedType =
-                        new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
-                // todo here be dragons hehe
-                RootNode argType = visit(node.getArguments().children.get(i));
-                if(!(expectedType.getClass().isInstance(argType)))
-                    throw new IllegalArgumentException(node.getLine()+" Illegal argument type for "
-                            +node.getArguments().children.get(i).toString() +" got "
-                            +node.getArguments().children.get(i).toString()+", expected "
-                            +expectedType.toString());
-            }
-        } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
+    public RootNode visit(FunctionStmtNode node) {
+        try {
+            RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
+            if(function instanceof FunctionNode) {
+                for (int i = 0; i < node.getArguments().children.size(); i++) {
+                    RootNode expectedType =
+                            new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
+                    // todo here be dragons hehe
+                    RootNode argType = visit(node.getArguments().children.get(i));
+                    if(!(expectedType.getClass().isInstance(argType)))
+                        throw new IllegalArgumentException(node.getLine()+" Illegal argument type for "
+                                +node.getArguments().children.get(i).toString() +" got "
+                                +node.getArguments().children.get(i).toString()+", expected "
+                                +expectedType.toString());
+                }
+            } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         return node;
     }
     public RootNode visit(FunctionNode node) {
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
-        visit(node.getParameter());
-        visit(node.getBlock());
-        node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
+        try{
+            visit(node.getParameter());
+            try {
+                visit(node.getBlock());
+                try {
+                    node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
+                } catch (SemanticException e) {
+                    System.out.println(e.getMessage());
+                }
+            } catch (SemanticException e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         symbolTable.closeScope();
         return node;
     }

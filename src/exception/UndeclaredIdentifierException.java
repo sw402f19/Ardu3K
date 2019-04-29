@@ -16,15 +16,7 @@ public class UndeclaredIdentifierException extends SemanticException {
                 +node.toString()+"\" not declared");
     }
 
-    public UndeclaredIdentifierException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     public UndeclaredIdentifierException(Throwable cause) {
         super(cause);
-    }
-
-    public UndeclaredIdentifierException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

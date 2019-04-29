@@ -11,16 +11,8 @@ public class IncompatibleTypeExpection extends SemanticException{
         super(message);
     }
 
-    public IncompatibleTypeExpection(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     public IncompatibleTypeExpection(Throwable cause) {
         super(cause);
-    }
-
-    public IncompatibleTypeExpection(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 
     public IncompatibleTypeExpection(RootNode src, RootNode target) {

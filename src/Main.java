@@ -1,3 +1,4 @@
+import exception.factory.SemanticException;
 import node.RootNode;
 import visitor.builder.BuildASTVisitor;
 import gen.Ardu3kLexer;
@@ -27,6 +28,8 @@ public class Main {
             System.out.println("==============\nSuccessful :)\n==============\n");
             //ast.print(0);
 
+        } catch (SemanticException e){
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }

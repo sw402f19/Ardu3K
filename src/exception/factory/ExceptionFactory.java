@@ -4,6 +4,7 @@ import exception.*;
 import exception.IllegalArgumentException;
 import node.RootNode;
 import node.primary.IdentifierNode;
+import node.statement.control.AbstractControlNode;
 import node.statement.control.WhileNode;
 
 public class ExceptionFactory {
@@ -20,7 +21,7 @@ public class ExceptionFactory {
                 return new DuplicateParameterException((IdentifierNode) node);
 
             case "NEEDSBOOLEANPREDICATE":
-                return new NeedsBooleanPredicateException((WhileNode) node);
+                return new NeedsBooleanPredicateException((AbstractControlNode) node);
 
             case "ILLEGALARGUMENT":
                 return new IllegalArgumentException();

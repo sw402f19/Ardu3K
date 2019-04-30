@@ -4,7 +4,7 @@ import node.RootNode;
 import node.expression.type.NumeralType;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AbstractInfixNumeralNode extends AbstractInfixExpressionNode {
+public class AbstractInfixNumeralNode extends AbstractInfixExpressionNode implements NumeralType{
 
     public AbstractInfixNumeralNode(RootNode parent) {
         super(parent);

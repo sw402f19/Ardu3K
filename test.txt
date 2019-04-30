@@ -15,7 +15,7 @@ loop = {
     a = 10;
     b.add(a);
 
-    if true do
+    if 5+5 do
         if true do
             if true do
                 a = 1;
@@ -27,7 +27,6 @@ loop = {
 
     for a = 1 to 10 do {
         a = (a + 10);
-        a = funcc(a);
     }
     switch (a) {
         case 10:
@@ -47,8 +46,8 @@ func (a) = {
     return a;
 }
 funcc(a) = {
-    a = func(a);
     b = "b";
+    a = func(a);
     a = 1 + (5 * 5 * b);
     return a;
 }

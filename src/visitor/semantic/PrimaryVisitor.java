@@ -2,6 +2,7 @@ package visitor.semantic;
 
 import exception.IllegalTypeException;
 import exception.UndeclaredIdentifierException;
+import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.Node;
 import node.RootNode;
@@ -32,7 +33,9 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
     public RootNode visit(FunctionStmtNode node) throws SemanticException {
         if(symbolTable.isPresent(node.getId())) {
             FunctionNode symbolType = ((FunctionNode)symbolTable.retrieveSymbol(node.getId()).getType());
-                return visit(symbolType.getReturnType());
+            if(symbolType.getReturnType() == null)
+                throw ExceptionFactory.produce("UndeclaredIdentifier", symbolType.getId());
+            return visit(symbolType.getReturnType());
         } else
             throw new UndeclaredIdentifierException(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
     }

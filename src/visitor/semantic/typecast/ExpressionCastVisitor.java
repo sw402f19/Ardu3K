@@ -1,8 +1,8 @@
 package visitor.semantic.typecast;
 
 import exception.IllegalTypeException;
-import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
+import exception.factory.ExceptionFactory;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.AbstractPrimaryNode;

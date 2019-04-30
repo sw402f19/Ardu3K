@@ -29,6 +29,5 @@ public class ReturnTypeVisitor extends PrimaryVisitor {
             return returnTypes.get(0);
         else
             return new VoidNode();
-
     }
 }

@@ -13,7 +13,6 @@ import exception.IllegalTypeException;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;
 
-
 /**
  * Returns the type of a given expression.
  */

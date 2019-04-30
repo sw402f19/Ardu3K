@@ -20,8 +20,8 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
         } catch (IgnorableInvocationException e){
             return null;
         } catch (Throwable t) {
-            throw ExceptionFactory.produce(t);
-            //System.out.println(t.getMessage());
+            if(t instanceof SemanticException)
+                throw ExceptionFactory.produce(t);
         }
         return null;
     }

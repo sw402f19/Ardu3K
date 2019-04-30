@@ -1,6 +1,7 @@
 package exception.factory;
 
 import exception.*;
+import exception.IllegalArgumentException;
 import node.RootNode;
 import node.primary.IdentifierNode;
 import node.statement.control.WhileNode;
@@ -20,6 +21,9 @@ public class ExceptionFactory {
 
             case "NEEDSBOOLEANPREDICATE":
                 return new NeedsBooleanPredicateException((WhileNode) node);
+
+            case "ILLEGALARGUMENT":
+                return new IllegalArgumentException();
 
             default:
                 throw new NoProductException(exceptionClassName);

@@ -146,10 +146,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
                     // todo here be dragons hehe
                     RootNode argType = visit(node.getArguments().children.get(i));
                     if(!(expectedType.getClass().isInstance(argType)))
-                        throw new IllegalArgumentException(node.getLine()+" Illegal argument type for "
-                                +node.getArguments().children.get(i).toString() +" got "
-                                +node.getArguments().children.get(i).toString()+", expected "
-                                +expectedType.toString());
+                        throw ExceptionFactory.produce("illegalargument", argType);
                 }
             } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
         } catch (SemanticException e) {
@@ -162,16 +159,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         try{
             visit(node.getParameter());
-            try {
-                visit(node.getBlock());
-                try {
-                    node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
-                } catch (SemanticException e) {
-                    System.out.println(e.getMessage());
-                }
-            } catch (SemanticException e) {
-                System.out.println(e.getMessage());
-            }
+            visit(node.getBlock());
+            node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }

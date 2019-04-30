@@ -17,11 +17,6 @@ import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 public class SemanticsVisitor extends PrimaryVisitor {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
@@ -130,7 +125,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         visit(node.getBlock());
         node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
         symbolTable.closeScope();
-        RecursionChecker.checkForRecursion(node);
+        FunctionChecker.CheckForRecursion(node);
         return node;
     }
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {

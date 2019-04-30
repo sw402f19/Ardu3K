@@ -12,16 +12,8 @@ public class NeedsBooleanPredicateException extends SemanticException {
         super(message);
     }
 
-    public NeedsBooleanPredicateException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     public NeedsBooleanPredicateException(Throwable cause) {
         super(cause);
-    }
-
-    public NeedsBooleanPredicateException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 
     public NeedsBooleanPredicateException(AbstractControlNode node) {

@@ -1,8 +1,8 @@
 package visitor.semantic.typecast;
 
 import exception.IllegalTypeException;
-import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
+import exception.factory.ExceptionFactory;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.AbstractPrimaryNode;
@@ -13,7 +13,7 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
 
     private RootNode expectedType;
 
-    public RootNode initVisit(RootNode expectedType, RootNode node) {
+    public RootNode initVisit(RootNode expectedType, RootNode node) throws SemanticException {
         this.expectedType = expectedType;
         visit(node);
         return node;
@@ -26,14 +26,14 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
         if (infixTypes[0] != null && !infixTypes[0].getClass().isInstance(expectedType)) {
             try {
                 infixTypes[0] = TypeCaster.cast(infixTypes[0], expectedType);
-            } catch (IllegalTypeException e) {
+            } catch (SemanticException e) {
                 throw ExceptionFactory.produce("incompatibletypes", expectedType, infixTypes[0]);
             }
         }
         if (infixTypes[1] != null && !infixTypes[1].getClass().isInstance(expectedType)) {
             try {
                 infixTypes[1] = TypeCaster.cast(infixTypes[1], expectedType);
-            } catch (IllegalTypeException e) {
+            } catch (SemanticException e) {
                 throw ExceptionFactory.produce("incompatibletypes", expectedType, infixTypes[1]);
             }
         }

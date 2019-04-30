@@ -11,7 +11,7 @@ import visitor.BaseASTVisitor;
 import java.util.ArrayList;
 
 public class FunctionNode extends RootNode {
-    RootNode type;
+    private RootNode type;
     private ArrayList<RootNode> parameterTypes = new ArrayList<>();
 
     public FunctionNode(Ardu3kParser.FunctionContext ctx) {
@@ -59,10 +59,17 @@ public class FunctionNode extends RootNode {
         return this.type;
     }
 
-    public void setParameterType(RootNode node) throws IllegalParameterTypeException {
+    public void addParameterType(RootNode node) throws IllegalParameterTypeException {
         if (node instanceof AbstractPrimaryNode){
             parameterTypes.add(node);
         } else throw new IllegalParameterTypeException(node.line + " INVALID TYPE to be set as parameter in function");
     }
     public ArrayList<RootNode> getParameterTypes(){ return parameterTypes; }
+    public String getParameterString() {
+        String str = "";
+
+        for (RootNode node: parameterTypes){ str += node.toString(); }
+        
+        return str;
+    }
 }

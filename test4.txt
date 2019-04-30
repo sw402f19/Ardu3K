@@ -8,10 +8,9 @@ setup = {
 loop = {
     b = [];
     c = func(1);
-
+    funcc(c, 2.5, "Hello");
 }
 func (a) = {
-    func(1);
     return a;
 }
 funcc(a, b, c) = {

@@ -15,8 +15,8 @@ public class TypedFuncIdentifierNode extends IdentifierNode {
     }
 
     // Given a function node
-    public TypedFuncIdentifierNode(Ardu3kParser.IdentifierContext ctx, FunctionNode node){
-        super(ctx);
-        value = ctx.value.getText() + "_" + node.getParameterString();
+    public TypedFuncIdentifierNode(FunctionNode node){
+        value = node.getId().toString() + "_" + node.getParameterString();
+        System.out.print(value + "\n");
     }
 }

@@ -1,6 +1,7 @@
 package visitor.semantic;
 
 import exception.DuplicateParameterException;
+import exception.IllegalParameterTypeException;
 import exception.RecursionException;
 import exception.UndeclaredIdentifierException;
 import exception.factory.ExceptionFactory;
@@ -9,8 +10,7 @@ import node.RootNode;
 import node.expression.*;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
-import node.primary.IdentifierNode;
-import node.primary.UndefinedNode;
+import node.primary.*;
 import node.scope.*;
 import node.statement.FunctionStmtNode;
 import node.statement.control.*;
@@ -101,8 +101,47 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
+        // Get generic function from Symbol table
         RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
+
         if(function instanceof FunctionNode) {
+
+            // TODO: Parameter size test here
+
+            // Make a typed copy and identifier
+            FunctionNode typedFunc = (FunctionNode) function;
+            for (RootNode arg: node.getArguments().children){
+                try {
+                    switch (arg.getClass().getSimpleName()) {
+                        case "BoolNode":
+                            typedFunc.addParameterType(new BoolNode(true));
+                            break;
+                        case "FloatNode":
+                            typedFunc.addParameterType(new FloatNode(0.0));
+                            break;
+                        case "IntegerNode":
+                            typedFunc.addParameterType(new IntegerNode(0));
+                            break;
+                        case "StringNode":
+                            typedFunc.addParameterType(new StringNode(""));
+                            break;
+                        /*case "IdentifierNode": // TODO: Add support for identifier nodes
+                            typedFunc.addParameterType(new IdentifierNode());
+                            break;*/
+                        default:
+                            throw new IllegalParameterTypeException(node.line + " Not a valid argument type");
+                    }
+                } catch (IllegalParameterTypeException e) { e.printStackTrace(); }
+            }
+            TypedFuncIdentifierNode typedID = new TypedFuncIdentifierNode(typedFunc);
+
+
+
+
+
+
+
+
             for (int i = 0; i < node.getArguments().children.size(); i++) {
                 RootNode expectedType =
                         new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));

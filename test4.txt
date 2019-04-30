@@ -8,7 +8,7 @@ setup = {
 loop = {
     b = [];
     c = func(1);
-    funcc(c, 2.5, "Hello");
+    funcc(2, 2.5, "Hello");
 }
 func (a) = {
     return a;

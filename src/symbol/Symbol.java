@@ -18,7 +18,6 @@ public class Symbol {
         this.depth = depth;
     }
 
-
     public RootNode getName() {
         return name;
     }

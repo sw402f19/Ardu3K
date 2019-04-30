@@ -10,6 +10,8 @@ import node.RootNode;
 import node.expression.*;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
+import node.primary.IdentifierNode;
+import node.primary.UndefinedNode;
 import node.primary.*;
 import node.scope.*;
 import node.statement.FunctionStmtNode;
@@ -100,7 +102,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
+    public RootNode visit(FunctionStmtNode node) throws Exception {
         // Get generic function from Symbol table
         RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
 
@@ -135,13 +137,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
             }
             TypedFuncIdentifierNode typedID = new TypedFuncIdentifierNode(typedFunc);
 
-
-
-
-
-
-
-
             for (int i = 0; i < node.getArguments().children.size(); i++) {
                 RootNode expectedType =
                         new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
@@ -155,7 +150,18 @@ public class SemanticsVisitor extends PrimaryVisitor {
             }
         } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
 
+        //System.out.println(((FunctionNode) function).getParameter().children);
+      //  System.out.println(node.getArguments().children);
+
+        if (((FunctionNode) function).getParameter().children.size() == node.getArguments().children.size()){
+            System.out.println("Equal");
+            FunctionChecker.FunctionParameterTypeChecker((FunctionNode) function, node);
+        } else{
+            //ToDO Lave  custom exception
+            System.out.println("Not Equal");
+        }
         return node;
+
     }
     public RootNode visit(FunctionNode node) throws RecursionException {
         symbolTable.enterSymbol(node);
@@ -167,6 +173,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         FunctionChecker.CheckForRecursion(node);
         return node;
     }
+
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {
         symbolTable.openScope();
         for(RootNode n : node.children) {

@@ -17,6 +17,6 @@ public class TypedFuncIdentifierNode extends IdentifierNode {
     // Given a function node
     public TypedFuncIdentifierNode(FunctionNode node){
         value = node.getId().toString() + "_" + node.getParameterString();
-        System.out.print(value + "\n");
+       // System.out.print(value + "\n");
     }
 }

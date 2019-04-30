@@ -58,6 +58,7 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
             } else throw new IllegalTypeException("Types in list are not the same!");
         }
     }
+
     protected void isNumeral(AbstractInfixExpressionNode node) throws IllegalTypeException {
         if(!(visit(node.getLeft()) instanceof NumeralType))
             throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().toString()+

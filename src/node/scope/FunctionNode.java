@@ -65,4 +65,11 @@ public class FunctionNode extends RootNode {
         } else throw new IllegalParameterTypeException(node.line + " INVALID TYPE to be set as parameter in function");
     }
     public ArrayList<RootNode> getParameterTypes(){ return parameterTypes; }
+    public String getParameterString() {
+        String str = "";
+
+        for (RootNode node: parameterTypes){ str += node.toString(); }
+        
+        return str;
+    }
 }

@@ -8,11 +8,11 @@ import symbol.SymbolTable;
 
 import java.util.ArrayList;
 
-public class RecursionChecker {
+public class FunctionChecker {
 
-    private static RecursionChecker thisInstance = new RecursionChecker();
+    private static FunctionChecker thisInstance = new FunctionChecker();
 
-    public static void checkForRecursion(FunctionNode rootNode) throws RecursionException {
+    public static void CheckForRecursion(FunctionNode rootNode) throws RecursionException {
         ArrayList<FunctionNode> calledFunctions = new ArrayList<>();
 
         calledFunctions.add(rootNode);

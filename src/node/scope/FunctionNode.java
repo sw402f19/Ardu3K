@@ -1,13 +1,18 @@
 package node.scope;
 
+import exception.IllegalParameterTypeException;
 import gen.Ardu3kParser;
 import node.RootNode;
 import node.expression.type.ExpressionType;
+import node.primary.AbstractPrimaryNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
+import java.util.ArrayList;
+
 public class FunctionNode extends RootNode {
     RootNode type;
+    private ArrayList<RootNode> parameterTypes = new ArrayList<>();
 
     public FunctionNode(Ardu3kParser.FunctionContext ctx) {
         super(ctx);
@@ -54,5 +59,10 @@ public class FunctionNode extends RootNode {
         return this.type;
     }
 
-
+    public void setParameterType(RootNode node) throws IllegalParameterTypeException {
+        if (node instanceof AbstractPrimaryNode){
+            parameterTypes.add(node);
+        } else throw new IllegalParameterTypeException(node.line + " INVALID TYPE to be set as parameter in function");
+    }
+    public ArrayList<RootNode> getParameterTypes(){ return parameterTypes; }
 }

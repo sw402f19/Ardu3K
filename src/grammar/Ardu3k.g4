@@ -26,7 +26,6 @@ parameter
     : id=identifier COMMA para=parameter
     | id=identifier
     ;
-
 stmt
     : block                                                         #statement
     | pin_stmt                                                      #statement

@@ -1,11 +1,11 @@
-package node.statement;
+package node.statement.termination;
 
 import node.RootNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class BreakNode extends RootNode {
+public class BreakNode extends AbstractTerminalNode {
 
     public BreakNode(RootNode parent) {
         super(parent);

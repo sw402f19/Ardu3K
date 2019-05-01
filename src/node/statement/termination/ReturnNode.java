@@ -1,9 +1,9 @@
-package node.statement;
+package node.statement.termination;
 
 import node.RootNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class ReturnNode extends RootNode {
+public class ReturnNode extends AbstractTerminalNode {
 
     public ReturnNode(RootNode node, ParserRuleContext ctx) {
         super(ctx);

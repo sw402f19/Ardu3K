@@ -1,11 +1,11 @@
-package node.statement;
+package node.statement.termination;
 
 import node.RootNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class ContinueNode extends RootNode {
+public class ContinueNode extends AbstractTerminalNode {
 
     public ContinueNode(RootNode parent) {
         super(parent);

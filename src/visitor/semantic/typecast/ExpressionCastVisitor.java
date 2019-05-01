@@ -1,6 +1,5 @@
 package visitor.semantic.typecast;
 
-import exception.IllegalTypeException;
 import exception.factory.SemanticException;
 import exception.factory.ExceptionFactory;
 import node.RootNode;
@@ -18,10 +17,15 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
         visit(node);
         return node;
     }
+    // todo fix exception handling to print the proper cause
     public RootNode visit(AbstractInfixExpressionNode node) throws SemanticException {
         RootNode[] infixTypes = new RootNode[2];
-        infixTypes[0] = visit(node.getLeft());
-        infixTypes[1] = visit(node.getRight());
+        try {
+            infixTypes[0] = visit(node.getLeft());
+            infixTypes[1] = visit(node.getRight());
+        } catch (SemanticException e) {
+            throw ExceptionFactory.produce("incompatibletype", node.getLeft(), node.getRight());
+        }
 
         if (infixTypes[0] != null && !infixTypes[0].getClass().isInstance(expectedType)) {
             try {

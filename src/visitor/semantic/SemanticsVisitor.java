@@ -31,11 +31,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
         }
         return node;
     }
+
     public RootNode visit(DeclarationNode node) {
         symbolTable.enterSymbol(node);
         visit(node.getRight());
         return node;
     }
+
     public RootNode visit(ProgramNode node) {
         node = (ProgramNode) new BuildParentVisitor().visit(node);
         visit(node.getDefinesNode());
@@ -49,11 +51,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.enterSymbol(node);
         return node;
     }
+
     public RootNode visit(AbstractScopeNode node) {
         symbolTable.openScope();
         visitChildren(node);
         return node;
     }
+
     // todo temp error handling
     public RootNode visit(IfNode node) throws SemanticException {
         symbolTable.openScope();
@@ -64,6 +68,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(ElifNode node) throws SemanticException {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
@@ -73,6 +78,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(SwitchNode node) {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
@@ -82,6 +88,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(ForNode node) {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
@@ -91,6 +98,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(WhileNode node) throws SemanticException {
         symbolTable.openScope();
         RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
@@ -100,63 +108,26 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
-        // Get generic function from Symbol table
-        RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
-
-        if(function instanceof FunctionNode) {
-
-            // TODO: Parameter size test here
-
-            // Make a typed copy and identifier
-            FunctionNode typedFunc = (FunctionNode) function;
-            for (RootNode arg: node.getArguments().children){
-                try {
-                    switch (arg.getClass().getSimpleName()) {
-                        case "BoolNode":
-                            typedFunc.addParameterType(new BoolNode(true));
-                            break;
-                        case "FloatNode":
-                            typedFunc.addParameterType(new FloatNode(0.0));
-                            break;
-                        case "IntegerNode":
-                            typedFunc.addParameterType(new IntegerNode(0));
-                            break;
-                        case "StringNode":
-                            typedFunc.addParameterType(new StringNode(""));
-                            break;
-                        /*case "IdentifierNode": // TODO: Add support for identifier nodes
-                            typedFunc.addParameterType(new IdentifierNode());
-                            break;*/
-                        default:
-                            throw new IllegalParameterTypeException(node.line + " Not a valid argument type");
-                    }
-                } catch (IllegalParameterTypeException e) { e.printStackTrace(); }
-            }
-            TypedFuncIdentifierNode typedID = new TypedFuncIdentifierNode(typedFunc);
-
-
-
-
-
-
-
-
-            for (int i = 0; i < node.getArguments().children.size(); i++) {
-                RootNode expectedType =
-                        new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
-                // todo here be dragons hehe
-                RootNode argType = visit(node.getArguments().children.get(i));
-                if(!(expectedType.getClass().isInstance(argType)))
-                    throw new IllegalArgumentException(node.getLine()+" Illegal argument type for "
-                            +node.getArguments().children.get(i).toString() +" got "
-                            +node.getArguments().children.get(i).toString()+", expected "
-                            +expectedType.toString());
-            }
-        } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
-
+        try {
+            RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
+            if(function instanceof FunctionNode) {
+                for (int i = 0; i < node.getArguments().children.size(); i++) {
+                    RootNode expectedType =
+                            new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
+                    // todo here be dragons hehe
+                    RootNode argType = visit(node.getArguments().children.get(i));
+                    if(!(expectedType.getClass().isInstance(argType)))
+                        throw ExceptionFactory.produce("illegalargument", argType);
+                }
+            } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
         return node;
     }
+
     public RootNode visit(FunctionNode node) throws RecursionException {
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
@@ -167,6 +138,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         FunctionChecker.CheckForRecursion(node);
         return node;
     }
+
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {
         symbolTable.openScope();
         for(RootNode n : node.children) {

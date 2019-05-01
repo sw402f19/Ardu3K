@@ -49,10 +49,14 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(ProgramNode node) throws SemanticException {
         node = (ProgramNode) new BuildParentVisitor().visit(node);
         try {
-            visit(node.getDefinesNode());
-            visit(node.getFunctionsNode());
-            visit(node.getSetupNode());
-            visit(node.getLoopNode());
+            if(node.getDefinesNode() != null)
+                visit(node.getDefinesNode());
+            if(node.getFunctionsNode() != null)
+                visit(node.getFunctionsNode());
+            if(node.getSetupNode() != null)
+                visit(node.getSetupNode());
+            if(node.getLoopNode() != null)
+                visit(node.getLoopNode());
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
@@ -99,6 +103,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+    // todo what types should switch accept?
     public RootNode visit(SwitchNode node)  {
         symbolTable.openScope();
         try {
@@ -106,6 +111,20 @@ public class SemanticsVisitor extends PrimaryVisitor {
             if(!(type instanceof NumeralType))
                 System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
             visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
+        symbolTable.closeScope();
+        return node;
+    }
+    public RootNode visit(CaseNode node) {
+        symbolTable.openScope();
+        try {
+            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            SwitchNode parent = (SwitchNode) node.parent;
+            RootNode parentType = new ExpressionTypeVisitor().visit(parent.getExpression());
+            if(!(type.getClass().equals(parentType.getClass())))
+                throw ExceptionFactory.produce("incompatibletype", parentType, type);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }

@@ -13,7 +13,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        CharStream is = CharStreams.fromFileName("test4.txt");
+        CharStream is = CharStreams.fromFileName("test2.txt");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);

@@ -139,12 +139,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
     public RootNode visit(FunctionStmtNode node) {
         try {
+            if(!symbolTable.isPresent(node))
+                throw ExceptionFactory.produce("undeclaredidentifier",node.getId());
             RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
             if(function instanceof FunctionNode) {
                 for (int i = 0; i < node.getArguments().children.size(); i++) {
                     RootNode expectedType =
                             new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
-                    // todo here be dragons hehe
                     RootNode argType = visit(node.getArguments().children.get(i));
                     if(!(expectedType.getClass().isInstance(argType)))
                         throw ExceptionFactory.produce("illegalargument", argType);

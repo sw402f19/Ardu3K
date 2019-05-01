@@ -15,7 +15,7 @@ loop = {
     a = 10;
     b.add(a);
 
-    if 5+5 do
+    if a = true do
         if true do
             if true do
                 a = 1;

@@ -22,14 +22,15 @@ loop = {
             else
                 k = 2;
         else if true do
-            a = 5;
+            for a = 1 to 10 do
+                a = a + 1;
 
 
     for a = 1 to 10 do {
         a = (a + 10);
     }
     switch (a) {
-        case "a":
+        case 10:
             expo = 10 ^ 20;
         case 20:
             c = 10;

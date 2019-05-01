@@ -13,6 +13,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        long time = System.currentTimeMillis();
         CharStream is = CharStreams.fromFileName("test.txt");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -33,6 +34,7 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(System.currentTimeMillis() - time);
     }
 
 }

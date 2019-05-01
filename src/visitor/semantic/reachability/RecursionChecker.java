@@ -1,4 +1,4 @@
-package visitor.semantic;
+package visitor.semantic.reachability;
 
 import exception.reachability.RecursionException;
 import node.RootNode;

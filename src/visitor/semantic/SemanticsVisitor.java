@@ -17,6 +17,7 @@ import node.statement.FunctionStmtNode;
 import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
+import visitor.semantic.reachability.RecursionChecker;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {

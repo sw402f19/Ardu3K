@@ -1,4 +1,4 @@
-package visitor.semantic;
+package visitor.semantic.reachability;
 
 import exception.factory.SemanticException;
 import node.statement.control.ElifNode;

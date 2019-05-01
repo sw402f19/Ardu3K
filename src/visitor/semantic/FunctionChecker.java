@@ -6,6 +6,8 @@ import node.RootNode;
 import node.primary.BoolNode;
 import node.primary.FloatNode;
 import node.primary.IntegerNode;
+import node.primary.StringNode;
+import node.scope.BlockNode;
 import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
 import symbol.SymbolTable;
@@ -38,23 +40,18 @@ public class FunctionChecker {
         }
     }
 
-    public static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode) throws Exception {
-        System.out.println("Test");
-        ArrayList<FunctionNode> Parameters = new ArrayList<>();
-        BoolNode test = new BoolNode();
-       FloatNode test2 = new FloatNode();
+    public static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode) {
+        if (funcNode.getParameterTypes().size() == funcStmtNode.getArguments().children.size()){
+            ExpressionTypeVisitor type = new ExpressionTypeVisitor();
 
-       // funcNode.addParameterType(test);
-     //  funcNode.addParameterType(test2);
+           // System.out.println(funcNode.getBlock().children);
+            for (RootNode node : funcNode.getBlock().children){
 
-        for (RootNode node : funcNode.getParameterTypes()){
+            }
 
-
-            ExpressionTypeVisitor test3 = new ExpressionTypeVisitor();
-            test3.visit(node);
-
+        } else {
+            //ToDO Lave  custom exception
+            System.out.println("Not Equal");
         }
-
-
     }
 }

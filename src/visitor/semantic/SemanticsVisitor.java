@@ -150,16 +150,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
             }
         } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
 
-        //System.out.println(((FunctionNode) function).getParameter().children);
-      //  System.out.println(node.getArguments().children);
-
-        if (((FunctionNode) function).getParameter().children.size() == node.getArguments().children.size()){
-            System.out.println("Equal");
             FunctionChecker.FunctionParameterTypeChecker((FunctionNode) function, node);
-        } else{
-            //ToDO Lave  custom exception
-            System.out.println("Not Equal");
-        }
+
         return node;
 
     }

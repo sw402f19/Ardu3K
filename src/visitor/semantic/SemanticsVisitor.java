@@ -17,6 +17,8 @@ import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 
+import java.util.ArrayList;
+
 public class SemanticsVisitor extends PrimaryVisitor {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
@@ -112,7 +114,40 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
         try {
             RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
+
             if(function instanceof FunctionNode) {
+                // Construct a typeArray for parameter-types in arguments
+                ArrayList<RootNode> typeArray = new ArrayList<>();
+
+                for (RootNode arg: node.getArguments().children) {
+                    try {
+                        switch (arg.getClass().getSimpleName()) {
+                            case "BoolNode":
+                                typeArray.add(new BoolNode(true));
+                                break;
+                            case "FloatNode":
+                                typeArray.add(new FloatNode(0.0));
+                                break;
+                            case "IntegerNode":
+                                typeArray.add(new IntegerNode(0));
+                                break;
+                            case "StringNode":
+                                typeArray.add(new StringNode(""));
+                                break;
+                            /*case "IdentifierNode": // TODO: Add support for identifier nodes
+                                typeArray.add(new IdentifierNode());
+                                break;*/
+                            default:
+                                throw new IllegalParameterTypeException(node.line + " Not a valid argument type");
+                        }
+                    } catch (IllegalParameterTypeException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Add type array to function node
+                ((FunctionNode) function).addParameterTypes(typeArray);
+
                 for (int i = 0; i < node.getArguments().children.size(); i++) {
                     RootNode expectedType =
                             new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
@@ -122,9 +157,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
                         throw ExceptionFactory.produce("illegalargument", argType);
                 }
             } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
-        } catch (SemanticException e) {
-            System.out.println(e.getMessage());
-        }
+        } catch (SemanticException e) { System.out.println(e.getMessage()); }
+
         return node;
     }
 

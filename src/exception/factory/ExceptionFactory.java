@@ -1,11 +1,15 @@
 package exception.factory;
 
-import exception.*;
-import exception.IllegalArgumentException;
+import exception.predicate.DuplicateParameterException;
+import exception.predicate.NeedsBooleanPredicateException;
+import exception.predicate.UndeclaredIdentifierException;
+import exception.reachability.NotReachableException;
+import exception.reachability.RecursionException;
+import exception.type.*;
+import exception.type.IllegalArgumentException;
 import node.RootNode;
 import node.primary.IdentifierNode;
 import node.statement.control.AbstractControlNode;
-import node.statement.control.WhileNode;
 
 public class ExceptionFactory {
 
@@ -39,7 +43,7 @@ public class ExceptionFactory {
             case "ILLEGALOPERAND":
                 return new IllegalOperandException(src, target);
 
-            case "INCOMPATIBLETYPES":
+            case "INCOMPATIBLETYPE":
                 return new IncompatibleTypeExpection(src, target);
 
             case "NOTCASTABLE":
@@ -65,6 +69,11 @@ public class ExceptionFactory {
             return new NotCastableException(throwable);
         else if (throwable instanceof UndeclaredIdentifierException)
             return new UndeclaredIdentifierException(throwable);
+        else if (throwable instanceof RecursionException)
+            return new RecursionException(throwable);
+        else if(throwable instanceof NotReachableException) {
+            return new NotReachableException(throwable);
+        }
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }
 }

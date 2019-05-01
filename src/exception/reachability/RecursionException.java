@@ -1,4 +1,4 @@
-package exception;
+package exception.reachability;
 
 import exception.factory.SemanticException;
 

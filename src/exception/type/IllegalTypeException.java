@@ -1,4 +1,4 @@
-package exception;
+package exception.type;
 
 import exception.factory.SemanticException;
 

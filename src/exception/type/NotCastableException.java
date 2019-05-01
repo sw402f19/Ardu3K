@@ -1,4 +1,4 @@
-package exception;
+package exception.type;
 
 import exception.factory.SemanticException;
 import node.RootNode;
@@ -16,7 +16,7 @@ public class NotCastableException extends SemanticException {
     }
 
     public NotCastableException(RootNode src, RootNode target) {
-        super(src.getLine()+" NotCastableException: cannot cast "+target.toString()+
+        super(target.getLine()+" NotCastableException: cannot cast "+target.toString()+
                 " to "+src.toString());
     }
 }

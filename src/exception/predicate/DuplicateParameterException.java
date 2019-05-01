@@ -1,4 +1,4 @@
-package exception;
+package exception.predicate;
 
 import exception.factory.SemanticException;
 import node.RootNode;

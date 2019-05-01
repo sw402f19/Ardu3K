@@ -1,6 +1,6 @@
 package visitor.semantic;
 
-import exception.RecursionException;
+import exception.reachability.RecursionException;
 import node.RootNode;
 import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;

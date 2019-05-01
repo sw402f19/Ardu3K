@@ -1,10 +1,8 @@
 package visitor.semantic;
 
-import exception.IllegalTypeException;
-import exception.UndeclaredIdentifierException;
+import exception.predicate.UndeclaredIdentifierException;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
-import node.Node;
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
 import node.primary.EnclosedExpressionNode;

@@ -16,7 +16,7 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
         try {
             return this.dispatch(node);
         } catch (NullPointerException | NoProductException n) {
-            //n.printStackTrace();
+            n.printStackTrace();
         } catch (IgnorableInvocationException e){
             return null;
         } catch (Throwable t) {

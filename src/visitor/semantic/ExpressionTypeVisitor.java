@@ -9,7 +9,7 @@ import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.type.BooleanType;
-import exception.IllegalTypeException;
+import exception.type.IllegalTypeException;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;
 

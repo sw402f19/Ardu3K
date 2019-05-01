@@ -1,8 +1,8 @@
 package visitor.semantic;
 
-import exception.DuplicateParameterException;
-import exception.RecursionException;
-import exception.UndeclaredIdentifierException;
+import exception.predicate.DuplicateParameterException;
+import exception.reachability.RecursionException;
+import exception.predicate.UndeclaredIdentifierException;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
@@ -12,6 +12,7 @@ import node.expression.type.NumeralType;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
+import node.statement.CaseNode;
 import node.statement.FunctionStmtNode;
 import node.statement.control.*;
 import symbol.SymbolTable;

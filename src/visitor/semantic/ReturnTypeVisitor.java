@@ -2,15 +2,8 @@ package visitor.semantic;
 
 import exception.factory.SemanticException;
 import node.RootNode;
-import node.expression.AbstractExpressionNode;
 import node.expression.VoidNode;
-import node.expression.type.BooleanType;
-import node.expression.type.ExpressionType;
-import node.expression.type.NumeralType;
-import node.expression.type.VoidType;
-import node.primary.BoolNode;
-import node.statement.ReturnNode;
-import visitor.BaseASTVisitor;
+import node.statement.termination.ReturnNode;
 
 import java.util.ArrayList;
 

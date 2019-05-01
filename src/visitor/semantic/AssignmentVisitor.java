@@ -3,7 +3,7 @@ package visitor.semantic;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.AssignmentNode;
-import exception.IllegalTypeException;
+import exception.type.IllegalTypeException;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;

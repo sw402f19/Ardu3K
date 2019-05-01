@@ -8,8 +8,9 @@ import visitor.BaseASTVisitor;
 import static java.util.Objects.hash;
 
 public class IdentifierNode extends AbstractPrimaryNode {
-    String value;
+    protected String value;
 
+    public IdentifierNode(){}
 
     public IdentifierNode(Ardu3kParser.IdentifierContext ctx){
         super(ctx);

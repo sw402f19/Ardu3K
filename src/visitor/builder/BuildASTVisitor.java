@@ -14,12 +14,12 @@ import node.scope.*;
 import node.primary.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
-import node.statement.BreakNode;
-import node.statement.ContinueNode;
+import node.statement.termination.BreakNode;
+import node.statement.termination.ContinueNode;
 import node.statement.control.*;
+import node.statement.termination.ReturnNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.SymbolTable;
-import visitor.semantic.SemanticsVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +127,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitCase_stmt(Ardu3kParser.Case_stmtContext ctx) {
         CaseNode node = new CaseNode(ctx);
-        node.expression = visitExpression(ctx.value);
+        node.setExpression(visitExpression(ctx.value));
         collectChildren(node, ctx.stmt());
         return node;
     }

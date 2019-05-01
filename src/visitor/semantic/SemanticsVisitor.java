@@ -122,17 +122,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 for (RootNode arg: node.getArguments().children) {
                     try {
                         switch (arg.getClass().getSimpleName()) {
-                            case "BoolNode":
-                                typeArray.add(new BoolNode(true));
-                                break;
-                            case "FloatNode":
-                                typeArray.add(new FloatNode(0.0));
-                                break;
-                            case "IntegerNode":
-                                typeArray.add(new IntegerNode(0));
-                                break;
-                            case "StringNode":
-                                typeArray.add(new StringNode(""));
+                            case "BoolNode": case "FloatNode":
+                            case "IntegerNode": case "StringNode":
+                                typeArray.add(arg);
                                 break;
                             /*case "IdentifierNode": // TODO: Add support for identifier nodes
                                 typeArray.add(new IdentifierNode());

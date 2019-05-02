@@ -17,6 +17,7 @@ import node.statement.FunctionStmtNode;
 import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
+import visitor.semantic.reachability.ReachabilityVisitor;
 import visitor.semantic.reachability.RecursionChecker;
 
 @SuppressWarnings("Duplicates")
@@ -24,11 +25,12 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
 
-    public RootNode visit(AssignmentNode node)  {
+    public RootNode visit(AbstractDeclAssignNode node)  {
+        DeclarationNode node1 = null;
         try {
             if(!(symbolTable.isPresent(node.getLeft())) ||
                     symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode)
-                return visit(new DeclarationNode(node));
+                node1 = (DeclarationNode)visit(new DeclarationNode(node));
             else {
                 this.visit(node.getRight());
                 new AssignmentVisitor().visit(node);
@@ -36,15 +38,15 @@ public class SemanticsVisitor extends PrimaryVisitor {
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
+        if(node1 != null) {
+            node1.parent = node.parent;
+            node.parent.children.set(node.parent.children.indexOf(node), node1);
+        }
         return node;
     }
-    public RootNode visit(DeclarationNode node) {
+    public RootNode visit(DeclarationNode node) throws SemanticException {
         symbolTable.enterSymbol(node);
-        try {
-            visit(node.getRight());
-        } catch (SemanticException e) {
-            System.out.println(e.getMessage());
-        }
+        visit(node.getRight());
         return node;
     }
     public RootNode visit(ProgramNode node) throws SemanticException {

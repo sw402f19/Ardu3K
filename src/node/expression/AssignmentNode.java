@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class AssignmentNode extends AbstractInfixExpressionNode {
+public class AssignmentNode extends AbstractDeclAssignNode {
 
     @Override
     public String toString() {

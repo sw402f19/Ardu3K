@@ -6,7 +6,7 @@ import visitor.BaseASTVisitor;
 import visitor.semantic.PrimaryVisitor;
 
 
-public class DeclarationNode extends AbstractInfixExpressionNode {
+public class DeclarationNode extends AbstractDeclAssignNode {
 
     public DeclarationNode(AbstractInfixExpressionNode node) throws SemanticException {
         this.setLeft(node.getLeft());

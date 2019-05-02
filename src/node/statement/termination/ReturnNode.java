@@ -23,4 +23,9 @@ public class ReturnNode extends AbstractTerminalNode {
         else
             children.add(expression);
     }
+
+    @Override
+    public String toString() {
+        return "return";
+    }
 }

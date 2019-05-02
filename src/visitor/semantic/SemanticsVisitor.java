@@ -53,13 +53,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
         node = (ProgramNode) new BuildParentVisitor().visit(node);
         try {
             if(node.getDefinesNode() != null)
-                visit(node.getDefinesNode());
+                node.setDefineNode(visit(node.getDefinesNode()));
             if(node.getFunctionsNode() != null)
-                visit(node.getFunctionsNode());
+                node.setFunctionsNode(visit(node.getFunctionsNode()));
             if(node.getSetupNode() != null)
-                visit(node.getSetupNode());
+                node.setSetupNode(visit(node.getSetupNode()));
             if(node.getLoopNode() != null)
-                visit(node.getLoopNode());
+                node.setLoopNode(visit(node.getLoopNode()));
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }

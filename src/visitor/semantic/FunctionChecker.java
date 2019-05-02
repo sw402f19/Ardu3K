@@ -65,8 +65,6 @@ public class FunctionChecker {
             throw new ArgumentException(funcStmtNode.line + " : Too many arguments to function " + funcnode.getId());
         } else if (funcnode.getParameter().children.size() > funcStmtNode.getArguments().children.size()){
             throw new ArgumentException(funcStmtNode.line + " : Too few arguments to function " + funcnode.getId());
-        } else {
-            System.out.println("All fine");
         }
     }
 }

@@ -73,6 +73,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(AbstractScopeNode node) {
         symbolTable.openScope();
         try {
+            new ReachabilityVisitor().visit(node);
             visitChildren(node);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());

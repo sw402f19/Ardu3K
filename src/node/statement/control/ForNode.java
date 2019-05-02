@@ -3,7 +3,7 @@ package node.statement.control;
 import gen.Ardu3kParser;
 import node.RootNode;
 
-public class ForNode extends AbstractLoopNode {
+public class ForNode extends AbstractIterativeNode {
     public ForNode(Ardu3kParser.For_stmtContext ctx) {
         super(ctx);
     }

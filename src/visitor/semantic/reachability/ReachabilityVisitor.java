@@ -64,7 +64,7 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
     private RootNode findControlTarget(BreakNode node) throws SemanticException {
         RootNode ptr = node;
         while(ptr.parent != null) {
-            if(ptr.parent instanceof AbstractLoopNode
+            if(ptr.parent instanceof AbstractIterativeNode
                     || ptr.parent instanceof SwitchNode)
                 return ptr.parent;
             ptr = ptr.parent;
@@ -74,7 +74,7 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
     private RootNode findControlTarget(ContinueNode node) throws SemanticException {
         RootNode ptr = node;
         while(ptr.parent != null) {
-            if(ptr.parent instanceof AbstractLoopNode)
+            if(ptr.parent instanceof AbstractIterativeNode)
                 return ptr.parent;
             ptr = ptr.parent;
         }

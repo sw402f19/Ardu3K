@@ -1,9 +1,6 @@
 package visitor.semantic;
 
-import exception.DuplicateParameterException;
-import exception.IllegalParameterTypeException;
-import exception.RecursionException;
-import exception.UndeclaredIdentifierException;
+import exception.*;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
@@ -12,7 +9,6 @@ import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
-import node.primary.*;
 import node.scope.*;
 import node.statement.FunctionStmtNode;
 import node.statement.control.*;
@@ -113,19 +109,22 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
+    public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException, ArgumentException {
+        RootNode function = null;
         try {
-            RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
+            function = symbolTable.retrieveSymbol(node.getId()).getType();
 
-            if(function instanceof FunctionNode) {
+            if (function instanceof FunctionNode) {
                 // Construct a typeArray for parameter-types in arguments
                 ArrayList<RootNode> typeArray = new ArrayList<>();
 
-                for (RootNode arg: node.getArguments().children) {
+                for (RootNode arg : node.getArguments().children) {
                     try {
                         switch (arg.getClass().getSimpleName()) {
-                            case "BoolNode": case "FloatNode":
-                            case "IntegerNode": case "StringNode":
+                            case "BoolNode":
+                            case "FloatNode":
+                            case "IntegerNode":
+                            case "StringNode":
                                 typeArray.add(arg);
                                 break;
                             /*case "IdentifierNode": // TODO: Add support for identifier nodes
@@ -147,13 +146,15 @@ public class SemanticsVisitor extends PrimaryVisitor {
                             new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
                     // todo here be dragons hehe
                     RootNode argType = visit(node.getArguments().children.get(i));
-                    if(!(expectedType.getClass().isInstance(argType)))
+                    if (!(expectedType.getClass().isInstance(argType)))
                         throw ExceptionFactory.produce("illegalargument", argType);
                 }
-            } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
-        } catch (SemanticException e) { System.out.println(e.getMessage()); }
-
-            FunctionChecker.FunctionParameterTypeChecker((FunctionNode) function, node);
+            } else throw new UndeclaredIdentifierException("Identifier " + node.getId() + " not declared.");
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
+        FunctionChecker.FunctionParameterArgumentChecker((FunctionNode) function, node);
+        FunctionChecker.FunctionParameterTypeChecker((FunctionNode) function, node, 0);
 
         return node;
 

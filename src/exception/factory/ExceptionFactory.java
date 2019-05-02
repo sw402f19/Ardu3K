@@ -30,6 +30,9 @@ public class ExceptionFactory {
             case "ILLEGALARGUMENT":
                 return new IllegalArgumentException();
 
+            case "NOTREACHABLE":
+                return new NotReachableException(node);
+
             default:
                 throw new NoProductException(exceptionClassName);
         }

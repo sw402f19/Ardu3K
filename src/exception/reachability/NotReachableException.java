@@ -2,6 +2,8 @@ package exception.reachability;
 
 import exception.factory.SemanticException;
 import node.RootNode;
+import node.statement.termination.AbstractTerminalNode;
+import node.statement.termination.ReturnNode;
 
 public class NotReachableException extends SemanticException {
     public NotReachableException() {
@@ -15,7 +17,11 @@ public class NotReachableException extends SemanticException {
         super(cause);
     }
 
-    public NotReachableException(RootNode node) {
+    public NotReachableException(ReturnNode node) {
+        super(node.getLine()+" NotReachableException: \""+node.toString()+"\" " +
+                "not inside function body.");
+    }
+    public NotReachableException(AbstractTerminalNode node) {
         super(node.getLine()+" NotReachableException: \""+node.toString()+"\" " +
                 "not inside control structure.");
     }

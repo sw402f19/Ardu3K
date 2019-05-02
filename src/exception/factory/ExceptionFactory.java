@@ -10,6 +10,8 @@ import exception.type.IllegalArgumentException;
 import node.RootNode;
 import node.primary.IdentifierNode;
 import node.statement.control.AbstractControlNode;
+import node.statement.termination.AbstractTerminalNode;
+import node.statement.termination.ReturnNode;
 
 public class ExceptionFactory {
 
@@ -31,7 +33,10 @@ public class ExceptionFactory {
                 return new IllegalArgumentException();
 
             case "NOTREACHABLE":
-                return new NotReachableException(node);
+                if(node instanceof ReturnNode)
+                    return new NotReachableException((ReturnNode)node);
+                else
+                    return new NotReachableException((AbstractTerminalNode) node);
 
             default:
                 throw new NoProductException(exceptionClassName);

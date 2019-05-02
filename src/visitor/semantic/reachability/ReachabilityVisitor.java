@@ -3,6 +3,9 @@ package visitor.semantic.reachability;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
+import node.expression.AssignmentNode;
+import node.expression.DeclarationNode;
+import node.scope.FunctionNode;
 import node.statement.control.*;
 import node.statement.termination.BreakNode;
 import node.statement.termination.ContinueNode;
@@ -50,7 +53,9 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
         visit(node.getStmt());
     }
     public void visit(ContinueNode node) throws SemanticException {
-        findControlTarget(node);
+        RootNode target = findControlTarget(node);
+        target.terminatesNormally = false;
+
     }
     public void visit(BreakNode node) throws SemanticException {
         RootNode target = findControlTarget(node);
@@ -58,8 +63,12 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
         if(node.isReachable)
             target.terminatesNormally = true;
     }
-    public void visit(ReturnNode node) {
-
+    public void visit(ReturnNode node) throws SemanticException {
+        RootNode target = findControlTarget(node);
+        target.terminatesNormally = false;
+    }
+    public void visit(DeclarationNode node) {
+        node.terminatesNormally = true;
     }
     private RootNode findControlTarget(BreakNode node) throws SemanticException {
         RootNode ptr = node;
@@ -75,6 +84,15 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
         RootNode ptr = node;
         while(ptr.parent != null) {
             if(ptr.parent instanceof AbstractIterativeNode)
+                return ptr.parent;
+            ptr = ptr.parent;
+        }
+        throw ExceptionFactory.produce("notreachable", node);
+    }
+    private RootNode findControlTarget(ReturnNode node) throws SemanticException {
+        RootNode ptr = node;
+        while(ptr.parent != null) {
+            if(ptr.parent instanceof FunctionNode)
                 return ptr.parent;
             ptr = ptr.parent;
         }

@@ -6,10 +6,10 @@ setup = {
 }
 
 loop = {
-    funcc("djdjd", 2, 2);
+    funcc(2, 2, 2);
 }
 funcc(a, z, c) = {
-    a + 2.5 * 2;
+    a + 2 *  2.5;
     return a;
 }
 

@@ -10,6 +10,7 @@ import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
 import symbol.SymbolTable;
 
+import javax.lang.model.type.NullType;
 import java.util.ArrayList;
 
 public class FunctionChecker {
@@ -37,12 +38,9 @@ public class FunctionChecker {
         }
     }
 
-    public static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode, int index) {
+    public static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode) {
 
         for (RootNode node: funcNode.getBlock().children){
-            System.out.println(node.line + " " + node.getClass().getSimpleName());
-
-
             if (node instanceof AbstractInfixExpressionNode){
                 ArrayList<RootNode> leftRight = new ArrayList<>();
                 leftRight.add(((AbstractInfixExpressionNode) node).getLeft());
@@ -50,17 +48,13 @@ public class FunctionChecker {
 
                 // Check left and right side
                 for (RootNode lrNode: leftRight){
-                    leftRight.set(leftRight.indexOf(lrNode), ExprChildCheck(lrNode, funcStmtNode.getArguments().children, funcNode));
+                    leftRight.set(
+                            leftRight.indexOf(lrNode),
+                            ExprChildCheck(lrNode, funcStmtNode.getArguments().children, funcNode)
+                    );
                 }
 
-                // DEBUG
-                for (RootNode n: leftRight){
-                    System.out.println("---------> " + n.getClass().getSimpleName());
-                }
-
-
-                //TODO IS TYPES COMPATIBLE?
-
+                TypeEvaluator(leftRight.get(0), leftRight.get(1));
             }
         }
     }
@@ -76,18 +70,54 @@ public class FunctionChecker {
                 leftRight.set(leftRight.indexOf(lrNode), ExprChildCheck(lrNode, argTypes, funcNode));
             }
 
-            // TODO resolve expression return type
-
-            return leftRight.get(0);
-
-
-
+            return TypeEvaluator(leftRight.get(0), leftRight.get(1));
         } else if (inputNode instanceof IdentifierNode && funcNode.getParameter().children.contains(inputNode)){
             int argIndex = funcNode.getParameter().children.indexOf(inputNode);
             return argTypes.get(argIndex);
         } else return inputNode;
     }
 
+    // Takes in two primary types, and returns which type they will need to resolve to
+    // Throws errors if incompatible types TODO: Throw exceptions once they work again
+    // TODO: Move to another class which makes more sense to have this function within
+    private static RootNode TypeEvaluator(RootNode left, RootNode right){
+        if (left instanceof AbstractPrimaryNode && right instanceof AbstractPrimaryNode){
+            switch (left.getClass().getSimpleName()){
+                case "BoolNode":
+                    if (!(right.getClass().getSimpleName().equals("BoolNode"))) {
+                        System.out.println("ERROR: UNABLE TO RESOLVE FROM BOOL TO BOOL!");
+                    }
+                    break;
+
+                case "IntegerNode":
+                    if (right.getClass().getSimpleName().equals("IntegerNode")) { return new IntegerNode(); }
+                case "FloatNode":
+                    switch (right.getClass().getSimpleName()){
+                        case "IntegerNode": case "FloatNode":
+                            return new FloatNode();
+                        case "StringNode":
+                            return new StringNode();
+                        default:
+                            System.out.println("ERROR: UNABLE TO RESOLVE FROM FLOAT/INT");
+                            break;
+                    }
+
+                case "StringNode":
+                    switch (right.getClass().getSimpleName()){
+                        case "IntegerNode": case "FloatNode":
+                        case "StringNode":
+                            return new StringNode();
+                        default:
+                            System.out.println("ERROR: UNABLE TO RESOLVE FROM FLOAT/INT");
+                            break;
+                    }
+
+                default:
+                    throw new RuntimeException("ERROR: INVALID TYPES FOR EVALUATOR!");
+            }
+        } else System.out.println("Tried to evaluate types which are not primary!");
+        return new UndefinedNode();
+    }
 
     public static void FunctionParameterArgumentChecker(FunctionNode funcnode, FunctionStmtNode funcStmtNode) throws ArgumentException {
         if (funcnode.getParameter().children.size() < funcStmtNode.getArguments().children.size()){

@@ -26,7 +26,6 @@ parameter
     : id=identifier COMMA para=parameter
     | id=identifier
     ;
-
 stmt
     : block                                                         #statement
     | pin_stmt                                                      #statement
@@ -35,8 +34,8 @@ stmt
     | selection_stmt                                                #statement
     | expression_stmt                                               #statement
     | notail=RETURN expression_stmt                                 #notailStatement
-    | notail=BREAK SEMI                                             #notailStatement
-    | notail=CONTINUE SEMI                                          #notailStatement
+    | notail=BREAK                                                  #notailStatement
+    | notail=CONTINUE                                               #notailStatement
     | comment                                                       #stmtComment
     ;
 pin_stmt

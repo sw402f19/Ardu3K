@@ -1,6 +1,6 @@
 package visitor.semantic.typecast;
 
-import exception.IllegalTypeException;
+import exception.type.IllegalTypeException;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
@@ -20,6 +20,8 @@ public class TypeCaster {
         castable.put(StringNode.class, List.of());
     }
     private static boolean canCast(RootNode source, RootNode target) {
+        if(!castable.containsKey(source.getClass()))
+            return false;
         return castable.get(source.getClass()).contains(target.getClass());
     }
     public static RootNode cast(RootNode source, RootNode target) throws SemanticException {

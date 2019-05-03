@@ -10,6 +10,8 @@ public abstract class RootNode implements Node {
     public RootNode parent;
     public ArrayList<RootNode> children = new ArrayList<>();
     public String line;
+    public boolean terminatesNormally;
+    public boolean isReachable;
 
     public RootNode(RootNode parent) {
         this.parent = parent;

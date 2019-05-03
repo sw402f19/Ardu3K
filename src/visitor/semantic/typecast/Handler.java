@@ -1,6 +1,6 @@
 package visitor.semantic.typecast;
 
-import exception.IllegalTypeException;
+import exception.type.IllegalTypeException;
 import node.RootNode;
 
 public interface Handler {

@@ -1,3 +1,4 @@
+import exception.factory.SemanticException;
 import node.RootNode;
 import visitor.builder.BuildASTVisitor;
 import gen.Ardu3kLexer;
@@ -12,7 +13,8 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        CharStream is = CharStreams.fromFileName("test4.txt");
+        long time = System.currentTimeMillis();
+        CharStream is = CharStreams.fromFileName("test.txt");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);
@@ -27,9 +29,12 @@ public class Main {
             System.out.println("==============\nSuccessful :)\n==============\n");
             //ast.print(0);
 
+        } catch (SemanticException e){
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(System.currentTimeMillis() - time);
     }
 
 }

@@ -1,5 +1,6 @@
 package visitor.semantic;
 
+import exception.factory.SemanticException;
 import node.RootNode;
 import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
@@ -8,30 +9,29 @@ import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.type.BooleanType;
-import exception.IllegalTypeException;
+import exception.type.IllegalTypeException;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;
-
 
 /**
  * Returns the type of a given expression.
  */
 public class ExpressionTypeVisitor extends PrimaryVisitor {
 
-    public RootNode visit(AbstractInfixAdditiveNode node) throws IllegalTypeException {
+    public RootNode visit(AbstractInfixAdditiveNode node) throws SemanticException {
         isNumeral(node);
         return node;
     }
-    public RootNode visit(AbstractInfixConditionalNode node) throws IllegalTypeException{
+    public RootNode visit(AbstractInfixConditionalNode node) throws SemanticException {
         isBoolean(node);
         return node;
     }
-    public RootNode visit(AbstractInfixMultiplicativeNode node) throws IllegalTypeException{
+    public RootNode visit(AbstractInfixMultiplicativeNode node) throws SemanticException {
         isNumeral(node);
         return node;
     }
 
-    public RootNode visit(AbstractInfixRelationNode node) throws IllegalTypeException{
+    public RootNode visit(AbstractInfixRelationNode node) throws SemanticException {
         isNumeral(node);
         return node;
     }
@@ -58,8 +58,8 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
             } else throw new IllegalTypeException("Types in list are not the same!");
         }
     }
+    protected void isNumeral(AbstractInfixExpressionNode node) throws SemanticException {
 
-    protected void isNumeral(AbstractInfixExpressionNode node) throws IllegalTypeException {
         if(!(visit(node.getLeft()) instanceof NumeralType))
             throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().toString()+
                     " for type "+node.toString());
@@ -67,7 +67,7 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
             throw new IllegalTypeException(node.getRight().getLine()+" Illegal type: "+node.getRight().toString()+
                     " for type "+node.toString());
     }
-    protected void isBoolean(AbstractInfixExpressionNode node) throws IllegalTypeException {
+    protected void isBoolean(AbstractInfixExpressionNode node) throws SemanticException {
         if(!(visit(node.getLeft()) instanceof BooleanType))
             throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().toString()+
                     " for type "+node.getClass().getSimpleName());

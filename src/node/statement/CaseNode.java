@@ -14,13 +14,16 @@ public class CaseNode extends RootNode {
 
     @Override
     public String toString() {
-        return "case ";
+        return "case";
     }
 
     public RootNode getExpression() {
         return children.get(0);
     }
     public void setExpression(RootNode expression) {
-        children.set(0, expression);
+        if(children.size() > 0)
+            children.set(0, expression);
+        else
+            children.add(expression);
     }
 }

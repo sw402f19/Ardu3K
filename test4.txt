@@ -8,24 +8,16 @@ setup = {
 loop = {
     b = [];
     c = func("STR");
-    funcc(5, 2.5, "Hello");
+    funcc(5, 2);
+    func(2);
 }
-func (a) = {
+func (a, b) = {
     return a;
 }
 funcc(a, b, c) = {
     b = "b";
-    funky(1);
     a = 1 + (5 * 5 * b);
+    c = 3 + 5;
     return a;
 }
 
-funky (d) = {
-    fancy(1);
-    return 1;
-}
-
-fancy (x) = {
-    func("ddw");
-    return x;
-}

@@ -44,9 +44,11 @@ loop = {
         a = (a + 1);
     }
 
+    func(2);
+
 }
 func (a) = {
-    a = 10.5;
+    a = 10;
     return a;
 }
 funcc(a) = {

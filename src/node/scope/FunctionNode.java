@@ -47,4 +47,6 @@ public class FunctionNode extends RootNode {
         }
     }
     public ArrayList<ArrayList<RootNode>> getParameterTypes(){ return parameterTypes; }
+
+    public ArrayList<RootNode>getParameterTypes(int index){return parameterTypes.get(index);}
 }

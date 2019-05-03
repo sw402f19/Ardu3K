@@ -1,5 +1,6 @@
 package exception.factory;
 
+import exception.ArgumentException;
 import exception.predicate.DuplicateParameterException;
 import exception.predicate.NeedsBooleanPredicateException;
 import exception.predicate.UndeclaredIdentifierException;
@@ -80,6 +81,8 @@ public class ExceptionFactory {
         else if (throwable instanceof RecursionException)
             return new RecursionException(throwable);
         else if(throwable instanceof NotReachableException) {
+            return new NotReachableException(throwable);
+        } else if(throwable instanceof ArgumentException) {
             return new NotReachableException(throwable);
         }
         else throw new NoProductException(throwable.getClass().getSimpleName());

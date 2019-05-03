@@ -1,7 +1,7 @@
 package visitor.semantic;
 
 import exception.ArgumentException;
-import exception.RecursionException;
+import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.*;

@@ -8,8 +8,8 @@ setup = {
 loop = {
     b = [];
     c = func("STR");
-    funcc(5, 2);
-    func(2);
+    funcc(5, 2, 2);
+    func(2, 2);
 }
 func (a, b) = {
     return a;

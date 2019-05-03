@@ -1,7 +1,5 @@
 package visitor.semantic;
 
-import exception.IllegalTypeException;
-import exception.UndeclaredIdentifierException;
 import exception.IllegalParameterTypeException;
 import exception.predicate.UndeclaredIdentifierException;
 import exception.factory.ExceptionFactory;

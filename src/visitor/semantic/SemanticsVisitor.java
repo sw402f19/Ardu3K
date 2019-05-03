@@ -3,6 +3,9 @@ package visitor.semantic;
 import exception.*;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
+import exception.predicate.DuplicateParameterException;
+import exception.predicate.UndeclaredIdentifierException;
+import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.*;
 import node.expression.type.BooleanType;
@@ -16,7 +19,7 @@ import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
-import visitor.semantic.reachability.RecursionChecker;
+
 import java.util.ArrayList;
 
 @SuppressWarnings("Duplicates")

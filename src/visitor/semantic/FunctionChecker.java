@@ -17,7 +17,16 @@ public class FunctionChecker {
 
     private static FunctionChecker thisInstance = new FunctionChecker();
 
-    public static void CheckForRecursion(FunctionNode rootNode) throws RecursionException {
+    public static void Check(FunctionStmtNode stmtNode, FunctionNode funcNode) throws ArgumentException{
+        FunctionParameterArgumentChecker(funcNode, stmtNode);
+        FunctionParameterTypeChecker(funcNode, stmtNode);
+    }
+
+    public static void Check(FunctionNode node) throws RecursionException {
+        CheckForRecursion(node);
+    }
+
+    private static void CheckForRecursion(FunctionNode rootNode) throws RecursionException {
         ArrayList<FunctionNode> calledFunctions = new ArrayList<>();
 
         calledFunctions.add(rootNode);
@@ -38,7 +47,7 @@ public class FunctionChecker {
         }
     }
 
-    public static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode) {
+    private static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode) {
 
         for (RootNode node: funcNode.getBlock().children){
             if (node instanceof AbstractInfixExpressionNode){
@@ -80,7 +89,7 @@ public class FunctionChecker {
     // Takes in two primary types, and returns which type they will need to resolve to
     // Throws errors if incompatible types TODO: Throw exceptions once they work again
     // TODO: Move to another class which makes more sense to have this function within
-    private static RootNode TypeEvaluator(RootNode left, RootNode right){
+    public static RootNode TypeEvaluator(RootNode left, RootNode right){
         if (left instanceof AbstractPrimaryNode && right instanceof AbstractPrimaryNode){
             switch (left.getClass().getSimpleName()){
                 case "BoolNode":
@@ -119,7 +128,7 @@ public class FunctionChecker {
         return new UndefinedNode();
     }
 
-    public static void FunctionParameterArgumentChecker(FunctionNode funcnode, FunctionStmtNode funcStmtNode) throws ArgumentException {
+    private static void FunctionParameterArgumentChecker(FunctionNode funcnode, FunctionStmtNode funcStmtNode) throws ArgumentException {
         if (funcnode.getParameter().children.size() < funcStmtNode.getArguments().children.size()){
             throw new ArgumentException(funcStmtNode.line + " : Too many arguments to function " + funcnode.getId());
         } else if (funcnode.getParameter().children.size() > funcStmtNode.getArguments().children.size()){

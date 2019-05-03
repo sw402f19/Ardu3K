@@ -6,18 +6,10 @@ setup = {
 }
 
 loop = {
-    b = [];
-    c = func("STR");
-    funcc(5, 2, 2);
-    func(2, 2);
+    funcc(2, 2, 2);
 }
-func (a, b) = {
-    return a;
-}
-funcc(a, b, c) = {
-    b = "b";
-    a = 1 + (5 * 5 * b);
-    c = 3 + 5;
+funcc(a, z, c) = {
+    a + 2 *  2.5;
     return a;
 }
 

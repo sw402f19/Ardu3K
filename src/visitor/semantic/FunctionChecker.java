@@ -5,10 +5,12 @@ import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.*;
+import node.scope.BlockNode;
 import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
 import symbol.SymbolTable;
 
+import javax.lang.model.type.NullType;
 import java.util.ArrayList;
 
 public class FunctionChecker {
@@ -36,28 +38,85 @@ public class FunctionChecker {
         }
     }
 
-    public static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode, int index) {
-            for (RootNode node : funcNode.getBlock().children){
-                if (node instanceof AbstractInfixExpressionNode){
-                    RootNode left = ExpressionParameterCheck(((AbstractInfixExpressionNode) node).getLeft(), funcNode, index);
-                    RootNode right = ExpressionParameterCheck(((AbstractInfixExpressionNode) node).getRight(), funcNode, index);
+    public static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode) {
+
+        for (RootNode node: funcNode.getBlock().children){
+            if (node instanceof AbstractInfixExpressionNode){
+                ArrayList<RootNode> leftRight = new ArrayList<>();
+                leftRight.add(((AbstractInfixExpressionNode) node).getLeft());
+                leftRight.add(((AbstractInfixExpressionNode) node).getRight());
+
+                // Check left and right side
+                for (RootNode lrNode: leftRight){
+                    leftRight.set(
+                            leftRight.indexOf(lrNode),
+                            ExprChildCheck(lrNode, funcStmtNode.getArguments().children, funcNode)
+                    );
                 }
 
-
+                TypeEvaluator(leftRight.get(0), leftRight.get(1));
             }
+        }
     }
 
-    private static RootNode ExpressionParameterCheck(RootNode node, FunctionNode funcNode, int index){
-        ExpressionTypeVisitor expVisit = new ExpressionTypeVisitor();
-        if (node instanceof IdentifierNode){
-            if (funcNode.getParameter().children.contains(node)){
-                System.out.println(funcNode.getParameterTypes(index).get(funcNode.getParameter().children.indexOf(node)));
-                return funcNode.getParameterTypes(index).get(funcNode.getParameter().children.indexOf(node));
-            }
-        } else  if (node instanceof AbstractInfixExpressionNode){
+    private static RootNode ExprChildCheck(RootNode inputNode, ArrayList<RootNode> argTypes, FunctionNode funcNode){
+        if (inputNode instanceof AbstractInfixExpressionNode){
+            ArrayList<RootNode> leftRight = new ArrayList<>();
+            leftRight.add(((AbstractInfixExpressionNode) inputNode).getLeft());
+            leftRight.add(((AbstractInfixExpressionNode) inputNode).getRight());
 
-                }
-       return node;
+            // Check left and right side
+            for (RootNode lrNode: leftRight){
+                leftRight.set(leftRight.indexOf(lrNode), ExprChildCheck(lrNode, argTypes, funcNode));
+            }
+
+            return TypeEvaluator(leftRight.get(0), leftRight.get(1));
+        } else if (inputNode instanceof IdentifierNode && funcNode.getParameter().children.contains(inputNode)){
+            int argIndex = funcNode.getParameter().children.indexOf(inputNode);
+            return argTypes.get(argIndex);
+        } else return inputNode;
+    }
+
+    // Takes in two primary types, and returns which type they will need to resolve to
+    // Throws errors if incompatible types TODO: Throw exceptions once they work again
+    // TODO: Move to another class which makes more sense to have this function within
+    private static RootNode TypeEvaluator(RootNode left, RootNode right){
+        if (left instanceof AbstractPrimaryNode && right instanceof AbstractPrimaryNode){
+            switch (left.getClass().getSimpleName()){
+                case "BoolNode":
+                    if (!(right.getClass().getSimpleName().equals("BoolNode"))) {
+                        System.out.println("ERROR: UNABLE TO RESOLVE FROM BOOL TO BOOL!");
+                    }
+                    break;
+
+                case "IntegerNode":
+                    if (right.getClass().getSimpleName().equals("IntegerNode")) { return new IntegerNode(); }
+                case "FloatNode":
+                    switch (right.getClass().getSimpleName()){
+                        case "IntegerNode": case "FloatNode":
+                            return new FloatNode();
+                        case "StringNode":
+                            return new StringNode();
+                        default:
+                            System.out.println("ERROR: UNABLE TO RESOLVE FROM FLOAT/INT");
+                            break;
+                    }
+
+                case "StringNode":
+                    switch (right.getClass().getSimpleName()){
+                        case "IntegerNode": case "FloatNode":
+                        case "StringNode":
+                            return new StringNode();
+                        default:
+                            System.out.println("ERROR: UNABLE TO RESOLVE FROM FLOAT/INT");
+                            break;
+                    }
+
+                default:
+                    throw new RuntimeException("ERROR: INVALID TYPES FOR EVALUATOR!");
+            }
+        } else System.out.println("Tried to evaluate types which are not primary!");
+        return new UndefinedNode();
     }
 
     public static void FunctionParameterArgumentChecker(FunctionNode funcnode, FunctionStmtNode funcStmtNode) throws ArgumentException {

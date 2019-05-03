@@ -175,40 +175,15 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException, ArgumentException {
         RootNode function = null;
+        
         try {
             function = symbolTable.retrieveSymbol(node.getId()).getType();
 
             if (function instanceof FunctionNode) {
-                // Construct a typeArray for parameter-types in arguments
-                ArrayList<RootNode> typeArray = new ArrayList<>();
-
-                for (RootNode arg : node.getArguments().children) {
-                    try {
-                        switch (arg.getClass().getSimpleName()) {
-                            case "BoolNode":
-                            case "FloatNode":
-                            case "IntegerNode":
-                            case "StringNode":
-                                typeArray.add(arg);
-                                break;
-                            /*case "IdentifierNode": // TODO: Add support for identifier nodes
-                                typeArray.add(new IdentifierNode());
-                                break;*/
-                            default:
-                                throw new IllegalParameterTypeException(node.line + " Not a valid argument type");
-                        }
-                    } catch (IllegalParameterTypeException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Add type array to function node
-                ((FunctionNode) function).addParameterTypes(typeArray);
 
                 for (int i = 0; i < node.getArguments().children.size(); i++) {
                     RootNode expectedType =
                             new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
-                    // todo here be dragons hehe
                     RootNode argType = visit(node.getArguments().children.get(i));
                     if (!(expectedType.getClass().isInstance(argType)))
                         throw ExceptionFactory.produce("illegalargument", argType);
@@ -217,11 +192,12 @@ public class SemanticsVisitor extends PrimaryVisitor {
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
+
+        // TODO: Combine these into one single function for FunctionStmtNode
         FunctionChecker.FunctionParameterArgumentChecker((FunctionNode) function, node);
-        FunctionChecker.FunctionParameterTypeChecker((FunctionNode) function, node, 0);
+        FunctionChecker.FunctionParameterTypeChecker((FunctionNode) function, node);
 
         return node;
-
     }
 
     public RootNode visit(FunctionNode node) throws RecursionException {

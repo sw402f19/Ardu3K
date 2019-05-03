@@ -5,6 +5,7 @@ import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.*;
+import node.scope.BlockNode;
 import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
 import symbol.SymbolTable;
@@ -37,28 +38,56 @@ public class FunctionChecker {
     }
 
     public static void FunctionParameterTypeChecker(FunctionNode funcNode, FunctionStmtNode funcStmtNode, int index) {
-            for (RootNode node : funcNode.getBlock().children){
-                if (node instanceof AbstractInfixExpressionNode){
-                    RootNode left = ExpressionParameterCheck(((AbstractInfixExpressionNode) node).getLeft(), funcNode, index);
-                    RootNode right = ExpressionParameterCheck(((AbstractInfixExpressionNode) node).getRight(), funcNode, index);
+
+        for (RootNode node: funcNode.getBlock().children){
+            System.out.println(node.line + " " + node.getClass().getSimpleName());
+
+
+            if (node instanceof AbstractInfixExpressionNode){
+                ArrayList<RootNode> leftRight = new ArrayList<>();
+                leftRight.add(((AbstractInfixExpressionNode) node).getLeft());
+                leftRight.add(((AbstractInfixExpressionNode) node).getRight());
+
+                // Check left and right side
+                for (RootNode lrNode: leftRight){
+                    leftRight.set(leftRight.indexOf(lrNode), ExprChildCheck(lrNode, funcStmtNode.getArguments().children, funcNode));
+                }
+
+                // DEBUG
+                for (RootNode n: leftRight){
+                    System.out.println("---------> " + n.getClass().getSimpleName());
                 }
 
 
+                //TODO IS TYPES COMPATIBLE?
+
             }
+        }
     }
 
-    private static RootNode ExpressionParameterCheck(RootNode node, FunctionNode funcNode, int index){
-        ExpressionTypeVisitor expVisit = new ExpressionTypeVisitor();
-        if (node instanceof IdentifierNode){
-            if (funcNode.getParameter().children.contains(node)){
-                System.out.println(funcNode.getParameterTypes(index).get(funcNode.getParameter().children.indexOf(node)));
-                return funcNode.getParameterTypes(index).get(funcNode.getParameter().children.indexOf(node));
-            }
-        } else  if (node instanceof AbstractInfixExpressionNode){
+    private static RootNode ExprChildCheck(RootNode inputNode, ArrayList<RootNode> argTypes, FunctionNode funcNode){
+        if (inputNode instanceof AbstractInfixExpressionNode){
+            ArrayList<RootNode> leftRight = new ArrayList<>();
+            leftRight.add(((AbstractInfixExpressionNode) inputNode).getLeft());
+            leftRight.add(((AbstractInfixExpressionNode) inputNode).getRight());
 
-                }
-       return node;
+            // Check left and right side
+            for (RootNode lrNode: leftRight){
+                leftRight.set(leftRight.indexOf(lrNode), ExprChildCheck(lrNode, argTypes, funcNode));
+            }
+
+            // TODO resolve expression return type
+
+            return leftRight.get(0);
+
+
+
+        } else if (inputNode instanceof IdentifierNode && funcNode.getParameter().children.contains(inputNode)){
+            int argIndex = funcNode.getParameter().children.indexOf(inputNode);
+            return argTypes.get(argIndex);
+        } else return inputNode;
     }
+
 
     public static void FunctionParameterArgumentChecker(FunctionNode funcnode, FunctionStmtNode funcStmtNode) throws ArgumentException {
         if (funcnode.getParameter().children.size() < funcStmtNode.getArguments().children.size()){

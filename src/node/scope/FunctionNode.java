@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class FunctionNode extends RootNode {
     private RootNode type;
-    private ArrayList<ArrayList<RootNode>> parameterTypes = new ArrayList<>();
 
     public FunctionNode(Ardu3kParser.FunctionContext ctx) { super(ctx); }
 
@@ -41,12 +40,4 @@ public class FunctionNode extends RootNode {
     public void setReturnType(RootNode type) { this.type = type; }
     public RootNode getReturnType() { return this.type; }
 
-    public void addParameterTypes(ArrayList<RootNode> paramTypes) {
-        if (!(parameterTypes.contains(paramTypes))){
-            parameterTypes.add(paramTypes);
-        }
-    }
-    public ArrayList<ArrayList<RootNode>> getParameterTypes(){ return parameterTypes; }
-
-    public ArrayList<RootNode>getParameterTypes(int index){return parameterTypes.get(index);}
 }

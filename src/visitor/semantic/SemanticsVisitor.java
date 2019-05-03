@@ -179,31 +179,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
             function = symbolTable.retrieveSymbol(node.getId()).getType();
 
             if (function instanceof FunctionNode) {
-                // Construct a typeArray for parameter-types in arguments
-                ArrayList<RootNode> typeArray = new ArrayList<>();
-
-                for (RootNode arg : node.getArguments().children) {
-                    try {
-                        switch (arg.getClass().getSimpleName()) {
-                            case "BoolNode":
-                            case "FloatNode":
-                            case "IntegerNode":
-                            case "StringNode":
-                                typeArray.add(arg);
-                                break;
-                            /*case "IdentifierNode": // TODO: Add support for identifier nodes
-                                typeArray.add(new IdentifierNode());
-                                break;*/
-                            default:
-                                throw new IllegalParameterTypeException(node.line + " Not a valid argument type");
-                        }
-                    } catch (IllegalParameterTypeException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Add type array to function node
-                ((FunctionNode) function).addParameterTypes(typeArray);
 
                 for (int i = 0; i < node.getArguments().children.size(); i++) {
                     RootNode expectedType =

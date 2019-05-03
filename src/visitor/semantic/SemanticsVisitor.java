@@ -1,16 +1,16 @@
 package visitor.semantic;
 
-import exception.predicate.DuplicateParameterException;
-import exception.reachability.RecursionException;
-import exception.predicate.UndeclaredIdentifierException;
+import exception.DuplicateParameterException;
+import exception.IllegalParameterTypeException;
+import exception.RecursionException;
+import exception.UndeclaredIdentifierException;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.*;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
-import node.primary.IdentifierNode;
-import node.primary.UndefinedNode;
+import node.primary.*;
 import node.scope.*;
 import node.statement.CaseNode;
 import node.statement.FunctionStmtNode;
@@ -19,6 +19,7 @@ import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
 import visitor.semantic.reachability.RecursionChecker;
+import java.util.ArrayList;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
@@ -44,11 +45,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
         }
         return node;
     }
+
     public RootNode visit(DeclarationNode node) throws SemanticException {
         symbolTable.enterSymbol(node);
         visit(node.getRight());
         return node;
     }
+
     public RootNode visit(ProgramNode node) throws SemanticException {
         node = (ProgramNode) new BuildParentVisitor().visit(node);
         try {
@@ -70,6 +73,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.enterSymbol(node);
         return node;
     }
+
     public RootNode visit(AbstractScopeNode node) {
         symbolTable.openScope();
         try {
@@ -80,6 +84,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         }
         return node;
     }
+
     // todo temp error handling
     public RootNode visit(IfNode node) {
         symbolTable.openScope();
@@ -107,6 +112,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     // todo what types should switch accept?
     public RootNode visit(SwitchNode node)  {
         symbolTable.openScope();
@@ -121,7 +127,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(CaseNode node) {
+
         symbolTable.openScope();
         try {
             RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
@@ -135,6 +143,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(ForNode node)  {
         symbolTable.openScope();
         try {
@@ -148,6 +157,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(WhileNode node) {
         symbolTable.openScope();
         try {
@@ -161,25 +171,50 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(FunctionStmtNode node) {
+
+    public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException {
         try {
-            if(!symbolTable.isPresent(node))
-                throw ExceptionFactory.produce("undeclaredidentifier",node.getId());
             RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
+
             if(function instanceof FunctionNode) {
+                // Construct a typeArray for parameter-types in arguments
+                ArrayList<RootNode> typeArray = new ArrayList<>();
+
+                for (RootNode arg: node.getArguments().children) {
+                    try {
+                        switch (arg.getClass().getSimpleName()) {
+                            case "BoolNode": case "FloatNode":
+                            case "IntegerNode": case "StringNode":
+                                typeArray.add(arg);
+                                break;
+                            /*case "IdentifierNode": // TODO: Add support for identifier nodes
+                                typeArray.add(new IdentifierNode());
+                                break;*/
+                            default:
+                                throw new IllegalParameterTypeException(node.line + " Not a valid argument type");
+                        }
+                    } catch (IllegalParameterTypeException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Add type array to function node
+                ((FunctionNode) function).addParameterTypes(typeArray);
+
                 for (int i = 0; i < node.getArguments().children.size(); i++) {
                     RootNode expectedType =
                             new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
+                    // todo here be dragons hehe
                     RootNode argType = visit(node.getArguments().children.get(i));
                     if(!(expectedType.getClass().isInstance(argType)))
                         throw ExceptionFactory.produce("illegalargument", argType);
                 }
             } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
-        } catch (SemanticException e) {
-            System.out.println(e.getMessage());
-        }
+        } catch (SemanticException e) { System.out.println(e.getMessage()); }
+
         return node;
     }
+
     public RootNode visit(FunctionNode node) throws RecursionException {
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
@@ -191,9 +226,10 @@ public class SemanticsVisitor extends PrimaryVisitor {
             System.out.println(e.getMessage());
         }
         symbolTable.closeScope();
-        RecursionChecker.checkForRecursion(node);
+        FunctionChecker.CheckForRecursion(node);
         return node;
     }
+
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {
         symbolTable.openScope();
         for(RootNode n : node.children) {

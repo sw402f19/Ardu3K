@@ -6,6 +6,7 @@ import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.DefineNode;
 import node.scope.FunctionNode;
+import node.statement.FunctionStmtNode;
 
 import java.util.HashMap;
 
@@ -37,6 +38,7 @@ public class SymbolTable implements SymbolTableInterface{
     public void enterSymbol(DefineNode node) {
         symTable.put(node.getId(), new Symbol(node.getId(), node.getValue(), depth));
     }
+
     public Symbol retrieveSymbol(RootNode name) {
         return symTable.get(name);
     }

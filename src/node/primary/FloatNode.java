@@ -20,6 +20,9 @@ public class FloatNode extends AbstractNumberNode {
         this.value = Double.valueOf(str);
     }
 
+    public FloatNode(){
+
+    }
 
     @Override
     public String toString() {

@@ -174,8 +174,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException, ArgumentException {
-        RootNode function = null;
-        
+        RootNode function;
+
         try {
             function = symbolTable.retrieveSymbol(node.getId()).getType();
 
@@ -188,14 +188,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
                     if (!(expectedType.getClass().isInstance(argType)))
                         throw ExceptionFactory.produce("illegalargument", argType);
                 }
-            } else throw new UndeclaredIdentifierException("Identifier " + node.getId() + " not declared.");
-        } catch (SemanticException e) {
-            System.out.println(e.getMessage());
-        }
 
-        // TODO: Combine these into one single function for FunctionStmtNode
-        FunctionChecker.FunctionParameterArgumentChecker((FunctionNode) function, node);
-        FunctionChecker.FunctionParameterTypeChecker((FunctionNode) function, node);
+                FunctionChecker.Check(node, (FunctionNode) function);
+
+            } else throw new UndeclaredIdentifierException("Identifier " + node.getId() + " not declared.");
+        } catch (SemanticException e) { System.out.println(e.getMessage()); }
 
         return node;
     }
@@ -211,7 +208,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
             System.out.println(e.getMessage());
         }
         symbolTable.closeScope();
-        FunctionChecker.CheckForRecursion(node);
+
+        FunctionChecker.Check(node);
+
         return node;
     }
 

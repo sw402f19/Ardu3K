@@ -1,4 +1,4 @@
-package exception;
+package exception.predicate;
 
 import exception.factory.SemanticException;
 import node.RootNode;
@@ -13,22 +13,7 @@ public class DuplicateParameterException extends SemanticException {
                 +node.toString()+"\" already declared at "+ SymbolTable.getInstance().retrieveSymbol(node).getName().line);
     }
 
-    public DuplicateParameterException() {
-    }
-
-    public DuplicateParameterException(String message) {
-        super(message);
-    }
-
-    public DuplicateParameterException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     public DuplicateParameterException(Throwable cause) {
         super(cause);
-    }
-
-    public DuplicateParameterException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -1,15 +1,9 @@
 package visitor.semantic;
 
+import exception.factory.SemanticException;
 import node.RootNode;
-import node.expression.AbstractExpressionNode;
 import node.expression.VoidNode;
-import node.expression.type.BooleanType;
-import node.expression.type.ExpressionType;
-import node.expression.type.NumeralType;
-import node.expression.type.VoidType;
-import node.primary.BoolNode;
-import node.statement.ReturnNode;
-import visitor.BaseASTVisitor;
+import node.statement.termination.ReturnNode;
 
 import java.util.ArrayList;
 
@@ -17,7 +11,7 @@ public class ReturnTypeVisitor extends PrimaryVisitor {
 
     private ArrayList<RootNode> returnTypes = new ArrayList<>();
 
-    public RootNode visit(ReturnNode node) {
+    public RootNode visit(ReturnNode node) throws SemanticException {
         if(node.getExpression() != null)
             returnTypes.add(new ExpressionTypeVisitor().visit(node.getExpression()));
         return aggregateResult();
@@ -28,6 +22,5 @@ public class ReturnTypeVisitor extends PrimaryVisitor {
             return returnTypes.get(0);
         else
             return new VoidNode();
-
     }
 }

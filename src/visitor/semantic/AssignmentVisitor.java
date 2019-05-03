@@ -1,8 +1,9 @@
 package visitor.semantic;
 
+import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.AssignmentNode;
-import exception.IllegalTypeException;
+import exception.type.IllegalTypeException;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;
@@ -14,12 +15,12 @@ public class AssignmentVisitor extends PrimaryVisitor {
     private RootNode expectedType;
     private SymbolTable symbolTable = SymbolTable.getInstance();
 
-    public RootNode visit(AssignmentNode node) {
+    public RootNode visit(AssignmentNode node) throws SemanticException {
         expectedType = symbolTable.retrieveSymbol(node.getLeft()).getType();
         new ExpressionCastVisitor().initVisit(expectedType, node.getRight());
         return node;
     }
-    public RootNode visit(AbstractPrimaryNode node) throws IllegalTypeException {
+    public RootNode visit(AbstractPrimaryNode node) throws SemanticException {
         if(!isInstanceOf(expectedType, node))
             throw new IllegalTypeException(
                     node.getLine()+" Incompatible types "+node.toString()+", expected "+expectedType.toString());

@@ -3,7 +3,7 @@ package node.statement.control;
 import gen.Ardu3kParser;
 import node.RootNode;
 
-public class WhileNode extends AbstractControlNode {
+public class WhileNode extends AbstractIterativeNode {
     public WhileNode(Ardu3kParser.While_stmtContext ctx) {
         super(ctx);
     }

@@ -7,6 +7,7 @@ import visitor.BaseASTVisitor;
 public class IntegerNode extends AbstractNumberNode {
     public int value;
 
+    public IntegerNode() { }
     public IntegerNode(int value) {
         this.value = value;
     }

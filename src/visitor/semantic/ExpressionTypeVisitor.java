@@ -59,6 +59,7 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
         }
     }
     protected void isNumeral(AbstractInfixExpressionNode node) throws SemanticException {
+
         if(!(visit(node.getLeft()) instanceof NumeralType))
             throw new IllegalTypeException(node.getLeft().getLine()+" Illegal type: "+node.getLeft().toString()+
                     " for type "+node.toString());

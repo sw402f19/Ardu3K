@@ -1,10 +1,11 @@
 package visitor.semantic;
 
-import exception.predicate.DuplicateParameterException;
-import exception.reachability.RecursionException;
-import exception.predicate.UndeclaredIdentifierException;
+import exception.*;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
+import exception.predicate.DuplicateParameterException;
+import exception.predicate.UndeclaredIdentifierException;
+import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.*;
 import node.expression.type.BooleanType;
@@ -18,7 +19,8 @@ import node.statement.control.*;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
-import visitor.semantic.reachability.RecursionChecker;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
@@ -44,11 +46,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
         }
         return node;
     }
+
     public RootNode visit(DeclarationNode node) throws SemanticException {
         symbolTable.enterSymbol(node);
         visit(node.getRight());
         return node;
     }
+
     public RootNode visit(ProgramNode node) throws SemanticException {
         node = (ProgramNode) new BuildParentVisitor().visit(node);
         try {
@@ -70,6 +74,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.enterSymbol(node);
         return node;
     }
+
     public RootNode visit(AbstractScopeNode node) {
         symbolTable.openScope();
         try {
@@ -80,6 +85,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         }
         return node;
     }
+
     // todo temp error handling
     public RootNode visit(IfNode node) {
         symbolTable.openScope();
@@ -107,6 +113,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     // todo what types should switch accept?
     public RootNode visit(SwitchNode node)  {
         symbolTable.openScope();
@@ -121,7 +128,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(CaseNode node) {
+
         symbolTable.openScope();
         try {
             RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
@@ -135,6 +144,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(ForNode node)  {
         symbolTable.openScope();
         try {
@@ -148,6 +158,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+
     public RootNode visit(WhileNode node) {
         symbolTable.openScope();
         try {
@@ -161,25 +172,34 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(FunctionStmtNode node) {
+
+    public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException, ArgumentException {
+        RootNode function = null;
+        
         try {
-            if(!symbolTable.isPresent(node))
-                throw ExceptionFactory.produce("undeclaredidentifier",node.getId());
-            RootNode function = symbolTable.retrieveSymbol(node.getId()).getType();
-            if(function instanceof FunctionNode) {
+            function = symbolTable.retrieveSymbol(node.getId()).getType();
+
+            if (function instanceof FunctionNode) {
+
                 for (int i = 0; i < node.getArguments().children.size(); i++) {
                     RootNode expectedType =
                             new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
                     RootNode argType = visit(node.getArguments().children.get(i));
-                    if(!(expectedType.getClass().isInstance(argType)))
+                    if (!(expectedType.getClass().isInstance(argType)))
                         throw ExceptionFactory.produce("illegalargument", argType);
                 }
-            } else throw new UndeclaredIdentifierException("Identifier "+node.getId()+ " not declared.");
+            } else throw new UndeclaredIdentifierException("Identifier " + node.getId() + " not declared.");
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
+
+        // TODO: Combine these into one single function for FunctionStmtNode
+        FunctionChecker.FunctionParameterArgumentChecker((FunctionNode) function, node);
+        FunctionChecker.FunctionParameterTypeChecker((FunctionNode) function, node);
+
         return node;
     }
+
     public RootNode visit(FunctionNode node) throws RecursionException {
         symbolTable.enterSymbol(node);
         symbolTable.openScope();
@@ -191,9 +211,10 @@ public class SemanticsVisitor extends PrimaryVisitor {
             System.out.println(e.getMessage());
         }
         symbolTable.closeScope();
-        RecursionChecker.checkForRecursion(node);
+        FunctionChecker.CheckForRecursion(node);
         return node;
     }
+
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {
         symbolTable.openScope();
         for(RootNode n : node.children) {

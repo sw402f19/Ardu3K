@@ -2,7 +2,7 @@
 #define ALED 15
 
 setup = {
-
+ a = 2;
 }
 
 loop = {

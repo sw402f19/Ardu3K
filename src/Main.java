@@ -6,6 +6,7 @@ import gen.Ardu3kParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import visitor.codegen.CodeGenerator;
 import visitor.semantic.SemanticsVisitor;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class Main {
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
             dast = new SemanticsVisitor().visit(ast);
+            CodeGenerator.GenerateCode("testGenCode", dast);
             System.out.println("==============\nSuccessful :)\n==============\n");
             //ast.print(0);
 

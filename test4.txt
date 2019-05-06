@@ -1,9 +1,8 @@
-#define LEDPIN 13
+#define LEDPIN 13.5
 #define ALED 15
 
 setup = {
  a = 2;
- b = false * 10;
 }
 
 loop = {

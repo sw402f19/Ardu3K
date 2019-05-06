@@ -181,27 +181,16 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(VoidNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "void";
     }
 
     public String visit(BoolNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return node.value ? "1" : "0";
     }
 
     public String visit(FloatNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        String str = Double.toString(node.value);
+        return str;
     }
 
     public String visit(IdentifierNode node) {
@@ -213,11 +202,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(StringNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return node.value;
     }
 
     public String visit(BlockNode node) throws SemanticException {

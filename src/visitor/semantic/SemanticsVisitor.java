@@ -25,13 +25,34 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
 
+    public RootNode visit(AbstractInfixNumeralNode node) throws SemanticException {
+        if(!(visit(node.getLeft()) instanceof NumeralType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
+        }
+        if(!(visit(node.getRight()) instanceof NumeralType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
+        }
+        return node;
+    }
+
+    public RootNode visit(AbstractInfixBooleanNode node) throws SemanticException {
+        if(!(visit(node.getLeft()) instanceof BooleanType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
+        }
+        if(!(visit(node.getRight()) instanceof BooleanType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
+        }
+        return node;
+    }
+
     public RootNode visit(AbstractDeclAssignNode node)  {
         DeclarationNode node1 = null;
         try {
+            // todo fix declaration node og hvordan det kommer ind i symboltable
             if(!(symbolTable.isPresent(node.getLeft())) ||
-                    symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode)
-                node1 = (DeclarationNode)visit(new DeclarationNode(node));
-            else {
+                    symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode) {
+                node1 = (DeclarationNode) visit(new DeclarationNode(node));
+            }else {
                 this.visit(node.getRight());
                 new AssignmentVisitor().visit(node);
             }

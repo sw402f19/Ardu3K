@@ -15,6 +15,7 @@ public class AssignmentVisitor extends PrimaryVisitor {
     private RootNode expectedType;
     private SymbolTable symbolTable = SymbolTable.getInstance();
 
+
     public RootNode visit(AssignmentNode node) throws SemanticException {
         expectedType = symbolTable.retrieveSymbol(node.getLeft()).getType();
         new ExpressionCastVisitor().initVisit(expectedType, node.getRight());

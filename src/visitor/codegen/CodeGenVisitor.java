@@ -19,6 +19,16 @@ import visitor.BaseASTVisitor;
 
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String tab = "    ";
+    private int tabLevel = 0;
+
+    // Function for indenting the generated code
+    private String tab() {
+        String str = "";
+        for (int i = 0; i < tabLevel; i ++){
+            str += tab;
+        }
+        return str;
+    }
 
     public String visit(ProgramNode node) throws SemanticException {
         String str = "";
@@ -103,11 +113,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(AssignmentNode node)  throws SemanticException{
-        return visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
+        return tab() + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
     }
 
     public String visit(DeclarationNode node) throws SemanticException {
-        String str = "TYPE"; //TODO: add type
+        String str = tab() + "TYPE"; //TODO: add type
         str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
         return str + "\n";
     }
@@ -137,7 +147,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(BlockNode node) throws SemanticException {
-        return "{\n" + visitChildrenStr(node) +"\n}";
+        String str = "{\n";
+        tabLevel++;
+        str += visitChildrenStr(node);
+        tabLevel--;
+        str += "\n}";
+        return str;
     }
 
     public String visit(DefinesNode node) throws SemanticException {
@@ -159,7 +174,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(LoopNode node) throws SemanticException {
-        return "void loop() {\n" + visitChildrenStr(node) + "}\n";
+        String str = "void loop() {\n";
+        tabLevel++;
+        str += visitChildrenStr(node) + "}\n";
+        tabLevel--;
+        return str;
     }
 
     public String visit(ParameterNode node) throws SemanticException {
@@ -180,44 +199,47 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ElifNode node) throws SemanticException {
-        String str =  "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody());
+        String str = tab() +  "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody());
         str += " else " + visit(node.getLowerbody()) + "\n";
         return str;
     }
 
     public String visit(ForNode node) throws SemanticException {
-        String str = "for (int i = " + visit(node.getExpression()) + "; i < ";
+        String str = tab() + "for (int i = " + visit(node.getExpression()) + "; i < ";
         str += visit(node.getValue()) + "; i++) " + visit(node.getStmt());
         return str + "\n";
     }
 
     public String visit(IfNode node) throws SemanticException {
-        return "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody()) + "\n";
+        return tab() + "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody()) + "\n";
     }
 
     public String visit(SwitchNode node) throws SemanticException {
-        String str = "switch (" + visit(node.getExpression()) + ") { \n" + visit(node.getDefaultnode());
+        String str = tab() + "switch (" + visit(node.getExpression()) + ") { \n";
+        tabLevel++;
+        str += visit(node.getDefaultnode());
+        tabLevel--;
         return str + "\n"; //TODO: it seems like case noes are not added to a switch node...
     }
 
     public String visit(WhileNode node) throws SemanticException {
-        return "while (" + visit(node.getExpression()) + ") " + visit(node.getStmt()) + "\n";
+        return tab() + "while (" + visit(node.getExpression()) + ") " + visit(node.getStmt()) + "\n";
     }
 
     public String visit(PinToggleNode node) {
-        return "EXPONENTIAL"; //TODO: Add our custom code to this
+        return "PIN_TOGGLE"; //TODO: Add our custom code to this
     }
 
     public String visit(BreakNode node) {
-        return "break;\n";
+        return tab() + "break;\n";
     }
 
     public String visit(ContinueNode node) {
-        return "continue;\n";
+        return tab() + "continue;\n";
     }
 
     public String visit(ReturnNode node) throws SemanticException {
-        return"return " + visit(node.getExpression()) + ";";
+        return tab() + "return " + visit(node.getExpression()) + ";";
     }
 
     public String visit(ArgumentNode node) {
@@ -225,15 +247,15 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(CaseNode node) {
-        return "CASE" + "\n" + tab + "break;"; //TODO: it seems like case noes are not added to a switch node...
+        return tab() + "CASE" + "\n" + tab + "break;"; //TODO: it seems like case noes are not added to a switch node...
     }
 
     public String visit(DefaultNode node) throws SemanticException {
-        return "default:\n" + tab + visitChildrenStr(node);
+        return tab() + "default:\n"+ tab + visitChildrenStr(node);
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
-        String str = visit(node.getId()) + " (";
+        String str = tab() + visit(node.getId()) + " (";
 
         for (int i = 0; i < node.getArguments().children.size(); i++){
             if (i != node.getArguments().children.size() -1){
@@ -250,7 +272,6 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
     // Used to get the type of the node in C :)
     public String getPrimaryType(RootNode node){
-
         switch (node.getClass().getSimpleName()){
             case "BoolNode": case "IntegerNode": //TODO: Figure out if ArduinoLanguage allows true/false
                 return "int";

@@ -2,34 +2,19 @@ package visitor.codegen;
 
 import exception.factory.SemanticException;
 import node.RootNode;
-import node.composite.ListNode;
-import node.expression.AbstractExpressionNode;
-import node.expression.AssignmentNode;
-import node.expression.DeclarationNode;
-import node.expression.VoidNode;
-import node.expression.additive.MinusNode;
-import node.expression.additive.PlusNode;
+import node.composite.*;
+import node.expression.*;
+import node.expression.additive.*;
 import node.expression.condition.*;
-import node.expression.multiplicative.DivideNode;
-import node.expression.multiplicative.ExponentialNode;
-import node.expression.multiplicative.ModulusNode;
-import node.expression.multiplicative.TimesNode;
-import node.expression.relation.GreaterEqualNode;
-import node.expression.relation.GreaterNode;
-import node.expression.relation.LesserEqualNode;
-import node.expression.relation.LesserNode;
-import node.expression.unary.UnaryNode;
+import node.expression.multiplicative.*;
+import node.expression.relation.*;
+import node.expression.unary.*;
 import node.primary.*;
 import node.scope.*;
-import node.statement.ArgumentNode;
-import node.statement.CaseNode;
-import node.statement.DefaultNode;
-import node.statement.FunctionStmtNode;
+import node.statement.*;
 import node.statement.control.*;
-import node.statement.pins.PinToggleNode;
-import node.statement.termination.BreakNode;
-import node.statement.termination.ContinueNode;
-import node.statement.termination.ReturnNode;
+import node.statement.pins.*;
+import node.statement.termination.*;
 import visitor.BaseASTVisitor;
 
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
@@ -235,12 +220,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return node.toString() + "\n";
     }
 
-    public String visit(BlockNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(BlockNode node) throws SemanticException {
+        String str = "{\n";
+        str += visitChildrenStr(node);
+        str += "\n}";
+        return str;
     }
 
     public String visit(DefinesNode node) throws SemanticException {
@@ -253,20 +237,14 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return str + "\n";
     }
 
-    public String visit(FunctionNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(FunctionNode node) throws SemanticException {
+        String str = visit(node.getReturnType()) + " " + visit(node.getId()) + "" + visit(node.getParameter()) + " " + visit(node.getBlock());
+        return str + "\n";
     }
 
-    public String visit(FunctionsNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(FunctionsNode node) throws SemanticException {
+        String str = visitChildrenStr(node);
+        return str + "\n";
     }
 
     public String visit(LoopNode node) {
@@ -277,12 +255,17 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return node.toString() + "\n";
     }
 
-    public String visit(ParameterNode node) {
-        String str = "";
+    public String visit(ParameterNode node) throws SemanticException {
+        String str = "(" ;
 
-        // TODO: Add what to write in code here
+        for (int i = 0; i < node.children.size(); i++){
+            if (i != node.children.size() - 1){
+                str += visit(node.children.get(i)) + ", ";
+            } else str += visit(node.children.get(i));
+        }
 
-        return node.toString() + "\n";
+        str += ")";
+        return str;
     }
 
     public String visit(SetupNode node) {
@@ -395,6 +378,10 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         // TODO: Add what to write in code here
 
         return node.toString() + "\n";
+    }
+
+    public String visit(UndefinedNode node) {
+        return "UNDEFINED";
     }
 
 

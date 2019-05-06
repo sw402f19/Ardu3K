@@ -3,13 +3,19 @@
 
 setup = {
  a = 2;
+ b = false * 10;
 }
 
 loop = {
     funcc(1, 2, 2);
+     k = false * 10;
 }
 funcc(a, z, c) = {
     a + 2 *  2.5;
     return a;
 }
 
+funky(y) = {
+ k = false * 10;
+    return y;
+}

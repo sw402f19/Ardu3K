@@ -16,6 +16,7 @@ import node.statement.control.*;
 import node.statement.pins.*;
 import node.statement.termination.*;
 import visitor.BaseASTVisitor;
+import visitor.semantic.FunctionChecker;
 
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
@@ -23,7 +24,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         String str = "";
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
         if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
-        if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
+
+        if(node.getSetupNode() != null) { //TODO: Fix bug that causes this not to be a setup node :)
+            System.out.println("Type of setup: " + node.getSetupNode().getClass().getSimpleName());
+            str += visit(node.getSetupNode());
+        } else System.out.println("Setup is empty");
+
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
         return str;
     }
@@ -164,20 +170,14 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return node.toString() + "\n";
     }
 
-    public String visit(AssignmentNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(AssignmentNode node)  throws SemanticException{
+        return visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
     }
 
-    public String visit(DeclarationNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(DeclarationNode node) throws SemanticException {
+        String str = "TYPE"; //TODO: add type
+        str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
+        return str + "\n";
     }
 
     public String visit(VoidNode node) {
@@ -185,12 +185,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(BoolNode node) {
-        return node.value ? "1" : "0";
+        return node.value ? "1" : "0"; //TODO: Figure out if ArduinoLanguage allows true/false
     }
 
     public String visit(FloatNode node) {
-        String str = Double.toString(node.value);
-        return str;
+        return Double.toString(node.value);
     }
 
     public String visit(IdentifierNode node) {
@@ -206,38 +205,29 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(BlockNode node) throws SemanticException {
-        String str = "{\n";
-        str += visitChildrenStr(node);
-        str += "\n}";
-        return str;
+        return "{\n" + visitChildrenStr(node) +"\n}";
     }
 
     public String visit(DefinesNode node) throws SemanticException {
-        String str = visitChildrenStr(node);
-        return str + "\n";
+        return visitChildrenStr(node) + "\n";
     }
 
     public String visit(DefineNode node) throws SemanticException {
-        String str = "#define " + visit(node.getId()) + " " + visit(node.getValue());
-        return str + "\n";
+        return  "#define " + visit(node.getId()) + " " + visit(node.getValue()) + "\n";
     }
 
     public String visit(FunctionNode node) throws SemanticException {
-        String str = visit(node.getReturnType()) + " " + visit(node.getId()) + "" + visit(node.getParameter()) + " " + visit(node.getBlock());
+        String str = getPrimaryType(node.getReturnType()) + " " + visit(node.getId());
+        str += visit(node.getParameter()) + " " + visit(node.getBlock());
         return str + "\n";
     }
 
     public String visit(FunctionsNode node) throws SemanticException {
-        String str = visitChildrenStr(node);
-        return str + "\n";
+        return visitChildrenStr(node) + "\n";
     }
 
-    public String visit(LoopNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(LoopNode node) throws SemanticException {
+        return "void loop() {\n" + visitChildrenStr(node) + "}\n";
     }
 
     public String visit(ParameterNode node) throws SemanticException {
@@ -253,20 +243,14 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return str;
     }
 
-    public String visit(SetupNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(SetupNode node) throws SemanticException {
+        return "void setup() " + visit(node.getBlock()) + "\n";
     }
 
-    public String visit(ElifNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(ElifNode node) throws SemanticException {
+        String str =  "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody());
+        str += " else " + visit(node.getLowerbody()) + "\n";
+        return str;
     }
 
     public String visit(ForNode node) {
@@ -277,12 +261,8 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return node.toString() + "\n";
     }
 
-    public String visit(IfNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(IfNode node) throws SemanticException {
+        return "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody()) + "\n";
     }
 
     public String visit(SwitchNode node) {
@@ -325,12 +305,8 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return node.toString() + "\n";
     }
 
-    public String visit(ReturnNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(ReturnNode node) throws SemanticException {
+        return"return " + visit(node.getExpression()) + ";";
     }
 
     public String visit(ArgumentNode node) {
@@ -357,18 +333,37 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return node.toString() + "\n";
     }
 
-    public String visit(FunctionStmtNode node) {
-        String str = "";
+    public String visit(FunctionStmtNode node) throws SemanticException {
+        String str = visit(node.getId()) + " (";
 
-        // TODO: Add what to write in code here
+        for (int i = 0; i < node.getArguments().children.size(); i++){
+            if (i != node.getArguments().children.size() -1){
+                str += visit(node.getArguments().children.get(i)) + ", ";
+            } else str += visit(node.getArguments().children.get(i));
+        }
 
-        return node.toString() + "\n";
+        return str + ");\n";
     }
 
     public String visit(UndefinedNode node) {
         return "UNDEFINED";
     }
 
+    // Used to get the type of the node in C :)
+    public String getPrimaryType(RootNode node){
+        switch (node.getClass().getSimpleName()){
+            case "BoolNode": case "IntegerNode": //TODO: Figure out if ArduinoLanguage allows true/false
+                return "int";
+            case "StringNode":
+                return "char[]"; // TODO: Figure out if ArduinoLanguage has support for string
+            case "FloatNode":
+                return "double";
+            case "UndefinedNode":
+                return "void";
+            default:
+                return "UNDEFINED"; // TODO: Add exception here :D
+        }
+    }
 
     private String visitChildrenStr(RootNode node) throws SemanticException {
         String str = "";

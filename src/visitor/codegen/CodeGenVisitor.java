@@ -16,9 +16,9 @@ import node.statement.control.*;
 import node.statement.pins.*;
 import node.statement.termination.*;
 import visitor.BaseASTVisitor;
-import visitor.semantic.FunctionChecker;
 
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
+    private String tab = "    ";
 
     public String visit(ProgramNode node) throws SemanticException {
         String str = "";
@@ -35,139 +35,71 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ListNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "LIST"; //TODO: Add our custom code to this
     }
 
-    public String visit(MinusNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(MinusNode node) throws SemanticException {
+        return visit(node.getLeft()) + " - " + visit(node.getRight());
     }
 
-    public String visit(PlusNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(PlusNode node) throws SemanticException {
+        return visit(node.getLeft()) + " + " + visit(node.getRight());
     }
 
-    public String visit(AndNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(AndNode node) throws SemanticException {
+        return visit(node.getLeft()) + " && " + visit(node.getRight());
     }
 
-    public String visit(EqualNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(EqualNode node) throws SemanticException {
+        return visit(node.getLeft()) + " == " + visit(node.getRight());
     }
 
-    public String visit(NotNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(NotNode node) throws SemanticException {
+        return visit(node.getLeft()) + " != " + visit(node.getRight());
     }
 
-    public String visit(OrNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(OrNode node) throws SemanticException {
+        return visit(node.getLeft()) + " || " + visit(node.getRight());
     }
 
-    public String visit(XorNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(XorNode node) throws SemanticException {
+        return visit(node.getLeft()) + " ^ " + visit(node.getRight());
     }
 
-    public String visit(DivideNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(DivideNode node) throws SemanticException {
+        return visit(node.getLeft()) + " / " + visit(node.getRight());
     }
 
     public String visit(ExponentialNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "EXPONENTIAL"; //TODO: Add our custom code to this
     }
 
-    public String visit(ModulusNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(ModulusNode node) throws SemanticException {
+        return visit(node.getLeft()) + " % " + visit(node.getRight());
     }
 
-    public String visit(TimesNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(TimesNode node) throws SemanticException {
+        return visit(node.getLeft()) + " * " + visit(node.getRight());
     }
 
-    public String visit(GreaterEqualNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(GreaterEqualNode node) throws SemanticException {
+        return visit(node.getLeft()) + " >= " + visit(node.getRight());
     }
 
-    public String visit(GreaterNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(GreaterNode node) throws SemanticException {
+        return visit(node.getLeft()) + " > " + visit(node.getRight());
     }
 
-    public String visit(LesserEqualNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(LesserEqualNode node)throws SemanticException {
+        return visit(node.getLeft()) + " <= " + visit(node.getRight());
     }
 
-    public String visit(LesserNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(LesserNode node) throws SemanticException {
+        return visit(node.getLeft()) + " < " + visit(node.getRight());
     }
 
     public String visit(UnaryNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "UNARY"; //TODO: It seems like ! does not currently work, so we need to fix this :(
     }
 
     public String visit(AssignmentNode node)  throws SemanticException{
@@ -201,7 +133,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(StringNode node) {
-        return node.value;
+        return node.value; // TODO: Figure out how to add " on both sides :)
     }
 
     public String visit(BlockNode node) throws SemanticException {
@@ -213,11 +145,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(DefineNode node) throws SemanticException {
-        return  "#define " + visit(node.getId()) + " " + visit(node.getValue()) + "\n";
+        return "#define " + visit(node.getId()) + " " + visit(node.getValue()) + "\n";
     }
 
     public String visit(FunctionNode node) throws SemanticException {
-        String str = getPrimaryType(node.getReturnType()) + " " + visit(node.getId());
+        String str = "\n" + getPrimaryType(node.getReturnType()) + " " + visit(node.getId());
         str += visit(node.getParameter()) + " " + visit(node.getBlock());
         return str + "\n";
     }
@@ -253,56 +185,35 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return str;
     }
 
-    public String visit(ForNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(ForNode node) throws SemanticException {
+        String str = "for (int i = " + visit(node.getExpression()) + "; i < ";
+        str += visit(node.getValue()) + "; i++) " + visit(node.getStmt());
+        return str + "\n";
     }
 
     public String visit(IfNode node) throws SemanticException {
         return "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody()) + "\n";
     }
 
-    public String visit(SwitchNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(SwitchNode node) throws SemanticException {
+        String str = "switch (" + visit(node.getExpression()) + ") { \n" + visit(node.getDefaultnode());
+        return str + "\n"; //TODO: it seems like case noes are not added to a switch node...
     }
 
-    public String visit(WhileNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(WhileNode node) throws SemanticException {
+        return "while (" + visit(node.getExpression()) + ") " + visit(node.getStmt()) + "\n";
     }
 
     public String visit(PinToggleNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "EXPONENTIAL"; //TODO: Add our custom code to this
     }
 
     public String visit(BreakNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "break;\n";
     }
 
     public String visit(ContinueNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "continue;\n";
     }
 
     public String visit(ReturnNode node) throws SemanticException {
@@ -310,27 +221,15 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ArgumentNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "ARGUMENT"; //TODO: It seems like these are never used...
     }
 
     public String visit(CaseNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return "CASE" + "\n" + tab + "break;"; //TODO: it seems like case noes are not added to a switch node...
     }
 
-    public String visit(DefaultNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(DefaultNode node) throws SemanticException {
+        return "default:\n" + tab + visitChildrenStr(node);
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
@@ -351,6 +250,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
     // Used to get the type of the node in C :)
     public String getPrimaryType(RootNode node){
+
         switch (node.getClass().getSimpleName()){
             case "BoolNode": case "IntegerNode": //TODO: Figure out if ArduinoLanguage allows true/false
                 return "int";

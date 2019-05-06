@@ -40,7 +40,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitDefines(List<Ardu3kParser.DefineContext> ctx) {
         DefinesNode node = new DefinesNode();
         collectChildren(node, ctx);
-        return (node.children.size() > 0 ? node : null);
+        return node;
     }
 
     @Override
@@ -55,20 +55,20 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitSetup(Ardu3kParser.SetupContext ctx) {
         SetupNode node = new SetupNode(ctx);
         node.setBlock(visit(ctx.block()));
-        return (node.children.size() > 0 ? node : null);
+        return node;
     }
 
     @Override
     public RootNode visitLoop(Ardu3kParser.LoopContext ctx) {
         LoopNode node = new LoopNode(ctx);
         collectChildren(node, ctx.block().stmt());
-        return (node.children.size() > 0 ? node : null);
+        return node;
     }
 
     public RootNode visitFunctions(List<Ardu3kParser.FunctionContext> ctx) {
         FunctionsNode node = new FunctionsNode();
         collectChildren(node, ctx);
-        return (node.children.size() > 0 ? node : null);
+        return node;
     }
     @Override
     public RootNode visitFunction(Ardu3kParser.FunctionContext ctx) {

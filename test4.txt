@@ -6,27 +6,10 @@ setup = {
 }
 
 loop = {
-    b = [];
-    c = func(1);
-
+    funcc(1, 2, 2);
 }
-func (a) = {
-    funcc(1, 3, 5);
-    return a;
-}
-funcc(a, b, c) = {
-    b = "b";
-    funky(1);
-    a = 1 + (5 * 5 * b);
+funcc(a, z, c) = {
+    a + 2 *  2.5;
     return a;
 }
 
-funky (d) = {
-    fancy(1);
-    return 1;
-}
-
-fancy (x) = {
-    func("ddw");
-    return x;
-}

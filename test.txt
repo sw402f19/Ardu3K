@@ -17,7 +17,7 @@ loop = {
 
 
 
-    if a = true do
+    if true do
         if true do
             if true do
                 a = 1;
@@ -52,6 +52,5 @@ func (a) = {
 funcc(a) = {
     b = "b";
     a = func(a);
-    a = 1 + (5 * 5 * b);
     return a;
 }

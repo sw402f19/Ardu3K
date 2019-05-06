@@ -33,7 +33,7 @@ import node.statement.termination.ReturnNode;
 import visitor.BaseASTVisitor;
 
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
-    
+
     public String visit(ProgramNode node) throws SemanticException {
         String str = "";
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
@@ -220,19 +220,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(IdentifierNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return node.toString();
     }
 
     public String visit(IntegerNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+        return node.getValueStr();
     }
 
     public String visit(StringNode node) {
@@ -251,20 +243,14 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return node.toString() + "\n";
     }
 
-    public String visit(DefinesNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(DefinesNode node) throws SemanticException {
+        String str = visitChildrenStr(node);
+        return str + "\n";
     }
 
-    public String visit(DefineNode node) {
-        String str = "";
-
-        // TODO: Add what to write in code here
-
-        return node.toString() + "\n";
+    public String visit(DefineNode node) throws SemanticException {
+        String str = "#define " + visit(node.getId()) + " " + visit(node.getValue());
+        return str + "\n";
     }
 
     public String visit(FunctionNode node) {
@@ -409,5 +395,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         // TODO: Add what to write in code here
 
         return node.toString() + "\n";
+    }
+
+
+    private String visitChildrenStr(RootNode node) throws SemanticException {
+        String str = "";
+        for (RootNode n: node.children) { str += visit(n); }
+        return str;
     }
 }

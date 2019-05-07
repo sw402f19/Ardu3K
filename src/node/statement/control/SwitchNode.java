@@ -5,18 +5,12 @@ import node.RootNode;
 
 public class SwitchNode extends AbstractControlNode {
 
-    public SwitchNode(Ardu3kParser.Switch_stmtContext ctx) {
-        super(ctx);
-    }
+    public SwitchNode(Ardu3kParser.Switch_stmtContext ctx) { super(ctx); }
 
     @Override
-    public String toString() {
-        return "Switch";
-    }
+    public String toString() { return "Switch"; }
 
-    public RootNode getDefaultnode() {
-        return children.get(1);
-    }
+    public RootNode getDefaultnode() { return children.get(1); }
     public void setDefaultNode(RootNode node) {
         if(children.size() > 1)
             children.set(1, node);

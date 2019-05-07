@@ -3,12 +3,10 @@ package visitor.semantic;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.composite.ListNode;
+import node.expression.AbstractInfixBooleanNode;
 import node.expression.AbstractInfixExpressionNode;
 import exception.type.IllegalTypeException;
-import node.primary.AbstractPrimaryNode;
-import node.primary.FloatNode;
-import node.primary.IntegerNode;
-import node.primary.StringNode;
+import node.primary.*;
 import visitor.semantic.typecast.TypeCaster;
 
 import java.util.ArrayList;
@@ -29,6 +27,11 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
         RootNode leftType = visit(node.getLeft());
         RootNode rightType = visit(node.getRight());
         return highestOrder(leftType, rightType);
+    }
+    public RootNode visit(AbstractInfixBooleanNode node) {
+        BoolNode node1 = new BoolNode();
+        node1.setLine(node.line);
+        return node1;
     }
     public RootNode visit(ListNode node) throws IllegalTypeException {
         RootNode firstElement = node.getFirstElement();

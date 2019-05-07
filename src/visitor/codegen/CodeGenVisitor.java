@@ -112,7 +112,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(DeclarationNode node) throws SemanticException {
-        String str = tab() + "TYPE"; //TODO: add type
+        String str = tab();
+        if (node.getRight() instanceof AbstractPrimaryNode){
+            str += getPrimaryType(node.getRight());
+        } else str += "TYPE"; //TODO: add type if expression
+        
         str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
         return str;
     }
@@ -146,7 +150,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         tabLevel++;
         str += visitChildrenStr(node);
         tabLevel--;
-        str += "}";
+        str += tab() + "}";
         return str;
     }
 
@@ -194,19 +198,62 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ElifNode node) throws SemanticException {
-        String str = tab() +  "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody());
-        str += " else " + visit(node.getLowerbody()) + "\n";
+        String str = tab() +  "if (" + visit(node.getExpression()) + ") ";
+
+
+        if (!(node.getUpperbody()instanceof BlockNode)){
+            int prevTabLevel = tabLevel;
+            tabLevel = 0;
+            str += "{ " + visit(node.getUpperbody()) + " }";
+            tabLevel = prevTabLevel;
+        } else str += visit(node.getUpperbody());
+
+        str += " else ";
+
+        if (!(node.getLowerbody()instanceof BlockNode)){
+            int prevTabLevel = tabLevel;
+            tabLevel = 0;
+            str += "{ " + visit(node.getLowerbody()) + " }";
+            tabLevel = prevTabLevel;
+        } else str += visit(node.getLowerbody());
+
         return str;
     }
 
     public String visit(ForNode node) throws SemanticException {
-        String str = tab() + "for (int i = " + visit(node.getExpression()) + "; i < ";
-        str += visit(node.getValue()) + "; i++) " + visit(node.getStmt());
-        return str + "\n";
+        int prevTabLevel = tabLevel;
+
+        String str = tab() + "for (";
+        tabLevel = 0;
+        if (node.getExpression() instanceof AbstractInfixExpressionNode) {
+            AbstractInfixExpressionNode exprNode = (AbstractInfixExpressionNode) node.getExpression();
+
+            str += visit(exprNode) + " " + visit(exprNode.getLeft())+" < ";
+            str += visit(node.getValue()) + "; " + visit(exprNode.getLeft()) +  "++) ";
+        }
+
+        if (!(node.getStmt() instanceof BlockNode)){
+            str += "{ " + visit(node.getStmt()) + " }";
+            tabLevel = prevTabLevel;
+        } else {
+            tabLevel = prevTabLevel;
+            str += visit(node.getStmt());
+        }
+
+        return str;
     }
 
     public String visit(IfNode node) throws SemanticException {
-        return tab() + "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody()) + "\n";
+        String str = tab() + "if (" + visit(node.getExpression()) + ") ";
+
+        if (!(node.getUpperbody()instanceof BlockNode)){
+            int prevTabLevel = tabLevel;
+            tabLevel = 0;
+            str += "{ " + visit(node.getUpperbody()) + " }";
+            tabLevel = prevTabLevel;
+        } else str += visit(node.getUpperbody());
+
+        return str;
     }
 
     public String visit(SwitchNode node) throws SemanticException {
@@ -218,7 +265,16 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(WhileNode node) throws SemanticException {
-        return tab() + "while (" + visit(node.getExpression()) + ") " + visit(node.getStmt()) + "\n";
+        String str = tab() + "while (" + visit(node.getExpression()) + ") ";
+
+        if (!(node.getStmt() instanceof BlockNode)){
+            int prevTabLevel = tabLevel;
+            tabLevel = 0;
+            str += "{ " + visit(node.getStmt()) + " }";
+            tabLevel = prevTabLevel;
+        } else str += visit(node.getStmt());
+
+        return str;
     }
 
     public String visit(PinToggleNode node) {
@@ -226,11 +282,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(BreakNode node) {
-        return tab() + "break;\n";
+        return tab() + "break;";
     }
 
     public String visit(ContinueNode node) {
-        return tab() + "continue;\n";
+        return tab() + "continue;";
     }
 
     public String visit(ReturnNode node) throws SemanticException {

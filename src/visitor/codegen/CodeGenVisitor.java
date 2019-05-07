@@ -122,7 +122,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(BoolNode node) {
-        return node.value ? "1" : "0"; //TODO: Figure out if ArduinoLanguage allows true/false
+        return node.value ? "true" : "false";
     }
 
     public String visit(FloatNode node) {
@@ -138,7 +138,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(StringNode node) {
-        return node.value; // TODO: Figure out how to add " on both sides :)
+        return "\"" + node.value + "\"";
     }
 
     public String visit(BlockNode node) throws SemanticException {
@@ -242,7 +242,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(CaseNode node) {
-        return tab() + "CASE" + "\n" + tab + "break;"; //TODO: it seems like case noes are not added to a switch node...
+        return tab() + "CASE" + "\n" + tab + "break;"; //TODO: it seems like case nodes are not added to a switch node...
     }
 
     public String visit(DefaultNode node) throws SemanticException {
@@ -268,10 +268,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     // Used to get the type of the node in C :)
     public String getPrimaryType(RootNode node){
         switch (node.getClass().getSimpleName()){
-            case "BoolNode": case "IntegerNode": //TODO: Figure out if ArduinoLanguage allows true/false
+            case "BoolNode":
+                return "bool";
+            case "IntegerNode":
                 return "int";
             case "StringNode":
-                return "char[]"; // TODO: Figure out if ArduinoLanguage has support for string
+                return "String";
             case "FloatNode":
                 return "double";
             case "UndefinedNode":

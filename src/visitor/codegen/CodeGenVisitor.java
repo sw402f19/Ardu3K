@@ -204,9 +204,26 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ForNode node) throws SemanticException {
-        String str = tab() + "for (int i = " + visit(node.getExpression()) + "; i < ";
-        str += visit(node.getValue()) + "; i++) " + visit(node.getStmt());
-        return str + "\n";
+        int prevTabLevel = tabLevel;
+
+        String str = tab() + "for (";
+        tabLevel = 0;
+        if (node.getExpression() instanceof AbstractInfixExpressionNode) {
+            AbstractInfixExpressionNode exprNode = (AbstractInfixExpressionNode) node.getExpression();
+
+            str += visit(exprNode) + " " + visit(exprNode.getLeft())+" < ";
+            str += visit(node.getValue()) + "; " + visit(exprNode.getLeft()) +  "++) ";
+        }
+
+        if (!(node.getStmt() instanceof BlockNode)){
+            str += "{ " + visit(node.getStmt()) + " }";
+            tabLevel = prevTabLevel;
+        } else {
+            tabLevel = prevTabLevel;
+            str += visit(node.getStmt());
+        }
+
+        return str;
     }
 
     public String visit(IfNode node) throws SemanticException {
@@ -239,11 +256,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(BreakNode node) {
-        return tab() + "break;\n";
+        return tab() + "break;";
     }
 
     public String visit(ContinueNode node) {
-        return tab() + "continue;\n";
+        return tab() + "continue;";
     }
 
     public String visit(ReturnNode node) throws SemanticException {

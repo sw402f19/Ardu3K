@@ -13,12 +13,14 @@ public class CodeGenerator {
     public static CodeGenerator thisInstance;
 
     // The primary function for generating code
-    public static void GenerateCode(String fileName, RootNode topNode) throws IOException, SemanticException {
-        BufferedWriter wr = new BufferedWriter(new FileWriter(fileName + ".c"));
-        CodeGenVisitor genVisitor = new CodeGenVisitor();
+    public static void GenerateCode(String fileName, RootNode topNode) throws IOException, SemanticException, RuntimeException {
+        if (topNode instanceof ProgramNode) {
+            BufferedWriter wr = new BufferedWriter(new FileWriter(fileName + ".c"));
+            CodeGenVisitor genVisitor = new CodeGenVisitor();
 
-        if (topNode instanceof ProgramNode) { wr.write(genVisitor.visit((ProgramNode) topNode)); }
+            wr.write(genVisitor.visit((ProgramNode) topNode));
 
-        wr.close();
+            wr.close();
+        } else throw new RuntimeException("ERROR: Top node in CodeGen is not a ProgramNode");
     }
 }

@@ -2,12 +2,10 @@ setup = {
 
 }
 loop = {
-    if ((b < (a = 3)) >= (a >= c)) do
-      a = 32;
+    func(1);
+}
 
-
-    b = 1 + 5 * 5+5  * 1;
-
-
-    arr = [];
+func (x) = {
+    x = false + x;
+    return x;
 }

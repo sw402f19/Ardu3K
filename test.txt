@@ -5,7 +5,7 @@ setup = {
 
 }
 loop = {
-    b = [];
+    b = [1];
     arr = [1, 4, 2, 6];
 
     ab = "ab";
@@ -13,9 +13,6 @@ loop = {
     D = 10.150;
     D = 10;
     a = 10;
-    b.add(a);
-
-
 
     if true do
         if true do

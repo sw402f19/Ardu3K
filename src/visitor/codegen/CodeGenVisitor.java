@@ -20,6 +20,7 @@ import visitor.BaseASTVisitor;
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String tab = "    ";
     private int tabLevel = 0;
+    private String imports = "";
 
     // Function for indenting the generated code
     private String tab() {
@@ -31,11 +32,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ProgramNode node) throws SemanticException {
-        String str = "";
+        String str = "" + imports;
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
         if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
+        if (!(imports.equals(""))) { str = imports + "\n" + str; }
         return str;
     }
 
@@ -75,8 +77,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return visit(node.getLeft()) + " / " + visit(node.getRight());
     }
 
-    public String visit(ExponentialNode node) {
-        return "EXPONENTIAL"; //TODO: Add our custom code to this
+    public String visit(ExponentialNode node) throws SemanticException {
+        if (!(imports.contains("#include <math.h>\n"))){
+            imports += "#include <math.h>\n";
+        }
+        return "pow(" + visit(node.getLeft()) + ", " + visit(node.getRight()) + ")";
     }
 
     public String visit(ModulusNode node) throws SemanticException {
@@ -200,7 +205,6 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     public String visit(ElifNode node) throws SemanticException {
         String str = tab() +  "if (" + visit(node.getExpression()) + ") ";
 
-
         if (!(node.getUpperbody()instanceof BlockNode)){
             int prevTabLevel = tabLevel;
             tabLevel = 0;
@@ -259,7 +263,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     public String visit(SwitchNode node) throws SemanticException {
         String str = tab() + "switch (" + visit(node.getExpression()) + ") { \n";
         tabLevel++;
-        str += visit(node.getDefaultnode());
+        str += visitChildrenStr(2, node) + visit(node.getDefaultnode());
         tabLevel--;
         return str + tab() + "}"; //TODO: it seems like case noes are not added to a switch node...
     }
@@ -293,12 +297,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return tab() + "return " + visit(node.getExpression()) + ";";
     }
 
-    public String visit(ArgumentNode node) {
-        return "ARGUMENT"; //TODO: It seems like these are never used...
-    }
-
-    public String visit(CaseNode node) {
-        return tab() + "CASE" + "\n" + tab + "break;"; //TODO: it seems like case nodes are not added to a switch node...
+    public String visit(CaseNode node) throws SemanticException {
+        String str = tab() + "case " + visit(node.getExpression()) + ":\n";
+        tabLevel++;
+        str += visitChildrenStr(1, node) + tab() + "break;";
+        tabLevel--;
+        return str;
     }
 
     public String visit(DefaultNode node) throws SemanticException {
@@ -306,7 +310,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
-        String str = tab() + visit(node.getId()) + " (";
+        String str = tab() + visit(node.getId()) + "(";
 
         for (int i = 0; i < node.getArguments().children.size(); i++){
             if (i != node.getArguments().children.size() -1){
@@ -342,6 +346,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String visitChildrenStr(RootNode node) throws SemanticException {
         String str = "";
         for (RootNode n: node.children) { str += visit(n) + "\n"; }
+        return str;
+    }
+
+    private String visitChildrenStr(int from, RootNode node) throws SemanticException {
+        String str = "";
+        for (int i = from ; i < node.children.size(); i++) { str += visit(node.children.get(i)) + "\n"; }
         return str;
     }
 }

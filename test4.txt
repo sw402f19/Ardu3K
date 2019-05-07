@@ -10,6 +10,9 @@ while true do { a = 3; break; continue;}
 }
 
 loop = {
+    if 3 > 2 do k = "age";
+    if 5 OR 2 do {funcc("a", "b", 5.8766); blue = "dabadi dabadu";}
+
     funcc(1, 2, 2);
      k = false * 10;
      j = 4;

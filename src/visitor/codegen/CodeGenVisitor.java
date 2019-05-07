@@ -20,6 +20,7 @@ import visitor.BaseASTVisitor;
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String tab = "    ";
     private int tabLevel = 0;
+    private String imports = "";
 
     // Function for indenting the generated code
     private String tab() {
@@ -31,11 +32,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ProgramNode node) throws SemanticException {
-        String str = "";
+        String str = "" + imports;
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
         if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
+        if (!(imports.equals(""))) { str = imports + "\n" + str; }
         return str;
     }
 
@@ -75,8 +77,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return visit(node.getLeft()) + " / " + visit(node.getRight());
     }
 
-    public String visit(ExponentialNode node) {
-        return "EXPONENTIAL"; //TODO: Add our custom code to this
+    public String visit(ExponentialNode node) throws SemanticException {
+        if (!(imports.contains("#include <math.h>\n"))){
+            imports += "#include <math.h>\n";
+        }
+        return "pow(" + visit(node.getLeft()) + ", " + visit(node.getRight()) + ")";
     }
 
     public String visit(ModulusNode node) throws SemanticException {
@@ -292,10 +297,6 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return tab() + "return " + visit(node.getExpression()) + ";";
     }
 
-    public String visit(ArgumentNode node) {
-        return "ARGUMENT"; //TODO: It seems like these are never used...
-    }
-
     public String visit(CaseNode node) throws SemanticException {
         String str = tab() + "case " + visit(node.getExpression()) + ":\n";
         tabLevel++;
@@ -309,7 +310,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
-        String str = tab() + visit(node.getId()) + " (";
+        String str = tab() + visit(node.getId()) + "(";
 
         for (int i = 0; i < node.getArguments().children.size(); i++){
             if (i != node.getArguments().children.size() -1){

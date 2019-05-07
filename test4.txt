@@ -4,6 +4,8 @@
 setup = {
  abc = 2 + 2;
  d  = "eie";
+ c = 4;
+  c = 4 ^ 5;
 
  while true do a = 2;
 while true do { a = 3; break; continue;}

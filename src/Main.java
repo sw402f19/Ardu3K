@@ -27,7 +27,9 @@ public class Main {
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
             dast = new SemanticsVisitor().visit(ast);
             CodeGenerator.GenerateCode("testGenCode", dast);
-            System.out.println("==============\nSuccessful :)\n==============\n");
+            System.out.print("==================\nSuccessful :)\nCompiled in: ");
+            System.out.print(System.currentTimeMillis() - time);
+            System.out.print("ms\n==================\n");
             //ast.print(0);
 
         } catch (SemanticException e){
@@ -35,7 +37,6 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        System.out.println(System.currentTimeMillis() - time);
     }
 
 }

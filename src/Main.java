@@ -6,8 +6,7 @@ import gen.Ardu3kParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import visitor.codegen.CodeGenVisitor;
-import visitor.codegen.OutBuilder;
+import visitor.codegen.CodeGenerator;
 import visitor.semantic.SemanticsVisitor;
 
 import java.io.IOException;
@@ -24,13 +23,13 @@ public class Main {
         RootNode dast;
 
         try {
-
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
             dast = new SemanticsVisitor().visit(ast);
-            new CodeGenVisitor().visit(dast);
-            OutBuilder.getInstance().writeOut();
-            System.out.println("==============\nSuccessful :)\n==============\n");
+            CodeGenerator.GenerateCode("testGenCode", dast);
+            System.out.print("==================\nSuccessful :)\nCompiled in: ");
+            System.out.print(System.currentTimeMillis() - time);
+            System.out.print("ms\n==================\n");
             //ast.print(0);
 
         } catch (SemanticException e){
@@ -38,7 +37,6 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        System.out.println(System.currentTimeMillis() - time);
     }
 
 }

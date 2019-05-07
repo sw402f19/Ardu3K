@@ -27,4 +27,6 @@ public class IntegerNode extends AbstractNumberNode {
         return "Integer";
     }
 
+    public String getValueStr() { return Integer.toString(value); }
+
 }

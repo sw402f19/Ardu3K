@@ -6,3 +6,4 @@ encodings.xml
 uiDesigner.xml
 gen/
 target/
+testGenCode.c

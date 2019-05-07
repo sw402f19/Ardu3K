@@ -103,6 +103,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
+    public RootNode visit(SetupNode node) throws SemanticException {
+        visitChildren(node);
+        return node;
+    }
+
     public RootNode visit(DefineNode node) {
         symbolTable.enterSymbol(node);
         return node;

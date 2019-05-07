@@ -29,12 +29,13 @@ funcc(a, z, c) = {
             imBlue = "dabadi dabadu";
     }
 
-    funky(1, 5.6);
+    funky(false, 5.6);
 
     return 2 / 2;
 }
 
 funky(a, k) = {
+    a = 1 + a;
     k = 0;
     j = 10;
     n = "";
@@ -51,4 +52,20 @@ fuuuunc (a) = {
     if true OR true do {funcc("a", "b", 5.8766); blue = "dabadi dabadu";} else {funcc(1,2,3); blue = "dabadu dabadi";}
     if 3 > 2 do {funcc("a", "b", 5.8766); blue = "dabadi dabadu";} else k = "jejeje";
     if 3 > 2 do k = "age"; else {funcc("a", "b", 5.8766); blue = "dabadi dabadu";}
+}
+
+swFunc (s, w) = {
+    var = "";
+    test = 2;
+
+    switch (test) {
+        case 1:
+            var = "something";
+        case 4:
+            var = "skeke";
+        default:
+            var = "something other";
+    }
+
+    return 1;
 }

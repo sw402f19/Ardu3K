@@ -200,7 +200,6 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     public String visit(ElifNode node) throws SemanticException {
         String str = tab() +  "if (" + visit(node.getExpression()) + ") ";
 
-
         if (!(node.getUpperbody()instanceof BlockNode)){
             int prevTabLevel = tabLevel;
             tabLevel = 0;
@@ -259,7 +258,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     public String visit(SwitchNode node) throws SemanticException {
         String str = tab() + "switch (" + visit(node.getExpression()) + ") { \n";
         tabLevel++;
-        str += visit(node.getDefaultnode());
+        str += visitChildrenStr(2, node) + visit(node.getDefaultnode());
         tabLevel--;
         return str + tab() + "}"; //TODO: it seems like case noes are not added to a switch node...
     }
@@ -297,8 +296,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return "ARGUMENT"; //TODO: It seems like these are never used...
     }
 
-    public String visit(CaseNode node) {
-        return tab() + "CASE" + "\n" + tab + "break;"; //TODO: it seems like case nodes are not added to a switch node...
+    public String visit(CaseNode node) throws SemanticException {
+        String str = tab() + "case " + visit(node.getExpression()) + ":\n";
+        tabLevel++;
+        str += visitChildrenStr(1, node) + tab() + "break;";
+        tabLevel--;
+        return str;
     }
 
     public String visit(DefaultNode node) throws SemanticException {
@@ -342,6 +345,12 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String visitChildrenStr(RootNode node) throws SemanticException {
         String str = "";
         for (RootNode n: node.children) { str += visit(n) + "\n"; }
+        return str;
+    }
+
+    private String visitChildrenStr(int from, RootNode node) throws SemanticException {
+        String str = "";
+        for (int i = from ; i < node.children.size(); i++) { str += visit(node.children.get(i)) + "\n"; }
         return str;
     }
 }

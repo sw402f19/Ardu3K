@@ -73,7 +73,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(AbstractDeclAssignNode node)  {
         DeclarationNode node1 = null;
         try {
-            // todo fix declaration node og hvordan det kommer ind i symboltable
             if(!(symbolTable.isPresent(node.getLeft())) ||
                     symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode) {
                 node1 = (DeclarationNode) visit(new DeclarationNode(node));

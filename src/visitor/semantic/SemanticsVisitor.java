@@ -70,8 +70,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(SetupNode node) {
-        return node; //TODO: SetupNode in symbolTable
+    public RootNode visit(SetupNode node) throws SemanticException {
+        visitChildren(node);
+        return node;
     }
 
     public RootNode visit(DefineNode node) {

@@ -4,6 +4,9 @@
 setup = {
  a = 2;
  d  = "eie";
+
+ while true do a = 2;
+ while true do { a = 3;}
 }
 
 loop = {

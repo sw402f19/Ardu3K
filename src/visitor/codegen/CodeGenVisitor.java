@@ -112,7 +112,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(DeclarationNode node) throws SemanticException {
-        String str = tab() + "TYPE"; //TODO: add type
+        String str = tab();
+        if (node.getRight() instanceof AbstractPrimaryNode){
+            str += getPrimaryType(node.getRight());
+        } else str += "TYPE"; //TODO: add type if expression
+        
         str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
         return str;
     }
@@ -146,7 +150,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         tabLevel++;
         str += visitChildrenStr(node);
         tabLevel--;
-        str += "}";
+        str += tab() + "}";
         return str;
     }
 

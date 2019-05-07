@@ -14,8 +14,7 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
 
     public RootNode initVisit(RootNode expectedType, RootNode node) throws SemanticException {
         this.expectedType = expectedType;
-        visit(node);
-        return node;
+        return visit(node);
     }
     // todo fix exception handling to print the proper cause
     public RootNode visit(AbstractInfixExpressionNode node) throws SemanticException {

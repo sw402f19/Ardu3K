@@ -7,8 +7,10 @@ import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.*;
+import node.expression.additive.PlusNode;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
+import node.expression.type.StringType;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
@@ -34,12 +36,22 @@ public class SemanticsVisitor extends PrimaryVisitor {
         }
         return node;
     }
-
     public RootNode visit(AbstractInfixBooleanNode node) throws SemanticException {
         if(!(visit(node.getLeft()) instanceof BooleanType)) {
             throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
         }
         if(!(visit(node.getRight()) instanceof BooleanType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
+        }
+        return node;
+    }
+    public RootNode visit(PlusNode node) throws SemanticException {
+        if(!(visit(node.getLeft()) instanceof NumeralType ||
+                visit(node.getLeft()) instanceof StringType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
+        }
+        if(!(visit(node.getRight()) instanceof NumeralType ||
+                visit(node.getRight()) instanceof StringType)) {
             throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
         }
         return node;

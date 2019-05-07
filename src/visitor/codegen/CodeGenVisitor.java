@@ -198,8 +198,25 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ElifNode node) throws SemanticException {
-        String str = tab() +  "if (" + visit(node.getExpression()) + ") " + visit(node.getUpperbody());
-        str += " else " + visit(node.getLowerbody()) + "\n";
+        String str = tab() +  "if (" + visit(node.getExpression()) + ") ";
+
+
+        if (!(node.getUpperbody()instanceof BlockNode)){
+            int prevTabLevel = tabLevel;
+            tabLevel = 0;
+            str += "{ " + visit(node.getUpperbody()) + " }";
+            tabLevel = prevTabLevel;
+        } else str += visit(node.getUpperbody());
+
+        str += " else ";
+
+        if (!(node.getLowerbody()instanceof BlockNode)){
+            int prevTabLevel = tabLevel;
+            tabLevel = 0;
+            str += "{ " + visit(node.getLowerbody()) + " }";
+            tabLevel = prevTabLevel;
+        } else str += visit(node.getLowerbody());
+
         return str;
     }
 
@@ -228,7 +245,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
     public String visit(IfNode node) throws SemanticException {
         String str = tab() + "if (" + visit(node.getExpression()) + ") ";
-        
+
         if (!(node.getUpperbody()instanceof BlockNode)){
             int prevTabLevel = tabLevel;
             tabLevel = 0;

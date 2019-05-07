@@ -155,7 +155,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         try {
             RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
             if(!(type instanceof NumeralType))
-                System.out.println("Expression for For-loop cannot evaluate to literal got :"+type.toString());
+                throw ExceptionFactory.produce("needsbooleanpredicate", node);
             visitChildren(node);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());

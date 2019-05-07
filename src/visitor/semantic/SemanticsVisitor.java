@@ -9,6 +9,8 @@ import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.*;
 import node.expression.additive.PlusNode;
+import node.expression.condition.AbstractInfixConditionalNode;
+import node.expression.relation.AbstractInfixRelationNode;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.expression.type.StringType;
@@ -38,7 +40,16 @@ public class SemanticsVisitor extends PrimaryVisitor {
         }
         return node;
     }
-    public RootNode visit(AbstractInfixBooleanNode node) throws SemanticException {
+    public RootNode visit(AbstractInfixRelationNode node) throws SemanticException {
+        if(!(visit(node.getLeft()) instanceof NumeralType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
+        }
+        if(!(visit(node.getRight()) instanceof NumeralType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
+        }
+        return node;
+    }
+    public RootNode visit(AbstractInfixConditionalNode node) throws SemanticException {
         if(!(visit(node.getLeft()) instanceof BooleanType)) {
             throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
         }

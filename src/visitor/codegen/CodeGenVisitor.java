@@ -34,12 +34,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         String str = "";
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
         if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
-
-        if(node.getSetupNode() != null) { //TODO: Fix bug that causes this not to be a setup node :)
-            System.out.println("Type of setup: " + node.getSetupNode().getClass().getSimpleName());
-            str += visit(node.getSetupNode());
-        } else System.out.println("Setup is empty");
-
+        if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
         return str;
     }
@@ -119,7 +114,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     public String visit(DeclarationNode node) throws SemanticException {
         String str = tab() + "TYPE"; //TODO: add type
         str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
-        return str + "\n";
+        return str;
     }
 
     public String visit(VoidNode node) {
@@ -151,22 +146,22 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         tabLevel++;
         str += visitChildrenStr(node);
         tabLevel--;
-        str += "\n}";
+        str += "}";
         return str;
     }
 
     public String visit(DefinesNode node) throws SemanticException {
-        return visitChildrenStr(node) + "\n";
+        return visitChildrenStr(node);
     }
 
     public String visit(DefineNode node) throws SemanticException {
-        return "#define " + visit(node.getId()) + " " + visit(node.getValue()) + "\n";
+        return "#define " + visit(node.getId()) + " " + visit(node.getValue());
     }
 
     public String visit(FunctionNode node) throws SemanticException {
         String str = "\n" + getPrimaryType(node.getReturnType()) + " " + visit(node.getId());
         str += visit(node.getParameter()) + " " + visit(node.getBlock());
-        return str + "\n";
+        return str;
     }
 
     public String visit(FunctionsNode node) throws SemanticException {
@@ -195,7 +190,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(SetupNode node) throws SemanticException {
-        return "void setup() " + visit(node.getBlock()) + "\n";
+        return "void setup() " + visit(node.getBlock()) + "\n\n";
     }
 
     public String visit(ElifNode node) throws SemanticException {
@@ -219,7 +214,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         tabLevel++;
         str += visit(node.getDefaultnode());
         tabLevel--;
-        return str + "\n"; //TODO: it seems like case noes are not added to a switch node...
+        return str + tab() + "}"; //TODO: it seems like case noes are not added to a switch node...
     }
 
     public String visit(WhileNode node) throws SemanticException {
@@ -263,7 +258,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
             } else str += visit(node.getArguments().children.get(i));
         }
 
-        return str + ");\n";
+        return str + ");";
     }
 
     public String visit(UndefinedNode node) {
@@ -288,7 +283,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
     private String visitChildrenStr(RootNode node) throws SemanticException {
         String str = "";
-        for (RootNode n: node.children) { str += visit(n); }
+        for (RootNode n: node.children) { str += visit(n) + "\n"; }
         return str;
     }
 }

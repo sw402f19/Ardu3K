@@ -23,7 +23,6 @@ public class Main {
         RootNode dast;
 
         try {
-
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
             ast =  new BuildASTVisitor().visitCompileUnit(cst);
             dast = new SemanticsVisitor().visit(ast);

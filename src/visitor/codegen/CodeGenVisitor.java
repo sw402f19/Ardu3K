@@ -222,7 +222,16 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(WhileNode node) throws SemanticException {
-        return tab() + "while (" + visit(node.getExpression()) + ") " + visit(node.getStmt()) + "\n";
+        String str = tab() + "while (" + visit(node.getExpression()) + ") ";
+
+        if (!(node.getStmt() instanceof BlockNode)){
+            int prevTabLevel = tabLevel;
+            tabLevel = 0;
+            str += "{ " + visit(node.getStmt()) + " }";
+            tabLevel = prevTabLevel;
+        } else str += visit(node.getStmt());
+
+        return str;
     }
 
     public String visit(PinToggleNode node) {

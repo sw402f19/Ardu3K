@@ -2,11 +2,11 @@
 #define ALED 15
 
 setup = {
- a = 2;
+ abc = 2 + 2;
  d  = "eie";
 
  while true do a = 2;
- while true do { a = 3;}
+while true do { a = 3;}
 }
 
 loop = {

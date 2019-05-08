@@ -32,7 +32,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(ProgramNode node) throws SemanticException {
-        String str = "" + imports;
+        String str = "";
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
         if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
@@ -108,8 +108,8 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return visit(node.getLeft()) + " < " + visit(node.getRight());
     }
 
-    public String visit(UnaryNode node) {
-        return "UNARY"; //TODO: It seems like ! does not currently work, so we need to fix this :(
+    public String visit(AbstractUnaryNode node) throws SemanticException {
+        return node.getUnarySymbol() + "(" + visit(node.getExpr()) + ")";
     }
 
     public String visit(AssignmentNode node)  throws SemanticException{
@@ -265,7 +265,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         tabLevel++;
         str += visitChildrenStr(2, node) + visit(node.getDefaultnode());
         tabLevel--;
-        return str + tab() + "}"; //TODO: it seems like case noes are not added to a switch node...
+        return str + tab() + "}";
     }
 
     public String visit(WhileNode node) throws SemanticException {

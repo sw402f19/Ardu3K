@@ -1,8 +1,8 @@
 package node.expression.unary;
 
-public class UnaryNegate extends AbstractUnaryNode {
-    public UnaryNegate() {
-        super();
-        unarySymbol = '-';
+public class UnaryNegateNode extends AbstractUnaryNode {
+    @Override
+    public String getUnarySymbol() {
+        return "!";
     }
 }

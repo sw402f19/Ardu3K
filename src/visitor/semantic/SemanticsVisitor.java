@@ -198,10 +198,10 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(ForNode node)  {
         symbolTable.openScope();
         try {
+            visitChildren(node);
             RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
             if(!(type instanceof NumeralType))
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
-            visitChildren(node);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
@@ -212,10 +212,10 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(WhileNode node) {
         symbolTable.openScope();
         try {
+            visitChildren(node);
             RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
             if (!(type instanceof BooleanType))
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
-            visitChildren(node);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }

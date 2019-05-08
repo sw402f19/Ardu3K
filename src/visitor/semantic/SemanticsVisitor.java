@@ -75,7 +75,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
         try {
             if(!(symbolTable.isPresent(node.getLeft())) ||
                     symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode) {
-                node1 = (DeclarationNode) visit(new DeclarationNode(node));
+                node1 = new DeclarationNode(node);
+                node1.type = new ExpressionTypeVisitor().visit(node.getRight());
+                visit(node1);
             }else {
                 this.visit(node.getRight());
                 new AssignmentVisitor().visit(node);

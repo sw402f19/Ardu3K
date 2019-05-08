@@ -13,6 +13,7 @@ import node.expression.condition.AbstractInfixConditionalNode;
 import node.expression.relation.AbstractInfixRelationNode;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
+import node.expression.unary.UnaryNegateNode;
 import node.expression.type.StringType;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
@@ -120,6 +121,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     public RootNode visit(DefineNode node) {
         symbolTable.enterSymbol(node);
+        return node;
+    }
+
+    public RootNode visit(UnaryNegateNode node) throws SemanticException {
+        visitChildren(node);
         return node;
     }
 

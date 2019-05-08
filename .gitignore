@@ -7,3 +7,4 @@ uiDesigner.xml
 gen/
 target/
 testGenCode.c
+.attach_*

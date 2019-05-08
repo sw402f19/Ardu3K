@@ -1,7 +1,11 @@
 package node.expression.unary;
 
 import node.expression.AbstractExpressionNode;
-import visitor.ASTVisitor;
 
 public class UnaryNode extends AbstractExpressionNode {
+    protected char unarySymbol;
+
+    public UnaryNode() { super(); }
+
+    public char getUnarySymbol() { return unarySymbol; }
 }

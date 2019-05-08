@@ -8,9 +8,9 @@ import visitor.semantic.PrimaryVisitor;
 
 public class DeclarationNode extends AbstractDeclAssignNode {
 
-    public DeclarationNode(AbstractInfixExpressionNode node) throws SemanticException {
+    public DeclarationNode(AbstractInfixExpressionNode node) {
         this.setLeft(node.getLeft());
-        this.setRight(new PrimaryVisitor().visit(node.getRight()));
+        this.setRight(node.getRight());
     }
 
     public String getName() {

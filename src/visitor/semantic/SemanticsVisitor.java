@@ -8,9 +8,13 @@ import exception.predicate.UndeclaredIdentifierException;
 import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.*;
+import node.expression.additive.PlusNode;
+import node.expression.condition.AbstractInfixConditionalNode;
+import node.expression.relation.AbstractInfixRelationNode;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.expression.unary.UnaryNegateNode;
+import node.expression.type.StringType;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
@@ -28,13 +32,52 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     private SymbolTable symbolTable = SymbolTable.getInstance();
 
+    public RootNode visit(AbstractInfixNumeralNode node) throws SemanticException {
+        if(!(visit(node.getLeft()) instanceof NumeralType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
+        }
+        if(!(visit(node.getRight()) instanceof NumeralType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
+        }
+        return node;
+    }
+    public RootNode visit(AbstractInfixRelationNode node) throws SemanticException {
+        if(!(visit(node.getLeft()) instanceof NumeralType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
+        }
+        if(!(visit(node.getRight()) instanceof NumeralType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
+        }
+        return node;
+    }
+    public RootNode visit(AbstractInfixConditionalNode node) throws SemanticException {
+        if(!(visit(node.getLeft()) instanceof BooleanType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
+        }
+        if(!(visit(node.getRight()) instanceof BooleanType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
+        }
+        return node;
+    }
+    public RootNode visit(PlusNode node) throws SemanticException {
+        if(!(visit(node.getLeft()) instanceof NumeralType ||
+                visit(node.getLeft()) instanceof StringType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getLeft());
+        }
+        if(!(visit(node.getRight()) instanceof NumeralType ||
+                visit(node.getRight()) instanceof StringType)) {
+            throw ExceptionFactory.produce("illegaloperand", node, node.getRight());
+        }
+        return node;
+    }
+
     public RootNode visit(AbstractDeclAssignNode node)  {
         DeclarationNode node1 = null;
         try {
             if(!(symbolTable.isPresent(node.getLeft())) ||
-                    symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode)
-                node1 = (DeclarationNode)visit(new DeclarationNode(node));
-            else {
+                    symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode) {
+                node1 = (DeclarationNode) visit(new DeclarationNode(node));
+            }else {
                 this.visit(node.getRight());
                 new AssignmentVisitor().visit(node);
             }

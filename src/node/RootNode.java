@@ -39,6 +39,9 @@ public abstract class RootNode implements Node {
         }
     }
 
+    public void setLine(String line) {
+        this.line = line;
+    }
     public String getLine() {
         return line;
     }

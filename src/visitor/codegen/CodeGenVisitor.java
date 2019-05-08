@@ -18,6 +18,8 @@ import node.statement.termination.*;
 import visitor.BaseASTVisitor;
 import visitor.semantic.ExpressionTypeVisitor;
 
+import java.io.*;
+
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String tab = "    ";
     private int tabLevel = 0;
@@ -39,7 +41,24 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
         if (!(imports.equals(""))) { str = imports + "\n" + str; }
+        str += "\n" + getCustomArdu3kCode();
         return str;
+    }
+
+    private String getCustomArdu3kCode() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("./src/visitor/codegen/Ardu3K_CustomCode.cpp"));
+            StringBuilder code = new StringBuilder();
+            String str = "/* <<< Ardu3K functions: >>> */\n";
+
+            while (str != null) {
+                code.append(str + "\n");
+                str = br.readLine();
+            }
+
+            return code.toString();
+        } catch (IOException e) { e.printStackTrace(); }
+        return "";
     }
 
     public String visit(ListNode node) {

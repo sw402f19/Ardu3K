@@ -9,6 +9,7 @@ import node.expression.additive.*;
 import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
+import node.expression.unary.UnaryNegateNode;
 import node.statement.*;
 import node.scope.*;
 import node.primary.*;
@@ -97,6 +98,13 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitBlock(Ardu3kParser.BlockContext ctx) {
         BlockNode node = new BlockNode(ctx);
         collectChildren(node, ctx.stmt());
+        return node;
+    }
+
+    @Override
+    public RootNode visitUnary_expr(Ardu3kParser.Unary_exprContext ctx) {
+        UnaryNegateNode node = new UnaryNegateNode();
+        if (ctx.right != null) { node.setExpr(visit(ctx.right)); }
         return node;
     }
 

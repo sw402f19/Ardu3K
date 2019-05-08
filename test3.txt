@@ -3,9 +3,12 @@ setup = {
 }
 loop = {
     func(1);
+    if ! 2 < 3 do {
+        a = -3;
+    }
 }
 
 func (x) = {
-    x = false + x;
+    x = x * 2;
     return x;
 }

@@ -94,8 +94,12 @@ expression_stmt
     : expression SEMI
     ;
 expression
-    : assignment_expr
-    | left=expression COMMA right=assignment_expr
+    : unary_expr
+    | assignment_expr
+    | left=expression COMMA right=unary_expr
+    ;
+unary_expr
+    : NEGATE right=assignment_expr
     ;
 assignment_expr
     : conditional_expr
@@ -138,23 +142,20 @@ additive_expr
     | left=additive_expr op=MINUS right=multiplicative_expr             #infixAdditiveExpr
     ;
 multiplicative_expr
-    : primary                                                           #unaryExpr
-    | left=multiplicative_expr op=TIMES right=unary_expr                #infixMultiplicativeExpr
-    | left=multiplicative_expr op=DIVIDE right=unary_expr               #infixMultiplicativeExpr
-    | left=multiplicative_expr op=MODULUS right=unary_expr              #infixMultiplicativeExpr
-    | left=multiplicative_expr op=EXPONENTIAL right=unary_expr          #infixMultiplicativeExpr
+    : primary                                                        #primaryExpr
+    | left=multiplicative_expr op=TIMES right=primary                #infixMultiplicativeExpr
+    | left=multiplicative_expr op=DIVIDE right=primary               #infixMultiplicativeExpr
+    | left=multiplicative_expr op=MODULUS right=primary              #infixMultiplicativeExpr
+    | left=multiplicative_expr op=EXPONENTIAL right=primary          #infixMultiplicativeExpr
     ;
-unary_expr
-    : op=MINUS right=primary
-    | op=NEGATE right=primary
-    | primary
-;
 list_element
     : element=primary COMMA next=list_element
     | element=primary
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
+    | NEGATE expression                             #primaryNegate
+
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt

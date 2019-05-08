@@ -56,9 +56,9 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
         }
     }
     private RootNode highestOrder(RootNode left, RootNode right) throws SemanticException {
-        if(types.indexOf(left.getClass()) > types.indexOf(right.getClass()))
+        if(types.indexOf(left.getClass()) < types.indexOf(right.getClass()))
             return TypeCaster.cast(right, left);
-        else if (types.indexOf(right.getClass()) > types.indexOf(left.getClass()))
+        else if (types.indexOf(right.getClass()) < types.indexOf(left.getClass()))
             return TypeCaster.cast(left, right);
         return left;
     }

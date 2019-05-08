@@ -16,7 +16,7 @@ loop = {
     if true OR true do {funcc("a", "b", 5.8766); blue = "dabadi dabadu";}
 
     funcc(1, 2, 2);
-     k = false * 10;
+     k = "ab" * "ab";
      j = 4;
 }
 

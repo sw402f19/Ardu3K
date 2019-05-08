@@ -16,6 +16,7 @@ import node.statement.control.*;
 import node.statement.pins.*;
 import node.statement.termination.*;
 import visitor.BaseASTVisitor;
+import visitor.semantic.ExpressionTypeVisitor;
 
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String tab = "    ";
@@ -118,10 +119,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
     public String visit(DeclarationNode node) throws SemanticException {
         String str = tab();
-        if (node.getRight() instanceof AbstractPrimaryNode){
-            str += getPrimaryType(node.getRight());
-        } else str += "TYPE"; //TODO: add type if expression
-        
+        str += getPrimaryType(new ExpressionTypeVisitor().visit(node.getRight()));
         str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
         return str;
     }

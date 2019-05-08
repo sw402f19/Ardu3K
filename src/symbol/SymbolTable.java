@@ -1,12 +1,13 @@
 package symbol;
 
+import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.DeclarationNode;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.DefineNode;
 import node.scope.FunctionNode;
-import node.statement.FunctionStmtNode;
+import visitor.semantic.ExpressionTypeVisitor;
 
 import java.util.HashMap;
 
@@ -24,8 +25,8 @@ public class SymbolTable implements SymbolTableInterface{
         symTable.values().removeIf(e -> e.getDepth() > depth);
     }
 
-    public void enterSymbol(DeclarationNode node) {
-        symTable.put(node.getLeft(), new Symbol(node.getLeft(), node.getRight(), depth));
+    public void enterSymbol(DeclarationNode node) throws SemanticException {
+        symTable.put(node.getLeft(), new Symbol(node.getLeft(), new ExpressionTypeVisitor().visit(node.getRight()), depth));
     }
 
     public void enterSymbol(FunctionNode node){
@@ -33,12 +34,11 @@ public class SymbolTable implements SymbolTableInterface{
     }
 
     public void enterSymbol(IdentifierNode node){
-        symTable.put(node, new Symbol(node, new UndefinedNode(), depth));
+        symTable.put(node, new Symbol(node, new UndefinedNode(node), depth));
     }
     public void enterSymbol(DefineNode node) {
         symTable.put(node.getId(), new Symbol(node.getId(), node.getValue(), depth));
     }
-
     public Symbol retrieveSymbol(RootNode name) {
         return symTable.get(name);
     }

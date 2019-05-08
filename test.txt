@@ -2,17 +2,18 @@
 #define ALED 15
 
 setup = {
-
+    a = "at" + 10;
 }
 loop = {
-    b = [1];
+
     arr = [1, 4, 2, 6];
 
     ab = "ab";
     ab = ab + "ab";
     D = 10.150;
     D = 10;
-    a = 10;
+
+
 
     if true do
         if true do

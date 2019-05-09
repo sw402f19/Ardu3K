@@ -37,9 +37,9 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     public String visit(ProgramNode node) throws SemanticException {
         String str = "";
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
-        if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
+        if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if (!(imports.equals(""))) { str = imports + "\n" + str; }
         str += "\n" + getCustomArdu3kCode();
         return str;
@@ -216,7 +216,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(SetupNode node) throws SemanticException {
-        return "void setup() " + visit(node.getBlock()) + "\n\n";
+        return "\nvoid setup() " + visit(node.getBlock()) + "\n\n";
     }
 
     public String visit(ElifNode node) throws SemanticException {

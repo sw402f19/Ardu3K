@@ -41,7 +41,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
         if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if (!(imports.equals(""))) { str = imports + "\n" + str; }
-        str += "\n" + getCustomArdu3kCode();
+        str += getCustomArdu3kCode();
         return str;
     }
 
@@ -49,7 +49,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         try {
             BufferedReader br = new BufferedReader(new FileReader("./src/visitor/codegen/Ardu3K_CustomCode.cpp"));
             StringBuilder code = new StringBuilder();
-            String str = "/* <<< Ardu3K functions: >>> */\n";
+            String str = "";
 
             while (str != null) {
                 code.append(str + "\n");
@@ -191,7 +191,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(FunctionsNode node) throws SemanticException {
-        return visitChildrenStr(node) + "\n";
+        return visitChildrenStr(node);
     }
 
     public String visit(LoopNode node) throws SemanticException {

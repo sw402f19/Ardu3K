@@ -25,7 +25,7 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
         if(symbolTable.isPresent(node)) {
             return visit(symbolTable.retrieveSymbol(node).getType());
         } else
-            throw new UndeclaredIdentifierException(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
+            throw ExceptionFactory.produce("undeclaredidentifier", node);
     }
     public RootNode visit(EnclosedExpressionNode node) throws SemanticException {
         return visit(node.getExpression());
@@ -38,6 +38,6 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
                 throw ExceptionFactory.produce("UndeclaredIdentifier", symbolType.getId());
             return visit(symbolType.getReturnType());
         } else
-            throw new UndeclaredIdentifierException(node.getLine()+" Identifier \""+node.toString()+"\" not declared");
+            throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
     }
 }

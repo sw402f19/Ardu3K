@@ -18,6 +18,8 @@ import node.statement.termination.*;
 import visitor.BaseASTVisitor;
 import visitor.semantic.ExpressionTypeVisitor;
 
+import java.io.*;
+
 public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String tab = "    ";
     private int tabLevel = 0;
@@ -35,11 +37,28 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     public String visit(ProgramNode node) throws SemanticException {
         String str = "";
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
-        if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
+        if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if (!(imports.equals(""))) { str = imports + "\n" + str; }
+        str += getCustomArdu3kCode();
         return str;
+    }
+
+    private String getCustomArdu3kCode() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("./src/visitor/codegen/Ardu3K_CustomCode.cpp"));
+            StringBuilder code = new StringBuilder();
+            String str = "";
+
+            while (str != null) {
+                code.append(str + "\n");
+                str = br.readLine();
+            }
+
+            return code.toString();
+        } catch (IOException e) { e.printStackTrace(); }
+        return "";
     }
 
     public String visit(ListNode node) {
@@ -119,7 +138,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
     public String visit(DeclarationNode node) throws SemanticException {
         String str = tab();
-        str += getPrimaryType(new ExpressionTypeVisitor().visit(node.getRight()));
+        str += getPrimaryType(node.type);
         str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
         return str;
     }
@@ -158,7 +177,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(DefinesNode node) throws SemanticException {
-        return visitChildrenStr(node);
+        return visitChildrenStr(node) + "\n";
     }
 
     public String visit(DefineNode node) throws SemanticException {
@@ -172,7 +191,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(FunctionsNode node) throws SemanticException {
-        return visitChildrenStr(node) + "\n";
+        return visitChildrenStr(node);
     }
 
     public String visit(LoopNode node) throws SemanticException {
@@ -279,8 +298,20 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return str;
     }
 
+    public String visit(PinIndexNode node) {
+        return node.getIndex() + ", " + node.getbAnalog();
+    }
+
+    public String visit(PinReadNode node) throws SemanticException {
+        return tab() + "PinRead(" + visit(node.getPinIndexNode()) + ");";
+    }
+
     public String visit(PinToggleNode node) {
-        return "PIN_TOGGLE"; //TODO: Add our custom code to this
+        return tab() + "PIN_TOGGLE"; //TODO: Add our custom code to this
+    }
+
+    public String visit(PinWriteNode node) throws SemanticException {
+        return tab() + "PinWrite(" + visit(node.getPinIndexNode()) + ", " + node.getWriteValue() + ");";
     }
 
     public String visit(BreakNode node) {

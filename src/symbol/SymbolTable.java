@@ -25,8 +25,8 @@ public class SymbolTable implements SymbolTableInterface{
         symTable.values().removeIf(e -> e.getDepth() > depth);
     }
 
-    public void enterSymbol(DeclarationNode node) throws SemanticException {
-        symTable.put(node.getLeft(), new Symbol(node.getLeft(), new ExpressionTypeVisitor().visit(node.getRight()), depth));
+    public void enterSymbol(DeclarationNode node) {
+        symTable.put(node.getLeft(), new Symbol(node.getLeft(), node.type, depth));
     }
 
     public void enterSymbol(FunctionNode node){

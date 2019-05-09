@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         long time = System.currentTimeMillis();
-        CharStream is = CharStreams.fromFileName("test4.txt");
+        CharStream is = CharStreams.fromFileName("test.txt");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);
@@ -28,9 +28,9 @@ public class Main {
             dast = new SemanticsVisitor().visit(ast);
             CodeGenerator.GenerateCode("testGenCode", dast);
             PrintInfo(System.currentTimeMillis() - time);
-        } catch (SemanticException e){
+        } /*catch (SemanticException e){
             System.out.println(e.getMessage());
-        } catch (Exception e) {
+        } */catch (Exception e) {
             e.printStackTrace();
         }
     }

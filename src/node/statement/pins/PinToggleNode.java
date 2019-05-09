@@ -1,7 +1,7 @@
 package node.statement.pins;
 
-import node.RootNode;
 
-public class PinToggleNode extends RootNode {
-
+public class PinToggleNode extends AbstractPinStmtNode {
+    @Override
+    public String toString() { return "TOGGLE"; }
 }

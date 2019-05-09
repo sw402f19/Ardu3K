@@ -44,8 +44,7 @@ pin_stmt
     | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR SEMI        #pinWrite
     ;
 pin_index
-    : index=INTEGER
-    | analog=A index=INTEGER
+    : analog=ANALOG? index=INTEGER
     ;
 comment
     : COMMENT LETTER* COMMENT
@@ -260,4 +259,4 @@ COMMENT: '//';
 READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
-A: 'A';
+ANALOG: 'analog';

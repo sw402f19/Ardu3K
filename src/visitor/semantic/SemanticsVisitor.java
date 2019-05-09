@@ -21,6 +21,10 @@ import node.scope.*;
 import node.statement.CaseNode;
 import node.statement.FunctionStmtNode;
 import node.statement.control.*;
+import node.statement.pins.PinIndexNode;
+import node.statement.pins.PinReadNode;
+import node.statement.pins.PinToggleNode;
+import node.statement.pins.PinWriteNode;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
@@ -125,6 +129,31 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(UnaryNegateNode node) throws SemanticException {
+        visitChildren(node);
+        return node;
+    }
+
+    public RootNode visit(PinIndexNode node) throws SemanticException {
+        if (node.getIndex() > 14 || node.getIndex() < 0) {
+            throw ExceptionFactory.produce("ILLEGALPININDEX", node);
+        }
+        return node;
+    }
+
+    public RootNode visit(PinReadNode node) throws SemanticException {
+        visitChildren(node);
+        return node;
+    }
+
+    public RootNode visit(PinWriteNode node) throws SemanticException {
+        visit(node.getPinIndexNode());
+        if (node.getWriteValue() < 0 || node.getWriteValue() > 255){
+            throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
+        }
+        return node;
+    }
+
+    public RootNode visit(PinToggleNode node) throws SemanticException {
         visitChildren(node);
         return node;
     }

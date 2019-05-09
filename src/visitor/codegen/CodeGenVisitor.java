@@ -177,7 +177,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(DefinesNode node) throws SemanticException {
-        return visitChildrenStr(node);
+        return visitChildrenStr(node) + "\n";
     }
 
     public String visit(DefineNode node) throws SemanticException {
@@ -216,7 +216,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(SetupNode node) throws SemanticException {
-        return "\nvoid setup() " + visit(node.getBlock()) + "\n\n";
+        return "void setup() " + visit(node.getBlock()) + "\n\n";
     }
 
     public String visit(ElifNode node) throws SemanticException {
@@ -298,8 +298,20 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return str;
     }
 
+    public String visit(PinIndexNode node) {
+        return node.getIndex() + ", " + node.getbAnalog();
+    }
+
+    public String visit(PinReadNode node) throws SemanticException {
+        return tab() + "PinRead(" + visit(node.getPinIndexNode()) + ");";
+    }
+
     public String visit(PinToggleNode node) {
-        return "PIN_TOGGLE"; //TODO: Add our custom code to this
+        return tab() + "PIN_TOGGLE"; //TODO: Add our custom code to this
+    }
+
+    public String visit(PinWriteNode node) throws SemanticException {
+        return tab() + "PinWrite(" + visit(node.getPinIndexNode()) + ", " + node.getWriteValue() + ");";
     }
 
     public String visit(BreakNode node) {

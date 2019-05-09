@@ -15,6 +15,10 @@ import node.scope.*;
 import node.primary.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
+import node.statement.pins.PinIndexNode;
+import node.statement.pins.PinReadNode;
+import node.statement.pins.PinToggleNode;
+import node.statement.pins.PinWriteNode;
 import node.statement.termination.BreakNode;
 import node.statement.termination.ContinueNode;
 import node.statement.control.*;
@@ -175,17 +179,32 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitPinToggle(Ardu3kParser.PinToggleContext ctx) {
-        return super.visitPinToggle(ctx);
+        PinToggleNode node = new PinToggleNode();
+        node.setPinIndexNode(visit(ctx.pin));
+        return node;
     }
 
     @Override
     public RootNode visitPinRead(Ardu3kParser.PinReadContext ctx) {
-        return super.visitPinRead(ctx);
+        PinReadNode node = new PinReadNode();
+        node.setPinIndexNode(visit(ctx.pin));
+        return node;
     }
 
     @Override
     public RootNode visitPinWrite(Ardu3kParser.PinWriteContext ctx) {
-        return super.visitPinWrite(ctx);
+        PinWriteNode node = new PinWriteNode();
+        node.setPinIndexNode(visit(ctx.pin));
+        node.setWriteValue(Integer.valueOf(ctx.value.getText()));
+        return node;
+    }
+
+    @Override
+    public RootNode visitPin_index(Ardu3kParser.Pin_indexContext ctx) {
+        PinIndexNode node = new PinIndexNode();
+        node.setIndex(Integer.valueOf(ctx.index.getText()));
+        if (ctx.analog !=  null) { node.setbAnalog(true); }
+        return node;
     }
 
     @Override

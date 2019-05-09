@@ -154,8 +154,6 @@ list_element
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
-    | NEGATE expression                             #primaryNegate
-
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt

@@ -234,6 +234,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
         try {
             function = symbolTable.retrieveSymbol(node.getId()).getType();
+            if(function == null)
+                throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
 
             if (function instanceof FunctionNode) {
 

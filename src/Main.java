@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         long time = System.currentTimeMillis();
-        CharStream is = CharStreams.fromFileName("test4.txt");
+        CharStream is = CharStreams.fromFileName("test3.txt");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);

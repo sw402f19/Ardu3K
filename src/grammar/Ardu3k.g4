@@ -39,7 +39,7 @@ stmt
     | comment                                                       #stmtComment
     ;
 pin_stmt
-    : TOGGLE LPAR RPAR SEMI                                         #pinToggle
+    : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
     | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
     | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR SEMI        #pinWrite
     ;

@@ -2,13 +2,7 @@ setup = {
 
 }
 loop = {
-    func(1);
-    if ! 2 < 3 do {
-        a = -3;
-    }
-}
-
-func (x) = {
-    x = x * 2;
-    return x;
+    toggle(1);
+    read(1);
+    write(1, 0);
 }

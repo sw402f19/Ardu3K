@@ -10,9 +10,12 @@ import java.util.ArrayList;
 public class FunctionSymbol extends Symbol {
 
     private ArrayList<FunctionNode> impls = new ArrayList<>();
+    private SymbolTable symTable;
 
-    public FunctionSymbol(RootNode name, RootNode type, int depth) {
+
+    public FunctionSymbol(RootNode name, RootNode type, SymbolTable symTable, int depth) {
         super(name, type, depth);
+        this.symTable = symTable;
     }
 
     public FunctionNode getImpl(FunctionStmtNode node) {

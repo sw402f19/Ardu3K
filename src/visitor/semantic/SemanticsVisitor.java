@@ -253,7 +253,12 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(FunctionNode node) {
-        symbolTable.enterSymbol(node);
+        Cloner cloner = new Cloner();
+        if(!symbolTable.isPresent(node.getId()))
+            symbolTable.enterSymbol(node, cloner.deepClone(symbolTable));
+        else {
+
+        }
         return node;
     }
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {

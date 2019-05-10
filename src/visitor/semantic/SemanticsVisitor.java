@@ -15,6 +15,7 @@ import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.expression.unary.UnaryNegateNode;
 import node.expression.type.StringType;
+import node.primary.BoolNode;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
@@ -154,9 +155,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     public RootNode visit(PinWriteNode node) throws SemanticException {
         visit(node.getPinIndexNode());
-        if (node.getWriteValue() < 0 || node.getWriteValue() > 255){
+
+        if (!(node.getWriteValue() instanceof BoolNode)) {
             throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
         }
+
         return node;
     }
 

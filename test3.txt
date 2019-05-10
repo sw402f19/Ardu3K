@@ -4,5 +4,5 @@ setup = {
 loop = {
     toggle(analog0);
     read(13);
-    write(analog1, 255);
+    write(analog1, false);
 }

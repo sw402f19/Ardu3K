@@ -1,5 +1,6 @@
 package visitor.semantic;
 
+import com.rits.cloning.Cloner;
 import exception.*;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
@@ -223,7 +224,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         try {
             visitChildren(node);
-            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
             if (!(type instanceof BooleanType))
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
         } catch (SemanticException e) {

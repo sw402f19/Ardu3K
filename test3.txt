@@ -2,7 +2,7 @@ setup = {
 
 }
 loop = {
-    toggle(analog1);
-    read(2);
+    toggle(analog0);
+    read(13);
     write(analog1, 255);
 }

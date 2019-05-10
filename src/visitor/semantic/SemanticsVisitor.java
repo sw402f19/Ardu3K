@@ -136,8 +136,15 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(PinIndexNode node) throws SemanticException {
-        if (node.getIndex() > 14 || node.getIndex() < 0) {
-            throw ExceptionFactory.produce("ILLEGALPININDEX", node);
+        // NOTE: These ports are what is allowed on an Arduino Uno
+        if (node.getbAnalog()) {
+            if (node.getIndex() > 5 || node.getIndex() < 0) {
+                throw ExceptionFactory.produce("ILLEGALPININDEX", node);
+            }
+        } else {
+            if (node.getIndex() > 13 || node.getIndex() < 0) {
+                throw ExceptionFactory.produce("ILLEGALPININDEX", node);
+            }
         }
         return node;
     }

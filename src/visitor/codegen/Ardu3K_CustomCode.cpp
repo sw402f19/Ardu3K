@@ -1,6 +1,7 @@
 /*
 *   Arud3K class for custom Arduino functions related to the language:
 *   (NOTE: Tageted for the Arduino Uno)
+*   The code directly manipulates the bitmasks controlling pins, for better efficiency
 */
 
 int PinRead(int index, bool bAnalog) {
@@ -10,14 +11,182 @@ int PinRead(int index, bool bAnalog) {
     }
 }
 
-void PinWrite(int index, bool bAnalog, int writeVal) {
-    if (index >= 0 && index <= 14) {
-        // Cap writeVal between 0 and 255
-        if (writeVal < 0) { writeVal = 0; }
-        else if (writeVal > 255) { writeVal = 255; }
-
-        if (bAnalog){ analogWrite(index, writeVal); }
-        else { digitalWrite(index, writeVal); }
+// Writes to a pin if it should be on or off
+// Sets pin to be in output mode before writing
+// Negates bit, by ensuring the bit is 1 and then XOR to flip bit
+void PinWrite(int index, bool bAnalog, bool bWriteVal) {
+    if (index >= 0 && index <= 13) {
+        if (bAnalog){ 
+          switch (index) {
+             case 0:
+              DDRC = DDRC | B00000001;
+              if  (bWriteVal) { PORTC = PORTC | B00000001; }
+              else {
+                PORTC = PORTC | B00000001;
+                PORTC = PORTC ^ B00000001;
+              }
+              break;
+            case 1:
+              DDRC = DDRC | B00000010;
+              if  (bWriteVal) { PORTC = PORTC | B00000010; }
+              else {
+                PORTC = PORTC | B00000010;
+                PORTC = PORTC ^ B00000010;
+              }
+              break;
+            case 2:
+              DDRC = DDRC | B00000100;
+              if  (bWriteVal) { PORTC = PORTC | B00000100; }
+              else {
+                PORTC = PORTC | B00000100;
+                PORTC = PORTC ^ B00000100;
+              }
+              break;
+            case 3:
+              DDRC = DDRC | B00001000;
+              if  (bWriteVal) { PORTC = PORTC | B00001000; }
+              else {
+                PORTC = PORTC | B00001000;
+                PORTC = PORTC ^ B00001000;
+              }
+              break;
+            case 4:
+              DDRC = DDRC | B00010000;
+              if  (bWriteVal) { PORTC = PORTC | B00010000; }
+              else {
+                PORTC = PORTC | B00010000;
+                PORTC = PORTC ^ B00010000;
+              }
+              break;
+            case 5:
+              DDRC = DDRC | B00100000;
+              if  (bWriteVal) { PORTC = PORTC | B00100000; }
+              else {
+                PORTC = PORTC | B00100000;
+                PORTC = PORTC ^ B00100000;
+              }
+              break;
+            default:
+              return;
+          }
+        } else { 
+          switch (index) {
+             case 0:
+              DDRD = DDRD | B00000001;
+              if  (bWriteVal) { PORTD = PORTD | B00000001; }
+              else {
+                PORTD = PORTD | B00000001;
+                PORTD = PORTD ^ B00000001;
+              }
+              break;
+            case 1:
+              DDRD = DDRD | B00000010;
+              if  (bWriteVal) { PORTD = PORTD | B00000010; }
+              else {
+                PORTD = PORTD | B00000010;
+                PORTD = PORTD ^ B00000010;
+              }
+              break;
+            case 2:
+              DDRD = DDRD | B00000100;
+              if  (bWriteVal) { PORTD = PORTD | B00000100; }
+              else {
+                PORTD = PORTD | B00000100;
+                PORTD = PORTD ^ B00000100;
+              }
+              break;
+            case 3:
+              DDRD = DDRD | B00001000;
+              if  (bWriteVal) { PORTD = PORTD | B00001000; }
+              else {
+                PORTD = PORTD | B00001000;
+                PORTD = PORTD ^ B00001000;
+              }
+              break;
+            case 4:
+              DDRD = DDRD | B00010000;
+              if  (bWriteVal) { PORTD = PORTD | B00010000; }
+              else {
+                PORTD = PORTD | B00010000;
+                PORTD = PORTD ^ B00010000;
+              }
+              break;
+            case 5:
+              DDRD = DDRD | B00100000;
+              if  (bWriteVal) { PORTD = PORTD | B00100000; }
+              else {
+                PORTD = PORTD | B00100000;
+                PORTD = PORTD ^ B00100000;
+              }
+              break;
+            case 6:
+              DDRD = DDRD | B01000000;
+              if  (bWriteVal) { PORTD = PORTD | B01000000; }
+              else {
+                PORTD = PORTD | B01000000;
+                PORTD = PORTD ^ B01000000;
+              }
+              break;
+            case 7:
+              DDRD = DDRD | B10000000;
+              if  (bWriteVal) { PORTD = PORTD | B10000000; }
+              else {
+                PORTD = PORTD | B10000000;
+                PORTD = PORTD ^ B10000000;
+              }
+              break;
+            case 8:
+              DDRB = DDRB | B00000001;
+              if  (bWriteVal) { PORTB = PORTB | B00000001; }
+              else {
+                PORTB = PORTB | B00000001;
+                PORTB = PORTB ^ B00000001;
+              }
+              break;
+            case 9:
+              DDRB = DDRB | B00000010;
+              if  (bWriteVal) { PORTB = PORTB | B00000010; }
+              else {
+                PORTB = PORTB | B00000010;
+                PORTB = PORTB ^ B00000010;
+              }
+              break;
+            case 10:
+              DDRB = DDRB | B00000100;
+              if  (bWriteVal) { PORTB = PORTB | B00000100; }
+              else {
+                PORTB = PORTB | B00000100;
+                PORTB = PORTB ^ B00000100;
+              }
+              break;
+            case 11:
+              DDRB = DDRB | B00001000;
+              if  (bWriteVal) { PORTB = PORTB | B00001000; }
+              else {
+                PORTB = PORTB | B00001000;
+                PORTB = PORTB ^ B00001000;
+              }
+              break;
+            case 12:
+              DDRB = DDRB | B00010000;
+              if  (bWriteVal) { PORTB = PORTB | B00010000; }
+              else {
+                PORTB = PORTB | B00010000;
+                PORTB = PORTB ^ B00010000;
+              }
+              break;
+            case 13:
+              DDRB = DDRB | B00100000;
+              if  (bWriteVal) { PORTB = PORTB | B00100000; }
+              else {
+                PORTB = PORTB | B00100000;
+                PORTB = PORTB ^ B00100000;
+              }
+              break;
+            default:
+              return;
+          } 
+        }
     }
 }
 

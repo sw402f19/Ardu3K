@@ -18,6 +18,6 @@ public class IllegalPinWriteValueException extends SemanticException {
     }
 
     public IllegalPinWriteValueException(PinWriteNode node) {
-        super("IllegalPinWriteValueException: Value " + node.getWriteValue() + " is not valid to write (0 to 255)");
+        super("IllegalPinWriteValueException: Value is not a valid write value");
     }
 }

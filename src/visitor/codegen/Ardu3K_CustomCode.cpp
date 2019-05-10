@@ -4,6 +4,20 @@
 *   The code directly manipulates the bitmasks controlling pins, for better efficiency
 */
 
+#define SECOND 1000
+
+// Function meant to be called every loop cycle
+// It checks if the desired amounts of seconds is reached
+// If reached, then it will call the function given as input
+void Ardu3K_Delay(long delayTime, long *usedTime, void (*func)()) {
+    long seconds = millis() / SECOND;
+    if (*usedTime != seconds) {
+        int checkTime = seconds % delayTime;
+        if (checkTime == 0) { func(); }
+        *usedTime = seconds;
+    }
+}
+
 // Sets pin to read state before reading
 int Ardu3K_PinRead(int index, bool bAnalog) {
     if (index >= 0 && index <= 14) {
@@ -288,21 +302,27 @@ void Ardu3K_TogglePin(int index, bool bAnalog) {
         if (bAnalog == true) {
             switch (index) {
                 case 0:
+                    DDRC = DDRC | B00000001;
                     PORTC = PORTC ^ B00000001;
                     break;
                 case 1:
+                    DDRC = DDRC | B00000010;
                     PORTC = PORTC ^ B00000010;
                     break;
                 case 2:
+                    DDRC = DDRC | B00000100;
                     PORTC = PORTC ^ B00000100;
                     break;
                 case 3:
+                    DDRC = DDRC | B00001000;
                     PORTC = PORTC ^ B00001000;
                     break;
                 case 4:
+                    DDRC = DDRC | B00010000;
                     PORTC = PORTC ^ B00010000;
                     break;
                 case 5:
+                    DDRC = DDRC | B00100000;
                     PORTC = PORTC ^ B00100000;
                     break;
                 default:
@@ -311,45 +331,59 @@ void Ardu3K_TogglePin(int index, bool bAnalog) {
         } else {
             switch (index) {
                 case 0:
+                    DDRD = DDRD | B00000001;
                     PORTD = PORTD ^ B00000001;
                     break;
                 case 1:
+                    DDRD = DDRD | B00000010;
                     PORTD = PORTD ^ B00000010;
                     break;
                 case 2:
+                    DDRD = DDRD | B00000100;
                     PORTD = PORTD ^ B00000100;
                     break;
                 case 3:
+                    DDRD = DDRD | B00001000;
                     PORTD = PORTD ^ B00001000;
                     break;
                 case 4:
+                    DDRD = DDRD | B00010000;
                     PORTD = PORTD ^ B00010000;
                     break;
                 case 5:
+                    DDRD = DDRD | B00100000;
                     PORTD = PORTD ^ B00100000;
                     break;
                 case 6:
+                    DDRD = DDRD | B01000000;
                     PORTD = PORTD ^ B01000000;
                     break;
                 case 7:
+                    DDRD = DDRD | B10000000;
                     PORTD = PORTD ^ B10000000;
                     break;
                 case 8:
+                    DDRB = DDRB | B00000001;
                     PORTB = PORTB ^ B00000001;
                     break;
                 case 9:
+                    DDRB = DDRB | B00000010;
                     PORTB = PORTB ^ B00000010;
                     break;
                 case 10:
+                    DDRB = DDRB | B00000100;
                     PORTB = PORTB ^ B00000100;
                     break;
                 case 11:
+                    DDRB = DDRB | B00001000;
                     PORTB = PORTB ^ B00001000;
                     break;
                 case 12:
+                    DDRB = DDRB | B00010000;
                     PORTB = PORTB ^ B00010000;
                     break;
                 case 13:
+                    DDRB = DDRB | B00100000;
                     PORTB = PORTB ^ B00100000;
                     break;
                 default:

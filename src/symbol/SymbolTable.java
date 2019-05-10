@@ -3,6 +3,7 @@ package symbol;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.DeclarationNode;
+import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.DefineNode;
@@ -30,9 +31,11 @@ public class SymbolTable implements SymbolTableInterface{
     }
 
     public void enterSymbol(FunctionNode node){
-        symTable.put(node.getId(), new Symbol(node.getId(), node, depth));
+        symTable.put(node.getId(), new FunctionSymbol(node.getId(), node, depth));
     }
-
+    public void enterSymbol(IdentifierNode node, AbstractPrimaryNode type) {
+        symTable.put(node, new Symbol(node, type, depth));
+    }
     public void enterSymbol(IdentifierNode node){
         symTable.put(node, new Symbol(node, new UndefinedNode(node), depth));
     }
@@ -52,8 +55,5 @@ public class SymbolTable implements SymbolTableInterface{
     }
     public static SymbolTable getInstance() {
         return thisInstance;
-    }
-    public static SymbolTable getNewInstance() {
-        return new SymbolTable();
     }
 }

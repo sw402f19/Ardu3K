@@ -21,6 +21,8 @@ import node.scope.*;
 import node.statement.CaseNode;
 import node.statement.FunctionStmtNode;
 import node.statement.control.*;
+import symbol.FunctionSymbol;
+import symbol.Symbol;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
@@ -228,6 +230,21 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
+    public RootNode visit(FunctionStmtNode node) throws SemanticException{
+        Symbol funcSym;
+        try {
+            funcSym = symbolTable.retrieveSymbol(node.getId());
+            if(funcSym == null)
+                throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
+            if(funcSym instanceof FunctionSymbol) {
+                if(!((FunctionSymbol) funcSym).containsImpl(node)) {
+                    ((FunctionSymbol) funcSym).addImpl(node);
+                    visit(((FunctionSymbol) funcSym).getImpl(node));
+                }
+            } else
+                throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
+        }
+    }
 
     public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException, ArgumentException {
         RootNode function;
@@ -255,23 +272,10 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(FunctionNode node) throws RecursionException {
+    public RootNode visit(FunctionNode node) {
         symbolTable.enterSymbol(node);
-        symbolTable.openScope();
-        try{
-            visit(node.getParameter());
-            visit(node.getBlock());
-            node.setReturnType(new ReturnTypeVisitor().visit(node.getBlock()));
-        } catch (SemanticException e) {
-            System.out.println(e.getMessage());
-        }
-        symbolTable.closeScope();
-
-        FunctionChecker.Check(node);
-
         return node;
     }
-
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {
         symbolTable.openScope();
         for(RootNode n : node.children) {

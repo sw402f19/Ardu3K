@@ -1,6 +1,6 @@
 /*
 *   Arud3K class for custom Arduino functions related to the language:
-*   (NOTE: Supports write up to and included an Arduino Mega)
+*   (NOTE: Tageted for the Arduino Uno)
 */
 
 int PinRead(int index, bool bAnalog) {
@@ -23,7 +23,7 @@ void PinWrite(int index, bool bAnalog, int writeVal) {
 
 // Switch on index then toggle given pin 
 // in bitmask for pin state
-void togglePin(int index, bool bAnalog) {
+void TogglePin(int index, bool bAnalog) {
     if (index >= 0 && index <= 13){
         if (bAnalog == true) {
             switch (index) {

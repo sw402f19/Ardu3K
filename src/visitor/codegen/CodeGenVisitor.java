@@ -306,8 +306,8 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         return tab() + "PinRead(" + visit(node.getPinIndexNode()) + ");";
     }
 
-    public String visit(PinToggleNode node) {
-        return tab() + "PIN_TOGGLE"; //TODO: Add our custom code to this
+    public String visit(PinToggleNode node) throws SemanticException {
+        return tab() + "TogglePin(" + visit(node.getPinIndexNode()) + ");";
     }
 
     public String visit(PinWriteNode node) throws SemanticException {

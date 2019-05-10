@@ -4,10 +4,101 @@
 *   The code directly manipulates the bitmasks controlling pins, for better efficiency
 */
 
-int PinRead(int index, bool bAnalog) {
+// Sets pin to read state before reading
+int Ardu3K_PinRead(int index, bool bAnalog) {
     if (index >= 0 && index <= 14) {
-        if (bAnalog){ return analogRead(index); }
-        else { return digitalRead(index); }
+        if (bAnalog == true) {
+            switch (index) {
+                case 0:
+                    DDRC = DDRC | B00000001;
+                    DDRC = DDRC ^ B00000001;
+                    return analogRead(A0);
+                case 1:
+                    DDRC = DDRC | B00000010;
+                    DDRC = DDRC ^ B00000010;
+                    return analogRead(A1);
+                case 2:
+                    DDRC = DDRC | B00000100;
+                    DDRC = DDRC ^ B00000100;
+                    return analogRead(A2);
+                case 3:
+                    DDRC = DDRC | B00001000;                    
+                    DDRC = DDRC ^ B00001000;
+                    return analogRead(A3);
+                case 4:
+                    DDRC = DDRC | B00010000;
+                    DDRC = DDRC ^ B00010000;
+                    return analogRead(A4);
+                case 5:
+                    DDRC = DDRC | B00100000;
+                    DDRC = DDRC ^ B00100000;
+                    return analogRead(A5);
+                default:
+                    return -1;
+            }
+        } else {
+            switch (index) {
+                case 0:
+                    DDRD = DDRD | B00000001;
+                    DDRD = DDRD ^ B00000001;
+                    break;
+                case 1:
+                    DDRD = DDRD | B00000010;
+                    DDRD = DDRD ^ B00000010;
+                    break;
+                case 2:
+                    DDRD = DDRD | B00000100;
+                    DDRD = DDRD ^ B00000100;
+                    break;
+                case 3:
+                    DDRD = DDRD | B00001000;
+                    DDRD = DDRD ^ B00001000;
+                    break;
+                case 4:
+                    DDRD = DDRD | B00010000;
+                    DDRD = DDRD ^ B00010000;
+                    break;
+                case 5:
+                    DDRD = DDRD | B00100000;
+                    DDRD = DDRD ^ B00100000;
+                    break;
+                case 6:
+                    DDRD = DDRD | B01000000;
+                    DDRD = DDRD ^ B01000000;
+                    break;
+                case 7:
+                    DDRD = DDRD | B10000000;
+                    DDRD = DDRD ^ B10000000;
+                    break;
+                case 8:
+                    DDRB = DDRB | B00000001;
+                    DDRB = DDRB ^ B00000001;
+                    break;
+                case 9:
+                    DDRB = DDRB | B00000010;
+                    DDRB = DDRB ^ B00000010;
+                    break;
+                case 10:
+                    DDRB = DDRB | B00000100;
+                    DDRB = DDRB ^ B00000100;
+                    break;
+                case 11:
+                    DDRB = DDRB | B00001000;
+                    DDRB = DDRB ^ B00001000;
+                    break;
+                case 12:
+                    DDRB = DDRB | B00010000;
+                    DDRB = DDRB ^ B00010000;
+                    break;
+                case 13:
+                    DDRB = DDRB | B00100000;
+                    DDRB = DDRB ^ B00100000;
+                    break;
+                default:
+                    return -1;
+            }
+            return digitalRead(index);
+        }
     }
 }
 

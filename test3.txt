@@ -2,6 +2,22 @@ setup = {
 
 }
 loop = {
-    toggle(analog1);
+    timed(2, fancy);
+    timed(1, func);
+    timed(4, funky);
+}
+
+fancy() = {
     toggle(analog0);
+    return 1;
+}
+
+func() = {
+    toggle(analog1);
+    return 1;
+}
+
+funky() = {
+    toggle(analog2);
+    return 1;
 }

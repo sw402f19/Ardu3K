@@ -9,7 +9,7 @@
 // Function meant to be called every loop cycle
 // It checks if the desired amounts of seconds is reached
 // If reached, then it will call the function given as input
-void Ardu3K_Delay(long delayTime, long *usedTime, void (*func)()) {
+void Ardu3K_Timed(long delayTime, long *usedTime, void (*func)()) {
     long seconds = millis() / SECOND;
     if (*usedTime != seconds) {
         int checkTime = seconds % delayTime;

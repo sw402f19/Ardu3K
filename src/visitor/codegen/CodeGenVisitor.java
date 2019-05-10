@@ -24,6 +24,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     private String tab = "    ";
     private int tabLevel = 0;
     private String imports = "";
+    private String timers = "";
 
     // Function for indenting the generated code
     private String tab() {
@@ -41,6 +42,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
         if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if (!(imports.equals(""))) { str = imports + "\n" + str; }
+        if (!(timers.equals(""))) { str = "// Timers:\n" + timers + "// ======================\n" + str; }
         str += getCustomArdu3kCode();
         return str;
     }
@@ -312,6 +314,11 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
     public String visit(PinWriteNode node) throws SemanticException {
         return tab() + "Ardu3K_PinWrite(" + visit(node.getPinIndexNode()) + ", " + visit(node.getWriteValue()) + ");";
+    }
+
+    public String visit(TimedNode node) throws SemanticException {
+        timers += "long " + node.getTimerName() + " = -1;\n";
+        return tab() + "Ardu3K_Timed(" + node.getWaitTime() + ", &" + node.getTimerName() + ", " + visit(node.getFuncID()) + ");";
     }
 
     public String visit(BreakNode node) {

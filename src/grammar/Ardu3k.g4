@@ -41,7 +41,7 @@ stmt
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
     | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
-    | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR SEMI        #pinWrite
+    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI        #pinWrite
     ;
 pin_index
     : analog=ANALOG? index=INTEGER

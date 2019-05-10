@@ -311,7 +311,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(PinWriteNode node) throws SemanticException {
-        return tab() + "PinWrite(" + visit(node.getPinIndexNode()) + ", " + node.getWriteValue() + ");";
+        return tab() + "PinWrite(" + visit(node.getPinIndexNode()) + ", " + visit(node.getWriteValue()) + ");";
     }
 
     public String visit(BreakNode node) {

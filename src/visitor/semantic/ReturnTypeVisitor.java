@@ -4,16 +4,20 @@ import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.VoidNode;
 import node.statement.termination.ReturnNode;
+import symbol.SymbolTable;
 
 import java.util.ArrayList;
 
 public class ReturnTypeVisitor extends PrimaryVisitor {
+    public ReturnTypeVisitor(SymbolTable symbolTable) {
+        super(symbolTable);
+    }
 
     private ArrayList<RootNode> returnTypes = new ArrayList<>();
 
     public RootNode visit(ReturnNode node) throws SemanticException {
         if(node.getExpression() != null)
-            returnTypes.add(new ExpressionTypeVisitor().visit(node.getExpression()));
+            returnTypes.add(new ExpressionTypeVisitor(symbolTable).visit(node.getExpression()));
         return aggregateResult();
     }
     public RootNode aggregateResult() {

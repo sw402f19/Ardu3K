@@ -18,7 +18,7 @@ import node.statement.termination.*;
 import visitor.BaseASTVisitor;
 import visitor.semantic.ExpressionTypeVisitor;
 
-public class CodeGenVisitor extends BaseASTVisitor<Void> {
+public class CodeGenVisitor extends BaseASTVisitor<String> {
     private String tab = "    ";
     private int tabLevel = 0;
     private String imports = "";

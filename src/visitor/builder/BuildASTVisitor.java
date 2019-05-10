@@ -27,6 +27,16 @@ import java.util.List;
 
 public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 {
+    private SymbolTable symbolTable;
+
+    public BuildASTVisitor(SymbolTable symbolTable) {
+        this.symbolTable = symbolTable;
+    }
+
+    public BuildASTVisitor() {
+        this.symbolTable = new SymbolTable();
+    }
+
     @Override
     public RootNode visitProgram(Ardu3kParser.ProgramContext ctx) {
         ProgramNode node = new ProgramNode();
@@ -78,7 +88,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.setParameter(ctx.para != null ? visit(ctx.para) : new ParameterNode());
         node.setBlock(visit(ctx.block()));
         node.setReturnType(new UndefinedNode());
-        SymbolTable.getInstance().enterSymbol(node);
+        symbolTable.enterSymbol(node);
         return (node.children.size() > 0 ? node : null);
     }
 

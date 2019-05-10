@@ -16,8 +16,11 @@ import visitor.BaseASTVisitor;
 
 public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
 
-    SymbolTable symbolTable = SymbolTable.getInstance();
+    protected SymbolTable symbolTable;
 
+    public PrimaryVisitor(SymbolTable symbolTable) {
+        this.symbolTable = symbolTable;
+    }
     public RootNode visit(AbstractPrimaryNode node) throws SemanticException {
         return node;
     }

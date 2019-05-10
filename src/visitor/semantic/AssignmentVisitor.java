@@ -13,12 +13,14 @@ import visitor.semantic.typecast.ExpressionCastVisitor;
 public class AssignmentVisitor extends PrimaryVisitor {
 
     private RootNode expectedType;
-    private SymbolTable symbolTable = SymbolTable.getInstance();
 
+    public AssignmentVisitor(SymbolTable symbolTable) {
+        super(symbolTable);
+    }
 
     public RootNode visit(AssignmentNode node) throws SemanticException {
         expectedType = symbolTable.retrieveSymbol(node.getLeft()).getType();
-        new ExpressionCastVisitor().initVisit(expectedType, node.getRight());
+        new ExpressionCastVisitor(symbolTable).initVisit(expectedType, node.getRight());
         return node;
     }
     public RootNode visit(AbstractPrimaryNode node) throws SemanticException {

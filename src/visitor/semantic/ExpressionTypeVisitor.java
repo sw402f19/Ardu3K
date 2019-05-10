@@ -7,6 +7,7 @@ import node.expression.AbstractInfixBooleanNode;
 import node.expression.AbstractInfixExpressionNode;
 import exception.type.IllegalTypeException;
 import node.primary.*;
+import symbol.SymbolTable;
 import visitor.semantic.typecast.TypeCaster;
 
 import java.util.ArrayList;
@@ -15,6 +16,10 @@ import java.util.ArrayList;
  * Returns the type of a given expression.
  */
 public class ExpressionTypeVisitor extends PrimaryVisitor {
+
+    public ExpressionTypeVisitor(SymbolTable symbolTable) {
+        super(symbolTable);
+    }
 
     private static ArrayList<Class> types = new ArrayList<>();
     static {

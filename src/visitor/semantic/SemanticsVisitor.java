@@ -32,7 +32,9 @@ import java.util.ArrayList;
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
 
-    private SymbolTable symbolTable = SymbolTable.getInstance();
+    public SemanticsVisitor(SymbolTable symbolTable) {
+        super(symbolTable);
+    }
 
     public RootNode visit(AbstractInfixNumeralNode node) throws SemanticException {
         if(!(visit(node.getLeft()) instanceof NumeralType)) {
@@ -79,11 +81,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
             if(!(symbolTable.isPresent(node.getLeft())) ||
                     symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode) {
                 node1 = new DeclarationNode(node);
-                node1.type = new ExpressionTypeVisitor().visit(node.getRight());
+                node1.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
                 visit(node1);
             }else {
                 this.visit(node.getRight());
-                new AssignmentVisitor().visit(node);
+                new AssignmentVisitor(symbolTable).visit(node);
             }
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
@@ -148,7 +150,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(IfNode node) {
         symbolTable.openScope();
         try {
-            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
             if (!(type instanceof BooleanType))
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
             visitChildren(node);
@@ -161,7 +163,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(ElifNode node)  {
         symbolTable.openScope();
         try {
-            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
             if(!(type instanceof BooleanType))
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
             visitChildren(node);
@@ -176,7 +178,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(SwitchNode node)  {
         symbolTable.openScope();
         try {
-            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
             if(!(type instanceof NumeralType))
                 System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
             visitChildren(node);
@@ -191,9 +193,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
         symbolTable.openScope();
         try {
-            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
             SwitchNode parent = (SwitchNode) node.parent;
-            RootNode parentType = new ExpressionTypeVisitor().visit(parent.getExpression());
+            RootNode parentType = new ExpressionTypeVisitor(symbolTable).visit(parent.getExpression());
             if(!(type.getClass().equals(parentType.getClass())))
                 throw ExceptionFactory.produce("incompatibletype", parentType, type);
         } catch (SemanticException e) {
@@ -207,7 +209,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         try {
             visitChildren(node);
-            RootNode type = new ExpressionTypeVisitor().visit(node.getExpression());
+            RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
             if(!(type instanceof NumeralType))
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
         } catch (SemanticException e) {
@@ -243,32 +245,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 }
             } else
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
         }
-    }
-
-    public RootNode visit(FunctionStmtNode node) throws UndeclaredIdentifierException, ArgumentException {
-        RootNode function;
-
-        try {
-            function = symbolTable.retrieveSymbol(node.getId()).getType();
-            if(function == null)
-                throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
-
-            if (function instanceof FunctionNode) {
-
-                for (int i = 0; i < node.getArguments().children.size(); i++) {
-                    RootNode expectedType =
-                            new ExpressionTypeVisitor().visit(node.getArguments().children.get(i));
-                    RootNode argType = visit(node.getArguments().children.get(i));
-                    if (!(expectedType.getClass().isInstance(argType)))
-                        throw ExceptionFactory.produce("illegalargument", argType);
-                }
-
-                FunctionChecker.Check(node, (FunctionNode) function);
-
-            } else throw new UndeclaredIdentifierException("Identifier " + node.getId() + " not declared.");
-        } catch (SemanticException e) { System.out.println(e.getMessage()); }
-
         return node;
     }
 

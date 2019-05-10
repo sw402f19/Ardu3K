@@ -1,5 +1,6 @@
 import exception.factory.SemanticException;
 import node.RootNode;
+import symbol.SymbolTable;
 import visitor.builder.BuildASTVisitor;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
@@ -23,9 +24,10 @@ public class Main {
         RootNode dast;
 
         try {
+            SymbolTable symbolTable = new SymbolTable();
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
-            ast =  new BuildASTVisitor().visitCompileUnit(cst);
-            dast = new SemanticsVisitor().visit(ast);
+            ast =  new BuildASTVisitor(symbolTable).visitCompileUnit(cst);
+            dast = new SemanticsVisitor(symbolTable).visit(ast);
             CodeGenerator.GenerateCode("testGenCode", dast);
             PrintInfo(System.currentTimeMillis() - time);
         } catch (SemanticException e){

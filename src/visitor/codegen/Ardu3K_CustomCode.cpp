@@ -105,7 +105,7 @@ int Ardu3K_PinRead(int index, bool bAnalog) {
 // Writes to a pin if it should be on or off
 // Sets pin to be in output mode before writing
 // Negates bit, by ensuring the bit is 1 and then XOR to flip bit
-void PinWrite(int index, bool bAnalog, bool bWriteVal) {
+void Ardu3K_PinWrite(int index, bool bAnalog, bool bWriteVal) {
     if (index >= 0 && index <= 13) {
         if (bAnalog){ 
           switch (index) {
@@ -283,7 +283,7 @@ void PinWrite(int index, bool bAnalog, bool bWriteVal) {
 
 // Switch on index then toggle given pin 
 // in bitmask for pin state
-void TogglePin(int index, bool bAnalog) {
+void Ardu3K_TogglePin(int index, bool bAnalog) {
     if (index >= 0 && index <= 13){
         if (bAnalog == true) {
             switch (index) {

@@ -303,15 +303,15 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
     }
 
     public String visit(PinReadNode node) throws SemanticException {
-        return tab() + "PinRead(" + visit(node.getPinIndexNode()) + ");";
+        return tab() + "Ardu3K_PinRead(" + visit(node.getPinIndexNode()) + ");";
     }
 
     public String visit(PinToggleNode node) throws SemanticException {
-        return tab() + "TogglePin(" + visit(node.getPinIndexNode()) + ");";
+        return tab() + "Ardu3K_TogglePin(" + visit(node.getPinIndexNode()) + ");";
     }
 
     public String visit(PinWriteNode node) throws SemanticException {
-        return tab() + "PinWrite(" + visit(node.getPinIndexNode()) + ", " + visit(node.getWriteValue()) + ");";
+        return tab() + "Ardu3K_PinWrite(" + visit(node.getPinIndexNode()) + ", " + visit(node.getWriteValue()) + ");";
     }
 
     public String visit(BreakNode node) {

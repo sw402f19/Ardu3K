@@ -40,15 +40,22 @@ public class FunctionSymbol extends Symbol {
         }
         return impl;
     }
-    public boolean containsImpl(FunctionStmtNode node) {
+    public boolean containsImpl(FunctionStmtNode call) throws SemanticException {
         boolean contains = false;
+        PrimaryVisitor visitor = new PrimaryVisitor(symTable);
+        FunctionNode template = (FunctionNode)getType();
+        ParameterNode parameter;
+
+        if(call.getArguments().children.size() != template.getParameter().children.size())
+            throw ExceptionFactory.produce("undeclaredidentifier", call.getId());
 
         for(FunctionNode n : impls) {
-            for(int i = 0; i < node.getArguments().children.size(); i++) {
-                if (!node.getArguments().children.get(i).getClass()
-                        .isInstance(n.getParameter().children.get(i)))
+            parameter = (ParameterNode)n.getParameter();
+            for(int i = 0; i < call.getArguments().children.size(); i++) {
+                if (!visitor.visit(call.getArguments().children.get(i)).getClass()
+                        .isInstance(visitor.visit(parameter.types.get(i))))
                     break;
-                if(i == node.getArguments().children.size() -1)
+                if(i == call.getArguments().children.size() -1)
                     contains = true;
             }
         }

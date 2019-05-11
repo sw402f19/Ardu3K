@@ -29,6 +29,7 @@ import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
@@ -115,6 +116,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 node.setSetupNode(visit(node.getSetupNode()));
             if(node.getLoopNode() != null)
                 node.setLoopNode(visit(node.getLoopNode()));
+            node.getFunctionsNode().children.clear();
+            for(Symbol s : symbolTable.getTable().values())
+                if(s instanceof FunctionSymbol)
+                    for(FunctionNode fn : ((FunctionSymbol) s).impls)
+                        node.getFunctionsNode().children.add(fn);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }

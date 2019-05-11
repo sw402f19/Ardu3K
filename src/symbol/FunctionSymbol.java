@@ -22,10 +22,10 @@ public class FunctionSymbol extends Symbol {
         this.symTable = symTable;
     }
 
-    public FunctionNode getImpl(FunctionStmtNode node, SymbolTable externalST) throws SemanticException {
+    public FunctionNode getImpl(FunctionStmtNode node) throws SemanticException {
         FunctionNode impl = null;
         PrimaryVisitor internalVisitor = new PrimaryVisitor(symTable);
-        PrimaryVisitor externalVisitor = new PrimaryVisitor(externalST);
+        PrimaryVisitor externalVisitor = new PrimaryVisitor(node.st);
         ParameterNode parameter;
 
         for(FunctionNode n : impls) {

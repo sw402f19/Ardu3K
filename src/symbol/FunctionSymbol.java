@@ -62,16 +62,21 @@ public class FunctionSymbol extends Symbol {
         return contains;
     }
 
-    public void addImpl(FunctionStmtNode node) {
+    public void addImpl(FunctionStmtNode call) throws SemanticException {
         Cloner cloner = new Cloner();
         FunctionNode nodeToAdd = new FunctionNode();
         FunctionNode template = (FunctionNode) getType();
+        PrimaryVisitor externalVisitor = new PrimaryVisitor(call.st);
+        ParameterNode parameter = (ParameterNode) template.getParameter();
 
-        FunctionNode type = (FunctionNode) this.getType();
-        if(!containsImpl(node)) {
-            nodeToAdd.setBlock(cloner.deepClone(template.getBlock()));
-            nodeToAdd.setId(cloner.deepClone(template.getId()));
-
+        nodeToAdd.setId(cloner.deepClone(template.getId()));
+        for(int i = 0; i < template.getParameter().children.size(); i++) {
+            // todo visiting call.getArguments with PrimaryVisitor will only return for the currently known ST
+            // todo and in reality it should return the type from the main ST.
+            parameter.types.add(externalVisitor.visit(call.getArguments().children.get(i)));
         }
+        nodeToAdd.setParameter(parameter);
+        nodeToAdd.setBlock(cloner.deepClone(template.getBlock()));
+        impls.add(nodeToAdd);
     }
 }

@@ -269,6 +269,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         else {
             visit(node.getParameter());
             visit(node.getBlock());
+            FunctionChecker.Check(node);
             node.setReturnType(new ReturnTypeVisitor(symbolTable).visit(node.getBlock()));
             symbolTable.closeScope();
         }

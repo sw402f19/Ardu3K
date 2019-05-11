@@ -7,7 +7,6 @@ import exception.predicate.UndeclaredIdentifierException;
 import exception.reachability.NotReachableException;
 import exception.reachability.RecursionException;
 import exception.type.*;
-import exception.type.IllegalArgumentException;
 import node.RootNode;
 import node.primary.IdentifierNode;
 import node.statement.control.AbstractControlNode;
@@ -24,14 +23,8 @@ public class ExceptionFactory {
             case "UNDECLAREDIDENTIFIER":
                 return new UndeclaredIdentifierException((IdentifierNode) node);
 
-            case "DUPLICATEPARAMETER":
-                return new DuplicateParameterException((IdentifierNode) node);
-
             case "NEEDSBOOLEANPREDICATE":
                 return new NeedsBooleanPredicateException((AbstractControlNode) node);
-
-            case "ILLEGALARGUMENT":
-                return new IllegalArgumentException();
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)
@@ -57,6 +50,9 @@ public class ExceptionFactory {
 
             case "NOTCASTABLE":
                 return new NotCastableException(src, target);
+
+            case "DUPLICATEPARAMETER":
+                return new DuplicateParameterException((IdentifierNode) src, target);
 
             default:
                 throw new NoProductException(exceptionClassName);

@@ -242,7 +242,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
             if(funcSym instanceof FunctionSymbol) {
                 if(!((FunctionSymbol) funcSym).containsImpl(node))
                     ((FunctionSymbol) funcSym).addImpl(node);
-                visit(((FunctionSymbol) funcSym).getImpl(node));
+                new SemanticsVisitor(((FunctionSymbol) funcSym).symTable)
+                        .visit(((FunctionSymbol) funcSym).getImpl(node));
             } else
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
         } catch (SemanticException e) {

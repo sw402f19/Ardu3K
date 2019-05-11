@@ -11,6 +11,7 @@ import node.primary.EnclosedExpressionNode;
 import node.primary.IdentifierNode;
 import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
+import symbol.FunctionSymbol;
 import symbol.SymbolTable;
 import visitor.BaseASTVisitor;
 
@@ -36,10 +37,8 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
 
     public RootNode visit(FunctionStmtNode node) throws SemanticException {
         if(symbolTable.isPresent(node.getId())) {
-            FunctionNode symbolType = ((FunctionNode)symbolTable.retrieveSymbol(node.getId()).getType());
-            if(symbolType.getReturnType() == null)
-                throw ExceptionFactory.produce("UndeclaredIdentifier", symbolType.getId());
-            return visit(symbolType.getReturnType());
+            FunctionSymbol funcSym = (FunctionSymbol)symbolTable.retrieveSymbol(node.getId());
+            return funcSym.getImpl(node).getReturnType();
         } else
             throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
     }

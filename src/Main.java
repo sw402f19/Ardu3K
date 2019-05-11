@@ -1,5 +1,6 @@
 import exception.factory.SemanticException;
 import node.RootNode;
+import sun.misc.Unsafe;
 import symbol.SymbolTable;
 import visitor.builder.BuildASTVisitor;
 import gen.Ardu3kLexer;
@@ -11,12 +12,14 @@ import visitor.codegen.CodeGenerator;
 import visitor.semantic.SemanticsVisitor;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         long time = System.currentTimeMillis();
-        CharStream is = CharStreams.fromFileName("test4.txt");
+        disableWarning();
+        CharStream is = CharStreams.fromFileName("test.txt");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);
@@ -50,5 +53,18 @@ public class Main {
         System.out.println(" <<< Successful compile! Took " + time + "ms >>>");
         System.out.println(line);
         //ast.print(0);
+    }
+    public static void disableWarning() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe u = (Unsafe) theUnsafe.get(null);
+
+            Class cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+            Field logger = cls.getDeclaredField("logger");
+            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 }

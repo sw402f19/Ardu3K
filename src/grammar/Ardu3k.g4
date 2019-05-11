@@ -37,15 +37,18 @@ stmt
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
     | comment                                                       #stmtComment
+    | timed_stmt                                                    #stmtTimed
+    ;
+timed_stmt
+    : TIMED LPAR time=INTEGER COMMA id=identifier RPAR SEMI
     ;
 pin_stmt
-    : TOGGLE LPAR RPAR SEMI                                         #pinToggle
+    : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
     | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
-    | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR SEMI        #pinWrite
+    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI        #pinWrite
     ;
 pin_index
-    : index=INTEGER
-    | analog=A index=INTEGER
+    : analog=ANALOG? index=INTEGER
     ;
 comment
     : COMMENT LETTER* COMMENT
@@ -154,8 +157,6 @@ list_element
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
-    | NEGATE expression                             #primaryNegate
-
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt
@@ -262,4 +263,5 @@ COMMENT: '//';
 READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
-A: 'A';
+ANALOG: 'analog';
+TIMED: 'timed';

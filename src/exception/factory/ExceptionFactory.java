@@ -1,6 +1,9 @@
 package exception.factory;
 
 import exception.ArgumentException;
+import exception.TimedTimeException;
+import exception.pins.IllegalPinIndexException;
+import exception.pins.IllegalPinWriteValueException;
 import exception.predicate.DuplicateParameterException;
 import exception.predicate.NeedsBooleanPredicateException;
 import exception.predicate.UndeclaredIdentifierException;
@@ -9,7 +12,10 @@ import exception.reachability.RecursionException;
 import exception.type.*;
 import node.RootNode;
 import node.primary.IdentifierNode;
+import node.statement.TimedNode;
 import node.statement.control.AbstractControlNode;
+import node.statement.pins.PinIndexNode;
+import node.statement.pins.PinWriteNode;
 import node.statement.termination.AbstractTerminalNode;
 import node.statement.termination.ReturnNode;
 
@@ -25,6 +31,15 @@ public class ExceptionFactory {
 
             case "NEEDSBOOLEANPREDICATE":
                 return new NeedsBooleanPredicateException((AbstractControlNode) node);
+
+            case "ILLEGALPININDEX":
+                return new IllegalPinIndexException((PinIndexNode) node);
+
+            case "ILLEGALPINWRITE":
+                return new IllegalPinWriteValueException((PinWriteNode) node);
+
+            case "TIMEDTIME":
+                return new TimedTimeException((TimedNode) node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)
@@ -80,6 +95,12 @@ public class ExceptionFactory {
             return new NotReachableException(throwable);
         } else if(throwable instanceof ArgumentException) {
             return new NotReachableException(throwable);
+        } else if (throwable instanceof IllegalPinIndexException){
+            return new IllegalPinIndexException(throwable);
+        } else if (throwable instanceof  IllegalPinWriteValueException){
+            return new IllegalPinWriteValueException(throwable);
+        } else if (throwable instanceof TimedTimeException) {
+            return new TimedTimeException(throwable);
         }
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }

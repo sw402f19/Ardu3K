@@ -2,13 +2,22 @@ setup = {
 
 }
 loop = {
-    func(1);
-    if ! 2 < 3 do {
-        a = -3;
-    }
+    timed(2, fancy);
+    timed(1, func);
+    timed(4, funky);
 }
 
-func (x) = {
-    x = x * 2;
-    return x;
+fancy() = {
+    toggle(analog0);
+    return 1;
+}
+
+func() = {
+    toggle(analog1);
+    return 1;
+}
+
+funky() = {
+    toggle(analog2);
+    return 1;
 }

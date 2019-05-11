@@ -18,10 +18,13 @@ import node.statement.termination.*;
 import visitor.BaseASTVisitor;
 import visitor.semantic.ExpressionTypeVisitor;
 
+import java.io.*;
+
 public class CodeGenVisitor extends BaseASTVisitor<String> {
     private String tab = "    ";
     private int tabLevel = 0;
     private String imports = "";
+    private String timers = "";
 
     // Function for indenting the generated code
     private String tab() {
@@ -35,11 +38,29 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     public String visit(ProgramNode node) throws SemanticException {
         String str = "";
         if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
-        if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
         if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
+        if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
         if (!(imports.equals(""))) { str = imports + "\n" + str; }
+        if (!(timers.equals(""))) { str = "// Timers:\n" + timers + "// ======================\n" + str; }
+        str += getCustomArdu3kCode();
         return str;
+    }
+
+    private String getCustomArdu3kCode() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("./src/visitor/codegen/Ardu3K_CustomCode.cpp"));
+            StringBuilder code = new StringBuilder();
+            String str = "";
+
+            while (str != null) {
+                code.append(str + "\n");
+                str = br.readLine();
+            }
+
+            return code.toString();
+        } catch (IOException e) { e.printStackTrace(); }
+        return "";
     }
 
     public String visit(ListNode node) {
@@ -158,7 +179,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(DefinesNode node) throws SemanticException {
-        return visitChildrenStr(node);
+        return visitChildrenStr(node) + "\n";
     }
 
     public String visit(DefineNode node) throws SemanticException {
@@ -172,7 +193,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(FunctionsNode node) throws SemanticException {
-        return visitChildrenStr(node) + "\n";
+        return visitChildrenStr(node);
     }
 
     public String visit(LoopNode node) throws SemanticException {
@@ -280,8 +301,25 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return str;
     }
 
-    public String visit(PinToggleNode node) {
-        return "PIN_TOGGLE"; //TODO: Add our custom code to this
+    public String visit(PinIndexNode node) {
+        return node.getIndex() + ", " + node.getbAnalog();
+    }
+
+    public String visit(PinReadNode node) throws SemanticException {
+        return tab() + "Ardu3K_PinRead(" + visit(node.getPinIndexNode()) + ");";
+    }
+
+    public String visit(PinToggleNode node) throws SemanticException {
+        return tab() + "Ardu3K_TogglePin(" + visit(node.getPinIndexNode()) + ");";
+    }
+
+    public String visit(PinWriteNode node) throws SemanticException {
+        return tab() + "Ardu3K_PinWrite(" + visit(node.getPinIndexNode()) + ", " + visit(node.getWriteValue()) + ");";
+    }
+
+    public String visit(TimedNode node) throws SemanticException {
+        timers += "long " + node.getTimerName() + " = -1;\n";
+        return tab() + "Ardu3K_Timed(" + node.getWaitTime() + ", &" + node.getTimerName() + ", " + visit(node.getFuncID()) + ");";
     }
 
     public String visit(BreakNode node) {

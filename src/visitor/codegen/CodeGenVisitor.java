@@ -187,6 +187,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         String str = "(" ;
 
         for (int i = 0; i < node.children.size(); i++){
+            str += getPrimaryType(node.types.get(i))+" ";
             if (i != node.children.size() - 1){
                 str += visit(node.children.get(i)) + ", ";
             } else str += visit(node.children.get(i));

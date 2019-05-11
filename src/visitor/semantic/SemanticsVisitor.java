@@ -253,10 +253,17 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     public RootNode visit(FunctionNode node) throws SemanticException {
         Cloner cloner = new Cloner();
-        if(!symbolTable.isPresent(node.getId()))
-            symbolTable.enterSymbol(node, cloner.deepClone(symbolTable));
+        SymbolTable internalST;
+        if(!symbolTable.isPresent(node.getId())) {
+            internalST = cloner.deepClone(symbolTable);
+            internalST.enterSymbol(node, internalST);
+            symbolTable.enterSymbol(node, internalST);
+        }
         else {
             visit(node.getParameter());
+            visit(node.getBlock());
+            node.setReturnType(new ReturnTypeVisitor(symbolTable).visit(node.getBlock()));
+            symbolTable.closeScope();
         }
         return node;
     }

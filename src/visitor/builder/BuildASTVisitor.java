@@ -1,6 +1,7 @@
 package visitor.builder;
 
 
+import com.rits.cloning.Cloner;
 import node.RootNode;
 import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
@@ -31,10 +32,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     public BuildASTVisitor(SymbolTable symbolTable) {
         this.symbolTable = symbolTable;
-    }
-
-    public BuildASTVisitor() {
-        this.symbolTable = new SymbolTable();
     }
 
     @Override
@@ -87,8 +84,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.setId(visit(ctx.identifier()));
         node.setParameter(ctx.para != null ? visit(ctx.para) : new ParameterNode());
         node.setBlock(visit(ctx.block()));
-        node.setReturnType(new UndefinedNode());
-        symbolTable.enterSymbol(node);
         return (node.children.size() > 0 ? node : null);
     }
 
@@ -178,6 +173,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitFunction_stmt(Ardu3kParser.Function_stmtContext ctx) {
         FunctionStmtNode node = new FunctionStmtNode(ctx);
         node.setId(visit(ctx.id));
+        node.st = symbolTable;
         if(ctx.args != null)
             node.setArguments(visit(ctx.args));
         return node;

@@ -53,4 +53,7 @@ public class SymbolTable implements SymbolTableInterface{
     public boolean isPresent(RootNode n) {
         return symTable.containsKey(n);
     }
+    public HashMap<RootNode, Symbol> getTable(){
+        return this.symTable;
+    }
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class FunctionSymbol extends Symbol {
 
-    private ArrayList<FunctionNode> impls = new ArrayList<>();
+    public ArrayList<FunctionNode> impls = new ArrayList<>();
     public SymbolTable symTable;
 
 
@@ -67,12 +67,10 @@ public class FunctionSymbol extends Symbol {
         FunctionNode nodeToAdd = new FunctionNode();
         FunctionNode template = (FunctionNode) getType();
         PrimaryVisitor externalVisitor = new PrimaryVisitor(call.st);
-        ParameterNode parameter = (ParameterNode) template.getParameter();
+        ParameterNode parameter = cloner.deepClone((ParameterNode) template.getParameter());
 
         nodeToAdd.setId(cloner.deepClone(template.getId()));
         for(int i = 0; i < template.getParameter().children.size(); i++) {
-            // todo visiting call.getArguments with PrimaryVisitor will only return for the currently known ST
-            // todo and in reality it should return the type from the main ST.
             parameter.types.add(externalVisitor.visit(call.getArguments().children.get(i)));
         }
         nodeToAdd.setParameter(parameter);

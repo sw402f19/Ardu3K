@@ -11,7 +11,7 @@ loop = {
     ab = "ab";
     ab = ab + "ab";
     D = 10.150;
-    D = 10;
+    D = func(D);
 
 
 

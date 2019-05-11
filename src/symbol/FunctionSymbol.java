@@ -22,19 +22,19 @@ public class FunctionSymbol extends Symbol {
         this.symTable = symTable;
     }
 
-    public FunctionNode getImpl(FunctionStmtNode node) throws SemanticException {
+    public FunctionNode getImpl(FunctionStmtNode call) throws SemanticException {
         FunctionNode impl = null;
         PrimaryVisitor internalVisitor = new PrimaryVisitor(symTable);
-        PrimaryVisitor externalVisitor = new PrimaryVisitor(node.st);
+        PrimaryVisitor externalVisitor = new PrimaryVisitor(call.st);
         ParameterNode parameter;
 
         for(FunctionNode n : impls) {
             parameter = (ParameterNode)n.getParameter();
-            for(int i = 0; i < node.getArguments().children.size(); i++) {
-                if (!externalVisitor.visit(node.getArguments().children.get(i)).getClass()
+            for(int i = 0; i < call.getArguments().children.size(); i++) {
+                if (!externalVisitor.visit(call.getArguments().children.get(i)).getClass()
                         .isInstance(internalVisitor.visit(parameter.types.get(i))))
                     break;
-                if(i == node.getArguments().children.size() -1)
+                if(i == call.getArguments().children.size() -1)
                     impl = n;
             }
         }

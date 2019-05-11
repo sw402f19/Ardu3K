@@ -1,16 +1,20 @@
 package symbol;
 
 import com.rits.cloning.Cloner;
+import exception.factory.ExceptionFactory;
+import exception.factory.SemanticException;
 import node.RootNode;
 import node.scope.FunctionNode;
+import node.scope.ParameterNode;
 import node.statement.FunctionStmtNode;
+import visitor.semantic.PrimaryVisitor;
 
 import java.util.ArrayList;
 
 public class FunctionSymbol extends Symbol {
 
     private ArrayList<FunctionNode> impls = new ArrayList<>();
-    private SymbolTable symTable;
+    public SymbolTable symTable;
 
 
     public FunctionSymbol(RootNode name, RootNode type, SymbolTable symTable, int depth) {
@@ -18,13 +22,17 @@ public class FunctionSymbol extends Symbol {
         this.symTable = symTable;
     }
 
-    public FunctionNode getImpl(FunctionStmtNode node) {
+    public FunctionNode getImpl(FunctionStmtNode node, SymbolTable externalST) throws SemanticException {
         FunctionNode impl = null;
+        PrimaryVisitor internalVisitor = new PrimaryVisitor(symTable);
+        PrimaryVisitor externalVisitor = new PrimaryVisitor(externalST);
+        ParameterNode parameter;
 
         for(FunctionNode n : impls) {
+            parameter = (ParameterNode)n.getParameter();
             for(int i = 0; i < node.getArguments().children.size(); i++) {
-                if (!node.getArguments().children.get(i).getClass()
-                        .isInstance(n.getParameter().children.get(i)))
+                if (!externalVisitor.visit(node.getArguments().children.get(i)).getClass()
+                        .isInstance(internalVisitor.visit(parameter.types.get(i))))
                     break;
                 if(i == node.getArguments().children.size() -1)
                     impl = n;

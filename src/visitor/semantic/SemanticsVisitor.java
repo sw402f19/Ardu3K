@@ -233,17 +233,16 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(FunctionStmtNode node) throws SemanticException{
+    public RootNode visit(FunctionStmtNode node) {
         Symbol funcSym;
         try {
             funcSym = symbolTable.retrieveSymbol(node.getId());
             if(funcSym == null)
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
             if(funcSym instanceof FunctionSymbol) {
-                if(!((FunctionSymbol) funcSym).containsImpl(node)) {
+                if(!((FunctionSymbol) funcSym).containsImpl(node))
                     ((FunctionSymbol) funcSym).addImpl(node);
-                    visit(((FunctionSymbol) funcSym).getImpl(node));
-                }
+                visit(((FunctionSymbol) funcSym).getImpl(node));
             } else
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
         } catch (SemanticException e) {
@@ -252,12 +251,12 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(FunctionNode node) {
+    public RootNode visit(FunctionNode node) throws SemanticException {
         Cloner cloner = new Cloner();
         if(!symbolTable.isPresent(node.getId()))
             symbolTable.enterSymbol(node, cloner.deepClone(symbolTable));
         else {
-
+            visit(node.getParameter());
         }
         return node;
     }

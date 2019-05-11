@@ -270,11 +270,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {
         symbolTable.openScope();
+        int i = 0;
         for(RootNode n : node.children) {
             if(symbolTable.isPresent(n))
-                throw new DuplicateParameterException((IdentifierNode)n);
+                throw new DuplicateParameterException((IdentifierNode)n, symbolTable.retrieveSymbol(n).getType());
             else
-                symbolTable.enterSymbol((IdentifierNode) n);
+                symbolTable.enterSymbol((IdentifierNode) n, node.types.get(i));
+            i++;
         }
         return node;
     }

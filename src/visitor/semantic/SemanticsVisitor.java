@@ -117,8 +117,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         try {
             if(node.getDefinesNode() != null)
                 node.setDefineNode(visit(node.getDefinesNode()));
-            if(node.getFunctionsNode() != null)
-                node.setFunctionsNode(visit(node.getFunctionsNode()));
             if(node.getSetupNode() != null)
                 node.setSetupNode(visit(node.getSetupNode()));
             if(node.getLoopNode() != null)
@@ -136,11 +134,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     public RootNode visit(SetupNode node) throws SemanticException {
         visitChildren(node);
-        return node;
-    }
-
-    public RootNode visit(DefineNode node) {
-        symbolTable.enterSymbol(node);
         return node;
     }
 
@@ -306,20 +299,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(FunctionNode node) throws SemanticException {
-        Cloner cloner = new Cloner();
-        SymbolTable internalST;
-        if(!symbolTable.isPresent(node.getId())) {
-            internalST = cloner.deepClone(symbolTable);
-            internalST.enterSymbol(node, internalST);
-            symbolTable.enterSymbol(node, internalST);
-        }
-        else {
-            visit(node.getParameter());
-            visit(node.getBlock());
-            //FunctionChecker.Check(node);
-            node.setReturnType(new ReturnTypeVisitor(symbolTable).visit(node.getBlock()));
-            symbolTable.closeScope();
-        }
+        visit(node.getParameter());
+        visit(node.getBlock());
+        //FunctionChecker.Check(node);
+        node.setReturnType(new ReturnTypeVisitor(symbolTable).visit(node.getBlock()));
+        symbolTable.closeScope();
         return node;
     }
     public RootNode visit(ParameterNode node) throws DuplicateParameterException {

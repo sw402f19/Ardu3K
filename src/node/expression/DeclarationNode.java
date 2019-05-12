@@ -14,6 +14,8 @@ public class DeclarationNode extends AbstractDeclAssignNode {
     public DeclarationNode(AbstractInfixExpressionNode node) {
         this.setLeft(node.getLeft());
         this.setRight(node.getRight());
+        this.parent = node.parent;
+        this.line = node.line;
     }
 
     public String getName() {

@@ -301,6 +301,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(FunctionNode node) throws SemanticException {
         visit(node.getParameter());
         visit(node.getBlock());
+        // todo functioncheck
         //FunctionChecker.Check(node);
         node.setReturnType(new ReturnTypeVisitor(symbolTable).visit(node.getBlock()));
         symbolTable.closeScope();

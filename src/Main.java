@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         long time = System.currentTimeMillis();
         disableWarning();
-        CharStream is = CharStreams.fromFileName("test.txt");
+        CharStream is = CharStreams.fromFileName("test3.txt");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);
@@ -27,15 +27,14 @@ public class Main {
         RootNode dast;
 
         try {
-            SymbolTable symbolTable = new SymbolTable();
             Ardu3kParser.CompileUnitContext cst = parser.compileUnit();
-            ast =  new BuildASTVisitor(symbolTable).visitCompileUnit(cst);
-            dast = new SemanticsVisitor(symbolTable).visit(ast);
+            ast =  new BuildASTVisitor().visitCompileUnit(cst);
+            dast = new SemanticsVisitor().visit(ast);
             CodeGenerator.GenerateCode("testGenCode", dast);
             PrintInfo(System.currentTimeMillis() - time);
-        } catch (SemanticException e){
+        } /*catch (SemanticException e){
             System.out.println(e.getMessage());
-        } catch (Exception e) {
+        } */catch (Exception e) {
             e.printStackTrace();
         }
     }

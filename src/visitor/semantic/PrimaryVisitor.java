@@ -1,7 +1,5 @@
 package visitor.semantic;
 
-import exception.IllegalParameterTypeException;
-import exception.predicate.UndeclaredIdentifierException;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 
@@ -9,12 +7,15 @@ import node.RootNode;
 import node.primary.AbstractPrimaryNode;
 import node.primary.EnclosedExpressionNode;
 import node.primary.IdentifierNode;
-import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
+
 import symbol.FunctionSymbol;
+import symbol.Symbol;
 import symbol.SymbolTable;
+
 import visitor.BaseASTVisitor;
 
+@SuppressWarnings("Duplicates")
 public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
 
     protected SymbolTable symbolTable;
@@ -36,9 +37,14 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
     }
 
     public RootNode visit(FunctionStmtNode node) throws SemanticException {
-        if(symbolTable.isPresent(node.getId())) {
-            FunctionSymbol funcSym = (FunctionSymbol)symbolTable.retrieveSymbol(node.getId());
-            return funcSym.getImpl(node).getReturnType();
+        Symbol funcSym;
+        funcSym = symbolTable.retrieveSymbol(node.getId());
+        if(funcSym == null)
+            throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
+        if(funcSym instanceof FunctionSymbol) {
+            if(!((FunctionSymbol)symbolTable.retrieveSymbol(node.getId())).containsImpl(node))
+                new SemanticsVisitor(symbolTable).visit(node);
+            return ((FunctionSymbol) funcSym).getImpl(node).getReturnType();
         } else
             throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
     }

@@ -25,6 +25,7 @@ import node.statement.termination.ContinueNode;
 import node.statement.control.*;
 import node.statement.termination.ReturnNode;
 import org.antlr.v4.runtime.ParserRuleContext;
+import symbol.FunctionSymbol;
 import symbol.SymbolTable;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         DefineNode node = new DefineNode(ctx);
         node.setId(visit(ctx.id));
         node.setValue(visit(ctx.value));
+        symbolTable.enterSymbol(node);
         return node;
     }
 
@@ -79,7 +81,17 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     public RootNode visitFunctions(List<Ardu3kParser.FunctionContext> ctx) {
         FunctionsNode node = new FunctionsNode();
+        Cloner cloner = new Cloner();
+        SymbolTable internalST;
         collectChildren(node, ctx);
+
+        internalST = cloner.deepClone(symbolTable);
+        for(RootNode n : node.children) {
+            symbolTable.enterSymbol((FunctionNode)n, internalST);
+            internalST.enterSymbol((FunctionNode)n, internalST);
+            ((FunctionSymbol)internalST.retrieveSymbol(((FunctionNode) n).getId())).impls =
+                    ((FunctionSymbol)symbolTable.retrieveSymbol(((FunctionNode) n).getId())).impls;
+        }
         return node;
     }
     @Override

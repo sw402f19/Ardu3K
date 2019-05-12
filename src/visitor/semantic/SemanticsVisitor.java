@@ -16,6 +16,7 @@ import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.expression.unary.UnaryNegateNode;
 import node.expression.type.StringType;
+import node.primary.AbstractPrimaryNode;
 import node.primary.BoolNode;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
@@ -226,7 +227,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         try {
             RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
-            if(!(type instanceof NumeralType))
+            if(!(type instanceof AbstractPrimaryNode))
                 System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
             visitChildren(node);
         } catch (SemanticException e) {
@@ -258,7 +259,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
             visitChildren(node);
             RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
             if(!(type instanceof NumeralType))
-                throw ExceptionFactory.produce("needsbooleanpredicate", node);
+                throw ExceptionFactory.produce("needsnumeralpredicate", node, type);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }

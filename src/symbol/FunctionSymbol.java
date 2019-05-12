@@ -42,7 +42,8 @@ public class FunctionSymbol extends Symbol {
     }
     public boolean containsImpl(FunctionStmtNode call) throws SemanticException {
         boolean contains = false;
-        PrimaryVisitor visitor = new PrimaryVisitor(symTable);
+        PrimaryVisitor internalVisitor = new PrimaryVisitor(symTable);
+        PrimaryVisitor externalVisitor = new PrimaryVisitor(call.st);
         FunctionNode template = (FunctionNode)getType();
         ParameterNode parameter;
 
@@ -52,8 +53,8 @@ public class FunctionSymbol extends Symbol {
         for(FunctionNode n : impls) {
             parameter = (ParameterNode)n.getParameter();
             for(int i = 0; i < call.getArguments().children.size(); i++) {
-                if (!visitor.visit(call.getArguments().children.get(i)).getClass()
-                        .isInstance(visitor.visit(parameter.types.get(i))))
+                if (!externalVisitor.visit(call.getArguments().children.get(i)).getClass()
+                        .isInstance(internalVisitor.visit(parameter.types.get(i))))
                     break;
                 if(i == call.getArguments().children.size() -1)
                     contains = true;

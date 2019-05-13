@@ -15,8 +15,6 @@ import java.util.ArrayList;
 
 public class FunctionChecker {
 
-    private static FunctionChecker thisInstance = new FunctionChecker();
-
     public static void Check(FunctionStmtNode stmtNode, FunctionNode funcNode) throws ArgumentException{
         FunctionParameterArgumentChecker(funcNode, stmtNode);
         FunctionParameterTypeChecker(funcNode, stmtNode);
@@ -37,7 +35,7 @@ public class FunctionChecker {
     private static void RecursionCheck(FunctionNode funcNode, ArrayList<FunctionNode> calledFunctions, String rootInfo) throws RecursionException {
         for (RootNode node: funcNode.getBlock().children){
             if (node instanceof FunctionStmtNode){
-                FunctionNode func = (FunctionNode) SymbolTable.getInstance().retrieveSymbol(((FunctionStmtNode) node).getId()).getType();
+                FunctionNode func = (FunctionNode) new SymbolTable().retrieveSymbol(((FunctionStmtNode) node).getId()).getType();
 
                 if (calledFunctions.contains(func)){
                     throw new RecursionException(node.line + " Recursive call to function " + rootInfo);

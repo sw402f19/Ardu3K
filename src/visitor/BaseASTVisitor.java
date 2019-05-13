@@ -27,15 +27,13 @@ public class BaseASTVisitor<T> implements ASTVisitor<T> {
     }
 
     public T visitChildren(RootNode node) throws SemanticException {
-
         T dast = null;
 
-        if(node.children.size() > 0) {
+        if(node.children.size() > 0)
             for (RootNode n : node.children)
-                if (n != null) {
+                if (n != null)
                     dast = visit(n);
-                }
-        }
+
         return dast;
     }
     public T dispatch(Node node) throws Throwable {

@@ -6,11 +6,11 @@ import exception.pins.IllegalPinIndexException;
 import exception.pins.IllegalPinWriteValueException;
 import exception.predicate.DuplicateParameterException;
 import exception.predicate.NeedsBooleanPredicateException;
+import exception.predicate.NeedsNumeralPredicateException;
 import exception.predicate.UndeclaredIdentifierException;
 import exception.reachability.NotReachableException;
 import exception.reachability.RecursionException;
 import exception.type.*;
-import exception.type.IllegalArgumentException;
 import node.RootNode;
 import node.primary.IdentifierNode;
 import node.statement.TimedNode;
@@ -30,14 +30,8 @@ public class ExceptionFactory {
             case "UNDECLAREDIDENTIFIER":
                 return new UndeclaredIdentifierException((IdentifierNode) node);
 
-            case "DUPLICATEPARAMETER":
-                return new DuplicateParameterException((IdentifierNode) node);
-
             case "NEEDSBOOLEANPREDICATE":
                 return new NeedsBooleanPredicateException((AbstractControlNode) node);
-
-            case "ILLEGALARGUMENT":
-                return new IllegalArgumentException();
 
             case "ILLEGALPININDEX":
                 return new IllegalPinIndexException((PinIndexNode) node);
@@ -73,6 +67,12 @@ public class ExceptionFactory {
             case "NOTCASTABLE":
                 return new NotCastableException(src, target);
 
+            case "NEEDSNUMERALPREDICATE":
+                return new NeedsNumeralPredicateException((AbstractControlNode) src, target);
+
+            case "DUPLICATEPARAMETER":
+                return new DuplicateParameterException((IdentifierNode) src, target);
+
             default:
                 throw new NoProductException(exceptionClassName);
         }
@@ -89,23 +89,25 @@ public class ExceptionFactory {
             return new IncompatibleTypeExpection(throwable);
         else if (throwable instanceof NeedsBooleanPredicateException)
             return new NeedsBooleanPredicateException(throwable);
+        else if (throwable instanceof NeedsNumeralPredicateException)
+            return new NeedsNumeralPredicateException(throwable);
         else if (throwable instanceof NotCastableException)
             return new NotCastableException(throwable);
         else if (throwable instanceof UndeclaredIdentifierException)
             return new UndeclaredIdentifierException(throwable);
         else if (throwable instanceof RecursionException)
             return new RecursionException(throwable);
-        else if(throwable instanceof NotReachableException) {
+        else if(throwable instanceof NotReachableException)
             return new NotReachableException(throwable);
-        } else if(throwable instanceof ArgumentException) {
+        else if(throwable instanceof ArgumentException)
             return new NotReachableException(throwable);
-        } else if (throwable instanceof IllegalPinIndexException){
+        else if (throwable instanceof IllegalPinIndexException)
             return new IllegalPinIndexException(throwable);
-        } else if (throwable instanceof  IllegalPinWriteValueException){
+        else if (throwable instanceof  IllegalPinWriteValueException)
             return new IllegalPinWriteValueException(throwable);
-        } else if (throwable instanceof TimedTimeException) {
+        else if (throwable instanceof TimedTimeException)
             return new TimedTimeException(throwable);
-        }
+
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }
 }

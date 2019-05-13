@@ -11,6 +11,10 @@ public class FunctionNode extends RootNode {
 
     public FunctionNode(Ardu3kParser.FunctionContext ctx) { super(ctx); }
 
+    public FunctionNode() {
+
+    }
+
     @Override
     public String toString() { return "Function "; }
 
@@ -39,5 +43,4 @@ public class FunctionNode extends RootNode {
     }
     public void setReturnType(RootNode type) { this.type = type; }
     public RootNode getReturnType() { return this.type; }
-
 }

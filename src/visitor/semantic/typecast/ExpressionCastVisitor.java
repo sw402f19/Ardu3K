@@ -5,10 +5,15 @@ import exception.factory.ExceptionFactory;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.AbstractPrimaryNode;
+import symbol.SymbolTable;
 import visitor.semantic.PrimaryVisitor;
 
 @SuppressWarnings("Duplicates")
 public class ExpressionCastVisitor extends PrimaryVisitor {
+
+    public ExpressionCastVisitor(SymbolTable symbolTable) {
+        super(symbolTable);
+    }
 
     private RootNode expectedType;
 

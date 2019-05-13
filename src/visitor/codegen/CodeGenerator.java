@@ -10,8 +10,6 @@ import java.io.IOException;
 
 public class CodeGenerator {
 
-    public static CodeGenerator thisInstance;
-
     // The primary function for generating code
     public static void GenerateCode(String fileName, RootNode topNode) throws IOException, SemanticException, RuntimeException {
         if (topNode instanceof ProgramNode) {

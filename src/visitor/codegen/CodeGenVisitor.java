@@ -20,7 +20,7 @@ import visitor.semantic.ExpressionTypeVisitor;
 
 import java.io.*;
 
-public class CodeGenVisitor extends BaseASTVisitor<Void> {
+public class CodeGenVisitor extends BaseASTVisitor<String> {
     private String tab = "    ";
     private int tabLevel = 0;
     private String imports = "";
@@ -140,7 +140,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
 
     public String visit(DeclarationNode node) throws SemanticException {
         String str = tab();
-        str += getPrimaryType(new ExpressionTypeVisitor().visit(node.getRight()));
+        str += getPrimaryType(node.type);
         str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
         return str;
     }
@@ -208,6 +208,7 @@ public class CodeGenVisitor extends BaseASTVisitor<Void> {
         String str = "(" ;
 
         for (int i = 0; i < node.children.size(); i++){
+            str += getPrimaryType(node.types.get(i))+" ";
             if (i != node.children.size() - 1){
                 str += visit(node.children.get(i)) + ", ";
             } else str += visit(node.children.get(i));

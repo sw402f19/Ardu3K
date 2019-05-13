@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         long time = System.currentTimeMillis();
         disableWarning();
-        CharStream is = CharStreams.fromFileName("test.txt");
+        CharStream is = CharStreams.fromFileName("test3.txt");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);
@@ -54,6 +54,7 @@ public class Main {
         System.out.println(line);
         //ast.print(0);
     }
+
     public static void disableWarning() {
         try {
             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");

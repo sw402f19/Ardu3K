@@ -357,7 +357,15 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         if (!(clockNames.contains(node.getClockName()))) {
             clockNames.add(node.getClockName());
         }
-        return "AFTER | Time in ms == " + visit(node.getTime());
+        String str = tab() + "if (Ardu3K_AfterCheck("+ node.getClockName() + ", " + visit(node.getTime());
+        if (node.getStmt() instanceof BlockNode) {
+            str += ")) " + visit(node.getStmt());
+        } else {
+            tabLevel--;
+            str += ")) { " + visit(node.getStmt()) + " }";
+            tabLevel++;
+        }
+        return str;
     }
 
     public String visit(BeforeNode node) throws SemanticException{
@@ -365,7 +373,15 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         if (!(clockNames.contains(node.getClockName()))) {
             clockNames.add(node.getClockName());
         }
-        return "BEFORE | Time in ms == " + visit(node.getTime());
+        String str = tab() + "if (Ardu3K_BeforeCheck("+ node.getClockName() + ", " + visit(node.getTime());
+        if (node.getStmt() instanceof BlockNode) {
+            str += ")) " + visit(node.getStmt());
+        } else {
+            tabLevel--;
+            str += ")) { " + visit(node.getStmt()) + " }";
+            tabLevel++;
+        }
+        return str;
     }
 
     public String visit(TimeNode node) {

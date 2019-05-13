@@ -1,12 +1,8 @@
 package visitor.semantic;
 
-import com.rits.cloning.Cloner;
-import exception.*;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
-import exception.predicate.UndeclaredIdentifierException;
-import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.*;
 import node.expression.additive.PlusNode;
@@ -33,10 +29,6 @@ import symbol.Symbol;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
-
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {

@@ -20,6 +20,7 @@ import visitor.semantic.ExpressionTypeVisitor;
 
 import java.io.*;
 
+@SuppressWarnings("Duplicates")
 public class CodeGenVisitor extends BaseASTVisitor<String> {
     private String tab = "    ";
     private int tabLevel = 0;

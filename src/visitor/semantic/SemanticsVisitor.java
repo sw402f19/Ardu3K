@@ -1,12 +1,8 @@
 package visitor.semantic;
 
-import com.rits.cloning.Cloner;
-import exception.*;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
-import exception.predicate.UndeclaredIdentifierException;
-import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.*;
 import node.expression.additive.PlusNode;
@@ -24,7 +20,6 @@ import node.scope.*;
 import node.statement.CaseNode;
 import node.statement.DefaultNode;
 import node.statement.FunctionStmtNode;
-import node.statement.TimedNode;
 import node.statement.control.*;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinReadNode;
@@ -35,10 +30,6 @@ import symbol.Symbol;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
-
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
@@ -155,12 +146,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
             }
         }
-        return node;
-    }
-
-    public RootNode visit(TimedNode node) throws SemanticException {
-        visit(node.getFuncID());
-        if (node.getWaitTime() <= 0) { throw ExceptionFactory.produce("TIMEDTIME", node); }
         return node;
     }
 

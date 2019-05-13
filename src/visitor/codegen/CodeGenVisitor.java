@@ -317,11 +317,6 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return tab() + "Ardu3K_PinWrite(" + visit(node.getPinIndexNode()) + ", " + visit(node.getWriteValue()) + ");";
     }
 
-    public String visit(TimedNode node) throws SemanticException {
-        timers += "long " + node.getTimerName() + " = -1;\n";
-        return tab() + "Ardu3K_Timed(" + node.getWaitTime() + ", &" + node.getTimerName() + ", " + visit(node.getFuncID()) + ");";
-    }
-
     public String visit(BreakNode node) {
         return tab() + "break;";
     }

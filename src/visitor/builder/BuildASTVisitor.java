@@ -218,14 +218,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitTimed_stmt(Ardu3kParser.Timed_stmtContext ctx) {
-        TimedNode node = new TimedNode();
-        node.setWaitTime(Integer.valueOf(ctx.time.getText()));
-        node.setFuncID(visit(ctx.id));
-        return node;
-    }
-
-    @Override
     public RootNode visitPin_index(Ardu3kParser.Pin_indexContext ctx) {
         PinIndexNode node = new PinIndexNode();
         node.setIndex(Integer.valueOf(ctx.index.getText()));

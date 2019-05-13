@@ -40,7 +40,7 @@ stmt
     | timed_stmt                                                    #stmtTimed
     ;
 timed_stmt
-    : TIMED LPAR time=INTEGER COMMA id=identifier RPAR SEMI
+    : SEMI
     ;
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
@@ -264,4 +264,3 @@ READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
 ANALOG: 'analog';
-TIMED: 'timed';

@@ -1,8 +1,7 @@
 package exception;
 
 import exception.factory.SemanticException;
-import node.statement.TimedNode;
-import node.statement.pins.PinIndexNode;
+import node.RootNode;
 
 public class TimedTimeException extends SemanticException {
 
@@ -17,7 +16,7 @@ public class TimedTimeException extends SemanticException {
         super(cause);
     }
 
-    public TimedTimeException(TimedNode node) {
-        super(node.line + node.getWaitTime() + "is invalid wait time!");
+    public TimedTimeException(RootNode node) {
+        super(node.line  + "is invalid wait time!");
     }
 }

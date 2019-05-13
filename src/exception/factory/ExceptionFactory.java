@@ -13,7 +13,6 @@ import exception.reachability.RecursionException;
 import exception.type.*;
 import node.RootNode;
 import node.primary.IdentifierNode;
-import node.statement.TimedNode;
 import node.statement.control.AbstractControlNode;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinWriteNode;
@@ -40,7 +39,7 @@ public class ExceptionFactory {
                 return new IllegalPinWriteValueException((PinWriteNode) node);
 
             case "TIMEDTIME":
-                return new TimedTimeException((TimedNode) node);
+                return new TimedTimeException((node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)

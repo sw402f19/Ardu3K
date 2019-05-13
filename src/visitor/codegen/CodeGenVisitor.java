@@ -349,10 +349,12 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     public String visit(FunctionStmtNode node) throws SemanticException {
         String str = tab() + visit(node.getId()) + "(";
 
-        for (int i = 0; i < node.getArguments().children.size(); i++){
-            if (i != node.getArguments().children.size() -1){
-                str += visit(node.getArguments().children.get(i)) + ", ";
-            } else str += visit(node.getArguments().children.get(i));
+        if (node.children.size() > 1) {
+            for (int i = 0; i < node.getArguments().children.size(); i++) {
+                if (i != node.getArguments().children.size() - 1) {
+                    str += visit(node.getArguments().children.get(i)) + ", ";
+                } else str += visit(node.getArguments().children.get(i));
+            }
         }
 
         return str + ");";

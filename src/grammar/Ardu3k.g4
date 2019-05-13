@@ -40,8 +40,8 @@ stmt
     | time_stmt                                                     #stmtTimed
     ;
 time_stmt
-    : BEFORE time=primary IN clockName=ID DO exec=stmt
-    | AFTER time=primary IN clockName=ID DO exec=stmt
+    : BEFORE time=expression IN clockName=ID DO exec=stmt           #beforeStmt
+    | AFTER time=expression IN clockName=ID DO exec=stmt            #afterStmt
     ;
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
@@ -158,9 +158,9 @@ list_element
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
-    | val=INTEGER MILI                              #primaryType
-    | val=INTEGER SEC                               #primaryType
-    | val=INTEGER MIN                               #primaryType
+    | val=INTEGER type=MILI                         #primaryTime
+    | val=INTEGER type=SEC                          #primaryTime
+    | val=INTEGER type=MIN                          #primaryTime
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt

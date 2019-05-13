@@ -20,7 +20,7 @@ void Ardu3K_Timed(long delayTime, long *usedTime, void (*func)()) {
 
 // Sets pin to read state before reading
 int Ardu3K_PinRead(int index, bool bAnalog) {
-    if (index >= 0 && index <= 14) {
+    if (index >= 0 && index <= 13) {
         if (bAnalog == true) {
             switch (index) {
                 case 0:

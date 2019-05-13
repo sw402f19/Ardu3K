@@ -11,6 +11,8 @@ import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.unary.UnaryNegateNode;
+import node.primary.Time.TimeNode;
+import node.primary.Time.TimeType;
 import node.statement.*;
 import node.scope.*;
 import node.primary.*;
@@ -24,6 +26,8 @@ import node.statement.termination.BreakNode;
 import node.statement.termination.ContinueNode;
 import node.statement.control.*;
 import node.statement.termination.ReturnNode;
+import node.statement.time.AfterNode;
+import node.statement.time.BeforeNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
 import symbol.SymbolTable;
@@ -222,6 +226,44 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         PinIndexNode node = new PinIndexNode();
         node.setIndex(Integer.valueOf(ctx.index.getText()));
         if (ctx.analog !=  null) { node.setbAnalog(true); }
+        return node;
+    }
+
+    @Override
+    public RootNode visitBeforeStmt(Ardu3kParser.BeforeStmtContext ctx) {
+        BeforeNode node = new BeforeNode();
+        node.setTime(visit(ctx.time));
+        node.setClockName(ctx.clockName.getText());
+        node.setStmt(visit(ctx.exec));
+        return node;
+    }
+
+    @Override
+    public RootNode visitAfterStmt(Ardu3kParser.AfterStmtContext ctx) {
+        AfterNode node = new AfterNode();
+        node.setTime(visit(ctx.time));
+        node.setClockName(ctx.clockName.getText());
+        node.setStmt(visit(ctx.exec));
+        return node;
+    }
+
+    @Override
+    public RootNode visitPrimaryTime(Ardu3kParser.PrimaryTimeContext ctx) {
+        TimeNode node = new TimeNode();
+        node.setAssignedValue(Integer.valueOf(ctx.val.getText()));
+
+        switch (ctx.type.getText()){
+            case "ms":
+                node.setType(TimeType.MS);
+                break;
+            case "sec":
+                node.setType(TimeType.S);
+                break;
+            case "min":
+                node.setType(TimeType.M);
+                break;
+        }
+
         return node;
     }
 

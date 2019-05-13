@@ -145,7 +145,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(PinIndexNode node) throws SemanticException {
-        // NOTE: These ports are what is allowed on an Arduino Uno
+        // todo: These ports are what is allowed on an Arduino Uno
         if (node.getbAnalog()) {
             if (node.getIndex() > 5 || node.getIndex() < 0) {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
@@ -316,7 +316,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         visit(node.getBlock());
         // todo functioncheck
         //FunctionChecker.Check(node);
-        node.setReturnType(new ReturnTypeVisitor(symbolTable).visit(node.getBlock()));
+        node.setReturnType(new ReturnTypeVisitor(symbolTable).initVisit(node.getBlock()));
         symbolTable.closeScope();
         return node;
     }

@@ -2,9 +2,9 @@ setup = {
 
 }
 loop = {
-    timed(2, fancy);
-    timed(1, func);
-    timed(4, funky);
+    timed(2, fancy());
+    timed(1, func());
+    timed(4, funky());
     fancy();
     funky(1, 45);
 }

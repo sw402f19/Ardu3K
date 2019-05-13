@@ -5,6 +5,8 @@ loop = {
     timed(2, fancy);
     timed(1, func);
     timed(4, funky);
+    fancy();
+    funky(1, 45);
 }
 
 fancy() = {
@@ -17,7 +19,7 @@ func() = {
     return 1;
 }
 
-funky() = {
+funky(s, x) = {
     toggle(analog2);
     return 1;
 }

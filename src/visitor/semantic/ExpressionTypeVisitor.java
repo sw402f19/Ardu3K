@@ -1,5 +1,6 @@
 package visitor.semantic;
 
+import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.composite.ListNode;
@@ -8,6 +9,7 @@ import node.expression.AbstractInfixExpressionNode;
 import exception.type.IllegalTypeException;
 import node.primary.*;
 import symbol.SymbolTable;
+import visitor.semantic.typecast.ExpressionCastVisitor;
 import visitor.semantic.typecast.TypeCaster;
 
 import java.util.ArrayList;
@@ -38,27 +40,21 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
         node1.setLine(node.line);
         return node1;
     }
-    public RootNode visit(ListNode node) throws IllegalTypeException {
-        RootNode firstElement = node.getFirstElement();
+    // todo wip
+    public RootNode visit(ListNode node) throws SemanticException {
+        RootNode type = node.getFirstElement();
+        ExpressionCastVisitor visitor = new ExpressionCastVisitor(symbolTable);
 
-        if (firstElement instanceof AbstractPrimaryNode){
-            visit(firstElement, firstElement);
-        } else throw new IllegalTypeException("INVALID first type in list");
+        for(RootNode n : node.children)
+            if(!n.getClass().equals(type.getClass()))
+                type = visitor.initVisit(n, type);
 
+        if(!(type.getClass().equals(node.getFirstElement().getClass())))
+            for(RootNode n : node.children)
+                node.children.set(node.children.indexOf(n), TypeCaster.cast(n, type));
+
+        node.type = type;
         return node;
-    }
-    // Visitor used to ensure that all elements is the same type as the first element in a ListNode
-    public void visit(RootNode element, RootNode firstElement) throws IllegalTypeException {
-        if (element != null) {
-            if (element.getClass().getSimpleName().equals(firstElement.getClass().getSimpleName())){
-
-                // Recursively run down the list and check if types are compatible
-                if (element.children.size() > 0){
-                    visit(element.children.get(0), firstElement);
-                }
-
-            } else throw new IllegalTypeException("Types in list are not the same!");
-        }
     }
     private RootNode highestOrder(RootNode left, RootNode right) throws SemanticException {
         if(types.indexOf(left.getClass()) < types.indexOf(right.getClass()))

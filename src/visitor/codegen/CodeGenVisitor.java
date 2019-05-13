@@ -64,8 +64,15 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return "";
     }
 
-    public String visit(ListNode node) {
-        return "LIST"; //TODO: Add our custom code to this
+    public String visit(ListNode node) throws SemanticException {
+        String str;
+        str = "{";
+        for(RootNode n : node.children) {
+            str += visit(n);
+            str += ", ";
+        }
+        str += "}";
+        return str;
     }
 
     public String visit(MinusNode node) throws SemanticException {

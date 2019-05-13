@@ -6,7 +6,7 @@ setup = {
 }
 loop = {
 
-    arr = [1, 4, 2, 6];
+    arr = [1, 4.5, 2, 6];
 
     ab = "ab";
     ab = ab + "ab";
@@ -54,5 +54,5 @@ funcc(a) = {
     return a;
 }
 funccc(a) = {
-    toggle(a);
+    toggle(1);
 }

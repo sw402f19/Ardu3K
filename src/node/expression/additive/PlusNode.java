@@ -4,8 +4,9 @@ import gen.Ardu3kParser;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
 
-public class PlusNode extends AbstractInfixAdditiveNode{
+public class PlusNode extends AbstractInfixAdditiveNode {
 
+    public PlusNode() {}
     public PlusNode(Ardu3kParser.InfixAdditiveExprContext ctx) {
         super(ctx);
     }

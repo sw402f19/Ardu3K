@@ -6,6 +6,7 @@ import exception.pins.IllegalPinIndexException;
 import exception.pins.IllegalPinWriteValueException;
 import exception.predicate.DuplicateParameterException;
 import exception.predicate.NeedsBooleanPredicateException;
+import exception.predicate.NeedsNumeralPredicateException;
 import exception.predicate.UndeclaredIdentifierException;
 import exception.reachability.NotReachableException;
 import exception.reachability.RecursionException;
@@ -66,6 +67,9 @@ public class ExceptionFactory {
             case "NOTCASTABLE":
                 return new NotCastableException(src, target);
 
+            case "NEEDSNUMERALPREDICATE":
+                return new NeedsNumeralPredicateException((AbstractControlNode) src, target);
+
             case "DUPLICATEPARAMETER":
                 return new DuplicateParameterException((IdentifierNode) src, target);
 
@@ -85,23 +89,25 @@ public class ExceptionFactory {
             return new IncompatibleTypeExpection(throwable);
         else if (throwable instanceof NeedsBooleanPredicateException)
             return new NeedsBooleanPredicateException(throwable);
+        else if (throwable instanceof NeedsNumeralPredicateException)
+            return new NeedsNumeralPredicateException(throwable);
         else if (throwable instanceof NotCastableException)
             return new NotCastableException(throwable);
         else if (throwable instanceof UndeclaredIdentifierException)
             return new UndeclaredIdentifierException(throwable);
         else if (throwable instanceof RecursionException)
             return new RecursionException(throwable);
-        else if(throwable instanceof NotReachableException) {
+        else if(throwable instanceof NotReachableException)
             return new NotReachableException(throwable);
-        } else if(throwable instanceof ArgumentException) {
+        else if(throwable instanceof ArgumentException)
             return new NotReachableException(throwable);
-        } else if (throwable instanceof IllegalPinIndexException){
+        else if (throwable instanceof IllegalPinIndexException)
             return new IllegalPinIndexException(throwable);
-        } else if (throwable instanceof  IllegalPinWriteValueException){
+        else if (throwable instanceof  IllegalPinWriteValueException)
             return new IllegalPinWriteValueException(throwable);
-        } else if (throwable instanceof TimedTimeException) {
+        else if (throwable instanceof TimedTimeException)
             return new TimedTimeException(throwable);
-        }
+
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }
 }

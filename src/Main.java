@@ -54,6 +54,7 @@ public class Main {
         System.out.println(line);
         //ast.print(0);
     }
+
     public static void disableWarning() {
         try {
             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");

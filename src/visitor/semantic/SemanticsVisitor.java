@@ -12,11 +12,13 @@ import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.expression.unary.UnaryNegateNode;
 import node.expression.type.StringType;
+import node.primary.AbstractPrimaryNode;
 import node.primary.BoolNode;
 import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
 import node.statement.CaseNode;
+import node.statement.DefaultNode;
 import node.statement.FunctionStmtNode;
 import node.statement.TimedNode;
 import node.statement.control.*;
@@ -135,7 +137,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(PinIndexNode node) throws SemanticException {
-        // NOTE: These ports are what is allowed on an Arduino Uno
+        // todo: These ports are what is allowed on an Arduino Uno
         if (node.getbAnalog()) {
             if (node.getIndex() > 5 || node.getIndex() < 0) {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
@@ -218,7 +220,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         symbolTable.openScope();
         try {
             RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
-            if(!(type instanceof NumeralType))
+            if(!(type instanceof AbstractPrimaryNode))
                 System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
             visitChildren(node);
         } catch (SemanticException e) {
@@ -237,6 +239,17 @@ public class SemanticsVisitor extends PrimaryVisitor {
             RootNode parentType = new ExpressionTypeVisitor(symbolTable).visit(parent.getExpression());
             if(!(type.getClass().equals(parentType.getClass())))
                 throw ExceptionFactory.produce("incompatibletype", parentType, type);
+            visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
+        symbolTable.closeScope();
+        return node;
+    }
+    public RootNode visit(DefaultNode node) {
+        symbolTable.openScope();
+        try {
+            visitChildren(node);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
@@ -250,7 +263,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
             visitChildren(node);
             RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
             if(!(type instanceof NumeralType))
-                throw ExceptionFactory.produce("needsbooleanpredicate", node);
+                throw ExceptionFactory.produce("needsnumeralpredicate", node, type);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
@@ -295,7 +308,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         visit(node.getBlock());
         // todo functioncheck
         //FunctionChecker.Check(node);
-        node.setReturnType(new ReturnTypeVisitor(symbolTable).visit(node.getBlock()));
+        node.setReturnType(new ReturnTypeVisitor(symbolTable).initVisit(node.getBlock()));
         symbolTable.closeScope();
         return node;
     }

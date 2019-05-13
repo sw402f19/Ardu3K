@@ -192,6 +192,8 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.st = symbolTable;
         if(ctx.args != null)
             node.setArguments(visit(ctx.args));
+        else
+            node.setArguments(new ArgumentNode());
         return node;
     }
 

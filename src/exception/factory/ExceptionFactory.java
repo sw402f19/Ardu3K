@@ -39,7 +39,7 @@ public class ExceptionFactory {
                 return new IllegalPinWriteValueException((PinWriteNode) node);
 
             case "TIMEDTIME":
-                return new TimedTimeException((node);
+                return new TimedTimeException(node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)

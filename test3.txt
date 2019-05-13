@@ -2,23 +2,6 @@ setup = {
 
 }
 loop = {
-    timed(2, fancy);
-    timed(1, func);
-    timed(4, funky);
-    fancy();
-    funky(1, 45);
-}
-
-fancy() = {
-    toggle(analog0);
-}
-
-func() = {
-    toggle(analog1);
-    return 1;
-}
-
-funky(s, x) = {
-    toggle(analog2);
-    return 1;
+   before 10ms in clockX do toggle(analog1);
+   after 1min in ClockY do toggle(analog2);
 }

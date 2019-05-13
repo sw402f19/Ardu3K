@@ -37,10 +37,11 @@ stmt
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
     | comment                                                       #stmtComment
-    | timed_stmt                                                    #stmtTimed
+    | time_stmt                                                     #stmtTimed
     ;
-timed_stmt
-    : SEMI
+time_stmt
+    : BEFORE time=primary IN clockName=ID DO exec=stmt
+    | AFTER time=primary IN clockName=ID DO exec=stmt
     ;
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
@@ -157,6 +158,9 @@ list_element
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
+    | val=INTEGER MILI                              #primaryType
+    | val=INTEGER SEC                               #primaryType
+    | val=INTEGER MIN                               #primaryType
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt
@@ -264,3 +268,10 @@ READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
 ANALOG: 'analog';
+SEC: 'sec';
+MILI: 'ms';
+MIN: 'min';
+BEFORE: 'before';
+AFTER: 'after';
+IN: 'in';
+ID: [a-zA-Z]+;

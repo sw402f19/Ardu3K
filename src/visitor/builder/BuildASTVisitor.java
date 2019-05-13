@@ -233,7 +233,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitBeforeStmt(Ardu3kParser.BeforeStmtContext ctx) {
         BeforeNode node = new BeforeNode();
         node.setTime(visit(ctx.time));
-        node.setClockName(ctx.clockName.getText());
+        node.setClockName((visit(ctx.clockName)).toString());
         node.setStmt(visit(ctx.exec));
         return node;
     }
@@ -242,7 +242,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitAfterStmt(Ardu3kParser.AfterStmtContext ctx) {
         AfterNode node = new AfterNode();
         node.setTime(visit(ctx.time));
-        node.setClockName(ctx.clockName.getText());
+        node.setClockName((visit(ctx.clockName)).toString());
         node.setStmt(visit(ctx.exec));
         return node;
     }

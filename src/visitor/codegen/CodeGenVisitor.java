@@ -10,21 +10,26 @@ import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.unary.*;
 import node.primary.*;
+import node.primary.Time.TimeNode;
 import node.scope.*;
 import node.statement.*;
 import node.statement.control.*;
 import node.statement.pins.*;
 import node.statement.termination.*;
+import node.statement.time.AfterNode;
+import node.statement.time.BeforeNode;
 import visitor.BaseASTVisitor;
 import visitor.semantic.ExpressionTypeVisitor;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class CodeGenVisitor extends BaseASTVisitor<String> {
     private String tab = "    ";
     private int tabLevel = 0;
     private String imports = "";
-    private String timers = "";
+    private LinkedList<String> clockNames = new LinkedList<>();
 
     // Function for indenting the generated code
     private String tab() {
@@ -36,15 +41,33 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(ProgramNode node) throws SemanticException {
-        String str = "";
-        if(node.getDefinesNode() != null) { str += visit(node.getDefinesNode()); }
-        if(node.getSetupNode() != null) { str += visit(node.getSetupNode()); }
-        if(node.getLoopNode() != null) { str += visit(node.getLoopNode()); }
-        if(node.getFunctionsNode() != null) { str += visit(node.getFunctionsNode()); }
-        if (!(imports.equals(""))) { str = imports + "\n" + str; }
-        if (!(timers.equals(""))) { str = "// Timers:\n" + timers + "// ======================\n" + str; }
-        str += getCustomArdu3kCode();
-        return str;
+        // Declare strings
+        String output = "";
+        String defines = "";
+        String setup = "";
+        String loop = "";
+        String functions = "";
+
+        // Gather content of strings
+        if(node.getDefinesNode() != null) { defines += visit(node.getDefinesNode()); }
+        if(node.getSetupNode() != null) { setup += visit(node.getSetupNode()); }
+        if(node.getLoopNode() != null) { loop += visit(node.getLoopNode()); }
+        if(node.getFunctionsNode() != null) { functions += visit(node.getFunctionsNode()); }
+
+        // Construct the final file
+        if (!(imports.equals(""))) { output += imports + "\n"; }
+        if (!(defines.equals(""))) { output += defines; }
+        output += setup;
+        if (clockNames.size() != 0) {
+            output += "// Clocks for the time functions\n";
+            for (String str : clockNames){
+                output += "long " + str + " = millis();\n";
+            }
+            output += "\n";
+        }
+        output += loop + functions;
+        output += getCustomArdu3kCode();
+        return output;
     }
 
     private String getCustomArdu3kCode() {
@@ -327,6 +350,26 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
 
     public String visit(ReturnNode node) throws SemanticException {
         return tab() + "return " + visit(node.getExpression()) + ";";
+    }
+
+    public String visit(AfterNode node) throws SemanticException {
+        // Add name to list of clocks to be created
+        if (!(clockNames.contains(node.getClockName()))) {
+            clockNames.add(node.getClockName());
+        }
+        return "AFTER | Time in ms == " + visit(node.getTime());
+    }
+
+    public String visit(BeforeNode node) throws SemanticException{
+        // Add name to list of clocks to be created
+        if (!(clockNames.contains(node.getClockName()))) {
+            clockNames.add(node.getClockName());
+        }
+        return "BEFORE | Time in ms == " + visit(node.getTime());
+    }
+
+    public String visit(TimeNode node) {
+        return node.getRealValue() + "";
     }
 
     public String visit(CaseNode node) throws SemanticException {

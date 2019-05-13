@@ -1,8 +1,17 @@
-setup = {
+#define BAA 13
+#define A 15
 
+setup = {
+    a = 2 ^2;
 }
 loop = {
    before 10ms in clockX do toggle(analog1);
    after 1min in ClockY do toggle(analog2);
    after 1sec in ClockY do toggle(analog2);
+   funcc(2);
+}
+
+funcc (a) = {
+    a = 10;
+    return a;
 }

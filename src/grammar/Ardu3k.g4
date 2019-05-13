@@ -40,8 +40,8 @@ stmt
     | time_stmt                                                     #stmtTimed
     ;
 time_stmt
-    : BEFORE time=expression IN clockName=ID DO exec=stmt           #beforeStmt
-    | AFTER time=expression IN clockName=ID DO exec=stmt            #afterStmt
+    : BEFORE time=expression IN clockName=identifier DO exec=stmt           #beforeStmt
+    | AFTER time=expression IN clockName=identifier DO exec=stmt            #afterStmt
     ;
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
@@ -274,4 +274,3 @@ MIN: 'min';
 BEFORE: 'before';
 AFTER: 'after';
 IN: 'in';
-ID: [a-zA-Z]+;

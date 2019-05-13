@@ -22,6 +22,7 @@ import node.primary.IdentifierNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
 import node.statement.CaseNode;
+import node.statement.DefaultNode;
 import node.statement.FunctionStmtNode;
 import node.statement.TimedNode;
 import node.statement.control.*;
@@ -246,6 +247,17 @@ public class SemanticsVisitor extends PrimaryVisitor {
             RootNode parentType = new ExpressionTypeVisitor(symbolTable).visit(parent.getExpression());
             if(!(type.getClass().equals(parentType.getClass())))
                 throw ExceptionFactory.produce("incompatibletype", parentType, type);
+            visitChildren(node);
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
+        symbolTable.closeScope();
+        return node;
+    }
+    public RootNode visit(DefaultNode node) {
+        symbolTable.openScope();
+        try {
+            visitChildren(node);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }

@@ -4,18 +4,20 @@
 *   The code directly manipulates the bitmasks controlling pins, for better efficiency
 */
 
-#define SECOND 1000
+bool Ardu3K_AfterCheck(long startTime, long waitTime) {
+  long desiredTime = startTime + waitTime;
 
-// Function meant to be called every loop cycle
-// It checks if the desired amounts of seconds is reached
-// If reached, then it will call the function given as input
-void Ardu3K_Timed(long delayTime, long *usedTime, void (*func)()) {
-    long seconds = millis() / SECOND;
-    if (*usedTime != seconds) {
-        int checkTime = seconds % delayTime;
-        if (checkTime == 0) { func(); }
-        *usedTime = seconds;
-    }
+  if (desiredTime < millis()){
+      return true;
+  } else return false;
+}
+
+bool Ardu3K_BeforeCheck(long startTime, long waitTime) {
+  long desiredTime = startTime + waitTime;
+
+  if (desiredTime > millis()){
+      return true;
+  } else return false;
 }
 
 // Sets pin to read state before reading

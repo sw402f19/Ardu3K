@@ -28,6 +28,11 @@ public class FunctionSymbol extends Symbol {
         PrimaryVisitor externalVisitor = new PrimaryVisitor(call.st);
         ParameterNode parameter;
 
+        if(call.getArguments().children.size() == 0)
+            for(FunctionNode n : impls)
+                if(n.getParameter().children.size() == 0)
+                    return n;
+
         for(FunctionNode n : impls) {
             parameter = (ParameterNode)n.getParameter();
             for(int i = 0; i < call.getArguments().children.size(); i++) {
@@ -46,6 +51,8 @@ public class FunctionSymbol extends Symbol {
         PrimaryVisitor externalVisitor = new PrimaryVisitor(call.st);
         FunctionNode template = (FunctionNode)getType();
         ParameterNode parameter;
+
+
 
         if(call.getArguments().children.size() != template.getParameter().children.size())
             throw ExceptionFactory.produce("undeclaredidentifier", call.getId());

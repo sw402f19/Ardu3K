@@ -11,8 +11,8 @@ loop = {
     ab = "ab";
     ab = ab + "ab";
     D = 10.150;
-    D = func(D);
 
+    funccc();
 
 
     if true do
@@ -42,7 +42,6 @@ loop = {
         a = (a + 1);
     }
 
-    func(2);
 
 }
 func (a) = {
@@ -53,4 +52,7 @@ funcc(a) = {
     b = "b";
     a = func(a);
     return a;
+}
+funccc(a) = {
+    toggle(a);
 }

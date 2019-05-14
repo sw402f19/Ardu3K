@@ -1,25 +1,11 @@
 setup = {
-
 }
 loop = {
-    timed(2, fancy());
-    timed(1, func());
-    timed(4, funky());
-    fancy();
-    funky(1, 45);
-}
-
-fancy() = {
-    toggle(analog0);
-    return 1;
-}
-
-func() = {
-    toggle(analog1);
-    return 1;
-}
-
-funky(s, x) = {
-    toggle(analog2);
-    return 1;
+   after 1sec in ClockY do {
+       toggle(analog2);
+       resetTimer;
+       before 1min in TimerT do resetTimer;
+       resetTimer;
+   }
+   before 1min in TimerT do resetTimer;
 }

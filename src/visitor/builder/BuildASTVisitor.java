@@ -11,6 +11,8 @@ import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.unary.UnaryNegateNode;
+import node.primary.Time.TimeNode;
+import node.primary.Time.TimeType;
 import node.statement.*;
 import node.scope.*;
 import node.primary.*;
@@ -24,6 +26,9 @@ import node.statement.termination.BreakNode;
 import node.statement.termination.ContinueNode;
 import node.statement.control.*;
 import node.statement.termination.ReturnNode;
+import node.statement.time.AfterNode;
+import node.statement.time.BeforeNode;
+import node.statement.time.ResetNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
 import symbol.SymbolTable;
@@ -220,18 +225,48 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitTimed_stmt(Ardu3kParser.Timed_stmtContext ctx) {
-        TimedNode node = new TimedNode();
-        node.setWaitTime(Integer.valueOf(ctx.time.getText()));
-        node.setFuncID(visit(ctx.id));
-        return node;
-    }
-
-    @Override
     public RootNode visitPin_index(Ardu3kParser.Pin_indexContext ctx) {
         PinIndexNode node = new PinIndexNode();
         node.setIndex(Integer.valueOf(ctx.index.getText()));
         if (ctx.analog !=  null) { node.setbAnalog(true); }
+        return node;
+    }
+
+    @Override
+    public RootNode visitBeforeStmt(Ardu3kParser.BeforeStmtContext ctx) {
+        BeforeNode node = new BeforeNode();
+        node.setTime(visit(ctx.time));
+        node.setClockName((visit(ctx.clockName)).toString());
+        node.setStmt(visit(ctx.exec));
+        return node;
+    }
+
+    @Override
+    public RootNode visitAfterStmt(Ardu3kParser.AfterStmtContext ctx) {
+        AfterNode node = new AfterNode();
+        node.setTime(visit(ctx.time));
+        node.setClockName((visit(ctx.clockName)).toString());
+        node.setStmt(visit(ctx.exec));
+        return node;
+    }
+
+    @Override
+    public RootNode visitPrimaryTime(Ardu3kParser.PrimaryTimeContext ctx) {
+        TimeNode node = new TimeNode();
+        node.setAssignedValue(Integer.valueOf(ctx.val.getText()));
+
+        switch (ctx.type.getText()){
+            case "ms":
+                node.setType(TimeType.MS);
+                break;
+            case "sec":
+                node.setType(TimeType.S);
+                break;
+            case "min":
+                node.setType(TimeType.M);
+                break;
+        }
+
         return node;
     }
 
@@ -256,8 +291,10 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
                     return new BreakNode(ctx);
                 case Ardu3kParser.CONTINUE:
                     return new ContinueNode(ctx);
-                    default:
-                        return null;
+                case Ardu3kParser.RESETTIMER:
+                    return new ResetNode();
+                default:
+                    return null;
         }
     }
 

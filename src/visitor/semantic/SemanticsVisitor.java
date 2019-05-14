@@ -1,12 +1,8 @@
 package visitor.semantic;
 
-import com.rits.cloning.Cloner;
-import exception.*;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
-import exception.predicate.UndeclaredIdentifierException;
-import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.*;
 import node.expression.additive.PlusNode;
@@ -19,26 +15,26 @@ import node.expression.type.StringType;
 import node.primary.AbstractPrimaryNode;
 import node.primary.BoolNode;
 import node.primary.IdentifierNode;
+import node.primary.Time.TimeNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
 import node.statement.CaseNode;
 import node.statement.DefaultNode;
 import node.statement.FunctionStmtNode;
-import node.statement.TimedNode;
 import node.statement.control.*;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinReadNode;
 import node.statement.pins.PinToggleNode;
 import node.statement.pins.PinWriteNode;
+import node.statement.time.AbstractTimeStmtNode;
+import node.statement.time.AfterNode;
+import node.statement.time.BeforeNode;
+import node.statement.time.ResetNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
-
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
@@ -158,12 +154,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(TimedNode node) throws SemanticException {
-        visit(node.getFuncID());
-        if (node.getWaitTime() <= 0) { throw ExceptionFactory.produce("TIMEDTIME", node); }
-        return node;
-    }
-
     public RootNode visit(PinReadNode node) throws SemanticException {
         visitChildren(node);
         return node;
@@ -174,6 +164,41 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
         if (!(node.getWriteValue() instanceof BoolNode)) {
             throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
+        }
+
+        return node;
+    }
+
+    public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
+        visitChildren(node);
+
+        if (!(node.getTime() instanceof TimeNode)) {
+            throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
+        } // TODO: Add support for other types :D 
+
+        return node;
+    }
+
+    public RootNode visit(ResetNode node) throws SemanticException {
+        RootNode currentLevel;
+
+        // Set which timer to reset
+        if (node.parent instanceof AbstractTimeStmtNode) {
+            node.setTimerName(((AbstractTimeStmtNode) node.parent).getClockName());
+        } else if (node.parent instanceof BlockNode) {
+            currentLevel = node.parent;
+            while (currentLevel instanceof BlockNode) {
+                if (currentLevel.parent instanceof AbstractTimeStmtNode) {
+                    node.setTimerName(((AbstractTimeStmtNode) currentLevel.parent).getClockName());
+                    break;
+                } else if (currentLevel.parent != null){
+                    currentLevel = currentLevel.parent;
+                } else break;
+            }
+        }
+
+        if (node.getTimerName().equals("NOT_SET")){
+            throw ExceptionFactory.produce("NOTIMER", node);
         }
 
         return node;

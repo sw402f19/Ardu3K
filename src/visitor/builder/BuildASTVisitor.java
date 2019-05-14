@@ -28,6 +28,7 @@ import node.statement.control.*;
 import node.statement.termination.ReturnNode;
 import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
+import node.statement.time.ResetNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
 import symbol.SymbolTable;
@@ -288,8 +289,10 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
                     return new BreakNode(ctx);
                 case Ardu3kParser.CONTINUE:
                     return new ContinueNode(ctx);
-                    default:
-                        return null;
+                case Ardu3kParser.RESETTIMER:
+                    return new ResetNode();
+                default:
+                    return null;
         }
     }
 

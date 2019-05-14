@@ -36,6 +36,7 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
+    | notail=RESETTIMER                                             #notailStatement
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed
     ;
@@ -274,3 +275,4 @@ MIN: 'min';
 BEFORE: 'before';
 AFTER: 'after';
 IN: 'in';
+RESETTIMER: 'resetTimer;';

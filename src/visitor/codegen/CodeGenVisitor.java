@@ -18,6 +18,7 @@ import node.statement.pins.*;
 import node.statement.termination.*;
 import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
+import node.statement.time.ResetNode;
 import visitor.BaseASTVisitor;
 import visitor.semantic.ExpressionTypeVisitor;
 
@@ -382,6 +383,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
             tabLevel++;
         }
         return str;
+    }
+
+    public String visit(ResetNode node) {
+        return "RESET";
     }
 
     public String visit(TimeNode node) {

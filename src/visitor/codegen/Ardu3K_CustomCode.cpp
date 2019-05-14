@@ -20,6 +20,10 @@ bool Ardu3K_BeforeCheck(long startTime, long waitTime) {
   } else return false;
 }
 
+void Ardu3K_ResetTimer(long *timer){
+    *timer = millis();
+}
+
 // Sets pin to read state before reading
 int Ardu3K_PinRead(int index, bool bAnalog) {
     if (index >= 0 && index <= 13) {

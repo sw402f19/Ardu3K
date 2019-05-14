@@ -25,6 +25,10 @@ import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinReadNode;
 import node.statement.pins.PinToggleNode;
 import node.statement.pins.PinWriteNode;
+import node.statement.time.AbstractTimeStmtNode;
+import node.statement.time.AfterNode;
+import node.statement.time.BeforeNode;
+import node.statement.time.ResetNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
@@ -159,6 +163,36 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
         if (!(node.getWriteValue() instanceof BoolNode)) {
             throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
+        }
+
+        return node;
+    }
+
+    public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
+        visitChildren(node);
+        return node;
+    }
+
+    public RootNode visit(ResetNode node) throws SemanticException {
+        RootNode currentLevel;
+
+        // Set which timer to reset
+        if (node.parent instanceof AbstractTimeStmtNode) {
+            node.setTimerName(((AbstractTimeStmtNode) node.parent).getClockName());
+        } else if (node.parent instanceof BlockNode) {
+            currentLevel = node.parent;
+            while (currentLevel instanceof BlockNode) {
+                if (currentLevel.parent instanceof AbstractTimeStmtNode) {
+                    node.setTimerName(((AbstractTimeStmtNode) currentLevel.parent).getClockName());
+                    break;
+                } else if (currentLevel.parent != null){
+                    currentLevel = currentLevel.parent;
+                } else break;
+            }
+        }
+
+        if (node.getTimerName().equals("NOT_SET")){
+            throw ExceptionFactory.produce("NOTIMER", node);
         }
 
         return node;

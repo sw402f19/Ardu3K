@@ -362,9 +362,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         if (node.getStmt() instanceof BlockNode) {
             str += ")) " + visit(node.getStmt());
         } else {
-            tabLevel--;
+            int currentLevel = tabLevel;
+            tabLevel = 0;
             str += ")) { " + visit(node.getStmt()) + " }";
-            tabLevel++;
+            tabLevel = currentLevel;
         }
         return str;
     }
@@ -378,15 +379,16 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         if (node.getStmt() instanceof BlockNode) {
             str += ")) " + visit(node.getStmt());
         } else {
-            tabLevel--;
+            int currentLevel = tabLevel;
+            tabLevel = 0;
             str += ")) { " + visit(node.getStmt()) + " }";
-            tabLevel++;
+            tabLevel = currentLevel;
         }
         return str;
     }
 
     public String visit(ResetNode node) {
-        return "RESET";
+        return tab() + "Ardu3K_ResetTimer(&" + node.getTimerName() + ");";
     }
 
     public String visit(TimeNode node) {

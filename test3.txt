@@ -1,5 +1,11 @@
 setup = {
 }
 loop = {
-   after 1sec in ClockY do {toggle(analog2); resetTimer; }
+   after 1sec in ClockY do {
+       toggle(analog2);
+       resetTimer;
+       before 1min in TimerT do resetTimer;
+       resetTimer;
+   }
+   before 1min in TimerT do resetTimer;
 }

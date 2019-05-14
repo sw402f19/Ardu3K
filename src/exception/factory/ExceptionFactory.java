@@ -10,6 +10,7 @@ import exception.predicate.NeedsNumeralPredicateException;
 import exception.predicate.UndeclaredIdentifierException;
 import exception.reachability.NotReachableException;
 import exception.reachability.RecursionException;
+import exception.time.NoTimerException;
 import exception.type.*;
 import node.RootNode;
 import node.primary.IdentifierNode;
@@ -18,6 +19,7 @@ import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.termination.AbstractTerminalNode;
 import node.statement.termination.ReturnNode;
+import node.statement.time.ResetNode;
 
 public class ExceptionFactory {
 
@@ -40,6 +42,9 @@ public class ExceptionFactory {
 
             case "TIMEDTIME":
                 return new TimedTimeException(node);
+
+            case "NOTIMER":
+                return new NoTimerException((ResetNode) node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)
@@ -106,6 +111,9 @@ public class ExceptionFactory {
             return new IllegalPinWriteValueException(throwable);
         else if (throwable instanceof TimedTimeException)
             return new TimedTimeException(throwable);
+        else if (throwable instanceof NoTimerException){
+            return new NoTimerException(throwable);
+        }
 
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }

@@ -15,6 +15,7 @@ import node.expression.type.StringType;
 import node.primary.AbstractPrimaryNode;
 import node.primary.BoolNode;
 import node.primary.IdentifierNode;
+import node.primary.Time.TimeNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
 import node.statement.CaseNode;
@@ -170,6 +171,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
         visitChildren(node);
+
+        if (!(node.getTime() instanceof TimeNode)) {
+            throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
+        } // TODO: Add support for other types :D 
+
         return node;
     }
 

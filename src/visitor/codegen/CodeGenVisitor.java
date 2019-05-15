@@ -26,6 +26,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+@SuppressWarnings("Duplicates")
 public class CodeGenVisitor extends BaseASTVisitor<String> {
     private String tab = "    ";
     private int tabLevel = 0;
@@ -87,8 +88,16 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return "";
     }
 
-    public String visit(ListNode node) {
-        return "LIST"; //TODO: Add our custom code to this
+    public String visit(ListNode node) throws SemanticException {
+        String str;
+        str = "{";
+        for(RootNode n : node.children) {
+            str += visit(n);
+            if(!(node.children.indexOf(n) == node.children.size() - 1))
+                str += ", ";
+        }
+        str += "}";
+        return str;
     }
 
     public String visit(MinusNode node) throws SemanticException {
@@ -164,8 +173,13 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
 
     public String visit(DeclarationNode node) throws SemanticException {
         String str = tab();
-        str += getPrimaryType(node.type);
-        str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
+        if(node.type instanceof ListNode) {
+            str += getPrimaryType(((ListNode) node.type).type);
+            str += " " + visit(node.getLeft()) + "[] = " + visit(node.getRight()) + ";";
+        } else {
+            str += getPrimaryType(node.type);
+            str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
+        }
         return str;
     }
 

@@ -4,6 +4,7 @@ import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
 import node.RootNode;
+import node.composite.ListNode;
 import node.expression.*;
 import node.expression.additive.PlusNode;
 import node.expression.condition.AbstractInfixConditionalNode;
@@ -21,6 +22,7 @@ import node.scope.*;
 import node.statement.CaseNode;
 import node.statement.DefaultNode;
 import node.statement.FunctionStmtNode;
+import node.statement.TimedNode;
 import node.statement.control.*;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinReadNode;
@@ -35,6 +37,10 @@ import symbol.Symbol;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
+import visitor.semantic.typecast.ExpressionCastVisitor;
+import visitor.semantic.typecast.TypeCaster;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
@@ -139,6 +145,35 @@ public class SemanticsVisitor extends PrimaryVisitor {
         visitChildren(node);
         return node;
     }
+    public RootNode visit(ListNode node) throws SemanticException {
+        ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
+        ExpressionCastVisitor castVisitor = new ExpressionCastVisitor(symbolTable);
+        try {
+            node.type = exprVisitor.visit(node);
+            visitChildren(node);
+
+            RootNode prevType;
+            RootNode nextType;
+            boolean shouldChange = false;
+            if (node.type instanceof ListNode) {
+                prevType = exprVisitor.visit(node.children.get(0));
+                for (int i = 1; i < node.children.size(); i++) {
+                    nextType = exprVisitor.visit(node.children.get(i));
+                    if (!(nextType.getClass().equals(prevType.getClass()))) {
+                        shouldChange = true;
+                        prevType = exprVisitor.highestOrder(prevType, nextType);
+                    }
+                }
+                if(shouldChange)
+                    for(RootNode n : node.children)
+                        for(RootNode nd : n.children)
+                            n.children.set(n.children.indexOf(nd),TypeCaster.cast(nd, prevType));
+            }
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
+        return node;
+    }
 
     public RootNode visit(PinIndexNode node) throws SemanticException {
         // todo: These ports are what is allowed on an Arduino Uno
@@ -151,6 +186,12 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
             }
         }
+        return node;
+    }
+
+    public RootNode visit(TimedNode node) throws SemanticException {
+        visit(node.getFuncID());
+        if (node.getWaitTime() <= 0) { throw ExceptionFactory.produce("TIMEDTIME", node); }
         return node;
     }
 

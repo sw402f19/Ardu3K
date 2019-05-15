@@ -3,9 +3,11 @@ package visitor.semantic.typecast;
 import exception.factory.SemanticException;
 import exception.factory.ExceptionFactory;
 import node.RootNode;
+import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.AbstractPrimaryNode;
 import symbol.SymbolTable;
+import visitor.semantic.ExpressionTypeVisitor;
 import visitor.semantic.PrimaryVisitor;
 
 @SuppressWarnings("Duplicates")
@@ -21,6 +23,7 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
         this.expectedType = expectedType;
         return visit(node);
     }
+
     // todo fix exception handling to print the proper cause
     public RootNode visit(AbstractInfixExpressionNode node) throws SemanticException {
         RootNode[] infixTypes = new RootNode[2];
@@ -48,8 +51,9 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
         return expectedType;
     }
 
+
     public RootNode visit(AbstractPrimaryNode node) throws SemanticException {
-        if(expectedType.getClass().isInstance(node))
+        if (expectedType.getClass().equals(node.getClass()))
             return super.visit(node);
         else
             node = (AbstractPrimaryNode) TypeCaster.cast(node, expectedType);

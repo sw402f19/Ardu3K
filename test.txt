@@ -6,13 +6,13 @@ setup = {
 }
 loop = {
 
-    arr = [1, 4, 2, 6];
+    arr = [["a", 5], [5, 1], [5, 5.5]];
+
 
     ab = "ab";
     ab = ab + "ab";
     D = 10.150;
-
-    funccc();
+        funccc(10);
 
 
     if true do
@@ -54,5 +54,5 @@ funcc(a) = {
     return a;
 }
 funccc(a) = {
-    toggle(a);
+    toggle(1);
 }

@@ -1,4 +1,5 @@
 setup = {
+   pinMode(1, OUTPUT);
 }
 loop = {
    after 1sec in ClockY do {

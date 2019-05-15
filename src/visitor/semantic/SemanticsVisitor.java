@@ -174,7 +174,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
         if (!(node.getTime() instanceof TimeNode)) {
             throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
-        } // TODO: Add support for other types :D 
+        } // TODO: Add support for other types :D
 
         return node;
     }

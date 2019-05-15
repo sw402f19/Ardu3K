@@ -58,6 +58,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         // Construct the final file
         if (!(imports.equals(""))) { output += imports + "\n"; }
         if (!(defines.equals(""))) { output += defines; }
+        output += getCustomArdu3kCode() + "\n";
         output += setup;
         if (clockNames.size() != 0) {
             output += "// Clocks for the time functions\n";
@@ -67,7 +68,6 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
             output += "\n";
         }
         output += loop + functions;
-        output += getCustomArdu3kCode();
         return output;
     }
 
@@ -329,16 +329,20 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return node.getIndex() + ", " + node.getbAnalog();
     }
 
+    public String visit(PinModeNode node) throws SemanticException {
+        return tab() + "Ardu3K::SetPinMode(" + visit(node.getPinIndexNode()) + ", " + node.getbOutput() + ");";
+    }
+
     public String visit(PinReadNode node) throws SemanticException {
-        return tab() + "Ardu3K_PinRead(" + visit(node.getPinIndexNode()) + ");";
+        return tab() + "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ");";
     }
 
     public String visit(PinToggleNode node) throws SemanticException {
-        return tab() + "Ardu3K_TogglePin(" + visit(node.getPinIndexNode()) + ");";
+        return tab() + "Ardu3K::TogglePin(" + visit(node.getPinIndexNode()) + ");";
     }
 
     public String visit(PinWriteNode node) throws SemanticException {
-        return tab() + "Ardu3K_PinWrite(" + visit(node.getPinIndexNode()) + ", " + visit(node.getWriteValue()) + ");";
+        return tab() + "Ardu3K::PinWrite(" + visit(node.getPinIndexNode()) + ", " + visit(node.getWriteValue()) + ");";
     }
 
     public String visit(BreakNode node) {
@@ -358,7 +362,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         if (!(clockNames.contains(node.getClockName()))) {
             clockNames.add(node.getClockName());
         }
-        String str = tab() + "if (Ardu3K_AfterCheck("+ node.getClockName() + ", " + visit(node.getTime());
+        String str = tab() + "if (Ardu3K::AfterCheck("+ node.getClockName() + ", " + visit(node.getTime());
         if (node.getStmt() instanceof BlockNode) {
             str += ")) " + visit(node.getStmt());
         } else {
@@ -375,7 +379,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         if (!(clockNames.contains(node.getClockName()))) {
             clockNames.add(node.getClockName());
         }
-        String str = tab() + "if (Ardu3K_BeforeCheck("+ node.getClockName() + ", " + visit(node.getTime());
+        String str = tab() + "if (Ardu3K::BeforeCheck("+ node.getClockName() + ", " + visit(node.getTime());
         if (node.getStmt() instanceof BlockNode) {
             str += ")) " + visit(node.getStmt());
         } else {
@@ -388,7 +392,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(ResetNode node) {
-        return tab() + "Ardu3K_ResetTimer(&" + node.getTimerName() + ");";
+        return tab() + "Ardu3K::ResetTimer(&" + node.getTimerName() + ");";
     }
 
     public String visit(TimeNode node) {

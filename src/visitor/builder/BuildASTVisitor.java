@@ -18,10 +18,7 @@ import node.scope.*;
 import node.primary.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
-import node.statement.pins.PinIndexNode;
-import node.statement.pins.PinReadNode;
-import node.statement.pins.PinToggleNode;
-import node.statement.pins.PinWriteNode;
+import node.statement.pins.*;
 import node.statement.termination.BreakNode;
 import node.statement.termination.ContinueNode;
 import node.statement.control.*;
@@ -296,6 +293,26 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
                 default:
                     return null;
         }
+    }
+
+    @Override
+    public RootNode visitPinMode(Ardu3kParser.PinModeContext ctx) {
+        PinModeNode node = new PinModeNode();
+        node.setbOutput(boolVisitPin_mode(ctx.pinMode));
+        node.setPinIndexNode(visit(ctx.pin));
+        return node;
+    }
+
+    public boolean boolVisitPin_mode(Ardu3kParser.Pin_modeContext ctx) {
+        switch (ctx.pinMode.getType()){
+            case Ardu3kParser.OUTPUT:
+            case Ardu3kParser.TRUE:
+                return true;
+            case Ardu3kParser.INPUT:
+            case Ardu3kParser.FALSE:
+                return false;
+        }
+        return false;
     }
 
     @Override

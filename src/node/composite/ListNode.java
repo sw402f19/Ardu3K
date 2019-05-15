@@ -17,7 +17,7 @@ public class ListNode extends AbstractPrimaryNode {
     }
 
     @Override
-    public String toString() { return "[LIST]"; }
+    public String toString() { return "list."; }
 
     public void addFirstElement(RootNode node){
         if (children.size() != 0){

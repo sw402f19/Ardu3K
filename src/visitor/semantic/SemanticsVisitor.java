@@ -22,15 +22,12 @@ import node.scope.*;
 import node.statement.CaseNode;
 import node.statement.DefaultNode;
 import node.statement.FunctionStmtNode;
-import node.statement.TimedNode;
 import node.statement.control.*;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinReadNode;
 import node.statement.pins.PinToggleNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.time.AbstractTimeStmtNode;
-import node.statement.time.AfterNode;
-import node.statement.time.BeforeNode;
 import node.statement.time.ResetNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
@@ -39,8 +36,6 @@ import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
 import visitor.semantic.typecast.ExpressionCastVisitor;
 import visitor.semantic.typecast.TypeCaster;
-
-import java.util.ArrayList;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
@@ -186,12 +181,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
             }
         }
-        return node;
-    }
-
-    public RootNode visit(TimedNode node) throws SemanticException {
-        visit(node.getFuncID());
-        if (node.getWaitTime() <= 0) { throw ExceptionFactory.produce("TIMEDTIME", node); }
         return node;
     }
 

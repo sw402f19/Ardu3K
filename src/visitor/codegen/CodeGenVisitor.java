@@ -69,7 +69,8 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         str = "{";
         for(RootNode n : node.children) {
             str += visit(n);
-            str += ", ";
+            if(!(node.children.indexOf(n) == node.children.size() - 1))
+                str += ", ";
         }
         str += "}";
         return str;
@@ -148,8 +149,13 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
 
     public String visit(DeclarationNode node) throws SemanticException {
         String str = tab();
-        str += getPrimaryType(node.type);
-        str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
+        if(node.type instanceof ListNode) {
+            str += getPrimaryType(((ListNode) node.type).type);
+            str += " " + visit(node.getLeft()) + "[] = " + visit(node.getRight()) + ";";
+        } else {
+            str += getPrimaryType(node.type);
+            str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
+        }
         return str;
     }
 

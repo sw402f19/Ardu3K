@@ -51,6 +51,7 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
         return expectedType;
     }
 
+
     public RootNode visit(AbstractPrimaryNode node) throws SemanticException {
         if (expectedType.getClass().equals(node.getClass()))
             return super.visit(node);

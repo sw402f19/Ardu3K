@@ -31,6 +31,8 @@ public class TypeCaster {
         return castable.get(source.getClass()).contains(target.getClass());
     }
     public static RootNode cast(RootNode source, RootNode target) throws SemanticException {
+        if(source.getClass().equals(target.getClass()))
+            return source;
         if (canCast(source, target))
             return handle(source, target.getClass());
         else throw ExceptionFactory.produce("notcastable", target, source);

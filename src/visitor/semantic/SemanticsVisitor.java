@@ -160,9 +160,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
                     }
                 }
                 if(shouldChange)
-                    for(RootNode n : node.children)
-                        for(RootNode nd : n.children)
-                            n.children.set(n.children.indexOf(nd),TypeCaster.cast(nd, prevType));
+                    for(RootNode a : node.children)
+                        for(RootNode b : a.children)
+                            a.children.set(a.children.indexOf(b),TypeCaster.cast(b, prevType));
             }
         } catch (SemanticException e) {
             System.out.println(e.getMessage());

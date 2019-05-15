@@ -301,99 +301,18 @@ void Ardu3K_PinWrite(int index, bool bAnalog, bool bWriteVal) {
     }
 }
 
-// Switch on index then toggle given pin 
-// in bitmask for pin state
+// Flip pin-index in bitfield of pin states
 void Ardu3K_TogglePin(int index, bool bAnalog) {
-    if (index >= 0 && index <= 13){
-        if (bAnalog == true) {
-            switch (index) {
-                case 0:
-                    DDRC = DDRC | B00000001;
-                    PORTC = PORTC ^ B00000001;
-                    break;
-                case 1:
-                    DDRC = DDRC | B00000010;
-                    PORTC = PORTC ^ B00000010;
-                    break;
-                case 2:
-                    DDRC = DDRC | B00000100;
-                    PORTC = PORTC ^ B00000100;
-                    break;
-                case 3:
-                    DDRC = DDRC | B00001000;
-                    PORTC = PORTC ^ B00001000;
-                    break;
-                case 4:
-                    DDRC = DDRC | B00010000;
-                    PORTC = PORTC ^ B00010000;
-                    break;
-                case 5:
-                    DDRC = DDRC | B00100000;
-                    PORTC = PORTC ^ B00100000;
-                    break;
-                default:
-                    return;
-            }
-        } else {
-            switch (index) {
-                case 0:
-                    DDRD = DDRD | B00000001;
-                    PORTD = PORTD ^ B00000001;
-                    break;
-                case 1:
-                    DDRD = DDRD | B00000010;
-                    PORTD = PORTD ^ B00000010;
-                    break;
-                case 2:
-                    DDRD = DDRD | B00000100;
-                    PORTD = PORTD ^ B00000100;
-                    break;
-                case 3:
-                    DDRD = DDRD | B00001000;
-                    PORTD = PORTD ^ B00001000;
-                    break;
-                case 4:
-                    DDRD = DDRD | B00010000;
-                    PORTD = PORTD ^ B00010000;
-                    break;
-                case 5:
-                    DDRD = DDRD | B00100000;
-                    PORTD = PORTD ^ B00100000;
-                    break;
-                case 6:
-                    DDRD = DDRD | B01000000;
-                    PORTD = PORTD ^ B01000000;
-                    break;
-                case 7:
-                    DDRD = DDRD | B10000000;
-                    PORTD = PORTD ^ B10000000;
-                    break;
-                case 8:
-                    DDRB = DDRB | B00000001;
-                    PORTB = PORTB ^ B00000001;
-                    break;
-                case 9:
-                    DDRB = DDRB | B00000010;
-                    PORTB = PORTB ^ B00000010;
-                    break;
-                case 10:
-                    DDRB = DDRB | B00000100;
-                    PORTB = PORTB ^ B00000100;
-                    break;
-                case 11:
-                    DDRB = DDRB | B00001000;
-                    PORTB = PORTB ^ B00001000;
-                    break;
-                case 12:
-                    DDRB = DDRB | B00010000;
-                    PORTB = PORTB ^ B00010000;
-                    break;
-                case 13:
-                    DDRB = DDRB | B00100000;
-                    PORTB = PORTB ^ B00100000;
-                    break;
-                default:
-                    return;
+    if (bAnalog) {
+        if (index >= 0 && index <= 5) {
+            DDRC ^= (1 << index);
+        }
+    } else {
+        if (index >= 0 && index <= 13) {
+            if (index <= 7) {
+                DDRD ^= (1 << index);
+            } else { 
+                DDRB ^= (1 << (index - 8));
             }
         }
     }

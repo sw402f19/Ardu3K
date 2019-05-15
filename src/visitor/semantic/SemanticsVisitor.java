@@ -140,6 +140,14 @@ public class SemanticsVisitor extends PrimaryVisitor {
         visitChildren(node);
         return node;
     }
+
+    /**
+     * This will visit a list node, asserting its children type by using the ExpressionTypeVisitor.
+     * If different types are registered, will try to cast it's children. s
+     * @param   node to visit
+     * @return  {@param node}
+     * @throws SemanticException if incompatible types are found.
+     */
     public RootNode visit(ListNode node) throws SemanticException {
         ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
         ExpressionCastVisitor castVisitor = new ExpressionCastVisitor(symbolTable);

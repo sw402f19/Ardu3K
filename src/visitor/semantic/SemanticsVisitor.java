@@ -143,7 +143,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     /**
      * This will visit a list node, asserting its children type by using the ExpressionTypeVisitor.
-     * If different types are registered, will try to cast it's children. s
+     * If different types are registered, will try to cast it's children.
      * @param   node to visit
      * @return  {@param node}
      * @throws SemanticException if incompatible types are found.

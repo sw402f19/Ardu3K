@@ -47,10 +47,17 @@ time_stmt
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
     | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
-    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI        #pinWrite
+    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI           #pinWrite
+    | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR SEMI   #pinMode
     ;
 pin_index
     : analog=ANALOG? index=INTEGER
+    ;
+pin_mode
+    : pinMode=OUTPUT
+    | pinMode=INPUT
+    | pinMode=TRUE
+    | pinMode=FALSE
     ;
 comment
     : COMMENT LETTER* COMMENT
@@ -276,3 +283,6 @@ BEFORE: 'before';
 AFTER: 'after';
 IN: 'in';
 RESETTIMER: 'resetTimer;';
+PINMODE: 'pinMode';
+INPUT: 'INPUT';
+OUTPUT: 'OUTPUT';

@@ -38,38 +38,29 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
             node.isReachable = false;
         visit(node.getStmt());
     }
-    public void visit(ForNode node) throws SemanticException {
-        node.terminatesNormally = true;
-        node.isReachable = true;
-        if(node.getExpression() != null && node.getValue() != null) {
-            boolean exprValue = ConstantChecker.isConstant(node.getExpression()) &&
-                    ConstantChecker.isConstant(node.getValue());
-            if(exprValue)
-                node.terminatesNormally = false;
-            else
-                node.getStmt().terminatesNormally = false;
-        }
-        else node.terminatesNormally = false;
-        visit(node.getStmt());
-    }
+
     public void visit(ContinueNode node) throws SemanticException {
         RootNode target = findControlTarget(node);
         target.terminatesNormally = false;
 
     }
+
     public void visit(BreakNode node) throws SemanticException {
         RootNode target = findControlTarget(node);
         node.terminatesNormally = false;
         if(node.isReachable)
             target.terminatesNormally = true;
     }
+
     public void visit(ReturnNode node) throws SemanticException {
         RootNode target = findControlTarget(node);
         target.terminatesNormally = false;
     }
+
     public void visit(DeclarationNode node) {
         node.terminatesNormally = true;
     }
+
     private RootNode findControlTarget(BreakNode node) throws SemanticException {
         RootNode ptr = node;
         while(ptr.parent != null) {
@@ -80,6 +71,7 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
         }
         throw ExceptionFactory.produce("notreachable", node);
     }
+
     private RootNode findControlTarget(ContinueNode node) throws SemanticException {
         RootNode ptr = node;
         while(ptr.parent != null) {
@@ -89,6 +81,7 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
         }
         throw ExceptionFactory.produce("notreachable", node);
     }
+
     private RootNode findControlTarget(ReturnNode node) throws SemanticException {
         RootNode ptr = node;
         while(ptr.parent != null) {

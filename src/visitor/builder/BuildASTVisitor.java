@@ -139,14 +139,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitFor_stmt(Ardu3kParser.For_stmtContext ctx) {
-        ForNode node = new ForNode(ctx);
-        node.setExpression(visitExpression(ctx.expr));
-        node.setValue(visitNumber(ctx.value));
-        node.setStmt(visit(ctx.body));
-        return node;
-    }
-    @Override
     public RootNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
         SwitchNode node = new SwitchNode(ctx);
         node.setExpression(visitExpression(ctx.expression()));

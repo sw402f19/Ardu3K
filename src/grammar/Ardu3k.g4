@@ -66,11 +66,7 @@ block
     : LCUR body=stmt* RCUR
     ;
 iterative_stmt
-    : for_stmt
-    | while_stmt
-    ;
-for_stmt
-    : FOR expr=expression TO value=number DO body=stmt
+    : while_stmt
     ;
 while_stmt
     : WHILE expr=expression DO body=stmt

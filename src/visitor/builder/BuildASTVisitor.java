@@ -201,21 +201,21 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitPinToggle(Ardu3kParser.PinToggleContext ctx) {
-        PinToggleNode node = new PinToggleNode();
+        PinToggleNode node = new PinToggleNode(ctx);
         node.setPinIndexNode(visit(ctx.pin));
         return node;
     }
 
     @Override
     public RootNode visitPinRead(Ardu3kParser.PinReadContext ctx) {
-        PinReadNode node = new PinReadNode();
+        PinReadNode node = new PinReadNode(ctx);
         node.setPinIndexNode(visit(ctx.pin));
         return node;
     }
 
     @Override
     public RootNode visitPinWrite(Ardu3kParser.PinWriteContext ctx) {
-        PinWriteNode node = new PinWriteNode();
+        PinWriteNode node = new PinWriteNode(ctx);
         node.setPinIndexNode(visit(ctx.pin));
         node.setWriteValue(visit(ctx.value));
         return node;
@@ -223,7 +223,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitPin_index(Ardu3kParser.Pin_indexContext ctx) {
-        PinIndexNode node = new PinIndexNode();
+        PinIndexNode node = new PinIndexNode(ctx);
         node.setIndex(Integer.valueOf(ctx.index.getText()));
         if (ctx.analog !=  null) { node.setbAnalog(true); }
         return node;
@@ -231,18 +231,18 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitBeforeStmt(Ardu3kParser.BeforeStmtContext ctx) {
-        BeforeNode node = new BeforeNode();
+        BeforeNode node = new BeforeNode(ctx);
         node.setTime(visit(ctx.time));
-        node.setClockName((visit(ctx.clockName)).toString());
+        node.setClockName(visit(ctx.clockName));
         node.setStmt(visit(ctx.exec));
         return node;
     }
 
     @Override
     public RootNode visitAfterStmt(Ardu3kParser.AfterStmtContext ctx) {
-        AfterNode node = new AfterNode();
+        AfterNode node = new AfterNode(ctx);
         node.setTime(visit(ctx.time));
-        node.setClockName((visit(ctx.clockName)).toString());
+        node.setClockName(visit(ctx.clockName));
         node.setStmt(visit(ctx.exec));
         return node;
     }

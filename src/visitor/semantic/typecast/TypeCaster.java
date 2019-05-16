@@ -48,22 +48,22 @@ public class TypeCaster {
     private static RootNode handleInteger(IntegerNode node, Class clazz) {
         if(clazz.equals(StringNode.class)) {
             System.out.println(node.getLine()+" casted int to string");
-            return new StringNode(node.value);
+            return new StringNode(node);
         }
         else {
             System.out.println(node.getLine()+" casted int to float");
-            return new FloatNode(node.value);
+            return new FloatNode(node);
         }
     }
 
     private static RootNode handleReal(FloatNode node, Class clazz) {
         if(clazz.equals(StringNode.class)) {
             System.out.println(node.getLine()+" casted float to string");
-            return new StringNode(node.value);
+            return new StringNode(node);
         }
         else {
             System.out.println(node.getLine()+" casted float to int");
-            return new IntegerNode(node.value);
+            return new IntegerNode(node);
         }
     }
     private static RootNode handleList(ListNode node, Class clazz) throws IllegalTypeException {

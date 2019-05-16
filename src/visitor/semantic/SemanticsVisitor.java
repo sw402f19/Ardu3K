@@ -150,7 +150,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
      */
     public RootNode visit(ListNode node) throws SemanticException {
         ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
-        ExpressionCastVisitor castVisitor = new ExpressionCastVisitor(symbolTable);
         try {
             node.type = exprVisitor.visit(node);
             visitChildren(node);

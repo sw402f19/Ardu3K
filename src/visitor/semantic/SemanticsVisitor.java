@@ -328,20 +328,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(ForNode node)  {
-        symbolTable.openScope();
-        try {
-            visitChildren(node);
-            RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
-            if(!(type instanceof NumeralType))
-                throw ExceptionFactory.produce("needsnumeralpredicate", node, type);
-        } catch (SemanticException e) {
-            System.out.println(e.getMessage());
-        }
-        symbolTable.closeScope();
-        return node;
-    }
-
     public RootNode visit(WhileNode node) {
         symbolTable.openScope();
         try {

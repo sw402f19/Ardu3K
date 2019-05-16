@@ -8,5 +8,5 @@ loop = {
         toggle(analog3);
         resetTimer;
    }
-   for 3  to 5 do toggle(2);
+   a = 3+ 2;
 }

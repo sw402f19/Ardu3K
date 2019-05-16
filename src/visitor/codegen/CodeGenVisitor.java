@@ -282,31 +282,6 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return str;
     }
 
-    public String visit(ForNode node) throws SemanticException {
-        int prevTabLevel = tabLevel;
-
-        String str = tab() + "for (";
-        tabLevel = 0;
-        if (node.getExpression() instanceof AbstractInfixExpressionNode) {
-            AbstractInfixExpressionNode exprNode = (AbstractInfixExpressionNode) node.getExpression();
-
-            str += "i = " + visit(exprNode) + ", i < "; // TODO: Add type here :)
-            str += visit(node.getValue()) + "; i++) ";
-        } else if (node.getExpression() instanceof AbstractPrimaryNode) {
-            str += getPrimaryType(node.getExpression())+ " i = " + visit(node.getExpression()) + ", i < ";
-            str += visit(node.getValue()) + "; i++) ";
-        }
-
-        if (!(node.getStmt() instanceof BlockNode)){
-            str += "{ " + visit(node.getStmt()) + " }";
-            tabLevel = prevTabLevel;
-        } else {
-            tabLevel = prevTabLevel;
-            str += visit(node.getStmt());
-        }
-
-        return str;
-    }
 
     public String visit(IfNode node) throws SemanticException {
         String str = tab() + "if (" + visit(node.getExpression()) + ") ";

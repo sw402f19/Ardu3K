@@ -2,6 +2,7 @@ setup = {
    pinMode(1, OUTPUT);
 }
 loop = {
+    ClockY = 10;
    after 1sec in ClockY do {
        toggle(analog2);
        resetTimer;

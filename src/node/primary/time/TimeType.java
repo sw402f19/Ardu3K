@@ -1,4 +1,4 @@
-package node.primary.Time;
+package node.primary.time;
 
 public enum TimeType {
     MS(1), S(1000), M(60000);

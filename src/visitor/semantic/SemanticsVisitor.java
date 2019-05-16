@@ -16,7 +16,7 @@ import node.expression.type.StringType;
 import node.primary.AbstractPrimaryNode;
 import node.primary.BoolNode;
 import node.primary.IdentifierNode;
-import node.primary.Time.TimeNode;
+import node.primary.time.TimeNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
 import node.statement.CaseNode;

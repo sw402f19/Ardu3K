@@ -10,7 +10,7 @@ import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.unary.*;
 import node.primary.*;
-import node.primary.Time.TimeNode;
+import node.primary.time.TimeNode;
 import node.scope.*;
 import node.statement.*;
 import node.statement.control.*;
@@ -20,10 +20,8 @@ import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
 import node.statement.time.ResetNode;
 import visitor.BaseASTVisitor;
-import visitor.semantic.ExpressionTypeVisitor;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 @SuppressWarnings("Duplicates")

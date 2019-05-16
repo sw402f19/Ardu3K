@@ -29,7 +29,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     private String tab = "    ";
     private int tabLevel = 0;
     private String imports = "";
-    private LinkedList<String> clockNames = new LinkedList<>();
+    private LinkedList<RootNode> clockNames = new LinkedList<>();
 
     // Function for indenting the generated code
     private String tab() {
@@ -61,8 +61,8 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         output += setup;
         if (clockNames.size() != 0) {
             output += "// Clocks for the time functions\n";
-            for (String str : clockNames){
-                output += "long " + str + " = millis();\n";
+            for (RootNode str : clockNames){
+                output += "long " + str.toString() + " = millis();\n";
             }
             output += "\n";
         }
@@ -404,7 +404,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(ResetNode node) {
-        return tab() + "Ardu3K::ResetTimer(&" + node.getTimerName() + ");";
+        return tab() + "Ardu3K::ResetTimer(&" + node.getClockName() + ");";
     }
 
     public String visit(TimeNode node) {

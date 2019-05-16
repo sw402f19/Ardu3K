@@ -1,12 +1,12 @@
 setup = {
-   pinMode(1, OUTPUT);
+   pinMode(analog0, OUTPUT);
+   pinMode(analog3, OUTPUT);
 }
 loop = {
-   after 1sec in ClockY do {
-       toggle(analog2);
-       resetTimer;
-       before 1min in TimerT do resetTimer;
-       resetTimer;
+   after 1sec in timer do resetTimer;
+   after 1min in timerZ do {
+        toggle(analog3);
+        resetTimer;
    }
-   before 1min in TimerT do resetTimer;
+   for 3  to 5 do toggle(2);
 }

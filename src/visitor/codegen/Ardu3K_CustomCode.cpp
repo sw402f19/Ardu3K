@@ -9,7 +9,7 @@ public:
     static bool AfterCheck(long startTime, long waitTime) {
         long desiredTime = startTime + waitTime;
 
-        if (desiredTime <= millis()){
+        if (desiredTime <= millis()) {
             return true;
         } else return false;
     }
@@ -18,7 +18,7 @@ public:
     static bool BeforeCheck(long startTime, long waitTime) {
         long desiredTime = startTime + waitTime;
 
-        if (desiredTime => millis()){
+        if (desiredTime >= millis()) {
             return true;
         } else return false;
     }

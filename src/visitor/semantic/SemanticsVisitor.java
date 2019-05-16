@@ -209,35 +209,14 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
         visitChildren(node);
+        ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
+        new ReachabilityVisitor().visit(node);
+        if(symbolTable.isPresent(node.getClockName()))
+            throw ExceptionFactory.produce("needstimepredicate",symbolTable.retrieveSymbol(node.getClockName()).getType());
 
-        if (!(node.getTime() instanceof TimeNode)) {
+        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode)) {
             throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
         } // TODO: Add support for other types :D
-
-        return node;
-    }
-
-    public RootNode visit(ResetNode node) throws SemanticException {
-        RootNode currentLevel;
-
-        // Set which timer to reset
-        if (node.parent instanceof AbstractTimeStmtNode) {
-            node.setTimerName(((AbstractTimeStmtNode) node.parent).getClockName());
-        } else if (node.parent instanceof BlockNode) {
-            currentLevel = node.parent;
-            while (currentLevel instanceof BlockNode) {
-                if (currentLevel.parent instanceof AbstractTimeStmtNode) {
-                    node.setTimerName(((AbstractTimeStmtNode) currentLevel.parent).getClockName());
-                    break;
-                } else if (currentLevel.parent != null){
-                    currentLevel = currentLevel.parent;
-                } else break;
-            }
-        }
-
-        if (node.getTimerName().equals("NOT_SET")){
-            throw ExceptionFactory.produce("NOTIMER", node);
-        }
 
         return node;
     }

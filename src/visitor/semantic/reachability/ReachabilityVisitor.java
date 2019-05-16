@@ -3,13 +3,14 @@ package visitor.semantic.reachability;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
-import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
 import node.scope.FunctionNode;
 import node.statement.control.*;
 import node.statement.termination.BreakNode;
 import node.statement.termination.ContinueNode;
 import node.statement.termination.ReturnNode;
+import node.statement.time.AbstractTimeStmtNode;
+import node.statement.time.ResetNode;
 import visitor.BaseASTVisitor;
 
 public class ReachabilityVisitor extends BaseASTVisitor<Void> {
@@ -61,11 +62,16 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
         node.terminatesNormally = true;
     }
 
+    public void visit(ResetNode node) throws SemanticException {
+        RootNode target = findControlTarget(node);
+        node.setClockName(((AbstractTimeStmtNode) target).getClockName());
+        if(node.isReachable)
+            target.terminatesNormally = true;
+    }
     private RootNode findControlTarget(BreakNode node) throws SemanticException {
         RootNode ptr = node;
         while(ptr.parent != null) {
-            if(ptr.parent instanceof AbstractIterativeNode
-                    || ptr.parent instanceof SwitchNode)
+            if(ptr.parent instanceof AbstractIterativeNode || ptr.parent instanceof SwitchNode)
                 return ptr.parent;
             ptr = ptr.parent;
         }
@@ -90,6 +96,15 @@ public class ReachabilityVisitor extends BaseASTVisitor<Void> {
             ptr = ptr.parent;
         }
         throw ExceptionFactory.produce("notreachable", node);
+    }
+    private RootNode findControlTarget(ResetNode node) throws SemanticException {
+        RootNode ptr = node;
+        while(ptr.parent != null) {
+            if(ptr.parent instanceof AbstractTimeStmtNode)
+                return ptr.parent;
+            ptr = ptr.parent;
+        }
+        throw ExceptionFactory.produce("notimer", node);
     }
 }
 

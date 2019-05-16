@@ -3,6 +3,7 @@ setup = {
    pinMode(analog3, OUTPUT);
 }
 loop = {
+    timer = 10;
    after 1sec in timer do resetTimer;
    after 1min in timerZ do {
         toggle(analog3);

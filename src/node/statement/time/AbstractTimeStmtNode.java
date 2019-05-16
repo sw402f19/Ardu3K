@@ -1,12 +1,31 @@
 package node.statement.time;
 
 import node.RootNode;
+import node.primary.IdentifierNode;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AbstractTimeStmtNode extends RootNode {
-    private String clockName;
+    public AbstractTimeStmtNode(RootNode parent) {
+        super(parent);
+    }
 
-    public String getClockName() { return clockName; }
-    public void setClockName(String clockName) { this.clockName = clockName; }
+    public AbstractTimeStmtNode(ParserRuleContext ctx) {
+        super(ctx);
+    }
+
+    public AbstractTimeStmtNode(RootNode parent, ParserRuleContext ctx) {
+        super(parent, ctx);
+    }
+
+    public AbstractTimeStmtNode() {
+    }
+
+    private RootNode clockName;
+
+    public RootNode getClockName() {
+        return clockName;
+    }
+    public void setClockName(RootNode clockName) { this.clockName = clockName; }
 
     public void setTime(RootNode node){
         if (children.size() > 0) {

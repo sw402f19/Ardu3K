@@ -10,7 +10,7 @@ import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.unary.*;
 import node.primary.*;
-import node.primary.Time.TimeNode;
+import node.primary.time.TimeNode;
 import node.scope.*;
 import node.statement.*;
 import node.statement.control.*;
@@ -20,10 +20,8 @@ import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
 import node.statement.time.ResetNode;
 import visitor.BaseASTVisitor;
-import visitor.semantic.ExpressionTypeVisitor;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 @SuppressWarnings("Duplicates")
@@ -31,7 +29,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     private String tab = "    ";
     private int tabLevel = 0;
     private String imports = "";
-    private LinkedList<String> clockNames = new LinkedList<>();
+    private LinkedList<RootNode> clockNames = new LinkedList<>();
 
     // Function for indenting the generated code
     private String tab() {
@@ -63,8 +61,8 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         output += setup;
         if (clockNames.size() != 0) {
             output += "// Clocks for the time functions\n";
-            for (String str : clockNames){
-                output += "long " + str + " = millis();\n";
+            for (RootNode str : clockNames){
+                output += "long " + str.toString() + " = millis();\n";
             }
             output += "\n";
         }
@@ -384,7 +382,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(ResetNode node) {
-        return tab() + "Ardu3K::ResetTimer(&" + node.getTimerName() + ");";
+        return tab() + "Ardu3K::ResetTimer(&" + node.getClockName() + ");";
     }
 
     public String visit(TimeNode node) {

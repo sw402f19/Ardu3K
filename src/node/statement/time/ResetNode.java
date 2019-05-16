@@ -3,10 +3,10 @@ package node.statement.time;
 import node.RootNode;
 
 public class ResetNode extends RootNode {
-    private String timerName = "NOT_SET";
+    private RootNode timerName;
 
-    public String getTimerName() { return timerName; }
-    public void setTimerName(String timerName) { this.timerName = timerName; }
+    public RootNode getClockName() { return timerName; }
+    public void setClockName(RootNode timerName) { this.timerName = timerName; }
 
     @Override
     public String toString() { return "RESET"; }

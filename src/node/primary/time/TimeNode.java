@@ -1,4 +1,4 @@
-package node.primary.Time;
+package node.primary.time;
 
 import node.primary.AbstractPrimaryNode;
 

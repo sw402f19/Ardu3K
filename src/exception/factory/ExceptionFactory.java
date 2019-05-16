@@ -4,16 +4,14 @@ import exception.ArgumentException;
 import exception.TimedTimeException;
 import exception.pins.IllegalPinIndexException;
 import exception.pins.IllegalPinWriteValueException;
-import exception.predicate.DuplicateParameterException;
-import exception.predicate.NeedsBooleanPredicateException;
-import exception.predicate.NeedsNumeralPredicateException;
-import exception.predicate.UndeclaredIdentifierException;
+import exception.predicate.*;
 import exception.reachability.NotReachableException;
 import exception.reachability.RecursionException;
 import exception.time.NoTimeTypeException;
 import exception.time.NoTimerException;
 import exception.type.*;
 import node.RootNode;
+import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
 import node.statement.control.AbstractControlNode;
 import node.statement.pins.PinIndexNode;
@@ -44,6 +42,9 @@ public class ExceptionFactory {
 
             case "TIMEDTIME":
                 return new TimedTimeException(node);
+
+            case "NEEDSTIMEPREDICATE":
+                return new NeedsTimePredicateException((AbstractPrimaryNode) node);
 
             case "NOTIMER":
                 return new NoTimerException((ResetNode) node);
@@ -116,11 +117,12 @@ public class ExceptionFactory {
             return new IllegalPinWriteValueException(throwable);
         else if (throwable instanceof TimedTimeException)
             return new TimedTimeException(throwable);
-        else if (throwable instanceof NoTimerException){
+        else if (throwable instanceof NoTimerException)
             return new NoTimerException(throwable);
-        } else if (throwable instanceof NoTimeTypeException){
+        else if(throwable instanceof NeedsTimePredicateException)
+            return new NeedsTimePredicateException(throwable);
+        else if (throwable instanceof NoTimeTypeException)
             return new NoTimeTypeException(throwable);
-        }
 
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }

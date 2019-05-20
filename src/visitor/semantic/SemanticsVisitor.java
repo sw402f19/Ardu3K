@@ -28,6 +28,7 @@ import node.statement.pins.PinReadNode;
 import node.statement.pins.PinToggleNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.time.AbstractTimeStmtNode;
+import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
@@ -203,6 +204,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
             throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
         }
 
+        return node;
+    }
+
+    public RootNode visit(DelayNode node) throws SemanticException {
+        visitChildren(node);
         return node;
     }
 

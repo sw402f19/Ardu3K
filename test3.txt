@@ -1,14 +1,14 @@
+#define TESTAS 1
+
 setup = {
    pinMode(analog0, OUTPUT);
    pinMode(analog3, OUTPUT);
 
 }
 loop = {
-// test123 //
-
-    tet = "kdpawkdp 231";
-
-    timer = 10;
+   // test //
+   delay(300ms);
+   timer = 10;
    after 1sec in timer do resetTimer;
    after 1min in timerZ do {
         toggle(analog3);

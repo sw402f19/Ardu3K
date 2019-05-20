@@ -5,7 +5,10 @@ import node.RootNode;
 import node.primary.BoolNode;
 
 public class PinWriteNode extends AbstractPinStmtNode {
-    public PinWriteNode(Ardu3kParser.PinWriteContext ctx) {
+    public PinWriteNode(Ardu3kParser.PinWriteBoolContext ctx) {
+        super(ctx);
+    }
+    public PinWriteNode(Ardu3kParser.PinWriteIntContext ctx) {
         super(ctx);
     }
 

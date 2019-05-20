@@ -13,11 +13,8 @@ import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.expression.unary.UnaryNegateNode;
 import node.expression.type.StringType;
-import node.primary.AbstractPrimaryNode;
-import node.primary.BoolNode;
-import node.primary.IdentifierNode;
+import node.primary.*;
 import node.primary.time.TimeNode;
-import node.primary.UndefinedNode;
 import node.scope.*;
 import node.statement.CaseNode;
 import node.statement.DefaultNode;
@@ -199,9 +196,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
     public RootNode visit(PinWriteNode node) throws SemanticException {
         visit(node.getPinIndexNode());
 
-        if (!(node.getWriteValue() instanceof BoolNode)) {
-            throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
-        }
+        if (node.getWriteValue() instanceof BoolNode) {
+            // YAY (Do nothing)
+        } else if (node.getWriteValue() instanceof IntegerNode) {
+            if (((IntegerNode) node.getWriteValue()).getIntValue() < 0 || ((IntegerNode) node.getWriteValue()).getIntValue() > 255) {
+                throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
+            }
+        } else throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
 
         return node;
     }

@@ -2,10 +2,10 @@ package testVisitors;
 
 import node.RootNode;
 
-public class semanticTest {
+public class SemanticTest {
 
     // The starting point of the test
-    public semanticTest(RootNode dast){
+    public static void SemanticTest(RootNode dast){
 
     }
 }

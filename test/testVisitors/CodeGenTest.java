@@ -2,10 +2,10 @@ package testVisitors;
 
 import node.RootNode;
 
-public class codeGenTest {
+public class CodeGenTest {
 
     // The starting point of the test
-    public codeGenTest(String fileName){
+    public static void CodeGenTest(String fileName){
 
     }
 }

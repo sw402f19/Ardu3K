@@ -1,0 +1,47 @@
+#define GREEN 5
+#define YELLOW 6
+
+setup = {
+    voidFunc();
+    pinMode(5, OUTPUT);
+    pinMode(6, true);
+    pinMode(analog2, INPUT);
+}
+
+loop = {
+    a = 5;
+    write(5, true);
+    while a > 3 do a = a - 1;
+    while a < 3 do {
+        a = a + 1;
+        break;
+    }
+    b = paramFunc(1);
+    switch (a) {
+        case 5:
+            a = a ^ 2;
+        default:
+            a = 5;
+    }
+    read(analog2);
+    after 1min in timerA do toggle(analog2);
+    before 10sec in timerB do {
+        toggle(6);
+        resetTimer;
+    }
+}
+
+voidFunc() = {
+    toggle(analog2);
+    return 1;
+}
+
+paramFunc(a) = {
+    if a > 2 do return a + 2;
+    if a < 2 do {
+        a = a * 2;
+        return a;
+    } else {
+        return a;
+    }
+}

@@ -11,6 +11,9 @@ public class ArgumentNode extends RootNode {
         super(ctx);
     }
 
+    public ArgumentNode() {
+    }
+
     @Override
     public String toString() {
         return "Argument";

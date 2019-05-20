@@ -27,8 +27,14 @@ public class StringNode extends AbstractPrimaryNode implements StringType {
         value = builder.toString();
     }
 
-    public StringNode(double value) {
-        this.value = Double.toString(value);
+    public StringNode(IntegerNode node) {
+        this.value = Integer.toString(node.value);
+        this.line = node.line;
+    }
+
+    public StringNode(FloatNode node) {
+        this.value = Double.toString(node.value);
+        this.line = node.line;
     }
 
     @Override

@@ -22,6 +22,11 @@ public class IntegerNode extends AbstractNumberNode {
         this.value = Integer.valueOf(str);
     }
 
+    public IntegerNode(FloatNode node) {
+        this.value = (int) node.value;
+        this.line = node.line;
+    }
+
     @Override
     public String toString() {
         return "Integer";

@@ -98,6 +98,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return str;
     }
 
+    public String visit(CommentNode node) throws SemanticException{
+        return node.getValue();
+    }
+
     public String visit(MinusNode node) throws SemanticException {
         return visit(node.getLeft()) + " - " + visit(node.getRight());
     }

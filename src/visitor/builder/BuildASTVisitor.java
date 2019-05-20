@@ -212,10 +212,18 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitPinWrite(Ardu3kParser.PinWriteContext ctx) {
+    public RootNode visitPinWriteBool(Ardu3kParser.PinWriteBoolContext ctx) {
         PinWriteNode node = new PinWriteNode(ctx);
         node.setPinIndexNode(visit(ctx.pin));
         node.setWriteValue(visit(ctx.value));
+        return node;
+    }
+
+    @Override
+    public RootNode visitPinWriteInt(Ardu3kParser.PinWriteIntContext ctx) {
+        PinWriteNode node = new PinWriteNode(ctx);
+        node.setPinIndexNode(visit(ctx.pin));
+        node.setWriteValue(new IntegerNode(Integer.valueOf(ctx.value.getText())));
         return node;
     }
 

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 // 3. Ensure that the AST has been built correctly
 // 4. Generate DAST
 // 5. Ensure that the Semantic checks works
-//    (might need seperate file which fails semCheck on purpose)
+//    (might need separate file which fails semCheck on purpose)
 // 6. Generate code file
 // 7. Ensure the code was generated correctly
 // =================================================================
@@ -57,7 +57,4 @@ public class MainTest {
             e.printStackTrace();
         }
     }
-
-
-
 }

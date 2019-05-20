@@ -47,7 +47,8 @@ time_stmt
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
     | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
-    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI           #pinWrite
+    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI           #pinWriteBool
+    | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR SEMI        #pinWriteInt
     | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR SEMI   #pinMode
     ;
 pin_index

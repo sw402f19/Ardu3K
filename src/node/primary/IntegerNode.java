@@ -33,5 +33,5 @@ public class IntegerNode extends AbstractNumberNode {
     }
 
     public String getValueStr() { return Integer.toString(value); }
-
+    public int getIntValue() { return value; }
 }

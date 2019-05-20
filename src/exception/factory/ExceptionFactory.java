@@ -4,21 +4,22 @@ import exception.ArgumentException;
 import exception.TimedTimeException;
 import exception.pins.IllegalPinIndexException;
 import exception.pins.IllegalPinWriteValueException;
-import exception.predicate.DuplicateParameterException;
-import exception.predicate.NeedsBooleanPredicateException;
-import exception.predicate.NeedsNumeralPredicateException;
-import exception.predicate.UndeclaredIdentifierException;
+import exception.predicate.*;
 import exception.reachability.NotReachableException;
 import exception.reachability.RecursionException;
+import exception.time.NoTimeTypeException;
+import exception.time.NoTimerException;
 import exception.type.*;
 import node.RootNode;
+import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
-import node.statement.TimedNode;
 import node.statement.control.AbstractControlNode;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.termination.AbstractTerminalNode;
 import node.statement.termination.ReturnNode;
+import node.statement.time.AbstractTimeStmtNode;
+import node.statement.time.ResetNode;
 
 public class ExceptionFactory {
 
@@ -40,7 +41,16 @@ public class ExceptionFactory {
                 return new IllegalPinWriteValueException((PinWriteNode) node);
 
             case "TIMEDTIME":
-                return new TimedTimeException((TimedNode) node);
+                return new TimedTimeException(node);
+
+            case "NEEDSTIMEPREDICATE":
+                return new NeedsTimePredicateException((AbstractPrimaryNode) node);
+
+            case "NOTIMER":
+                return new NoTimerException((ResetNode) node);
+
+            case "INVALIDTIMETYPE":
+                return new NoTimeTypeException((AbstractTimeStmtNode) node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)
@@ -107,6 +117,12 @@ public class ExceptionFactory {
             return new IllegalPinWriteValueException(throwable);
         else if (throwable instanceof TimedTimeException)
             return new TimedTimeException(throwable);
+        else if (throwable instanceof NoTimerException)
+            return new NoTimerException(throwable);
+        else if(throwable instanceof NeedsTimePredicateException)
+            return new NeedsTimePredicateException(throwable);
+        else if (throwable instanceof NoTimeTypeException)
+            return new NoTimeTypeException(throwable);
 
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }

@@ -12,13 +12,17 @@ public class ReturnTypeVisitor extends PrimaryVisitor {
     public ReturnTypeVisitor(SymbolTable symbolTable) {
         super(symbolTable);
     }
-
     private ArrayList<RootNode> returnTypes = new ArrayList<>();
+
+    public RootNode initVisit(RootNode node) throws SemanticException {
+        visit(node);
+        return aggregateResult();
+    }
 
     public RootNode visit(ReturnNode node) throws SemanticException {
         if(node.getExpression() != null)
             returnTypes.add(new ExpressionTypeVisitor(symbolTable).visit(node.getExpression()));
-        return aggregateResult();
+        return node;
     }
     public RootNode aggregateResult() {
         if(returnTypes.size() > 0)

@@ -9,14 +9,15 @@ import visitor.BaseASTVisitor;
 import java.util.ArrayList;
 
 public class ListNode extends AbstractPrimaryNode {
+
+    public RootNode type;
+
     public ListNode(Ardu3kParser.List_assignmentContext ctx) {
         super(ctx);
     }
 
     @Override
-    public String toString() { return "[LIST]"; }
-
-    public RootNode identifier;
+    public String toString() { return "list."; }
 
     public void addFirstElement(RootNode node){
         if (children.size() != 0){
@@ -27,7 +28,7 @@ public class ListNode extends AbstractPrimaryNode {
     public RootNode getFirstElement() {
         try {
             if (children.size() > 1) {
-                return children.get(1);
+                return children.get(0);
             } else throw new Exception("INVALID index of list value");
         } catch (Exception e) {
             e.printStackTrace();

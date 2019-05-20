@@ -24,6 +24,11 @@ public class FloatNode extends AbstractNumberNode {
 
     }
 
+    public FloatNode(IntegerNode node) {
+        this.value = node.value;
+        this.line = node.line;
+    }
+
     @Override
     public String toString() {
         return "Double";

@@ -11,19 +11,21 @@ import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.unary.UnaryNegateNode;
+import node.primary.time.TimeNode;
+import node.primary.time.TimeType;
 import node.statement.*;
 import node.scope.*;
 import node.primary.*;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
-import node.statement.pins.PinIndexNode;
-import node.statement.pins.PinReadNode;
-import node.statement.pins.PinToggleNode;
-import node.statement.pins.PinWriteNode;
+import node.statement.pins.*;
 import node.statement.termination.BreakNode;
 import node.statement.termination.ContinueNode;
 import node.statement.control.*;
 import node.statement.termination.ReturnNode;
+import node.statement.time.AfterNode;
+import node.statement.time.BeforeNode;
+import node.statement.time.ResetNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
 import symbol.SymbolTable;
@@ -137,14 +139,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
-    public RootNode visitFor_stmt(Ardu3kParser.For_stmtContext ctx) {
-        ForNode node = new ForNode(ctx);
-        node.setExpression(visitExpression(ctx.expr));
-        node.setValue(visitNumber(ctx.value));
-        node.setStmt(visit(ctx.body));
-        return node;
-    }
-    @Override
     public RootNode visitSwitch_stmt(Ardu3kParser.Switch_stmtContext ctx) {
         SwitchNode node = new SwitchNode(ctx);
         node.setExpression(visitExpression(ctx.expression()));
@@ -192,44 +186,76 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.st = symbolTable;
         if(ctx.args != null)
             node.setArguments(visit(ctx.args));
+        else
+            node.setArguments(new ArgumentNode());
         return node;
     }
 
     @Override
     public RootNode visitPinToggle(Ardu3kParser.PinToggleContext ctx) {
-        PinToggleNode node = new PinToggleNode();
+        PinToggleNode node = new PinToggleNode(ctx);
         node.setPinIndexNode(visit(ctx.pin));
         return node;
     }
 
     @Override
     public RootNode visitPinRead(Ardu3kParser.PinReadContext ctx) {
-        PinReadNode node = new PinReadNode();
+        PinReadNode node = new PinReadNode(ctx);
         node.setPinIndexNode(visit(ctx.pin));
         return node;
     }
 
     @Override
     public RootNode visitPinWrite(Ardu3kParser.PinWriteContext ctx) {
-        PinWriteNode node = new PinWriteNode();
+        PinWriteNode node = new PinWriteNode(ctx);
         node.setPinIndexNode(visit(ctx.pin));
         node.setWriteValue(visit(ctx.value));
         return node;
     }
 
     @Override
-    public RootNode visitTimed_stmt(Ardu3kParser.Timed_stmtContext ctx) {
-        TimedNode node = new TimedNode();
-        node.setWaitTime(Integer.valueOf(ctx.time.getText()));
-        node.setFuncID(visit(ctx.id));
+    public RootNode visitPin_index(Ardu3kParser.Pin_indexContext ctx) {
+        PinIndexNode node = new PinIndexNode(ctx);
+        node.setIndex(Integer.valueOf(ctx.index.getText()));
+        if (ctx.analog !=  null) { node.setbAnalog(true); }
         return node;
     }
 
     @Override
-    public RootNode visitPin_index(Ardu3kParser.Pin_indexContext ctx) {
-        PinIndexNode node = new PinIndexNode();
-        node.setIndex(Integer.valueOf(ctx.index.getText()));
-        if (ctx.analog !=  null) { node.setbAnalog(true); }
+    public RootNode visitBeforeStmt(Ardu3kParser.BeforeStmtContext ctx) {
+        BeforeNode node = new BeforeNode(ctx);
+        node.setTime(visit(ctx.time));
+        node.setClockName(visit(ctx.clockName));
+        node.setStmt(visit(ctx.exec));
+        return node;
+    }
+
+    @Override
+    public RootNode visitAfterStmt(Ardu3kParser.AfterStmtContext ctx) {
+        AfterNode node = new AfterNode(ctx);
+        node.setTime(visit(ctx.time));
+        node.setClockName(visit(ctx.clockName));
+        node.setStmt(visit(ctx.exec));
+        return node;
+    }
+
+    @Override
+    public RootNode visitPrimaryTime(Ardu3kParser.PrimaryTimeContext ctx) {
+        TimeNode node = new TimeNode();
+        node.setAssignedValue(Integer.valueOf(ctx.val.getText()));
+
+        switch (ctx.type.getText()){
+            case "ms":
+                node.setType(TimeType.MS);
+                break;
+            case "sec":
+                node.setType(TimeType.S);
+                break;
+            case "min":
+                node.setType(TimeType.M);
+                break;
+        }
+
         return node;
     }
 
@@ -254,9 +280,31 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
                     return new BreakNode(ctx);
                 case Ardu3kParser.CONTINUE:
                     return new ContinueNode(ctx);
-                    default:
-                        return null;
+                case Ardu3kParser.RESETTIMER:
+                    return new ResetNode();
+                default:
+                    return null;
         }
+    }
+
+    @Override
+    public RootNode visitPinMode(Ardu3kParser.PinModeContext ctx) {
+        PinModeNode node = new PinModeNode();
+        node.setbOutput(boolVisitPin_mode(ctx.pinMode));
+        node.setPinIndexNode(visit(ctx.pin));
+        return node;
+    }
+
+    public boolean boolVisitPin_mode(Ardu3kParser.Pin_modeContext ctx) {
+        switch (ctx.pinMode.getType()){
+            case Ardu3kParser.OUTPUT:
+            case Ardu3kParser.TRUE:
+                return true;
+            case Ardu3kParser.INPUT:
+            case Ardu3kParser.FALSE:
+                return false;
+        }
+        return false;
     }
 
     @Override

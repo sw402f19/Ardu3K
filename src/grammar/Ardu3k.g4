@@ -36,19 +36,28 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
+    | notail=RESETTIMER                                             #notailStatement
     | comment                                                       #stmtComment
-    | timed_stmt                                                    #stmtTimed
+    | time_stmt                                                     #stmtTimed
     ;
-timed_stmt
-    : TIMED LPAR time=INTEGER COMMA id=identifier RPAR SEMI
+time_stmt
+    : BEFORE time=expression IN clockName=identifier DO exec=stmt           #beforeStmt
+    | AFTER time=expression IN clockName=identifier DO exec=stmt            #afterStmt
     ;
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
     | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
-    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI        #pinWrite
+    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI           #pinWrite
+    | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR SEMI   #pinMode
     ;
 pin_index
     : analog=ANALOG? index=INTEGER
+    ;
+pin_mode
+    : pinMode=OUTPUT
+    | pinMode=INPUT
+    | pinMode=TRUE
+    | pinMode=FALSE
     ;
 comment
     : COMMENT LETTER* COMMENT
@@ -57,11 +66,7 @@ block
     : LCUR body=stmt* RCUR
     ;
 iterative_stmt
-    : for_stmt
-    | while_stmt
-    ;
-for_stmt
-    : FOR expr=expression TO value=number DO body=stmt
+    : while_stmt
     ;
 while_stmt
     : WHILE expr=expression DO body=stmt
@@ -157,6 +162,9 @@ list_element
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
+    | val=INTEGER type=MILI                         #primaryTime
+    | val=INTEGER type=SEC                          #primaryTime
+    | val=INTEGER type=MIN                          #primaryTime
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt
@@ -264,4 +272,13 @@ READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
 ANALOG: 'analog';
-TIMED: 'timed';
+SEC: 'sec';
+MILI: 'ms';
+MIN: 'min';
+BEFORE: 'before';
+AFTER: 'after';
+IN: 'in';
+RESETTIMER: 'resetTimer;';
+PINMODE: 'pinMode';
+INPUT: 'INPUT';
+OUTPUT: 'OUTPUT';

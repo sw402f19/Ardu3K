@@ -1,13 +1,10 @@
 package visitor.semantic;
 
-import com.rits.cloning.Cloner;
-import exception.*;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
-import exception.predicate.UndeclaredIdentifierException;
-import exception.reachability.RecursionException;
 import node.RootNode;
+import node.composite.ListNode;
 import node.expression.*;
 import node.expression.additive.PlusNode;
 import node.expression.condition.AbstractInfixConditionalNode;
@@ -19,25 +16,26 @@ import node.expression.type.StringType;
 import node.primary.AbstractPrimaryNode;
 import node.primary.BoolNode;
 import node.primary.IdentifierNode;
+import node.primary.time.TimeNode;
 import node.primary.UndefinedNode;
 import node.scope.*;
 import node.statement.CaseNode;
+import node.statement.DefaultNode;
 import node.statement.FunctionStmtNode;
-import node.statement.TimedNode;
 import node.statement.control.*;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinReadNode;
 import node.statement.pins.PinToggleNode;
 import node.statement.pins.PinWriteNode;
+import node.statement.time.AbstractTimeStmtNode;
+import node.statement.time.ResetNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
-
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
+import visitor.semantic.typecast.ExpressionCastVisitor;
+import visitor.semantic.typecast.TypeCaster;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
@@ -143,8 +141,44 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
+    /**
+     * This will visit a list node, asserting its children type by using the ExpressionTypeVisitor.
+     * If different types are registered, will try to cast it's children.
+     * @param   node to visit
+     * @return  {@param node}
+     * @throws SemanticException if incompatible types are found.
+     */
+    public RootNode visit(ListNode node) throws SemanticException {
+        ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
+        try {
+            node.type = exprVisitor.visit(node);
+            visitChildren(node);
+
+            RootNode prevType;
+            RootNode nextType;
+            boolean shouldChange = false;
+            if (node.type instanceof ListNode) {
+                prevType = exprVisitor.visit(node.children.get(0));
+                for (int i = 1; i < node.children.size(); i++) {
+                    nextType = exprVisitor.visit(node.children.get(i));
+                    if (!(nextType.getClass().equals(prevType.getClass()))) {
+                        shouldChange = true;
+                        prevType = exprVisitor.highestOrder(prevType, nextType);
+                    }
+                }
+                if(shouldChange)
+                    for(RootNode a : node.children)
+                        for(RootNode b : a.children)
+                            a.children.set(a.children.indexOf(b),TypeCaster.cast(b, prevType));
+            }
+        } catch (SemanticException e) {
+            System.out.println(e.getMessage());
+        }
+        return node;
+    }
+
     public RootNode visit(PinIndexNode node) throws SemanticException {
-        // NOTE: These ports are what is allowed on an Arduino Uno
+        // todo: These ports are what is allowed on an Arduino Uno
         if (node.getbAnalog()) {
             if (node.getIndex() > 5 || node.getIndex() < 0) {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
@@ -154,12 +188,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
             }
         }
-        return node;
-    }
-
-    public RootNode visit(TimedNode node) throws SemanticException {
-        visit(node.getFuncID());
-        if (node.getWaitTime() <= 0) { throw ExceptionFactory.produce("TIMEDTIME", node); }
         return node;
     }
 
@@ -174,6 +202,20 @@ public class SemanticsVisitor extends PrimaryVisitor {
         if (!(node.getWriteValue() instanceof BoolNode)) {
             throw ExceptionFactory.produce("ILLEGALPINWRITE", node);
         }
+
+        return node;
+    }
+
+    public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
+        visitChildren(node);
+        ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
+        new ReachabilityVisitor().visit(node);
+        if(symbolTable.isPresent(node.getClockName()))
+            throw ExceptionFactory.produce("needstimepredicate",symbolTable.retrieveSymbol(node.getClockName()).getType());
+
+        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode)) {
+            throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
+        } // TODO: Add support for other types :D
 
         return node;
     }
@@ -246,20 +288,17 @@ public class SemanticsVisitor extends PrimaryVisitor {
             RootNode parentType = new ExpressionTypeVisitor(symbolTable).visit(parent.getExpression());
             if(!(type.getClass().equals(parentType.getClass())))
                 throw ExceptionFactory.produce("incompatibletype", parentType, type);
+            visitChildren(node);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
         symbolTable.closeScope();
         return node;
     }
-
-    public RootNode visit(ForNode node)  {
+    public RootNode visit(DefaultNode node) {
         symbolTable.openScope();
         try {
             visitChildren(node);
-            RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
-            if(!(type instanceof NumeralType))
-                throw ExceptionFactory.produce("needsnumeralpredicate", node, type);
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
@@ -304,7 +343,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         visit(node.getBlock());
         // todo functioncheck
         //FunctionChecker.Check(node);
-        node.setReturnType(new ReturnTypeVisitor(symbolTable).visit(node.getBlock()));
+        node.setReturnType(new ReturnTypeVisitor(symbolTable).initVisit(node.getBlock()));
         symbolTable.closeScope();
         return node;
     }

@@ -33,9 +33,9 @@ public class Main {
             dast = new SemanticsVisitor(symbolTable).visit(ast);
             CodeGenerator.GenerateCode("testGenCode", dast);
             PrintInfo(System.currentTimeMillis() - time);
-        } /*catch (SemanticException e){
+        } catch (SemanticException e){
             System.out.println(e.getMessage());
-        } */catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

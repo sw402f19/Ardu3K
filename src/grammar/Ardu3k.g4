@@ -60,7 +60,7 @@ pin_mode
     | pinMode=FALSE
     ;
 comment
-    : COMMENT LETTER* COMMENT
+    : COMMENT string_val* COMMENT
     ;
 block
     : LCUR body=stmt* RCUR
@@ -194,7 +194,7 @@ string
     : DQUOTE string_val* DQUOTE
     ;
 string_val
-    : value=(LETTER | DIGIT | UNDERSCORE | SPACE)
+    : value=(LETTER | INTEGER | UNDERSCORE | SPACE)
     ;
 literal
     : number

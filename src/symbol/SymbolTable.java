@@ -35,14 +35,8 @@ public class SymbolTable implements SymbolTableInterface{
     public void enterSymbol(FunctionNode node, SymbolTable symbolTable){
         symTable.put(node.getId(), new FunctionSymbol(node, symbolTable, depth));
     }
-    public void enterSymbol(FunctionNode node){
-        symTable.put(node.getId(), new FunctionSymbol(node, null, depth));
-    }
     public void enterSymbol(IdentifierNode node, RootNode type) {
         symTable.put(node, new Symbol(type, depth));
-    }
-    public void enterSymbol(IdentifierNode node){
-        symTable.put(node, new Symbol(new UndefinedNode(node), depth));
     }
     public void enterSymbol(DefineNode node) {
         symTable.put(node.getId(), new Symbol(node.getValue(), depth));

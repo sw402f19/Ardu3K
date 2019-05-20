@@ -22,7 +22,7 @@ public class ReturnTypeVisitor extends PrimaryVisitor {
     public RootNode visit(ReturnNode node) throws SemanticException {
         if(node.getExpression() != null)
             returnTypes.add(new ExpressionTypeVisitor(symbolTable).visit(node.getExpression()));
-        return node;
+        return aggregateResult();
     }
     public RootNode aggregateResult() {
         if(returnTypes.size() > 0)

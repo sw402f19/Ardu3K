@@ -348,7 +348,9 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(ReturnNode node) throws SemanticException {
-        return tab() + "return " + visit(node.getExpression()) + ";";
+        if(node.getExpression() != null)
+            return tab() + "return " + visit(node.getExpression()) + ";";
+        return tab() + "return;";
     }
 
     public String visit(AfterNode node) throws SemanticException {
@@ -406,17 +408,31 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
-        String str = tab() + visit(node.getId()) + "(";
+        if (node.parent instanceof DeclarationNode || node.parent instanceof AssignmentNode){
+            String str = visit(node.getId()) + "(";
 
-        if (node.children.size() > 1) {
-            for (int i = 0; i < node.getArguments().children.size(); i++) {
-                if (i != node.getArguments().children.size() - 1) {
-                    str += visit(node.getArguments().children.get(i)) + ", ";
-                } else str += visit(node.getArguments().children.get(i));
+            if (node.children.size() > 1) {
+                for (int i = 0; i < node.getArguments().children.size(); i++) {
+                    if (i != node.getArguments().children.size() - 1) {
+                        str += visit(node.getArguments().children.get(i)) + ", ";
+                    } else str += visit(node.getArguments().children.get(i));
+                }
             }
-        }
 
-        return str + ");";
+            return str + ")";
+        } else {
+            String str = tab() + visit(node.getId()) + "(";
+
+            if (node.children.size() > 1) {
+                for (int i = 0; i < node.getArguments().children.size(); i++) {
+                    if (i != node.getArguments().children.size() - 1) {
+                        str += visit(node.getArguments().children.get(i)) + ", ";
+                    } else str += visit(node.getArguments().children.get(i));
+                }
+            }
+
+            return str + ");";
+        }
     }
 
     public String visit(UndefinedNode node) {

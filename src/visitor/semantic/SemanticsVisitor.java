@@ -321,7 +321,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     public RootNode visit(FunctionStmtNode node) {
-        node.st = symbolTable;
         Symbol funcSym;
         try {
             funcSym = symbolTable.retrieveSymbol(node.getId());

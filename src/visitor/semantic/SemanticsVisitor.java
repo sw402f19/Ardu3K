@@ -1,5 +1,6 @@
 package visitor.semantic;
 
+import com.rits.cloning.Cloner;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
@@ -330,8 +331,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
             if(funcSym instanceof FunctionSymbol) {
                 if(!((FunctionSymbol) funcSym).containsImpl(node))
                     ((FunctionSymbol) funcSym).addImpl(node);
-                new SemanticsVisitor(((FunctionSymbol) funcSym).symTable)
-                        .visit(((FunctionSymbol) funcSym).getImpl(node));
+                FunctionNode impl = ((FunctionSymbol) funcSym).getImpl(node);
+                new SemanticsVisitor(((FunctionSymbol) funcSym).symTable).visit(impl);
             } else
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
         } catch (SemanticException e) {

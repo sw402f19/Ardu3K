@@ -17,7 +17,6 @@ public class FunctionSymbol extends Symbol {
     public ArrayList<FunctionNode> impls = new ArrayList<>();
     public SymbolTable symTable;
 
-
     public FunctionSymbol(RootNode type, SymbolTable symTable, int depth) {
         super(type, depth);
         this.symTable = symTable;

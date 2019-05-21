@@ -1,5 +1,5 @@
 setup = {
-
+    a = 1;
 }
 
 loop = {
@@ -11,5 +11,17 @@ loop = {
                 k = 2;
         else if false do
             a = 1;
-            else  something();
+
+        else
+            a = funcc(2.5, 5.4);
+}
+func(a, b) = {
+    c = a + b;
+    return c;
+}
+funcc(a, b) = {
+    c = func(a, b);
+    d = func(10, 20);
+    h = func("g", "h");
+    return c + d + h;
 }

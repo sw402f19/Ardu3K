@@ -18,6 +18,6 @@ public class NoTimerException extends SemanticException {
     }
 
     public NoTimerException(ResetNode node) {
-        super("NoTimerException: The reset function is not written in a scope that contains a before/after function");
+        super(node.line + " NoTimerException: The reset function is not written in a scope that contains a before/after function");
     }
 }

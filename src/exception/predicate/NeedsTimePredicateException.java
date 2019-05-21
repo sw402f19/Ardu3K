@@ -17,6 +17,6 @@ public class NeedsTimePredicateException extends SemanticException {
     }
 
     public NeedsTimePredicateException(AbstractPrimaryNode node) {
-        super(node.line+" NeedsTimePredicateException: got "+node.toString()+ " expected clock label");
+        super(node.line+" NeedsTimePredicateException: Timer name has already been used. "+node.line);
     }
 }

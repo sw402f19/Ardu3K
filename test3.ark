@@ -11,4 +11,19 @@ loop = {
         resetTimer;
    }
    a = 3+ 2;
+   funcc(1, 2, 2);
 }
+
+funcc(c, b, d) = {
+    a = 2;
+    imBlue = "";
+    abe = "";
+    switch (a) {
+        case 1:
+            abe = "kat";
+        default:
+            imBlue = "dabadi dabadu";
+    }
+    return 2 / 2;
+}
+

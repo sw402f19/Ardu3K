@@ -20,6 +20,7 @@ import node.statement.termination.AbstractTerminalNode;
 import node.statement.termination.ReturnNode;
 import node.statement.time.AbstractTimeStmtNode;
 import node.statement.time.ResetNode;
+import node.statement.time.ResetSpecificNode;
 
 public class ExceptionFactory {
 
@@ -48,6 +49,9 @@ public class ExceptionFactory {
 
             case "NOTIMER":
                 return new NoTimerException((ResetNode) node);
+
+            case "NOTIMERSPECIFIC":
+                return new NoTimerException((ResetSpecificNode) node);
 
             case "INVALIDTIMETYPE":
                 return new NoTimeTypeException((AbstractTimeStmtNode) node);

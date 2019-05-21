@@ -1,11 +1,14 @@
 setup = {
-
+    kage = 2;
 }
 
 loop = {
     // HELLO //
-    kage = 5;
     before 10sec in kage do {
+        toggle(analog2);
+        reset(kage);
+    }
+    after 10sec in kage do {
         toggle(analog2);
         reset(kage);
     }

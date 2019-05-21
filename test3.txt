@@ -1,16 +1,19 @@
 setup = {
-    kage = 2;
 }
 
 loop = {
     // HELLO //
     before 10sec in kage do {
         toggle(analog2);
-        reset(kage);
+        reset(hest);
+        reset;
     }
-    after 10sec in kage do {
+    after 10sec in hest do {
         toggle(analog2);
-        reset(kage);
+        read(1);
+        write(2, false);
+        pinMode(2, OUTPUT);
+        reset(this);
     }
 }
 

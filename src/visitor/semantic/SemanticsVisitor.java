@@ -220,9 +220,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
         if(symbolTable.isPresent(node.getClockName()))
             throw ExceptionFactory.produce("needstimepredicate",symbolTable.retrieveSymbol(node.getClockName()).getType());
 
-        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode)) {
+        if (!((exprVisitor.visit(node.getTime()) instanceof TimeNode) || exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
             throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
-        } // TODO: Add support for other types :D
+        }
 
         return node;
     }

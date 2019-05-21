@@ -213,6 +213,8 @@ bool
     | value=FALSE
     ;
 
+
+
 // =========== //
 
 DELAY: 'delay';
@@ -221,7 +223,7 @@ REAL: '-'?DIGIT+ DOT DIGIT+;
 INTEGER: '-'?DIGIT+;
 DIGIT: [0-9];
 DEFINE: '#'?'define';
-DO : 'do';
+DO : 'do'->skip;
 SETUP : 'setup';
 LOOP : 'loop';
 SWITCH : 'switch';
@@ -281,7 +283,7 @@ MILI: 'ms';
 MIN: 'min';
 BEFORE: 'before';
 AFTER: 'after';
-IN: 'in';
+IN: 'in'->skip;
 RESETTIMER: 'resetTimer;';
 PINMODE: 'pinMode';
 INPUT: 'INPUT';

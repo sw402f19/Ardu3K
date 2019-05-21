@@ -328,7 +328,9 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(PinReadNode node) throws SemanticException {
-        return tab() + "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ");";
+        if (node.parent instanceof AbstractDeclAssignNode) {
+            return "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ")";
+        } else return tab() + "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ");";
     }
 
     public String visit(PinToggleNode node) throws SemanticException {
@@ -408,7 +410,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
-        if (node.parent instanceof DeclarationNode || node.parent instanceof AssignmentNode){
+        if (node.parent instanceof AbstractDeclAssignNode){
             String str = visit(node.getId()) + "(";
 
             if (node.children.size() > 1) {
@@ -444,7 +446,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         switch (node.getClass().getSimpleName()){
             case "BoolNode":
                 return "bool";
-            case "IntegerNode":
+            case "IntegerNode": case "PinReadNode":
                 return "int";
             case "StringNode":
                 return "String";

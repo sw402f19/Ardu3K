@@ -116,6 +116,10 @@ assignment_expr
     : conditional_expr
     | assignment
     | list_assignment
+    | pinread_assignment
+    ;
+pinread_assignment
+    : READ LPAR pin=pin_index RPAR
     ;
 assignment
     : left=identifier ASSIGN right=assignment_expr

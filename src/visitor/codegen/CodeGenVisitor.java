@@ -333,7 +333,9 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(PinReadNode node) throws SemanticException {
-        return tab() + "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ");";
+        if (node.parent instanceof AbstractDeclAssignNode) {
+            return "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ")";
+        } else return tab() + "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ");";
     }
 
     public String visit(PinToggleNode node) throws SemanticException {
@@ -413,17 +415,31 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
-        String str = tab() + visit(node.getId()) + "(";
+        if (node.parent instanceof AbstractDeclAssignNode){
+            String str = visit(node.getId()) + "(";
 
-        if (node.children.size() > 1) {
-            for (int i = 0; i < node.getArguments().children.size(); i++) {
-                if (i != node.getArguments().children.size() - 1) {
-                    str += visit(node.getArguments().children.get(i)) + ", ";
-                } else str += visit(node.getArguments().children.get(i));
+            if (node.children.size() > 1) {
+                for (int i = 0; i < node.getArguments().children.size(); i++) {
+                    if (i != node.getArguments().children.size() - 1) {
+                        str += visit(node.getArguments().children.get(i)) + ", ";
+                    } else str += visit(node.getArguments().children.get(i));
+                }
             }
-        }
 
-        return str + ");";
+            return str + ")";
+        } else {
+            String str = tab() + visit(node.getId()) + "(";
+
+            if (node.children.size() > 1) {
+                for (int i = 0; i < node.getArguments().children.size(); i++) {
+                    if (i != node.getArguments().children.size() - 1) {
+                        str += visit(node.getArguments().children.get(i)) + ", ";
+                    } else str += visit(node.getArguments().children.get(i));
+                }
+            }
+
+            return str + ");";
+        }
     }
 
     public String visit(UndefinedNode node) {
@@ -435,7 +451,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         switch (node.getClass().getSimpleName()){
             case "BoolNode":
                 return "bool";
-            case "IntegerNode":
+            case "IntegerNode": case "PinReadNode":
                 return "int";
             case "StringNode":
                 return "String";

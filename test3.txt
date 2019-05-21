@@ -3,9 +3,5 @@ setup = {
 }
 
 loop = {
-    b = funky(4);
-}
-
-funky(a) = {
-    return a +2;
+    a = read(1);
 }

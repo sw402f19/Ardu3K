@@ -353,7 +353,9 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(ReturnNode node) throws SemanticException {
-        return tab() + "return " + visit(node.getExpression()) + ";";
+        if(node.getExpression() != null)
+            return tab() + "return " + visit(node.getExpression()) + ";";
+        return tab() + "return;";
     }
 
     public String visit(AfterNode node) throws SemanticException {

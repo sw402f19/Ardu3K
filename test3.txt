@@ -1,14 +1,10 @@
-#define TESTAS 1
-
 setup = {
    pinMode(analog0, OUTPUT);
    pinMode(analog3, OUTPUT);
-
 }
+
 loop = {
-   // test //
-   delay(300ms);
-   timerr = 10;
+   timer = 10;
    after 1sec in timer do resetTimer;
    after 1min in timerZ do {
         toggle(analog3);

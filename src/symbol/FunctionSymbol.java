@@ -6,6 +6,7 @@ import exception.factory.SemanticException;
 import node.RootNode;
 import node.scope.FunctionNode;
 import node.scope.ParameterNode;
+import node.statement.ArgumentNode;
 import node.statement.FunctionStmtNode;
 import visitor.semantic.PrimaryVisitor;
 
@@ -17,8 +18,8 @@ public class FunctionSymbol extends Symbol {
     public SymbolTable symTable;
 
 
-    public FunctionSymbol(RootNode name, RootNode type, SymbolTable symTable, int depth) {
-        super(name, type, depth);
+    public FunctionSymbol(RootNode type, SymbolTable symTable, int depth) {
+        super(type, depth);
         this.symTable = symTable;
     }
 
@@ -52,10 +53,13 @@ public class FunctionSymbol extends Symbol {
         FunctionNode template = (FunctionNode)getType();
         ParameterNode parameter;
 
-
-
         if(call.getArguments().children.size() != template.getParameter().children.size())
             throw ExceptionFactory.produce("undeclaredidentifier", call.getId());
+
+        if(call.getArguments().children.size() == 0 && template.getParameter().children.size() == 0) {
+            if(impls.size() > 0)
+                contains = true;
+        }
 
         for(FunctionNode n : impls) {
             parameter = (ParameterNode)n.getParameter();

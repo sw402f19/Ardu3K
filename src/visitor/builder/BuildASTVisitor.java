@@ -303,7 +303,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
                     return new BreakNode(ctx);
                 case Ardu3kParser.CONTINUE:
                     return new ContinueNode(ctx);
-                case Ardu3kParser.RESETTIMER:
+                case Ardu3kParser.RESET:
                     return new ResetNode(ctx);
                 default:
                     return null;

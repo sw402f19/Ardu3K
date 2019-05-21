@@ -17,6 +17,6 @@ public class NoTimeTypeException  extends SemanticException {
     }
 
     public NoTimeTypeException(AbstractTimeStmtNode node) {
-        super("NoTimeTypeException: No valid time type in before/after function");
+        super(node.line + " NoTimeTypeException: No valid time type in before/after function");
     }
 }

@@ -3,27 +3,11 @@ setup = {
 }
 
 loop = {
-
-   timer = 10;
-   after 1sec in timer do resetTimer;
-   after 1min in timerZ do {
-        toggle(analog3);
-        resetTimer;
-   }
-   a = 3+ 2;
-   funcc(1, 2, 2);
-}
-
-funcc(c, b, d) = {
-    a = 2;
-    imBlue = "";
-    abe = "";
-    switch (a) {
-        case 1:
-            abe = "kat";
-        default:
-            imBlue = "dabadi dabadu";
+    // HELLO //
+    kage = 5;
+    before 10sec in kage do {
+        toggle(analog2);
+        reset(kage);
     }
-    return 2 / 2;
 }
 

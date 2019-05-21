@@ -27,6 +27,7 @@ import node.statement.pins.PinWriteNode;
 import node.statement.time.AbstractTimeStmtNode;
 import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
+import node.statement.time.ResetSpecificNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
@@ -222,7 +223,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         if(symbolTable.isPresent(node.getClockName()))
             throw ExceptionFactory.produce("needstimepredicate",symbolTable.retrieveSymbol(node.getClockName()).getType());
 
-        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode)) {
+        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode) || (exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
             throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
         } // TODO: Add support for other types :D
 
@@ -344,6 +345,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
+        return node;
+    }
+
+    public RootNode visit(ResetNode node) throws SemanticException {
+
         return node;
     }
 

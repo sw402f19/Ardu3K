@@ -25,6 +25,7 @@ import node.statement.control.*;
 import node.statement.termination.ReturnNode;
 import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
+import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
@@ -496,6 +497,13 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitString_val(Ardu3kParser.String_valContext ctx) {
         return new StringNode(ctx.getText());
+    }
+
+    @Override
+    public RootNode visitDelay(Ardu3kParser.DelayContext ctx) {
+        DelayNode node = new DelayNode(ctx);
+        node.setTime(visit(ctx.time));
+        return node;
     }
 
     @Override

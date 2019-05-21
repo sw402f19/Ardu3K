@@ -25,6 +25,7 @@ import node.statement.pins.PinReadNode;
 import node.statement.pins.PinToggleNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.time.AbstractTimeStmtNode;
+import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
@@ -209,6 +210,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
+    public RootNode visit(DelayNode node) throws SemanticException {
+        visitChildren(node);
+        return node;
+    }
+
     public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
         visitChildren(node);
         ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
@@ -345,7 +351,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         visit(node.getParameter());
         visit(node.getBlock());
         // todo functioncheck
-        //FunctionChecker.Check(node);
+        FunctionChecker.Check(node);
         node.setReturnType(new ReturnTypeVisitor(symbolTable).initVisit(node.getBlock()));
         symbolTable.closeScope();
         return node;

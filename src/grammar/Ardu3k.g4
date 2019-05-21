@@ -36,7 +36,7 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
-    | notail=RESETTIMER                                             #notailStatement
+    | notail=RESET                                                  #notailStatement
     | RESET LPAR id=identifier RPAR SEMI                            #resetSpecific
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed
@@ -287,7 +287,6 @@ MIN: 'min';
 BEFORE: 'before';
 AFTER: 'after';
 IN: 'in';
-RESETTIMER: 'resetTimer;';
 RESET: 'reset';
 PINMODE: 'pinMode';
 INPUT: 'INPUT';

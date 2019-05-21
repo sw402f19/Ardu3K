@@ -18,6 +18,7 @@ import node.statement.pins.*;
 import node.statement.termination.*;
 import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
+import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
 import node.statement.time.ResetSpecificNode;
 import visitor.BaseASTVisitor;
@@ -85,6 +86,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
             return code.toString();
         } catch (IOException e) { e.printStackTrace(); }
         return "";
+    }
+
+    public String visit(DelayNode node) throws  SemanticException{
+        return  tab()+"delay("+visit(node.getTime())+");";
     }
 
     public String visit(ListNode node) throws SemanticException {

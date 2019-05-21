@@ -19,6 +19,7 @@ import node.statement.termination.*;
 import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
 import node.statement.time.ResetNode;
+import node.statement.time.ResetSpecificNode;
 import visitor.BaseASTVisitor;
 
 import java.io.*;
@@ -99,7 +100,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(CommentNode node) throws SemanticException{
-        return node.getValue();
+        return tab() + node.getValue();
     }
 
     public String visit(MinusNode node) throws SemanticException {
@@ -391,6 +392,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
 
     public String visit(ResetNode node) {
         return tab() + "Ardu3K::ResetTimer(&" + node.getClockName() + ");";
+    }
+
+    public String visit(ResetSpecificNode node) throws SemanticException {
+        return tab() + "Ardu3K::ResetTimer(&" + visit(node.getID()) + ");";
     }
 
     public String visit(TimeNode node) {

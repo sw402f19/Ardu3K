@@ -3,13 +3,15 @@ setup = {
 }
 
 loop = {
-    if true do
-        if true do
-            if true do
-                a = 1;
-            else
-                k = 2;
-        else if false do
-            a = 1;
-            else  something();
+
+    func(2, 2);
+
+    a = 2 + 7;
+
+    delay(100);
+
+}
+
+func(a, b) = {
+    return a = a + 2 + 2;
 }

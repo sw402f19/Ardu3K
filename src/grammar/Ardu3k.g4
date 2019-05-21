@@ -205,7 +205,7 @@ literal
     ;
 number
     : value=INTEGER
-    | value=REAL
+    | value=FLOAT
     ;
 bool
     : value=TRUE
@@ -215,7 +215,7 @@ bool
 // =========== //
 
 LETTER: [a-zA-Z];
-REAL: '-'?DIGIT+ DOT DIGIT+;
+FLOAT: '-'?DIGIT+ DOT DIGIT+;
 INTEGER: '-'?DIGIT+;
 DIGIT: [0-9];
 DEFINE: '#'?'define';
@@ -253,8 +253,8 @@ ASSIGN: '=';
 DQUOTE : '"';
 FOR: 'for' ;
 WHILE: 'while';
-BREAK: 'break;';
-CONTINUE: 'continue;';
+BREAK: 'break';
+CONTINUE: 'continue';
 TO: 'to';
 SEMI: ';';
 IF: 'if'  ;
@@ -280,7 +280,7 @@ MIN: 'min';
 BEFORE: 'before';
 AFTER: 'after';
 IN: 'in';
-RESETTIMER: 'resetTimer;';
+RESETTIMER: 'resetTimer';
 PINMODE: 'pinMode';
 INPUT: 'INPUT';
 OUTPUT: 'OUTPUT';

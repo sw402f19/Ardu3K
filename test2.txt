@@ -4,5 +4,14 @@ setup = {
 
 loop = {
 
+    func(2, 2);
 
+    a = 2 + 7;
+
+    delay(100);
+
+}
+
+func(a, b) = {
+    return a = a + 2 + 2;
 }

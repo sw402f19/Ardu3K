@@ -100,7 +100,8 @@ argument
     ;
 
 expression_stmt
-    : expression SEMI
+    : SEMI
+    | expression SEMI
     ;
 expression
     : unary_expr

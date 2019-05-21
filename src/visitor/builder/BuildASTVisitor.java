@@ -125,6 +125,12 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     }
 
     @Override
+    public RootNode visitComment(Ardu3kParser.CommentContext ctx) {
+        CommentNode node = new CommentNode(ctx.getText());
+        return node;
+    }
+
+    @Override
     public RootNode visitUnary_expr(Ardu3kParser.Unary_exprContext ctx) {
         UnaryNegateNode node = new UnaryNegateNode();
         if (ctx.right != null) { node.setExpr(visit(ctx.right)); }
@@ -317,7 +323,9 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override
     public RootNode visitExpression_stmt(Ardu3kParser.Expression_stmtContext ctx) {
-        return visit(ctx.expression());
+        if(ctx.expression() != null)
+            return visit(ctx.expression());
+        return null;
     }
 
 

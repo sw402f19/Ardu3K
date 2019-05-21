@@ -98,6 +98,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return str;
     }
 
+    public String visit(CommentNode node) throws SemanticException{
+        return node.getValue();
+    }
+
     public String visit(MinusNode node) throws SemanticException {
         return visit(node.getLeft()) + " - " + visit(node.getRight());
     }
@@ -344,7 +348,9 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(ReturnNode node) throws SemanticException {
-        return tab() + "return " + visit(node.getExpression()) + ";";
+        if(node.getExpression() != null)
+            return tab() + "return " + visit(node.getExpression()) + ";";
+        return tab() + "return;";
     }
 
     public String visit(AfterNode node) throws SemanticException {

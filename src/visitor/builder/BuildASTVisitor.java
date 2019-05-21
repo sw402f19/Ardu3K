@@ -28,6 +28,7 @@ import node.statement.time.BeforeNode;
 import node.statement.time.ResetNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
+import symbol.Symbol;
 import symbol.SymbolTable;
 
 import java.util.ArrayList;
@@ -81,16 +82,25 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return node;
     }
 
+    // todo fix her - kristian
     public RootNode visitFunctions(List<Ardu3kParser.FunctionContext> ctx) {
         FunctionsNode node = new FunctionsNode();
         Cloner cloner = new Cloner();
-        SymbolTable internalST;
+        SymbolTable internalST = cloner.deepClone(symbolTable);
+        SymbolTable externalST;
         collectChildren(node, ctx);
+        SymbolTable collectedTable;
 
-        internalST = cloner.deepClone(symbolTable);
+        collectedTable = cloner.deepClone(symbolTable);
+        for(RootNode n : node.children)
+            collectedTable.enterSymbol((FunctionNode)n);
+
+        for(Symbol symbol : collectedTable.getTable().values())
+            if(symbol instanceof FunctionSymbol)
+                internalST.enterSymbol((FunctionNode)symbol.getType(), cloner.deepClone(collectedTable));
+
         for(RootNode n : node.children) {
-            symbolTable.enterSymbol((FunctionNode)n, internalST);
-            internalST.enterSymbol((FunctionNode)n, internalST);
+            symbolTable.enterSymbol((FunctionNode)n, cloner.deepClone(internalST));
             ((FunctionSymbol)internalST.retrieveSymbol(((FunctionNode) n).getId())).impls =
                     ((FunctionSymbol)symbolTable.retrieveSymbol(((FunctionNode) n).getId())).impls;
         }

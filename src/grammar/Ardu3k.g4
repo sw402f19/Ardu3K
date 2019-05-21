@@ -37,6 +37,7 @@ stmt
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
     | notail=RESETTIMER                                             #notailStatement
+    | RESET LPAR id=identifier RPAR SEMI                            #resetSpecific
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed
     ;
@@ -62,7 +63,7 @@ pin_mode
     | pinMode=FALSE
     ;
 comment
-    : COMMENT string_val* COMMENT
+    : DOUBLE_SLASH string_val* DOUBLE_SLASH
     ;
 block
     : LCUR body=stmt* RCUR
@@ -277,7 +278,7 @@ ADD: 'add';
 SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
-COMMENT: '//';
+DOUBLE_SLASH: '//';
 READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
@@ -289,6 +290,7 @@ BEFORE: 'before';
 AFTER: 'after';
 IN: 'in'->skip;
 RESETTIMER: 'resetTimer;';
+RESET: 'reset';
 PINMODE: 'pinMode';
 INPUT: 'INPUT';
 OUTPUT: 'OUTPUT';

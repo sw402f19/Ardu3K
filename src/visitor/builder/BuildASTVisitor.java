@@ -189,7 +189,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitFunction_stmt(Ardu3kParser.Function_stmtContext ctx) {
         FunctionStmtNode node = new FunctionStmtNode(ctx);
         node.setId(visit(ctx.id));
-        node.st = symbolTable;
         if(ctx.args != null)
             node.setArguments(visit(ctx.args));
         else

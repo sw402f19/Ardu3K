@@ -73,7 +73,6 @@ public class FunctionSymbol extends Symbol {
         }
         return contains;
     }
-
     public void addImpl(FunctionStmtNode call) throws SemanticException {
         Cloner cloner = new Cloner();
         FunctionNode nodeToAdd = new FunctionNode();

@@ -44,6 +44,7 @@ time_stmt
     : BEFORE time=expression IN clockName=identifier DO exec=stmt           #beforeStmt
     | AFTER time=expression IN clockName=identifier DO exec=stmt            #afterStmt
     | DELAY LPAR time=expression RPAR SEMI                                  #delay
+    | identifier val=INTEGER                                                #integerIdentifier
     ;
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle

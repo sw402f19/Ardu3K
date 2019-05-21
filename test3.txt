@@ -8,7 +8,7 @@ setup = {
 loop = {
    // test //
    delay(300ms);
-   timer = 10;
+   timerr = 10;
    after 1sec in timer do resetTimer;
    after 1min in timerZ do {
         toggle(analog3);

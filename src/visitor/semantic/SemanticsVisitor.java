@@ -224,7 +224,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
             }
         } else symbolTable.enterSymbol((IdentifierNode)node.getClockName(), node);
 
-        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode) || (exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
+        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode) || exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
             throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
         }
         visitChildren(node);

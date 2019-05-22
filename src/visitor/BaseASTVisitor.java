@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 
 public class BaseASTVisitor<T> implements ASTVisitor<T> {
 
-    // todo Exceptions should be thrown here, and handled individually after the visit.
     public T visit(Node node) throws SemanticException {
         try {
             return this.dispatch(node);

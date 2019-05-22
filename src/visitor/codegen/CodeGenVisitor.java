@@ -462,7 +462,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
             case "VoidNode":
                 return "void";
             default:
-                return "UNDEFINED"; // TODO: Add exception here :D
+                return "UNDEFINED";
         }
     }
 

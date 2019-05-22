@@ -77,11 +77,10 @@ selection_stmt
     : switch_stmt
     | ifdo_stmt
     ;
-// todo cases to invividual node
+
 switch_stmt
     : SWITCH LPAR expr=expression RPAR LCUR cases=case_stmt* defaultcase=case_default? RCUR
     ;
-// todo add expression , expression to case value
 case_stmt
     : CASE value=expression COLON stmt*
     ;
@@ -203,6 +202,9 @@ string
 string_val
     : value=(LETTER | INTEGER | UNDERSCORE | SPACE)
     ;
+clockidentifier
+    : value=(LETTER | INTEGER | UNDERSCORE)
+     ;
 literal
     : number
     | bool
@@ -227,7 +229,7 @@ REAL: '-'?DIGIT+ DOT DIGIT+;
 INTEGER: '-'?DIGIT+;
 DIGIT: [0-9];
 DEFINE: '#'?'define';
-DO : 'do'->skip;
+DO : 'do';
 SETUP : 'setup';
 LOOP : 'loop';
 SWITCH : 'switch';
@@ -287,7 +289,7 @@ MILI: 'ms';
 MIN: 'min';
 BEFORE: 'before';
 AFTER: 'after';
-IN: 'in'->skip;
+IN: 'in';
 RESETTIMER: 'resetTimer;';
 PINMODE: 'pinMode';
 INPUT: 'INPUT';

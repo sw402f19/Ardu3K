@@ -44,7 +44,7 @@ public class TypeCaster {
         dispatch.put(FloatNode.class, (n, c) -> handleReal((FloatNode)n, c));
         dispatch.put(ListNode.class, (n, c) -> handleList((ListNode) n, c));
     }
-    // todo temp errornode
+
     private static RootNode handleInteger(IntegerNode node, Class clazz) {
         if(clazz.equals(StringNode.class)) {
             System.out.println(node.getLine()+" casted int to string");

@@ -36,7 +36,7 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
-    | RESET id=identifier SEMI                                      #resetSpecific
+    | RESET id=identifier                                           #resetSpecific
     | notail=RESET                                                  #notailStatement
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed

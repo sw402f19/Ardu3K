@@ -7,7 +7,10 @@ public class PinIndexNode extends RootNode {
     private int index;
     private boolean bAnalog = false;
 
-    public PinIndexNode(Ardu3kParser.Pin_indexContext ctx) {
+    public PinIndexNode(Ardu3kParser.PinIndexIntContext ctx) {
+        super(ctx);
+    }
+    public PinIndexNode(Ardu3kParser.PinIndexIdContext ctx) {
         super(ctx);
     }
 

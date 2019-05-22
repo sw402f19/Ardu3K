@@ -54,7 +54,8 @@ pin_stmt
     | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR SEMI   #pinMode
     ;
 pin_index
-    : analog=ANALOG? index=INTEGER
+    : analog=ANALOG? index=INTEGER                                  #pinIndexInt
+    | analog=ANALOG? indexID=identifier                             #pinIndexId
     ;
 pin_mode
     : pinMode=OUTPUT

@@ -17,6 +17,6 @@ public class IllegalPinIndexException extends SemanticException {
     }
 
     public IllegalPinIndexException(PinIndexNode node) {
-        super("IllegalPinIndexException: " + (node.getbAnalog() ? "Analog" : "Digital")  + " index " + node.getIndex() + " in pin operation out of bound for boards up to Arduino Uno");
+        super(node.line + " IllegalPinIndexException: " + (node.getbAnalog() ? "Analog" : "Digital")  + " index " + node.getIndex() + " in pin operation out of bound for boards up to Arduino Uno");
     }
 }

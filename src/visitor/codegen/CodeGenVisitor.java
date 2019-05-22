@@ -327,6 +327,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return node.getIndex() + ", " + node.getbAnalog();
     }
 
+    public String visit(PinIndexIdentifierNode node) {
+        return visit(node.getID()) + ", " + node.getbAnalog();
+    }
+
     public String visit(PinModeNode node) throws SemanticException {
         return tab() + "Ardu3K::SetPinMode(" + visit(node.getPinIndexNode()) + ", " + node.getbOutput() + ");";
     }

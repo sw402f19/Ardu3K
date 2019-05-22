@@ -3,6 +3,7 @@ package exception.time;
 import exception.factory.SemanticException;
 import node.statement.pins.PinIndexNode;
 import node.statement.time.ResetNode;
+import node.statement.time.ResetSpecificNode;
 
 public class NoTimerException extends SemanticException {
 
@@ -18,6 +19,10 @@ public class NoTimerException extends SemanticException {
     }
 
     public NoTimerException(ResetNode node) {
-        super("NoTimerException: The reset function is not written in a scope that contains a before/after function");
+        super(node.line + " NoTimerException: The reset function is not written in a scope that contains a before/after function");
+    }
+
+    public NoTimerException(ResetSpecificNode node){
+        super(node.line + " NoTimerException: The timer is not found!");
     }
 }

@@ -27,6 +27,7 @@ import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
 import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
+import node.statement.time.ResetSpecificNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
 import symbol.SymbolTable;
@@ -302,11 +303,18 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
                     return new BreakNode(ctx);
                 case Ardu3kParser.CONTINUE:
                     return new ContinueNode(ctx);
-                case Ardu3kParser.RESETTIMER:
-                    return new ResetNode();
+                case Ardu3kParser.RESET:
+                    return new ResetNode(ctx);
                 default:
                     return null;
         }
+    }
+
+    @Override
+    public RootNode visitResetSpecific(Ardu3kParser.ResetSpecificContext ctx) {
+        ResetSpecificNode node = new ResetSpecificNode(ctx);
+        node.setID(visit(ctx.id));
+        return node;
     }
 
     @Override

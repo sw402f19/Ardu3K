@@ -27,6 +27,7 @@ import node.statement.pins.PinWriteNode;
 import node.statement.time.AbstractTimeStmtNode;
 import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
+import node.statement.time.ResetSpecificNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
@@ -215,16 +216,25 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
-        visitChildren(node);
         ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
         new ReachabilityVisitor().visit(node);
-        if(symbolTable.isPresent(node.getClockName()))
-            throw ExceptionFactory.produce("needstimepredicate",symbolTable.retrieveSymbol(node.getClockName()).getType());
+        if(symbolTable.isPresent(node.getClockName())) {
+            if (!(symbolTable.retrieveSymbol(node.getClockName()).getType() instanceof AbstractTimeStmtNode)) {
+                throw ExceptionFactory.produce("needstimepredicate", symbolTable.retrieveSymbol(node.getClockName()).getType());
+            }
+        } else symbolTable.enterSymbol((IdentifierNode)node.getClockName(), node);
 
-        if (!((exprVisitor.visit(node.getTime()) instanceof TimeNode) || exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
+        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode) || exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
             throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
         }
+        visitChildren(node);
+        return node;
+    }
 
+    public RootNode visit(ResetSpecificNode node) throws SemanticException {
+        if(!(symbolTable.isPresent(node.getID()))) {
+            throw ExceptionFactory.produce("NOTIMERSPECIFIC", node);
+        }
         return node;
     }
 
@@ -341,6 +351,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
         }
+        return node;
+    }
+
+    public RootNode visit(ResetNode node) throws SemanticException {
+
         return node;
     }
 

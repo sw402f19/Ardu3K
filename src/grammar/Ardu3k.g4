@@ -36,7 +36,8 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
-    | notail=RESETTIMER                                             #notailStatement
+    | notail=RESET                                                  #notailStatement
+    | RESET LPAR id=identifier RPAR SEMI                            #resetSpecific
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed
     ;
@@ -62,7 +63,7 @@ pin_mode
     | pinMode=FALSE
     ;
 comment
-    : COMMENT string_val* COMMENT
+    : DOUBLE_SLASH string_val* DOUBLE_SLASH
     ;
 block
     : LCUR body=stmt* RCUR
@@ -77,10 +78,11 @@ selection_stmt
     : switch_stmt
     | ifdo_stmt
     ;
-
+// todo cases to invividual node
 switch_stmt
     : SWITCH LPAR expr=expression RPAR LCUR cases=case_stmt* defaultcase=case_default? RCUR
     ;
+// todo add expression , expression to case value
 case_stmt
     : CASE value=expression COLON stmt*
     ;
@@ -202,9 +204,6 @@ string
 string_val
     : value=(LETTER | INTEGER | UNDERSCORE | SPACE)
     ;
-clockidentifier
-    : value=(LETTER | INTEGER | UNDERSCORE)
-     ;
 literal
     : number
     | bool
@@ -279,7 +278,7 @@ ADD: 'add';
 SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
-COMMENT: '//';
+DOUBLE_SLASH: '//';
 READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
@@ -290,7 +289,7 @@ MIN: 'min';
 BEFORE: 'before';
 AFTER: 'after';
 IN: 'in';
-RESETTIMER: 'resetTimer;';
+RESET: 'reset';
 PINMODE: 'pinMode';
 INPUT: 'INPUT';
 OUTPUT: 'OUTPUT';

@@ -1,6 +1,5 @@
 package visitor.semantic;
 
-import com.rits.cloning.Cloner;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
@@ -26,13 +25,11 @@ import node.statement.pins.PinReadNode;
 import node.statement.pins.PinToggleNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.time.AbstractTimeStmtNode;
-import node.statement.time.ResetNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
 import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
-import visitor.semantic.typecast.ExpressionCastVisitor;
 import visitor.semantic.typecast.TypeCaster;
 
 @SuppressWarnings("Duplicates")
@@ -90,7 +87,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 node1.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
                 visit(node1);
             }else {
-                this.visit(node.getRight());
+                visit(node.getRight());
                 new AssignmentVisitor(symbolTable).visit(node);
             }
         } catch (SemanticException e) {
@@ -329,10 +326,11 @@ public class SemanticsVisitor extends PrimaryVisitor {
             if(funcSym == null)
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
             if(funcSym instanceof FunctionSymbol) {
-                if(!((FunctionSymbol) funcSym).containsImpl(node))
+                if(!((FunctionSymbol) funcSym).containsImpl(node)) {
                     ((FunctionSymbol) funcSym).addImpl(node);
-                FunctionNode impl = ((FunctionSymbol) funcSym).getImpl(node);
-                new SemanticsVisitor(((FunctionSymbol) funcSym).symTable).visit(impl);
+                    FunctionNode impl = ((FunctionSymbol) funcSym).getImpl(node);
+                    new SemanticsVisitor(((FunctionSymbol) funcSym).declaredST(node)).visit(impl);
+                }
             } else
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
         } catch (SemanticException e) {

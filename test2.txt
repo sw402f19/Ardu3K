@@ -1,3 +1,5 @@
+#define LED 10
+
 setup = {
     a = 1;
 }
@@ -15,8 +17,8 @@ loop = {
         else
             a = funcc(2.5, 5.4);
 }
-func(a, b) = {
-    c = a + b;
+func(d, h) = {
+    c = d + h;
     return c;
 }
 funcc(a, b) = {

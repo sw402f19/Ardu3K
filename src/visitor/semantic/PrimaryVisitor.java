@@ -37,6 +37,7 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
     }
 
     public RootNode visit(FunctionStmtNode node) throws SemanticException {
+        node.st = symbolTable;
         Symbol funcSym;
         funcSym = symbolTable.retrieveSymbol(node.getId());
         if(funcSym == null)

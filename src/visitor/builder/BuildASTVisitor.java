@@ -85,12 +85,9 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     // todo fix her - kristian
     public RootNode visitFunctions(List<Ardu3kParser.FunctionContext> ctx) {
         FunctionsNode node = new FunctionsNode();
-        Cloner cloner = new Cloner();
-        SymbolTable internalST = cloner.deepClone(symbolTable);
-        SymbolTable externalST;
         collectChildren(node, ctx);
-        SymbolTable collectedTable;
 
+        /*
         collectedTable = cloner.deepClone(symbolTable);
         for(RootNode n : node.children)
             collectedTable.enterSymbol((FunctionNode)n);
@@ -103,7 +100,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
             symbolTable.enterSymbol((FunctionNode)n, cloner.deepClone(internalST));
             ((FunctionSymbol)internalST.retrieveSymbol(((FunctionNode) n).getId())).impls =
                     ((FunctionSymbol)symbolTable.retrieveSymbol(((FunctionNode) n).getId())).impls;
-        }
+        }*/
         return node;
     }
     @Override
@@ -112,6 +109,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.setId(visit(ctx.identifier()));
         node.setParameter(ctx.para != null ? visit(ctx.para) : new ParameterNode());
         node.setBlock(visit(ctx.block()));
+        symbolTable.enterSymbol(node);
         return (node.children.size() > 0 ? node : null);
     }
 
@@ -507,7 +505,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
             case Ardu3kParser.INTEGER:
                 node = new IntegerNode(ctx);
                 break;
-            case Ardu3kParser.REAL:
+            case Ardu3kParser.FLOAT:
                 node = new FloatNode(ctx);
                 break;
                 default:

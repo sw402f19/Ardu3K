@@ -8,6 +8,7 @@ import exception.pins.IllegalIdentifierType;
 import exception.pins.IllegalPinIndexException;
 import exception.pins.IllegalPinWriteValueException;
 import exception.predicate.*;
+import exception.reachability.NoReturnException;
 import exception.reachability.NotReachableException;
 import exception.reachability.RecursionException;
 import exception.time.NoTimeTypeException;
@@ -19,6 +20,7 @@ import exception.type.NotCastableException;
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
+import node.scope.FunctionNode;
 import node.statement.control.AbstractControlNode;
 import node.statement.pins.PinIndexIdentifierNode;
 import node.statement.pins.PinIndexNode;
@@ -71,6 +73,9 @@ public class ExceptionFactory {
 
             case "INVALIDTOPNODE":
                 return new InvalidDASTTopNode(node);
+
+            case "NORETURN":
+                return new NoReturnException((FunctionNode)node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)

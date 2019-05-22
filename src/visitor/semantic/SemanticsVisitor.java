@@ -342,6 +342,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
         // todo functioncheck
         FunctionChecker.Check(node);
         node.setReturnType(new ReturnTypeVisitor(symbolTable).initVisit(node.getBlock()));
+        if(node.getReturnType() == null)
+            throw ExceptionFactory.produce("noreturn", node);
         symbolTable.closeScope();
         return node;
     }

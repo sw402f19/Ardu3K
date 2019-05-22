@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import static java.util.Objects.hash;
 
 public class Symbol {
+    private RootNode name;
     private RootNode type;
     private int depth;
 
 
-    public Symbol(RootNode type, int depth) {
+    public Symbol(RootNode name, RootNode type, int depth) {
+        this.name = name;
         this.type = type;
         this.depth = depth;
     }
@@ -22,5 +24,6 @@ public class Symbol {
     public int getDepth() {
         return depth;
     }
+    public RootNode getName() { return name;}
 
 }

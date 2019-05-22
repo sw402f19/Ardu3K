@@ -461,7 +461,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
 
     private String visitChildrenStr(RootNode node) throws SemanticException {
         String str = "";
-        for (RootNode n: node.children) { str += visit(n) + "\n"; }
+        for (RootNode n: node.children) {
+            if(n != null)
+                str += visit(n) + "\n";
+        }
         return str;
     }
 

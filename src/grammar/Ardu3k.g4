@@ -44,14 +44,14 @@ stmt
 time_stmt
     : BEFORE time=expression IN clockName=identifier DO exec=stmt   #beforeStmt
     | AFTER time=expression IN clockName=identifier DO exec=stmt    #afterStmt
-    | DELAY LPAR time=expression RPAR SEMI                          #delay
+    | DELAY LPAR time=expression RPAR                               #delay
     ;
 pin_stmt
-    : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
-    | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
-    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI           #pinWriteBool
-    | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR SEMI        #pinWriteInt
-    | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR SEMI   #pinMode
+    : TOGGLE LPAR pin=pin_index RPAR                                #pinToggle
+    | READ LPAR pin=pin_index RPAR                                  #pinRead
+    | WRITE LPAR pin=pin_index COMMA value=bool RPAR                #pinWriteBool
+    | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR             #pinWriteInt
+    | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR        #pinMode
     ;
 pin_index
     : analog=ANALOG? index=INTEGER                                  #pinIndexInt

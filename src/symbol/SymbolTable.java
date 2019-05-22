@@ -1,14 +1,10 @@
 package symbol;
 
-import exception.factory.SemanticException;
 import node.RootNode;
 import node.expression.DeclarationNode;
-import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
-import node.primary.UndefinedNode;
 import node.scope.DefineNode;
 import node.scope.FunctionNode;
-import visitor.semantic.ExpressionTypeVisitor;
 
 import java.util.HashMap;
 

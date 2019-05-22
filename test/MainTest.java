@@ -1,11 +1,10 @@
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
 import node.RootNode;
-import node.primary.IntegerNode;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import symbol.SymbolTable;
 import testVisitors.BuilderTest;
 import visitor.builder.BuildASTVisitor;

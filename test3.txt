@@ -3,9 +3,8 @@ setup = {
 }
 
 loop = {
-    b = funky(4);
-}
 
-funky(a) = {
-    return a +2;
+    before 1sec in kage do {
+        reset is;
+    }
 }

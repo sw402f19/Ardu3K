@@ -1,7 +1,6 @@
 package node.statement.time;
 
 import node.RootNode;
-import node.primary.IdentifierNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AbstractTimeStmtNode extends RootNode {

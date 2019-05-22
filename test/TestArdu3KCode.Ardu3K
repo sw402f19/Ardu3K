@@ -27,7 +27,7 @@ loop = {
     after 1min in timerA do toggle(analog2);
     before 10sec in timerB do {
         toggle(6);
-        resetTimer;
+        reset;
     }
 }
 

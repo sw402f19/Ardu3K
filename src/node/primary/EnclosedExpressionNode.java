@@ -7,7 +7,6 @@ import node.expression.type.NumeralType;
 import node.expression.type.StringType;
 import node.expression.type.VoidType;
 import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.semantic.PrimaryVisitor;
 
 public class EnclosedExpressionNode extends AbstractExpressionNode implements NumeralType, BooleanType, StringType, VoidType {
     String str;

@@ -1,13 +1,13 @@
 import exception.factory.SemanticException;
-import node.RootNode;
-import sun.misc.Unsafe;
-import symbol.SymbolTable;
-import visitor.builder.BuildASTVisitor;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
+import node.RootNode;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import sun.misc.Unsafe;
+import symbol.SymbolTable;
+import visitor.builder.BuildASTVisitor;
 import visitor.codegen.CodeGenerator;
 import visitor.semantic.SemanticsVisitor;
 

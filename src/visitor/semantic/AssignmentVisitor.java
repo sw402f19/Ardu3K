@@ -1,9 +1,9 @@
 package visitor.semantic;
 
 import exception.factory.SemanticException;
+import exception.type.IllegalTypeException;
 import node.RootNode;
 import node.expression.AssignmentNode;
-import exception.type.IllegalTypeException;
 import node.expression.type.BooleanType;
 import node.expression.type.NumeralType;
 import node.primary.AbstractPrimaryNode;

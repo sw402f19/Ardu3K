@@ -2,12 +2,13 @@ package visitor.semantic;
 
 import exception.factory.SemanticException;
 import node.RootNode;
-import node.composite.ListNode;
 import node.expression.AbstractInfixBooleanNode;
 import node.expression.AbstractInfixExpressionNode;
-import node.primary.*;
+import node.primary.BoolNode;
+import node.primary.FloatNode;
+import node.primary.IntegerNode;
+import node.primary.StringNode;
 import symbol.SymbolTable;
-import visitor.semantic.typecast.ExpressionCastVisitor;
 import visitor.semantic.typecast.TypeCaster;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
     private static ArrayList<Class> types = new ArrayList<>();
 
     static {
-        types.add(ListNode.class);
         types.add(StringNode.class);
         types.add(FloatNode.class);
         types.add(IntegerNode.class);
@@ -40,19 +40,6 @@ public class ExpressionTypeVisitor extends PrimaryVisitor {
         BoolNode node1 = new BoolNode();
         node1.setLine(node.line);
         return node1;
-    }
-
-    public RootNode visit(ListNode node) throws SemanticException {
-        RootNode type = node.getFirstElement();
-        for (RootNode n : node.children)
-            if (!n.getClass().equals(type.getClass()))
-                type = highestOrder(type, n);
-
-        if (type instanceof ListNode)
-            for (RootNode n : node.children)
-                ((ListNode) n).type = visit(n);
-
-        return type;
     }
 
     public RootNode highestOrder(RootNode left, RootNode right) throws SemanticException {

@@ -1,5 +1,6 @@
 package visitor.codegen;
 
+import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.composite.*;
@@ -452,7 +453,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     // Used to get the type of the node in C :)
-    public String getPrimaryType(RootNode node){
+    public String getPrimaryType(RootNode node) throws SemanticException{
         switch (node.getClass().getSimpleName()){
             case "BoolNode":
                 return "bool";
@@ -462,12 +463,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
                 return "String";
             case "FloatNode":
                 return "double";
-            case "UndefinedNode":
-                return "void";
             case "VoidNode":
                 return "void";
-            default:
-                return "UNDEFINED"; // TODO: Add exception here :D
+            case "UndefinedNode": default:
+                throw ExceptionFactory.produce("CODEGENTYPE", node);
         }
     }
 

@@ -1,6 +1,7 @@
 package exception.factory;
 
 import exception.ArgumentException;
+import exception.CodeGenTypeException;
 import exception.TimedTimeException;
 import exception.pins.IllegalPinIndexException;
 import exception.pins.IllegalPinWriteValueException;
@@ -55,6 +56,9 @@ public class ExceptionFactory {
 
             case "INVALIDTIMETYPE":
                 return new NoTimeTypeException((AbstractTimeStmtNode) node);
+
+            case "CODEGENTYPE":
+                return new CodeGenTypeException(node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)
@@ -127,6 +131,8 @@ public class ExceptionFactory {
             return new NeedsTimePredicateException(throwable);
         else if (throwable instanceof NoTimeTypeException)
             return new NoTimeTypeException(throwable);
+        else if (throwable instanceof CodeGenTypeException)
+            return new CodeGenTypeException(throwable);
 
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }

@@ -28,23 +28,23 @@ parameter
     ;
 stmt
     : block                                                         #statement
-    | pin_stmt                                                      #statement
-    | function_stmt                                                 #statement
+    | pin_stmt SEMI                                                 #statement
+    | function_stmt SEMI                                            #statement
     | iterative_stmt                                                #statement
     | selection_stmt                                                #statement
     | expression_stmt                                               #statement
     | notail=RETURN expression_stmt                                 #notailStatement
-    | notail=BREAK                                                  #notailStatement
-    | notail=CONTINUE                                               #notailStatement
-    | RESET id=identifier                                           #resetSpecific
-    | notail=RESET                                                  #notailStatement
+    | notail=BREAK SEMI                                             #notailStatement
+    | notail=CONTINUE SEMI                                          #notailStatement
+    | RESET id=identifier SEMI                                      #resetSpecific
+    | notail=RESET SEMI                                             #notailStatement
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed
     ;
 time_stmt
-    : BEFORE time=expression IN clockName=identifier DO exec=stmt   #beforeStmt
-    | AFTER time=expression IN clockName=identifier DO exec=stmt    #afterStmt
-    | DELAY LPAR time=expression RPAR                               #delay
+    : BEFORE expr=expression IN clockName=identifier DO exec=stmt   #beforeStmt
+    | AFTER expr=expression IN clockName=identifier DO exec=stmt    #afterStmt
+    | DELAY LPAR expr=expression RPAR SEMI                          #delay
     ;
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR                                #pinToggle
@@ -164,9 +164,7 @@ multiplicative_expr
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
-    | val=INTEGER type=MILI                         #primaryTime
-    | val=INTEGER type=SEC                          #primaryTime
-    | val=INTEGER type=MIN                          #primaryTime
+    | child=time                                    #primaryTime
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt
@@ -187,6 +185,11 @@ literal
     : number
     | bool
     | string
+    ;
+time
+    : val=INTEGER type=MILI
+    | val=INTEGER type=SEC
+    | val=INTEGER type=MIN
     ;
 number
     : value=INTEGER

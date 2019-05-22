@@ -1,7 +1,5 @@
 package visitor.builder;
 
-
-import com.rits.cloning.Cloner;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
 import node.RootNode;
@@ -32,8 +30,6 @@ import node.statement.termination.ContinueNode;
 import node.statement.termination.ReturnNode;
 import node.statement.time.*;
 import org.antlr.v4.runtime.ParserRuleContext;
-import symbol.FunctionSymbol;
-import symbol.Symbol;
 import symbol.SymbolTable;
 
 import java.util.ArrayList;
@@ -45,6 +41,11 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     public BuildASTVisitor(SymbolTable symbolTable) {
         this.symbolTable = symbolTable;
+    }
+
+    @Override
+    protected RootNode aggregateResult(RootNode aggregate, RootNode nextResult) {
+        return nextResult != null ? nextResult : aggregate;
     }
 
     @Override
@@ -152,8 +153,8 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
 
     @Override public RootNode visitWhile_stmt(Ardu3kParser.While_stmtContext ctx) {
         WhileNode node = new WhileNode(ctx);
-        node.setExpression(visitExpression(ctx.expr));
-        node.setStmt(visit(ctx.body));
+        node.setExpression(visit(ctx.expr));
+        node.setStmt(visit(ctx.stmt()));
         return node;
     }
 
@@ -265,7 +266,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitBeforeStmt(Ardu3kParser.BeforeStmtContext ctx) {
         BeforeNode node = new BeforeNode(ctx);
-        node.setTime(visit(ctx.time));
+        node.setTime(visit(ctx.expr));
         node.setClockName(visit(ctx.clockName));
         node.setStmt(visit(ctx.exec));
         return node;
@@ -274,14 +275,14 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitAfterStmt(Ardu3kParser.AfterStmtContext ctx) {
         AfterNode node = new AfterNode(ctx);
-        node.setTime(visit(ctx.time));
+        node.setTime(visit(ctx.expr));
         node.setClockName(visit(ctx.clockName));
         node.setStmt(visit(ctx.exec));
         return node;
     }
 
     @Override
-    public RootNode visitPrimaryTime(Ardu3kParser.PrimaryTimeContext ctx) {
+    public RootNode visitTime(Ardu3kParser.TimeContext ctx) {
         TimeNode node = new TimeNode();
         node.setAssignedValue(Integer.valueOf(ctx.val.getText()));
 
@@ -512,7 +513,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     @Override
     public RootNode visitDelay(Ardu3kParser.DelayContext ctx) {
         DelayNode node = new DelayNode(ctx);
-        node.setTime(visit(ctx.time));
+        node.setTime(visit(ctx.expr));
         return node;
     }
 

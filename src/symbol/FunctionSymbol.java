@@ -91,16 +91,16 @@ public class FunctionSymbol extends Symbol {
         impls.add(nodeToAdd);
     }
 
-    public SymbolTable declaredST(FunctionStmtNode node) {
+    public SymbolTable declaredST(FunctionStmtNode call) {
         Cloner cloner = new Cloner();
         SymbolTable internalST = new SymbolTable();
 
-        for (Symbol s : node.st.getTable().values())
+        for (Symbol s : call.st.getTable().values())
             if (s.getDepth() == 0) {
                 if (s instanceof FunctionSymbol) {
                     internalST.enterSymbol((FunctionNode) cloner.deepClone(s.getType()));
                     ((FunctionSymbol) internalST.retrieveSymbol(s.getName())).impls
-                            = ((FunctionSymbol) node.st.retrieveSymbol(s.getName())).impls;
+                            = ((FunctionSymbol) call.st.retrieveSymbol(s.getName())).impls;
                 } else
                     internalST.enterSymbol((IdentifierNode) s.getName(), s.getType());
             }

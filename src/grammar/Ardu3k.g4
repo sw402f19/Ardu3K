@@ -78,11 +78,9 @@ selection_stmt
     : switch_stmt
     | ifdo_stmt
     ;
-// todo cases to invividual node
 switch_stmt
     : SWITCH LPAR expr=expression RPAR LCUR cases=case_stmt* defaultcase=case_default? RCUR
     ;
-// todo add expression , expression to case value
 case_stmt
     : CASE value=expression COLON stmt*
     ;

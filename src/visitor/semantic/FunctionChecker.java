@@ -85,8 +85,7 @@ public class FunctionChecker {
     }
 
     // Takes in two primary types, and returns which type they will need to resolve to
-    // Throws errors if incompatible types TODO: Throw exceptions once they work again
-    // TODO: Move to another class which makes more sense to have this function within
+    // Throws errors if incompatible types
     public static RootNode TypeEvaluator(RootNode left, RootNode right){
         if (left instanceof AbstractPrimaryNode && right instanceof AbstractPrimaryNode){
             switch (left.getClass().getSimpleName()){

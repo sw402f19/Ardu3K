@@ -1,5 +1,6 @@
 package visitor.codegen;
 
+import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.scope.ProgramNode;
@@ -19,6 +20,6 @@ public class CodeGenerator {
             wr.write(genVisitor.visit((ProgramNode) topNode));
 
             wr.close();
-        } else throw new RuntimeException("ERROR: Top node in CodeGen is not a ProgramNode");
+        } else throw ExceptionFactory.produce("INVALIDTOPNODE", topNode);
     }
 }

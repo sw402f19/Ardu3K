@@ -1,10 +1,7 @@
 package node.scope;
 
-import exception.IllegalParameterTypeException;
 import gen.Ardu3kParser;
 import node.RootNode;
-
-import java.util.ArrayList;
 
 public class FunctionNode extends RootNode {
     private RootNode type;

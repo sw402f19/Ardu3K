@@ -1,13 +1,11 @@
 package visitor.semantic.typecast;
 
-import exception.factory.SemanticException;
 import exception.factory.ExceptionFactory;
+import exception.factory.SemanticException;
 import node.RootNode;
-import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.AbstractPrimaryNode;
 import symbol.SymbolTable;
-import visitor.semantic.ExpressionTypeVisitor;
 import visitor.semantic.PrimaryVisitor;
 
 @SuppressWarnings("Duplicates")

@@ -1,8 +1,6 @@
 package node.primary;
 
 import gen.Ardu3kParser;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 public class IntegerNode extends AbstractNumberNode {
     public int value;

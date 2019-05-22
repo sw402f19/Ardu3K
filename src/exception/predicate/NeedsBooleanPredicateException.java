@@ -2,7 +2,6 @@ package exception.predicate;
 
 import exception.factory.SemanticException;
 import node.statement.control.AbstractControlNode;
-import node.statement.control.WhileNode;
 
 public class NeedsBooleanPredicateException extends SemanticException {
     public NeedsBooleanPredicateException() {

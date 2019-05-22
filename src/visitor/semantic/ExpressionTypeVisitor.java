@@ -5,9 +5,11 @@ import node.RootNode;
 import node.composite.ListNode;
 import node.expression.AbstractInfixBooleanNode;
 import node.expression.AbstractInfixExpressionNode;
-import node.primary.*;
+import node.primary.BoolNode;
+import node.primary.FloatNode;
+import node.primary.IntegerNode;
+import node.primary.StringNode;
 import symbol.SymbolTable;
-import visitor.semantic.typecast.ExpressionCastVisitor;
 import visitor.semantic.typecast.TypeCaster;
 
 import java.util.ArrayList;

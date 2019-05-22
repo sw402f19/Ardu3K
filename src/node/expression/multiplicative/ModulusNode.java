@@ -1,8 +1,6 @@
 package node.expression.multiplicative;
 
 import gen.Ardu3kParser;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 public class ModulusNode extends AbstractInfixMultiplicativeNode {
 

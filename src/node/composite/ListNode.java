@@ -3,10 +3,6 @@ package node.composite;
 import gen.Ardu3kParser;
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
-
-import java.util.ArrayList;
 
 public class ListNode extends AbstractPrimaryNode {
 

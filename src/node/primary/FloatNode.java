@@ -1,9 +1,6 @@
 package node.primary;
 
 import gen.Ardu3kParser;
-import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 public class FloatNode extends AbstractNumberNode {
     public double value;

@@ -1,7 +1,6 @@
 package exception.predicate;
 
 import exception.factory.SemanticException;
-import node.RootNode;
 import node.primary.IdentifierNode;
 
 public class UndeclaredIdentifierException extends SemanticException {

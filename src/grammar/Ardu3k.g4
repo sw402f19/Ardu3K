@@ -190,7 +190,7 @@ literal
     ;
 number
     : value=INTEGER
-    | value=REAL
+    | value=FLOAT
     ;
 bool
     : value=TRUE
@@ -203,7 +203,7 @@ bool
 
 DELAY: 'delay';
 LETTER: [a-zA-Z];
-REAL: '-'?DIGIT+ DOT DIGIT+;
+FLOAT: '-'?DIGIT+ DOT DIGIT+;
 INTEGER: '-'?DIGIT+;
 DIGIT: [0-9];
 DEFINE: '#'?'define';
@@ -241,8 +241,8 @@ ASSIGN: '=';
 DQUOTE : '"';
 FOR: 'for' ;
 WHILE: 'while';
-BREAK: 'break;';
-CONTINUE: 'continue;';
+BREAK: 'break';
+CONTINUE: 'continue';
 TO: 'to';
 SEMI: ';';
 IF: 'if'  ;

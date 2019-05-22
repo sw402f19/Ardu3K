@@ -93,7 +93,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 } else node1.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
                 visit(node1);
             }else {
-                this.visit(node.getRight());
+                visit(node.getRight());
                 new AssignmentVisitor(symbolTable).visit(node);
             }
         } catch (SemanticException e) {
@@ -311,16 +311,18 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
     public RootNode visit(FunctionStmtNode node) {
+        node.st = symbolTable;
         Symbol funcSym;
         try {
             funcSym = symbolTable.retrieveSymbol(node.getId());
             if(funcSym == null)
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
             if(funcSym instanceof FunctionSymbol) {
-                if(!((FunctionSymbol) funcSym).containsImpl(node))
+                if(!((FunctionSymbol) funcSym).containsImpl(node)) {
                     ((FunctionSymbol) funcSym).addImpl(node);
-                new SemanticsVisitor(((FunctionSymbol) funcSym).symTable)
-                        .visit(((FunctionSymbol) funcSym).getImpl(node));
+                    FunctionNode impl = ((FunctionSymbol) funcSym).getImpl(node);
+                    new SemanticsVisitor(((FunctionSymbol) funcSym).declaredST(node)).visit(impl);
+                }
             } else
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
         } catch (SemanticException e) {

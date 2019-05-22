@@ -33,6 +33,7 @@ import node.statement.termination.ReturnNode;
 import node.statement.time.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
+import symbol.Symbol;
 import symbol.SymbolTable;
 
 import java.util.ArrayList;
@@ -86,19 +87,25 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return node;
     }
 
+    // todo fix her - kristian
     public RootNode visitFunctions(List<Ardu3kParser.FunctionContext> ctx) {
         FunctionsNode node = new FunctionsNode();
-        Cloner cloner = new Cloner();
-        SymbolTable internalST;
         collectChildren(node, ctx);
 
-        internalST = cloner.deepClone(symbolTable);
+        /*
+        collectedTable = cloner.deepClone(symbolTable);
+        for(RootNode n : node.children)
+            collectedTable.enterSymbol((FunctionNode)n);
+
+        for(Symbol symbol : collectedTable.getTable().values())
+            if(symbol instanceof FunctionSymbol)
+                internalST.enterSymbol((FunctionNode)symbol.getType(), cloner.deepClone(collectedTable));
+
         for(RootNode n : node.children) {
-            symbolTable.enterSymbol((FunctionNode)n, internalST);
-            internalST.enterSymbol((FunctionNode)n, internalST);
+            symbolTable.enterSymbol((FunctionNode)n, cloner.deepClone(internalST));
             ((FunctionSymbol)internalST.retrieveSymbol(((FunctionNode) n).getId())).impls =
                     ((FunctionSymbol)symbolTable.retrieveSymbol(((FunctionNode) n).getId())).impls;
-        }
+        }*/
         return node;
     }
     @Override
@@ -107,6 +114,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         node.setId(visit(ctx.identifier()));
         node.setParameter(ctx.para != null ? visit(ctx.para) : new ParameterNode());
         node.setBlock(visit(ctx.block()));
+        symbolTable.enterSymbol(node);
         return (node.children.size() > 0 ? node : null);
     }
 
@@ -194,7 +202,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
     public RootNode visitFunction_stmt(Ardu3kParser.Function_stmtContext ctx) {
         FunctionStmtNode node = new FunctionStmtNode(ctx);
         node.setId(visit(ctx.id));
-        node.st = symbolTable;
         if(ctx.args != null)
             node.setArguments(visit(ctx.args));
         else
@@ -508,7 +515,7 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
             case Ardu3kParser.INTEGER:
                 node = new IntegerNode(ctx);
                 break;
-            case Ardu3kParser.REAL:
+            case Ardu3kParser.FLOAT:
                 node = new FloatNode(ctx);
                 break;
                 default:

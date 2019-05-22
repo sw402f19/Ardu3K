@@ -36,10 +36,10 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
+    | RESET id=identifier SEMI                                      #resetSpecific
     | notail=RESET                                                  #notailStatement
-    | RESET LPAR id=identifier RPAR SEMI                            #resetSpecific
     | comment                                                       #stmtComment
-    | time_stmt                                                      #stmtTimed
+    | time_stmt                                                     #stmtTimed
     ;
 time_stmt
     : BEFORE time=expression IN clockName=identifier DO exec=stmt   #beforeStmt

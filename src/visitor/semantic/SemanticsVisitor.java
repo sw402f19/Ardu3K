@@ -4,7 +4,6 @@ import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
 import node.RootNode;
-import node.composite.ListNode;
 import node.expression.AbstractDeclAssignNode;
 import node.expression.AbstractInfixNumeralNode;
 import node.expression.DeclarationNode;
@@ -143,42 +142,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
 
     public RootNode visit(UnaryNegateNode node) throws SemanticException {
         visitChildren(node);
-        return node;
-    }
-
-    /**
-     * This will visit a list node, asserting its children type by using the ExpressionTypeVisitor.
-     * If different types are registered, will try to cast it's children.
-     * @param   node to visit
-     * @return  {@param node}
-     * @throws SemanticException if incompatible types are found.
-     */
-    public RootNode visit(ListNode node) throws SemanticException {
-        ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
-        try {
-            node.type = exprVisitor.visit(node);
-            visitChildren(node);
-
-            RootNode prevType;
-            RootNode nextType;
-            boolean shouldChange = false;
-            if (node.type instanceof ListNode) {
-                prevType = exprVisitor.visit(node.children.get(0));
-                for (int i = 1; i < node.children.size(); i++) {
-                    nextType = exprVisitor.visit(node.children.get(i));
-                    if (!(nextType.getClass().equals(prevType.getClass()))) {
-                        shouldChange = true;
-                        prevType = exprVisitor.highestOrder(prevType, nextType);
-                    }
-                }
-                if(shouldChange)
-                    for(RootNode a : node.children)
-                        for(RootNode b : a.children)
-                            a.children.set(a.children.indexOf(b),TypeCaster.cast(b, prevType));
-            }
-        } catch (SemanticException e) {
-            System.out.println(e.getMessage());
-        }
         return node;
     }
 

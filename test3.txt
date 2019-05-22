@@ -2,10 +2,8 @@ setup = {
 }
 
 loop = {
-    func(1);
-    func("sjsjs");
-}
-
-func(a) = {
-    return a;
+    ls = [2, 5, 6];
+    ls.add(1);
+    ls.remove(0);
+    ls.size();
 }

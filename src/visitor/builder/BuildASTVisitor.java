@@ -5,7 +5,6 @@ import com.rits.cloning.Cloner;
 import gen.Ardu3kBaseVisitor;
 import gen.Ardu3kParser;
 import node.RootNode;
-import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
 import node.expression.additive.AbstractInfixAdditiveNode;
@@ -354,22 +353,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         AssignmentNode node = new AssignmentNode(ctx);
         node.setLeft(visit(ctx.left));
         node.setRight(visit(ctx.right));
-        return node;
-    }
-
-    @Override
-    public RootNode visitList_assignment(Ardu3kParser.List_assignmentContext ctx) {
-        ListNode node = new ListNode(ctx);
-        if(ctx.elements != null)
-            return visitList_element(ctx.elements, node);
-        return node;
-    }
-
-    public RootNode visitList_element(Ardu3kParser.List_elementContext ctx, ListNode node){
-        node.children.add(visit(ctx.element));
-        if (ctx.next != null){
-            visitList_element(ctx.next, node);
-        }
         return node;
     }
 

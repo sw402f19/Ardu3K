@@ -1,9 +1,11 @@
 setup = {
+
 }
 
 loop = {
-    ls = [2, 5, 6];
-    ls.add(1);
-    ls.remove(0);
-    ls.size();
+    b = funky(4);
+}
+
+funky(a) = {
+    return a +2;
 }

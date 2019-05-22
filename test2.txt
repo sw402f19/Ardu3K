@@ -1,22 +1,17 @@
 setup = {
-pinMode(5, OUTPUT);
-pinMode(6, OUTPUT);
-pinMode(7, OUTPUT);
-
+    pinMode(8, OUTPUT);
+    pinMode(analog3, OUTPUT);
 }
 
 loop = {
-  after 1sec in timer do {
-    toggle(5);
-    resetTimer;
-  }
-  after 2sec in timerr do {
-      toggle(6);
-      resetTimer;
+    after 1sec in timerA do {
+        toggle(8);
+        reset;
     }
-    after 3sec in timerrrr do {
-        toggle(7);
-        resetTimer;
-      }
+
+    after 3sec in timerB do {
+        toggle(analog3);
+        reset;
+    }
 }
 

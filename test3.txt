@@ -3,8 +3,6 @@ setup = {
 }
 
 loop = {
-
-    before 1sec in kage do {
-        reset is;
-    }
+    read(analoga);
+    read( 5);
 }

@@ -1,17 +1,22 @@
 setup = {
+pinMode(5, OUTPUT);
+pinMode(6, OUTPUT);
+pinMode(7, OUTPUT);
 
 }
 
 loop = {
-
-    func(2, 2);
-
-    a = 2 + 7;
-
-    delay(100);
-
+  after 1sec in timer do {
+    toggle(5);
+    resetTimer;
+  }
+  after 2sec in timerr do {
+      toggle(6);
+      resetTimer;
+    }
+    after 3sec in timerrrr do {
+        toggle(7);
+        resetTimer;
+      }
 }
 
-func(a, b) = {
-    return a = a + 2 + 2;
-}

@@ -197,8 +197,6 @@ bool
     | value=FALSE
     ;
 
-
-
 // =========== //
 
 DELAY: 'delay';
@@ -239,11 +237,9 @@ TIMES: '*';
 MODULUS : '%';
 ASSIGN: '=';
 DQUOTE : '"';
-FOR: 'for' ;
 WHILE: 'while';
 BREAK: 'break';
 CONTINUE: 'continue';
-TO: 'to';
 SEMI: ';';
 IF: 'if'  ;
 ELSE: 'else';

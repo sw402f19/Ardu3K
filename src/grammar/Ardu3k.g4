@@ -36,8 +36,8 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
+    | RESET id=identifier SEMI                                      #resetSpecific
     | notail=RESET                                                  #notailStatement
-    | RESET LPAR id=identifier RPAR SEMI                            #resetSpecific
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed
     ;
@@ -54,7 +54,8 @@ pin_stmt
     | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR SEMI   #pinMode
     ;
 pin_index
-    : analog=ANALOG? index=INTEGER
+    : analog=ANALOG? index=INTEGER                                  #pinIndexInt
+    | analog=ANALOG? indexID=identifier                             #pinIndexId
     ;
 pin_mode
     : pinMode=OUTPUT

@@ -24,10 +24,7 @@ import node.statement.control.ElifNode;
 import node.statement.control.IfNode;
 import node.statement.control.SwitchNode;
 import node.statement.control.WhileNode;
-import node.statement.pins.PinIndexNode;
-import node.statement.pins.PinReadNode;
-import node.statement.pins.PinToggleNode;
-import node.statement.pins.PinWriteNode;
+import node.statement.pins.*;
 import node.statement.time.AbstractTimeStmtNode;
 import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
@@ -155,6 +152,17 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
             }
         }
+        return node;
+    }
+
+    public RootNode visit(PinIndexIdentifierNode node) throws SemanticException {
+        if (symbolTable.isPresent(node.getID())) {
+            if (!(symbolTable.retrieveSymbol(node.getID()).getType() instanceof IntegerNode)) {
+                throw ExceptionFactory.produce("PININDEXID", node);
+            }
+        }
+        visit(node.getID());
+        // Not possible to check if index is valid, due to variable being able to change value
         return node;
     }
 

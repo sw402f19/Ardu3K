@@ -3,9 +3,6 @@ setup = {
 }
 
 loop = {
-    b = funky(4);
-}
-
-funky(a) = {
-    return a +2;
+    read(analoga);
+    read( 5);
 }

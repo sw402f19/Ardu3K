@@ -3,6 +3,7 @@ package exception.factory;
 import exception.ArgumentException;
 import exception.CodeGenTypeException;
 import exception.TimedTimeException;
+import exception.pins.IllegalIdentifierType;
 import exception.pins.IllegalPinIndexException;
 import exception.pins.IllegalPinWriteValueException;
 import exception.predicate.*;
@@ -20,6 +21,7 @@ import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
 import node.scope.FunctionNode;
 import node.statement.control.AbstractControlNode;
+import node.statement.pins.PinIndexIdentifierNode;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.termination.AbstractTerminalNode;
@@ -64,6 +66,9 @@ public class ExceptionFactory {
 
             case "CODEGENTYPE":
                 return new CodeGenTypeException(node);
+
+            case "PININDEXID":
+                return new IllegalIdentifierType((PinIndexIdentifierNode) node);
 
             case "NORETURN":
                 return new NoReturnException((FunctionNode)node);
@@ -141,6 +146,8 @@ public class ExceptionFactory {
             return new NoTimeTypeException(throwable);
         else if (throwable instanceof CodeGenTypeException)
             return new CodeGenTypeException(throwable);
+        else if (throwable instanceof  IllegalIdentifierType)
+            return new IllegalIdentifierType(throwable);
 
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }

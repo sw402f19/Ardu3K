@@ -179,7 +179,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(PinIndexNode node) throws SemanticException {
-        // todo: These ports are what is allowed on an Arduino Uno
         if (node.getbAnalog()) {
             if (node.getIndex() > 5 || node.getIndex() < 0) {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
@@ -225,7 +224,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
             }
         } else symbolTable.enterSymbol((IdentifierNode)node.getClockName(), node);
 
-        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode) || exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
+        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode) || (exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
             throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
         }
         visitChildren(node);
@@ -255,7 +254,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    // todo temp error handling
     public RootNode visit(IfNode node) {
         symbolTable.openScope();
         try {
@@ -283,7 +281,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    // todo what types should switch accept?
     public RootNode visit(SwitchNode node)  {
         symbolTable.openScope();
         try {

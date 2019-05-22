@@ -1,8 +1,5 @@
 package node.primary;
 
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
-
 public class StringValNode extends AbstractPrimaryNode{
     public String value;
 

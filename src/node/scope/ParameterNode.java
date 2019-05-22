@@ -2,8 +2,6 @@ package node.scope;
 
 import gen.Ardu3kParser;
 import node.RootNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 import java.util.ArrayList;
 

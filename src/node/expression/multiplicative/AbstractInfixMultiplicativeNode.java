@@ -1,9 +1,7 @@
 package node.expression.multiplicative;
 
 import node.RootNode;
-import node.expression.AbstractInfixExpressionNode;
 import node.expression.AbstractInfixNumeralNode;
-import node.expression.type.NumeralType;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractInfixMultiplicativeNode extends AbstractInfixNumeralNode {

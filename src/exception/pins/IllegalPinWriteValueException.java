@@ -1,7 +1,6 @@
 package exception.pins;
 
 import exception.factory.SemanticException;
-import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinWriteNode;
 
 public class IllegalPinWriteValueException extends SemanticException {

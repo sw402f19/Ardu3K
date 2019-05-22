@@ -1,13 +1,13 @@
 import exception.factory.SemanticException;
-import node.RootNode;
-import sun.misc.Unsafe;
-import symbol.SymbolTable;
-import visitor.builder.BuildASTVisitor;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
+import node.RootNode;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import sun.misc.Unsafe;
+import symbol.SymbolTable;
+import visitor.builder.BuildASTVisitor;
 import visitor.codegen.CodeGenerator;
 import visitor.semantic.SemanticsVisitor;
 
@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         long time = System.currentTimeMillis();
         disableWarning();
-        CharStream is = CharStreams.fromFileName("test.txt");
+        CharStream is = CharStreams.fromFileName("./test/TestArdu3KCode.Ardu3K");
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);

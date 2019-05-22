@@ -5,12 +5,10 @@ import exception.reachability.RecursionException;
 import node.RootNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.primary.*;
-import node.scope.BlockNode;
 import node.scope.FunctionNode;
 import node.statement.FunctionStmtNode;
 import symbol.SymbolTable;
 
-import javax.lang.model.type.NullType;
 import java.util.ArrayList;
 
 public class FunctionChecker {

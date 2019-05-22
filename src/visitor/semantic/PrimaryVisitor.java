@@ -2,17 +2,14 @@ package visitor.semantic;
 
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
-
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
 import node.primary.EnclosedExpressionNode;
 import node.primary.IdentifierNode;
 import node.statement.FunctionStmtNode;
-
 import symbol.FunctionSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
-
 import visitor.BaseASTVisitor;
 
 @SuppressWarnings("Duplicates")

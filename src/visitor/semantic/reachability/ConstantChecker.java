@@ -3,9 +3,8 @@ package visitor.semantic.reachability;
 import node.RootNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
-import node.primary.*;
+import node.primary.IdentifierNode;
 import node.statement.FunctionStmtNode;
-import visitor.BaseASTVisitor;
 
 public class ConstantChecker {
 

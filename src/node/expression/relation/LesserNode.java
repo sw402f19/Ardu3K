@@ -1,8 +1,6 @@
 package node.expression.relation;
 
 import gen.Ardu3kParser;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 public class LesserNode extends AbstractInfixRelationNode {
 

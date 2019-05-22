@@ -1,7 +1,6 @@
 package exception.time;
 
 import exception.factory.SemanticException;
-import node.statement.pins.PinIndexNode;
 import node.statement.time.ResetNode;
 import node.statement.time.ResetSpecificNode;
 

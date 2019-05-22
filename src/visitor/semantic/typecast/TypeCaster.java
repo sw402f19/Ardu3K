@@ -1,12 +1,11 @@
 package visitor.semantic.typecast;
 
-import exception.type.IllegalTypeException;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
+import exception.type.IllegalTypeException;
 import node.RootNode;
-import node.composite.ListNode;
-import node.primary.IntegerNode;
 import node.primary.FloatNode;
+import node.primary.IntegerNode;
 import node.primary.StringNode;
 
 import java.util.HashMap;
@@ -22,11 +21,7 @@ public class TypeCaster {
     }
     private static boolean canCast(RootNode source, RootNode target) throws SemanticException {
         boolean listCast = true;
-        if(source instanceof ListNode && target instanceof ListNode) {
-            for (int i = 0; i < source.children.size(); i++)
-                listCast &= canCast(source.children.get(i), target.children.get(i));
-            return listCast;
-        } else if(!castable.containsKey(source.getClass()))
+        if(!castable.containsKey(source.getClass()))
             return false;
         return castable.get(source.getClass()).contains(target.getClass());
     }
@@ -42,7 +37,6 @@ public class TypeCaster {
     static {
         dispatch.put(IntegerNode.class, (n, c) -> handleInteger((IntegerNode) n,c));
         dispatch.put(FloatNode.class, (n, c) -> handleReal((FloatNode)n, c));
-        dispatch.put(ListNode.class, (n, c) -> handleList((ListNode) n, c));
     }
 
     private static RootNode handleInteger(IntegerNode node, Class clazz) {
@@ -66,19 +60,12 @@ public class TypeCaster {
             return new IntegerNode(node);
         }
     }
-    private static RootNode handleList(ListNode node, Class clazz) throws IllegalTypeException {
-        for(RootNode n : node.children) {
-            System.out.println(node.getLine()+ " casted list element to "+clazz.getSimpleName());
-            node.children.set(node.children.indexOf(n), handle(n, clazz));
-        }
-        return node;
-    }
+
     private static RootNode handle(Object o, Class target) throws IllegalTypeException {
         Handler h = dispatch.get(o.getClass());
         if (h != null)
             return h.handle(o, target);
         else
             throw new IllegalTypeException();
-
     }
 }

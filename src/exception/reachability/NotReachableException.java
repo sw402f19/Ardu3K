@@ -1,7 +1,6 @@
 package exception.reachability;
 
 import exception.factory.SemanticException;
-import node.RootNode;
 import node.statement.termination.AbstractTerminalNode;
 import node.statement.termination.ReturnNode;
 

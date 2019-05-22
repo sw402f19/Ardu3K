@@ -1,10 +1,6 @@
 package node.expression;
 
-import exception.factory.SemanticException;
 import node.RootNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
-import visitor.semantic.PrimaryVisitor;
 
 
 public class DeclarationNode extends AbstractDeclAssignNode {

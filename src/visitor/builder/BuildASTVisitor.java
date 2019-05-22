@@ -2,32 +2,35 @@ package visitor.builder;
 
 
 import com.rits.cloning.Cloner;
+import gen.Ardu3kBaseVisitor;
+import gen.Ardu3kParser;
 import node.RootNode;
-import node.composite.ListNode;
 import node.expression.AbstractInfixExpressionNode;
 import node.expression.AssignmentNode;
-import node.expression.additive.*;
+import node.expression.additive.AbstractInfixAdditiveNode;
+import node.expression.additive.MinusNode;
+import node.expression.additive.PlusNode;
 import node.expression.condition.*;
 import node.expression.multiplicative.*;
 import node.expression.relation.*;
 import node.expression.unary.UnaryNegateNode;
+import node.primary.*;
 import node.primary.time.TimeNode;
 import node.primary.time.TimeType;
-import node.statement.*;
 import node.scope.*;
-import node.primary.*;
-import gen.Ardu3kBaseVisitor;
-import gen.Ardu3kParser;
+import node.statement.ArgumentNode;
+import node.statement.CaseNode;
+import node.statement.DefaultNode;
+import node.statement.FunctionStmtNode;
+import node.statement.control.ElifNode;
+import node.statement.control.IfNode;
+import node.statement.control.SwitchNode;
+import node.statement.control.WhileNode;
 import node.statement.pins.*;
 import node.statement.termination.BreakNode;
 import node.statement.termination.ContinueNode;
-import node.statement.control.*;
 import node.statement.termination.ReturnNode;
-import node.statement.time.AfterNode;
-import node.statement.time.BeforeNode;
-import node.statement.time.DelayNode;
-import node.statement.time.ResetNode;
-import node.statement.time.ResetSpecificNode;
+import node.statement.time.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import symbol.FunctionSymbol;
 import symbol.SymbolTable;
@@ -350,22 +353,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         AssignmentNode node = new AssignmentNode(ctx);
         node.setLeft(visit(ctx.left));
         node.setRight(visit(ctx.right));
-        return node;
-    }
-
-    @Override
-    public RootNode visitList_assignment(Ardu3kParser.List_assignmentContext ctx) {
-        ListNode node = new ListNode(ctx);
-        if(ctx.elements != null)
-            return visitList_element(ctx.elements, node);
-        return node;
-    }
-
-    public RootNode visitList_element(Ardu3kParser.List_elementContext ctx, ListNode node){
-        node.children.add(visit(ctx.element));
-        if (ctx.next != null){
-            visitList_element(ctx.next, node);
-        }
         return node;
     }
 

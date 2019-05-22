@@ -25,6 +25,9 @@ import node.statement.pins.PinReadNode;
 import node.statement.pins.PinToggleNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.time.AbstractTimeStmtNode;
+import node.statement.time.DelayNode;
+import node.statement.time.ResetNode;
+import node.statement.time.ResetSpecificNode;
 import symbol.FunctionSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
@@ -84,7 +87,9 @@ public class SemanticsVisitor extends PrimaryVisitor {
             if(!(symbolTable.isPresent(node.getLeft())) ||
                     symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode) {
                 node1 = new DeclarationNode(node);
-                node1.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
+                if (node.getRight() instanceof PinReadNode){
+                    node1.type = new IntegerNode();
+                } else node1.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
                 visit(node1);
             }else {
                 visit(node.getRight());
@@ -173,7 +178,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(PinIndexNode node) throws SemanticException {
-        // todo: These ports are what is allowed on an Arduino Uno
         if (node.getbAnalog()) {
             if (node.getIndex() > 5 || node.getIndex() < 0) {
                 throw ExceptionFactory.produce("ILLEGALPININDEX", node);
@@ -205,17 +209,31 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
+    public RootNode visit(DelayNode node) throws SemanticException {
         visitChildren(node);
+        return node;
+    }
+
+    public RootNode visit(AbstractTimeStmtNode node) throws SemanticException {
         ExpressionTypeVisitor exprVisitor = new ExpressionTypeVisitor(symbolTable);
         new ReachabilityVisitor().visit(node);
-        if(symbolTable.isPresent(node.getClockName()))
-            throw ExceptionFactory.produce("needstimepredicate",symbolTable.retrieveSymbol(node.getClockName()).getType());
+        if(symbolTable.isPresent(node.getClockName())) {
+            if (!(symbolTable.retrieveSymbol(node.getClockName()).getType() instanceof AbstractTimeStmtNode)) {
+                throw ExceptionFactory.produce("needstimepredicate", symbolTable.retrieveSymbol(node.getClockName()).getType());
+            }
+        } else symbolTable.enterSymbol((IdentifierNode)node.getClockName(), node);
 
-        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode)) {
+        if (!(exprVisitor.visit(node.getTime()) instanceof TimeNode) || (exprVisitor.visit(node.getTime()) instanceof IntegerNode)) {
             throw ExceptionFactory.produce("INVALIDTIMETYPE", node);
-        } // TODO: Add support for other types :D
+        }
+        visitChildren(node);
+        return node;
+    }
 
+    public RootNode visit(ResetSpecificNode node) throws SemanticException {
+        if(!(symbolTable.isPresent(node.getID()))) {
+            throw ExceptionFactory.produce("NOTIMERSPECIFIC", node);
+        }
         return node;
     }
 
@@ -235,7 +253,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    // todo temp error handling
     public RootNode visit(IfNode node) {
         symbolTable.openScope();
         try {
@@ -263,7 +280,6 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    // todo what types should switch accept?
     public RootNode visit(SwitchNode node)  {
         symbolTable.openScope();
         try {
@@ -339,11 +355,16 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
+    public RootNode visit(ResetNode node) throws SemanticException {
+
+        return node;
+    }
+
     public RootNode visit(FunctionNode node) throws SemanticException {
         visit(node.getParameter());
         visit(node.getBlock());
         // todo functioncheck
-        //FunctionChecker.Check(node);
+        FunctionChecker.Check(node);
         node.setReturnType(new ReturnTypeVisitor(symbolTable).initVisit(node.getBlock()));
         symbolTable.closeScope();
         return node;

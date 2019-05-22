@@ -1,58 +1,23 @@
-#define LEDPIN 13
-#define ALED 15
-
 setup = {
-    a = 10;
+pinMode(7, OUTPUT);
+pinMode(6, OUTPUT);
+pinMode(5,OUTPUT);
 }
+
 loop = {
+after 1sec in timerA do {
+toggle(7);
+resetTimer;
+}
 
-    arr = [["a", 5], [5, 1], [5, 5.5]];
-
-
-    ab = "ab";
-    ab = ab + "ab";
-    D = 10.150;
-        funccc(10);
-
-
-    if true do
-        if true do
-            if true do
-                a = 1;
-            else
-                k = 2;
-        else if true do
-            for a = 1 to 10 do
-                a = a + 1;
-
-
-    for a = 1 to 10 do {
-        break;
-        a = 2;
-    }
-    switch (a) {
-        case 10:
-            expo = 10 ^ 20;
-        case 20:
-            c = 10;
-        default:
-            c = 0;
-    }
-    while (a < 10) OR (a < 5) do {
-        a = (a + 1);
-    }
-
+after 2sec in timerB do{
+toggle(6);
+resetTimer;
+}
+after 3sec in timerC do{
+toggle(5);
+resetTimer;
 
 }
-func (a) = {
-    a = 10;
-    return a;
 }
-funcc(a) = {
-    b = "b";
-    a = func(a);
-    return a;
-}
-funccc(a) = {
-    toggle(1);
-}
+

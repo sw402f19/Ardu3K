@@ -1,29 +1,22 @@
-#define LED 10
-
 setup = {
-    a = 1;
+pinMode(5, OUTPUT);
+pinMode(6, OUTPUT);
+pinMode(7, OUTPUT);
+
 }
 
 loop = {
-    if true do
-        if true do
-            if true do
-                a = 1;
-            else
-                k = 2;
-        else if false do
-            a = 1;
+  after 1sec in timer do {
+    toggle(5);
+    resetTimer;
+  }
+  after 2sec in timerr do {
+      toggle(6);
+      resetTimer;
+    }
+    after 3sec in timerrrr do {
+        toggle(7);
+        resetTimer;
+      }
+}
 
-        else
-            a = funcc(2.5, 5.4);
-}
-func(d, h) = {
-    c = d + h;
-    return c;
-}
-funcc(a, b) = {
-    c = func(a, b);
-    d = func(10, 20);
-    h = func("g", "h");
-    return c + d + h;
-}

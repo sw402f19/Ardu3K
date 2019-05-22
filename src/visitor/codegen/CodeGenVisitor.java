@@ -1,5 +1,6 @@
 package visitor.codegen;
 
+import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.composite.*;
@@ -18,7 +19,9 @@ import node.statement.pins.*;
 import node.statement.termination.*;
 import node.statement.time.AfterNode;
 import node.statement.time.BeforeNode;
+import node.statement.time.DelayNode;
 import node.statement.time.ResetNode;
+import node.statement.time.ResetSpecificNode;
 import visitor.BaseASTVisitor;
 
 import java.io.*;
@@ -86,6 +89,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return "";
     }
 
+    public String visit(DelayNode node) throws  SemanticException{
+        return  tab()+"delay("+visit(node.getTime())+");";
+    }
+
     public String visit(ListNode node) throws SemanticException {
         String str;
         str = "{";
@@ -99,7 +106,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(CommentNode node) throws SemanticException{
-        return node.getValue();
+        return tab() + node.getValue();
     }
 
     public String visit(MinusNode node) throws SemanticException {
@@ -328,7 +335,9 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(PinReadNode node) throws SemanticException {
-        return tab() + "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ");";
+        if (node.parent instanceof AbstractDeclAssignNode) {
+            return "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ")";
+        } else return tab() + "Ardu3K::PinRead(" + visit(node.getPinIndexNode()) + ");";
     }
 
     public String visit(PinToggleNode node) throws SemanticException {
@@ -391,6 +400,10 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return tab() + "Ardu3K::ResetTimer(&" + node.getClockName() + ");";
     }
 
+    public String visit(ResetSpecificNode node) throws SemanticException {
+        return tab() + "Ardu3K::ResetTimer(&" + visit(node.getID()) + ");";
+    }
+
     public String visit(TimeNode node) {
         return node.getRealValue() + "";
     }
@@ -408,7 +421,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
-        if (node.parent instanceof DeclarationNode || node.parent instanceof AssignmentNode){
+        if (node.parent instanceof AbstractDeclAssignNode){
             String str = visit(node.getId()) + "(";
 
             if (node.children.size() > 1) {
@@ -440,22 +453,20 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     // Used to get the type of the node in C :)
-    public String getPrimaryType(RootNode node){
+    public String getPrimaryType(RootNode node) throws SemanticException{
         switch (node.getClass().getSimpleName()){
             case "BoolNode":
                 return "bool";
-            case "IntegerNode":
+            case "IntegerNode": case "PinReadNode":
                 return "int";
             case "StringNode":
                 return "String";
             case "FloatNode":
                 return "double";
-            case "UndefinedNode":
-                return "void";
             case "VoidNode":
                 return "void";
-            default:
-                return "UNDEFINED"; // TODO: Add exception here :D
+            case "UndefinedNode": default:
+                throw ExceptionFactory.produce("CODEGENTYPE", node);
         }
     }
 

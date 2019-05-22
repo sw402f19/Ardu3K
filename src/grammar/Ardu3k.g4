@@ -36,13 +36,15 @@ stmt
     | notail=RETURN expression_stmt                                 #notailStatement
     | notail=BREAK                                                  #notailStatement
     | notail=CONTINUE                                               #notailStatement
-    | notail=RESETTIMER                                             #notailStatement
+    | notail=RESET                                                  #notailStatement
+    | RESET LPAR id=identifier RPAR SEMI                            #resetSpecific
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed
     ;
 time_stmt
-    : BEFORE time=expression IN clockName=identifier DO exec=stmt           #beforeStmt
-    | AFTER time=expression IN clockName=identifier DO exec=stmt            #afterStmt
+    : BEFORE time=expression IN clockName=identifier DO exec=stmt   #beforeStmt
+    | AFTER time=expression IN clockName=identifier DO exec=stmt    #afterStmt
+    | DELAY LPAR time=expression RPAR SEMI                          #delay
     ;
 pin_stmt
     : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
@@ -61,7 +63,7 @@ pin_mode
     | pinMode=FALSE
     ;
 comment
-    : COMMENT LETTER* COMMENT
+    : DOUBLE_SLASH string_val* DOUBLE_SLASH
     ;
 block
     : LCUR body=stmt* RCUR
@@ -76,11 +78,9 @@ selection_stmt
     : switch_stmt
     | ifdo_stmt
     ;
-// todo cases to invividual node
 switch_stmt
     : SWITCH LPAR expr=expression RPAR LCUR cases=case_stmt* defaultcase=case_default? RCUR
     ;
-// todo add expression , expression to case value
 case_stmt
     : CASE value=expression COLON stmt*
     ;
@@ -115,6 +115,10 @@ assignment_expr
     : conditional_expr
     | assignment
     | list_assignment
+    | pinread_assignment
+    ;
+pinread_assignment
+    : READ LPAR pin=pin_index RPAR
     ;
 assignment
     : left=identifier ASSIGN right=assignment_expr
@@ -196,7 +200,7 @@ string
     : DQUOTE string_val* DQUOTE
     ;
 string_val
-    : value=(LETTER | DIGIT | UNDERSCORE | SPACE)
+    : value=(LETTER | INTEGER | UNDERSCORE | SPACE)
     ;
 literal
     : number
@@ -212,8 +216,11 @@ bool
     | value=FALSE
     ;
 
+
+
 // =========== //
 
+DELAY: 'delay';
 LETTER: [a-zA-Z];
 FLOAT: '-'?DIGIT+ DOT DIGIT+;
 INTEGER: '-'?DIGIT+;
@@ -269,7 +276,7 @@ ADD: 'add';
 SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
-COMMENT: '//';
+DOUBLE_SLASH: '//';
 READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
@@ -280,7 +287,7 @@ MIN: 'min';
 BEFORE: 'before';
 AFTER: 'after';
 IN: 'in';
-RESETTIMER: 'resetTimer';
+RESET: 'reset';
 PINMODE: 'pinMode';
 INPUT: 'INPUT';
 OUTPUT: 'OUTPUT';

@@ -24,7 +24,6 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
         return visit(node);
     }
 
-    // todo fix exception handling to print the proper cause
     public RootNode visit(AbstractInfixExpressionNode node) throws SemanticException {
         RootNode[] infixTypes = new RootNode[2];
         try {

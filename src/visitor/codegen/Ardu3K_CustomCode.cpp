@@ -3,7 +3,7 @@
 *   (NOTE: Tageted for the Arduino Uno)
 *   The code directly manipulates the bitmasks controlling pins, for better efficiency
 */
-class Ardu3K {
+class ARDU3k {
 public:
     // Return true if it is after or equal to the wait time
     static bool AfterCheck(long startTime, long waitTime) {

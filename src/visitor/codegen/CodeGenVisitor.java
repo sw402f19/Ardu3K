@@ -418,7 +418,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(FunctionStmtNode node) throws SemanticException {
-        if (node.parent instanceof AbstractDeclAssignNode){
+        if (node.parent instanceof AbstractDeclAssignNode || node.parent instanceof ReturnNode){
             String str = visit(node.getId()) + "(";
 
             if (node.children.size() > 1) {

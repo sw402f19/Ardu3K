@@ -26,7 +26,6 @@ public class ReturnTypeVisitor extends PrimaryVisitor {
     }
     public RootNode aggregateResult() {
         if(returnTypes.size() > 0)
-            // todo iterate and cast
             return returnTypes.get(0);
         else
             return new VoidNode();

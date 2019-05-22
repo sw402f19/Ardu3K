@@ -1,11 +1,23 @@
 setup = {
-
+pinMode(7, OUTPUT);
+pinMode(6, OUTPUT);
+pinMode(5,OUTPUT);
 }
 
 loop = {
-funky();
+after 1sec in timerA do {
+toggle(7);
+resetTimer;
 }
 
-funky() = {
-return;
+after 2sec in timerB do{
+toggle(6);
+resetTimer;
 }
+after 3sec in timerC do{
+toggle(5);
+resetTimer;
+
+}
+}
+

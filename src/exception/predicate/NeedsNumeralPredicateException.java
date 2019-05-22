@@ -2,7 +2,6 @@ package exception.predicate;
 
 import exception.factory.SemanticException;
 import node.RootNode;
-import node.primary.IntegerNode;
 import node.statement.control.AbstractControlNode;
 
 public class NeedsNumeralPredicateException extends SemanticException {

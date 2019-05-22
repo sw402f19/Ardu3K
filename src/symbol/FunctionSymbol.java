@@ -6,7 +6,6 @@ import exception.factory.SemanticException;
 import node.RootNode;
 import node.scope.FunctionNode;
 import node.scope.ParameterNode;
-import node.statement.ArgumentNode;
 import node.statement.FunctionStmtNode;
 import visitor.semantic.PrimaryVisitor;
 

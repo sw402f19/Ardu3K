@@ -1,12 +1,12 @@
 package visitor.semantic.typecast;
 
-import exception.type.IllegalTypeException;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
+import exception.type.IllegalTypeException;
 import node.RootNode;
 import node.composite.ListNode;
-import node.primary.IntegerNode;
 import node.primary.FloatNode;
+import node.primary.IntegerNode;
 import node.primary.StringNode;
 
 import java.util.HashMap;

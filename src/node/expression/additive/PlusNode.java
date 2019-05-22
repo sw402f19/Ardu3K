@@ -1,8 +1,6 @@
 package node.expression.additive;
 
 import gen.Ardu3kParser;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 public class PlusNode extends AbstractInfixAdditiveNode {
 

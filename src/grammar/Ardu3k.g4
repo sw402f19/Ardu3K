@@ -39,7 +39,7 @@ stmt
     | notail=RESET                                                  #notailStatement
     | RESET LPAR id=identifier RPAR SEMI                            #resetSpecific
     | comment                                                       #stmtComment
-    | time_stmt                                                     #stmtTimed
+    | time_stmt                                                      #stmtTimed
     ;
 time_stmt
     : BEFORE time=expression IN clockName=identifier DO exec=stmt   #beforeStmt

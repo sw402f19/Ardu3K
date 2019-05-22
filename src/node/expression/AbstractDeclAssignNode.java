@@ -1,7 +1,6 @@
 package node.expression;
 
 import node.RootNode;
-import node.expression.AbstractInfixExpressionNode;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AbstractDeclAssignNode extends AbstractInfixExpressionNode {

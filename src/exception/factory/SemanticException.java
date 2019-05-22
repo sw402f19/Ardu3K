@@ -1,8 +1,6 @@
 package exception.factory;
 
-import node.RootNode;
-
-public abstract class SemanticException extends Exception {
+public abstract class SemanticException extends RuntimeException {
 
     public SemanticException() {
     }

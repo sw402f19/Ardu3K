@@ -2,8 +2,6 @@ package node.statement.termination;
 
 import node.RootNode;
 import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 public class ContinueNode extends AbstractTerminalNode {
 

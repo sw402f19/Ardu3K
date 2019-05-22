@@ -1,11 +1,8 @@
 package node.primary;
 
 import gen.Ardu3kParser;
-import node.RootNode;
 import node.expression.type.BooleanType;
 import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 public class BoolNode extends AbstractPrimaryNode implements BooleanType {
     public boolean value;

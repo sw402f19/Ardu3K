@@ -1,7 +1,6 @@
 package visitor.builder;
 
 import exception.factory.SemanticException;
-import node.Node;
 import node.RootNode;
 import visitor.BaseASTVisitor;
 

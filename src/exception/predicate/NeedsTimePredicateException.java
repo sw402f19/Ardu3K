@@ -2,7 +2,6 @@ package exception.predicate;
 
 import exception.factory.SemanticException;
 import node.primary.AbstractPrimaryNode;
-import node.statement.time.AbstractTimeStmtNode;
 
 public class NeedsTimePredicateException extends SemanticException {
     public NeedsTimePredicateException() {

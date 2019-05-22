@@ -1,8 +1,6 @@
 package node.expression.condition;
 
 import gen.Ardu3kParser;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
 
 public class XorNode extends AbstractInfixConditionalNode {
 

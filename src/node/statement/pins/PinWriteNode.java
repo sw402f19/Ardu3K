@@ -2,7 +2,6 @@ package node.statement.pins;
 
 import gen.Ardu3kParser;
 import node.RootNode;
-import node.primary.BoolNode;
 
 public class PinWriteNode extends AbstractPinStmtNode {
     public PinWriteNode(Ardu3kParser.PinWriteBoolContext ctx) {

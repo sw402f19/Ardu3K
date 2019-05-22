@@ -114,7 +114,6 @@ unary_expr
 assignment_expr
     : conditional_expr
     | assignment
-    | list_assignment
     | pinread_assignment
     ;
 pinread_assignment
@@ -162,10 +161,6 @@ multiplicative_expr
     | left=multiplicative_expr op=MODULUS right=primary              #infixMultiplicativeExpr
     | left=multiplicative_expr op=EXPONENTIAL right=primary          #infixMultiplicativeExpr
     ;
-list_element
-    : element=primary COMMA next=list_element
-    | element=primary
-    ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
     | val=INTEGER type=MILI                         #primaryTime
@@ -174,22 +169,7 @@ primary
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt
-    | child=list_expr                               #primaryListExpr
-    | child=list_assignment                         #primaryListAssignment
     ;
-list_expr
-    : identifier DOT list_stmt
-    ;
-list_assignment
-    : LBRACKET elements=list_element? RBRACKET
-    ;
-list_stmt
-    : GET LPAR argument RPAR
-    | REMOVE LPAR argument RPAR
-    | ADD LPAR argument RPAR
-    | SIZE LPAR RPAR
-    ;
-
 identifier
     : value=identifier_val
     ;
@@ -270,10 +250,6 @@ COMMA : ',';
 DOT : '.';
 SPACE: ' ';
 RETURN: 'return';
-GET: 'get';
-REMOVE: 'remove';
-ADD: 'add';
-SIZE: 'size';
 LBRACKET: '[';
 RBRACKET: ']';
 DOUBLE_SLASH: '//';

@@ -3,7 +3,6 @@ package visitor.codegen;
 import exception.factory.ExceptionFactory;
 import exception.factory.SemanticException;
 import node.RootNode;
-import node.composite.ListNode;
 import node.expression.AbstractDeclAssignNode;
 import node.expression.AssignmentNode;
 import node.expression.DeclarationNode;
@@ -108,18 +107,6 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
         return  tab()+"delay("+visit(node.getTime())+");";
     }
 
-    public String visit(ListNode node) throws SemanticException {
-        String str;
-        str = "{";
-        for(RootNode n : node.children) {
-            str += visit(n);
-            if(!(node.children.indexOf(n) == node.children.size() - 1))
-                str += ", ";
-        }
-        str += "}";
-        return str;
-    }
-
     public String visit(CommentNode node) throws SemanticException{
         return tab() + node.getValue();
     }
@@ -197,13 +184,8 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
 
     public String visit(DeclarationNode node) throws SemanticException {
         String str = tab();
-        if(node.type instanceof ListNode) {
-            str += getPrimaryType(((ListNode) node.type).type);
-            str += " " + visit(node.getLeft()) + "[] = " + visit(node.getRight()) + ";";
-        } else {
-            str += getPrimaryType(node.type);
-            str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
-        }
+        str += getPrimaryType(node.type);
+        str += " " + visit(node.getLeft()) + " = " + visit(node.getRight()) + ";";
         return str;
     }
 

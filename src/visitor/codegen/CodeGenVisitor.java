@@ -324,11 +324,7 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(PinIndexNode node) {
-        return node.getIndex() + ", " + node.getbAnalog();
-    }
-
-    public String visit(PinIndexIdentifierNode node) {
-        return visit(node.getID()) + ", " + node.getbAnalog();
+        return visit(node.getIndex()) + ", " + node.getbAnalog();
     }
 
     public String visit(PinModeNode node) throws SemanticException {

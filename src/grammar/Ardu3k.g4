@@ -54,8 +54,7 @@ pin_stmt
     | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR        #pinMode
     ;
 pin_index
-    : analog=ANALOG? index=INTEGER                                  #pinIndexInt
-    | analog=ANALOG? indexID=identifier                             #pinIndexId
+    : analog=ANALOG? index=expression
     ;
 pin_mode
     : pinMode=OUTPUT
@@ -205,10 +204,11 @@ bool
 // =========== //
 
 DELAY: 'delay';
-LETTER: [a-zA-Z];
+ANALOG: 'A';
 FLOAT: '-'?DIGIT+ DOT DIGIT+;
-INTEGER: '-'?DIGIT+;
+INTEGER: '-'? DIGIT+;
 DIGIT: [0-9];
+LETTER: [a-zA-Z];
 DEFINE: '#'?'define';
 DO : 'do';
 SETUP : 'setup';
@@ -260,7 +260,6 @@ DOUBLE_SLASH: '//';
 READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
-ANALOG: 'analog';
 SEC: 'sec';
 MILI: 'ms';
 MIN: 'min';

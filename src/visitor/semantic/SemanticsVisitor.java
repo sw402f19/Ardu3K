@@ -143,26 +143,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(PinIndexNode node) throws SemanticException {
-        if (node.getbAnalog()) {
-            if (node.getIndex() > 5 || node.getIndex() < 0) {
-                throw ExceptionFactory.produce("ILLEGALPININDEX", node);
-            }
-        } else {
-            if (node.getIndex() > 13 || node.getIndex() < 0) {
-                throw ExceptionFactory.produce("ILLEGALPININDEX", node);
-            }
-        }
-        return node;
-    }
-
-    public RootNode visit(PinIndexIdentifierNode node) throws SemanticException {
-        if (symbolTable.isPresent(node.getID())) {
-            if (!(symbolTable.retrieveSymbol(node.getID()).getType() instanceof IntegerNode)) {
-                throw ExceptionFactory.produce("PININDEXID", node);
-            }
-        }
-        visit(node.getID());
-        // Not possible to check if index is valid, due to variable being able to change value
+        if(!(visit(node.getIndex()) instanceof IntegerNode))
+            throw ExceptionFactory.produce("pindexid", node);
         return node;
     }
 

@@ -247,19 +247,13 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         return node;
     }
 
-    @Override
-    public RootNode visitPinIndexId(Ardu3kParser.PinIndexIdContext ctx) {
-        PinIndexIdentifierNode node = new PinIndexIdentifierNode(ctx);
-        if (ctx.analog !=  null) { node.setbAnalog(true); }
-        node.setID(visit(ctx.indexID));
-        return node;
-    }
 
     @Override
-    public RootNode visitPinIndexInt(Ardu3kParser.PinIndexIntContext ctx) {
+    public RootNode visitPin_index(Ardu3kParser.Pin_indexContext ctx) {
         PinIndexNode node = new PinIndexNode(ctx);
-        node.setIndex(Integer.valueOf(ctx.index.getText()));
-        if (ctx.analog !=  null) { node.setbAnalog(true); }
+        if(ctx.analog != null)
+            node.setbAnalog(true);
+        node.setIndex(visit(ctx.index));
         return node;
     }
 

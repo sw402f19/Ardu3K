@@ -40,7 +40,7 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
         if(funcSym == null)
             throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
         if(funcSym instanceof FunctionSymbol) {
-            if(!((FunctionSymbol)symbolTable.retrieveSymbol(node.getId())).containsImpl(node))
+            if(!((FunctionSymbol)funcSym).containsImpl(node))
                 new SemanticsVisitor(symbolTable).visit(node);
             return ((FunctionSymbol) funcSym).getImpl(node).getReturnType();
         } else

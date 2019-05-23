@@ -412,7 +412,6 @@ public class BuildASTVisitor extends Ardu3kBaseVisitor<RootNode>
         }
         node.setLeft(visit(ctx.left));
         node.setRight(visit(ctx.right));
-
         return node;
     }
 

@@ -40,4 +40,7 @@ public class FunctionNode extends RootNode {
     }
     public void setReturnType(RootNode type) { this.type = type; }
     public RootNode getReturnType() { return this.type; }
+    public String parameterString() {
+        return getParameter().toString();
+    }
 }

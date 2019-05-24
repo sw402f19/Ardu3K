@@ -3,11 +3,13 @@ package exception.factory;
 import exception.ArgumentException;
 import exception.CodeGenTypeException;
 import exception.IllegalIdentifierException;
+import exception.InvalidDASTTopNode;
 import exception.TimedTimeException;
 import exception.pins.IllegalIdentifierType;
 import exception.pins.IllegalPinIndexException;
 import exception.pins.IllegalPinWriteValueException;
 import exception.predicate.*;
+import exception.reachability.NoReturnException;
 import exception.reachability.NotReachableException;
 import exception.reachability.RecursionException;
 import exception.time.NoTimeTypeException;
@@ -19,6 +21,7 @@ import exception.type.NotCastableException;
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
+import node.scope.FunctionNode;
 import node.statement.control.AbstractControlNode;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinWriteNode;
@@ -70,6 +73,12 @@ public class ExceptionFactory {
 
             case "ILLEGALIDENTIFIER":
                 return new IllegalIdentifierException((IdentifierNode) node);
+
+            case "INVALIDTOPNODE":
+                return new InvalidDASTTopNode(node);
+
+            case "NORETURN":
+                return new NoReturnException((FunctionNode)node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)
@@ -148,6 +157,8 @@ public class ExceptionFactory {
             return new IllegalIdentifierType(throwable);
         else if(throwable instanceof IllegalIdentifierException)
             return new IllegalIdentifierException(throwable);
+        else if (throwable instanceof InvalidDASTTopNode)
+            return new InvalidDASTTopNode(throwable);
 
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }

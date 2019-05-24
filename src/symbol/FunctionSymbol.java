@@ -88,6 +88,7 @@ public class FunctionSymbol extends Symbol {
         }
         nodeToAdd.setParameter(parameter);
         nodeToAdd.setBlock(cloner.deepClone(template.getBlock()));
+        nodeToAdd.line = template.line;
         impls.add(nodeToAdd);
     }
 

@@ -18,7 +18,15 @@ public class ParameterNode extends RootNode {
 
     @Override
     public String toString() {
-        return "Parameter";
+        String str = "";
+        for(int i = 0; i < children.size(); i++) {
+            str += types.get(i).toString();
+            str += " ";
+            str += children.get(i).toString();
+            if(!(children.size() == i - 1))
+                str += ", ";
+        }
+        return str;
     }
 
 }

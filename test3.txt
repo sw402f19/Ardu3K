@@ -1,8 +1,10 @@
 setup = {
-
 }
 
 loop = {
-    read(analoga);
-    read( 5);
+    func(1, 2, 3);
+}
+
+func(a) = {
+    return a;
 }

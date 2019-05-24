@@ -1,17 +1,16 @@
 package visitor.codegen;
 
-import exception.factory.SemanticException;
+import exception.factory.ExceptionFactory;
 import node.RootNode;
 import node.scope.ProgramNode;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 
 public class CodeGenerator {
 
     // The primary function for generating code
-    public static void GenerateCode(String fileName, RootNode topNode) throws IOException, SemanticException, RuntimeException {
+    public static void GenerateCode(String fileName, RootNode topNode) throws Exception {
         if (topNode instanceof ProgramNode) {
             BufferedWriter wr = new BufferedWriter(new FileWriter(fileName + ".c"));
             CodeGenVisitor genVisitor = new CodeGenVisitor();
@@ -19,6 +18,6 @@ public class CodeGenerator {
             wr.write(genVisitor.visit((ProgramNode) topNode));
 
             wr.close();
-        } else throw new RuntimeException("ERROR: Top node in CodeGen is not a ProgramNode");
+        } else throw ExceptionFactory.produce("INVALIDTOPNODE", topNode);
     }
 }

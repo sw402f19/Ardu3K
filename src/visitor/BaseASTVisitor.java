@@ -10,7 +10,7 @@ import node.RootNode;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class BaseASTVisitor<T> implements ASTVisitor<T> {
+public abstract class BaseASTVisitor<T> implements ASTVisitor<T> {
 
     public T visit(Node node) throws SemanticException {
         try {

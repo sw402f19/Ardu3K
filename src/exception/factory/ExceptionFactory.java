@@ -2,6 +2,7 @@ package exception.factory;
 
 import exception.ArgumentException;
 import exception.CodeGenTypeException;
+import exception.IllegalIdentifierException;
 import exception.TimedTimeException;
 import exception.pins.IllegalIdentifierType;
 import exception.pins.IllegalPinIndexException;
@@ -66,6 +67,9 @@ public class ExceptionFactory {
 
             case "PININDEXID":
                 return new IllegalIdentifierType((PinIndexNode) node);
+
+            case "ILLEGALIDENTIFIER":
+                return new IllegalIdentifierException((IdentifierNode) node);
 
             case "NOTREACHABLE":
                 if(node instanceof ReturnNode)
@@ -142,6 +146,8 @@ public class ExceptionFactory {
             return new CodeGenTypeException(throwable);
         else if (throwable instanceof  IllegalIdentifierType)
             return new IllegalIdentifierType(throwable);
+        else if(throwable instanceof IllegalIdentifierException)
+            return new IllegalIdentifierException(throwable);
 
         else throw new NoProductException(throwable.getClass().getSimpleName());
     }

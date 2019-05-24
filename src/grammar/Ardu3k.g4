@@ -172,7 +172,7 @@ identifier
     : value=identifier_val
     ;
 identifier_val
-    : (UNDERSCORE | LETTER) (LETTER | DIGIT | UNDERSCORE)*
+    : (UNDERSCORE | LETTER) (LETTER | DIGIT | UNDERSCORE | keyword)*
     ;
 string
     : DQUOTE string_val* DQUOTE
@@ -198,8 +198,42 @@ bool
     : value=TRUE
     | value=FALSE
     ;
-
-
+keyword
+    : DELAY
+    | ANALOG
+    | DO
+    | SETUP
+    | LOOP
+    | SWITCH
+    | CASE
+    | DEFAULT
+    | OR
+    | AND
+    | XOR
+    | TRUE
+    | FALSE
+    | FOR
+    | WHILE
+    | BREAK
+    | CONTINUE
+    | TO
+    | IF
+    | ELSE
+    | RETURN
+    | READ
+    | WRITE
+    | TOGGLE
+    | SEC
+    | MILI
+    | MIN
+    | BEFORE
+    | AFTER
+    | IN
+    | RESET
+    | PINMODE
+    | INPUT
+    | OUTPUT
+;
 
 // =========== //
 

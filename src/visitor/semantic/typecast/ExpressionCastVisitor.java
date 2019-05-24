@@ -28,7 +28,7 @@ public class ExpressionCastVisitor extends PrimaryVisitor {
             infixTypes[0] = visit(node.getLeft());
             infixTypes[1] = visit(node.getRight());
         } catch (SemanticException e) {
-            throw ExceptionFactory.produce("incompatibletype", node.getLeft(), node.getRight());
+            throw ExceptionFactory.produce("incompatibletype", super.visit(node.getLeft()), super.visit(node.getRight()));
         }
 
         if (infixTypes[0] != null && !infixTypes[0].getClass().isInstance(expectedType)) {

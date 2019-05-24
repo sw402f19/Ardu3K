@@ -36,6 +36,8 @@ import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
 import visitor.semantic.typecast.TypeCaster;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
 
@@ -83,25 +85,23 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(AbstractDeclAssignNode node)  {
-        DeclarationNode node1 = null;
+        DeclarationNode declNode;
+        ArrayList<RootNode> pChildren = node.parent.children;
         try {
             if(!(symbolTable.isPresent(node.getLeft())) ||
                     symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode) {
-                node1 = new DeclarationNode(node);
+                declNode = new DeclarationNode(node);
                 if (node.getRight() instanceof PinReadNode){
-                    node1.type = new IntegerNode();
-                } else node1.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
-                visit(node1);
+                    declNode.type = ((PinReadNode) node.getRight()).getPinIndexNode();
+                } else declNode.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
+                pChildren.set(pChildren.indexOf(node), declNode);
+                visit(declNode);
             }else {
                 visit(node.getRight());
                 new AssignmentVisitor(symbolTable).visit(node);
             }
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
-        }
-        if(node1 != null) {
-            node1.parent = node.parent;
-            node.parent.children.set(node.parent.children.indexOf(node), node1);
         }
         return node;
     }

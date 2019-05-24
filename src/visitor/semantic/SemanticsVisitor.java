@@ -36,6 +36,8 @@ import visitor.builder.BuildParentVisitor;
 import visitor.semantic.reachability.ReachabilityVisitor;
 import visitor.semantic.typecast.TypeCaster;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
 
@@ -83,25 +85,23 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(AbstractDeclAssignNode node)  {
-        DeclarationNode node1 = null;
+        DeclarationNode declNode;
+        ArrayList<RootNode> pChildren = node.parent.children;
         try {
             if(!(symbolTable.isPresent(node.getLeft())) ||
                     symbolTable.retrieveSymbol(node.getLeft()).getType() instanceof UndefinedNode) {
-                node1 = new DeclarationNode(node);
+                declNode = new DeclarationNode(node);
                 if (node.getRight() instanceof PinReadNode){
-                    node1.type = new IntegerNode();
-                } else node1.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
-                visit(node1);
+                    declNode.type = ((PinReadNode) node.getRight()).getPinIndexNode();
+                } else declNode.type = new ExpressionTypeVisitor(symbolTable).visit(node.getRight());
+                pChildren.set(pChildren.indexOf(node), declNode);
+                visit(declNode);
             }else {
                 visit(node.getRight());
                 new AssignmentVisitor(symbolTable).visit(node);
             }
         } catch (SemanticException e) {
             System.out.println(e.getMessage());
-        }
-        if(node1 != null) {
-            node1.parent = node.parent;
-            node.parent.children.set(node.parent.children.indexOf(node), node1);
         }
         return node;
     }
@@ -143,26 +143,8 @@ public class SemanticsVisitor extends PrimaryVisitor {
     }
 
     public RootNode visit(PinIndexNode node) throws SemanticException {
-        if (node.getbAnalog()) {
-            if (node.getIndex() > 5 || node.getIndex() < 0) {
-                throw ExceptionFactory.produce("ILLEGALPININDEX", node);
-            }
-        } else {
-            if (node.getIndex() > 13 || node.getIndex() < 0) {
-                throw ExceptionFactory.produce("ILLEGALPININDEX", node);
-            }
-        }
-        return node;
-    }
-
-    public RootNode visit(PinIndexIdentifierNode node) throws SemanticException {
-        if (symbolTable.isPresent(node.getID())) {
-            if (!(symbolTable.retrieveSymbol(node.getID()).getType() instanceof IntegerNode)) {
-                throw ExceptionFactory.produce("PININDEXID", node);
-            }
-        }
-        visit(node.getID());
-        // Not possible to check if index is valid, due to variable being able to change value
+        if(!(visit(node.getIndex()) instanceof IntegerNode))
+            throw ExceptionFactory.produce("pindexid", node);
         return node;
     }
 

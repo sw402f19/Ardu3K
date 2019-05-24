@@ -22,7 +22,6 @@ import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
 import node.scope.FunctionNode;
 import node.statement.control.AbstractControlNode;
-import node.statement.pins.PinIndexIdentifierNode;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.termination.AbstractTerminalNode;
@@ -69,7 +68,7 @@ public class ExceptionFactory {
                 return new CodeGenTypeException(node);
 
             case "PININDEXID":
-                return new IllegalIdentifierType((PinIndexIdentifierNode) node);
+                return new IllegalIdentifierType((PinIndexNode) node);
 
             case "INVALIDTOPNODE":
                 return new InvalidDASTTopNode(node);

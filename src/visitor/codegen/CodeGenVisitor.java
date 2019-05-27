@@ -395,11 +395,11 @@ public class CodeGenVisitor extends BaseASTVisitor<String> {
     }
 
     public String visit(ResetNode node) {
-        return tab() + "ARDU3k::ResetTimer(&" + node.getClockName() + ");";
+        return tab() + "ARDU3k::ResetClockTime(&" + node.getClockName() + ");";
     }
 
     public String visit(ResetSpecificNode node) throws SemanticException {
-        return tab() + "ARDU3k::ResetTimer(&" + visit(node.getID()) + ");";
+        return tab() + "ARDU3k::ResetClockTime(&" + visit(node.getID()) + ");";
     }
 
     public String visit(TimeNode node) {

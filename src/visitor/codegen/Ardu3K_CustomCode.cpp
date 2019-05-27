@@ -2,12 +2,13 @@
 *   Arud3K class for custom Arduino functions related to the language:
 *   (NOTE: Tageted for the Arduino Uno)
 *   The code directly manipulates the bitmasks controlling pins, for better efficiency
+*   DDR* == if pin is input/output mode | PORT* == if pin is HIGH/LOW
 */
 class ARDU3k {
 public:
     // Return true if it is after or equal to the wait time
-    static bool AfterCheck(long startTime, long waitTime) {
-        long desiredTime = startTime + waitTime;
+    static bool AfterCheck(long clockTime, long waitTime) {
+        long desiredTime = clockTime + waitTime;
 
         if (desiredTime < millis()) {
             return true;
@@ -15,8 +16,8 @@ public:
     }
 
     // Return true if it is before or equal to the wait time
-    static bool BeforeCheck(long startTime, long waitTime) {
-        long desiredTime = startTime + waitTime;
+    static bool BeforeCheck(long clockTime, long waitTime) {
+        long desiredTime = clockTime + waitTime;
 
         if (desiredTime >= millis()) {
             return true;
@@ -24,7 +25,7 @@ public:
     }
 
     // "Reset" the timer by seting it to current time
-    static void ResetTimer(long *timer) { *timer = millis(); }
+    static void ResetClockTime(long *clock) { *clock = millis(); }
 
     // Sets the bitflag representing the data direction of the pin
     static void SetPinMode(short index, bool bAnalog, bool bOutput){
@@ -33,7 +34,7 @@ public:
                 if (bOutput) {
                     DDRC |= (1 << index);
                 } else {
-                    DDRC &= ~(1 << index); 
+                    DDRC &= ~(1 << index);
                 }
             }
         } else {
@@ -41,19 +42,19 @@ public:
                 if (bOutput) {
                     if (index <= 7) {
                         DDRD |= (1 << index);
-                    } else { 
+                    } else {
                         DDRB |= (1 << (index - 8));
                     }
                 } else {
                     if (index <= 7) {
                         DDRD &= ~(1 << index);
-                    } else { 
+                    } else {
                         DDRB &= ~(1 << (index - 8));
                     }
                 }
             }
         }
-    } 
+    }
 
     // Read function following the format of the other pin functions
     // Sets the pin to input mode before reading
@@ -80,7 +81,7 @@ public:
             if (index >= 0 && index <= 13){
                 if (index <= 7) {
                     DDRD &= ~(1 << index);
-                } else { 
+                } else {
                     DDRB &= ~(1 << (index - 8));
                 }
                 return digitalRead(index);
@@ -98,7 +99,7 @@ public:
                 if (bWriteVal) {
                     PORTC |= (1 << index);
                 } else {
-                    PORTC &= ~(1 << index); 
+                    PORTC &= ~(1 << index);
                 }
             }
         } else {
@@ -107,7 +108,7 @@ public:
                     if (index <= 7) {
                         DDRD |= (1 << index);
                         PORTD |= (1 << index);
-                    } else { 
+                    } else {
                         DDRB |= (1 << (index - 8));
                         PORTB |= (1 << (index - 8));
                     }
@@ -115,14 +116,14 @@ public:
                     if (index <= 7) {
                         DDRD |= (1 << index);
                         PORTD &= ~(1 << index);
-                    } else { 
+                    } else {
                         DDRB |= (1 << (index - 8));
                         PORTB &= ~(1 << (index - 8));
                     }
                 }
             }
         }
-    } 
+    }
 
     // Flip pin-index in bitfield of pin states
     // Sets the pin to output mode befrore toggle
@@ -137,7 +138,7 @@ public:
                 if (index <= 7) {
                     DDRD |= (1 << index);
                     PORTD ^= (1 << index);
-                } else { 
+                } else {
                     DDRB |= (1 << (index - 8));
                     PORTB ^= (1 << (index - 8));
                 }

@@ -1,17 +1,16 @@
+#define LEDPIN 10
+
 setup = {
-    pinMode(8, OUTPUT);
-    pinMode(analog3, OUTPUT);
+
 }
 
 loop = {
-    after 1sec in timerA do {
-        toggle(8);
-        reset;
-    }
-
-    after 3sec in timerB do {
-        toggle(analog3);
-        reset;
-    }
+    a = func(LEDPIN, 20);
+    a = "a";
 }
+func(a, b) = {
+    a = func(a, b);
+    return a + 10;
+}
+
 

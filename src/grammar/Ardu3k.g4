@@ -28,34 +28,33 @@ parameter
     ;
 stmt
     : block                                                         #statement
-    | pin_stmt                                                      #statement
-    | function_stmt                                                 #statement
+    | pin_stmt SEMI                                                 #statement
+    | function_stmt SEMI                                            #statement
     | iterative_stmt                                                #statement
     | selection_stmt                                                #statement
     | expression_stmt                                               #statement
     | notail=RETURN expression_stmt                                 #notailStatement
-    | notail=BREAK                                                  #notailStatement
-    | notail=CONTINUE                                               #notailStatement
+    | notail=BREAK SEMI                                             #notailStatement
+    | notail=CONTINUE SEMI                                          #notailStatement
     | RESET id=identifier SEMI                                      #resetSpecific
-    | notail=RESET                                                  #notailStatement
+    | notail=RESET SEMI                                             #notailStatement
     | comment                                                       #stmtComment
     | time_stmt                                                     #stmtTimed
     ;
 time_stmt
-    : BEFORE time=expression IN clockName=identifier DO exec=stmt   #beforeStmt
-    | AFTER time=expression IN clockName=identifier DO exec=stmt    #afterStmt
-    | DELAY LPAR time=expression RPAR SEMI                          #delay
+    : BEFORE expr=expression IN clockName=identifier DO exec=stmt   #beforeStmt
+    | AFTER expr=expression IN clockName=identifier DO exec=stmt    #afterStmt
+    | DELAY LPAR expr=expression RPAR SEMI                          #delay
     ;
 pin_stmt
-    : TOGGLE LPAR pin=pin_index RPAR SEMI                           #pinToggle
-    | READ LPAR pin=pin_index RPAR SEMI                             #pinRead
-    | WRITE LPAR pin=pin_index COMMA value=bool RPAR SEMI           #pinWriteBool
-    | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR SEMI        #pinWriteInt
-    | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR SEMI   #pinMode
+    : TOGGLE LPAR pin=pin_index RPAR                                #pinToggle
+    | READ LPAR pin=pin_index RPAR                                  #pinRead
+    | WRITE LPAR pin=pin_index COMMA value=bool RPAR                #pinWriteBool
+    | WRITE LPAR pin=pin_index COMMA value=INTEGER RPAR             #pinWriteInt
+    | PINMODE LPAR pin=pin_index COMMA pinMode=pin_mode RPAR        #pinMode
     ;
 pin_index
-    : analog=ANALOG? index=INTEGER                                  #pinIndexInt
-    | analog=ANALOG? indexID=identifier                             #pinIndexId
+    : analog=ANALOG? index=expression
     ;
 pin_mode
     : pinMode=OUTPUT
@@ -164,9 +163,7 @@ multiplicative_expr
     ;
 primary
     : LPAR child=expression RPAR                    #primaryLexprR
-    | val=INTEGER type=MILI                         #primaryTime
-    | val=INTEGER type=SEC                          #primaryTime
-    | val=INTEGER type=MIN                          #primaryTime
+    | child=time                                    #primaryTime
     | child=literal                                 #primaryLit
     | child=identifier                              #primaryId
     | child=function_stmt                           #primaryFuncStmt
@@ -175,7 +172,7 @@ identifier
     : value=identifier_val
     ;
 identifier_val
-    : (UNDERSCORE | LETTER) (LETTER | DIGIT | UNDERSCORE)*
+    : (UNDERSCORE | LETTER) (LETTER | DIGIT | UNDERSCORE | keyword)*
     ;
 string
     : DQUOTE string_val* DQUOTE
@@ -188,6 +185,11 @@ literal
     | bool
     | string
     ;
+time
+    : val=INTEGER type=MILI
+    | val=INTEGER type=SEC
+    | val=INTEGER type=MIN
+    ;
 number
     : value=INTEGER
     | value=FLOAT
@@ -196,14 +198,49 @@ bool
     : value=TRUE
     | value=FALSE
     ;
+keyword
+    : DELAY
+    | ANALOG
+    | DO
+    | SETUP
+    | LOOP
+    | SWITCH
+    | CASE
+    | DEFAULT
+    | OR
+    | AND
+    | XOR
+    | TRUE
+    | FALSE
+    | WHILE
+    | BREAK
+    | CONTINUE
+    | IF
+    | ELSE
+    | RETURN
+    | READ
+    | WRITE
+    | TOGGLE
+    | SEC
+    | MILI
+    | MIN
+    | BEFORE
+    | AFTER
+    | IN
+    | RESET
+    | PINMODE
+    | INPUT
+    | OUTPUT
+;
 
 // =========== //
 
 DELAY: 'delay';
-LETTER: [a-zA-Z];
+ANALOG: 'A';
 FLOAT: '-'?DIGIT+ DOT DIGIT+;
-INTEGER: '-'?DIGIT+;
+INTEGER: '-'? DIGIT+;
 DIGIT: [0-9];
+LETTER: [a-zA-Z];
 DEFINE: '#'?'define';
 DO : 'do';
 SETUP : 'setup';
@@ -253,7 +290,6 @@ DOUBLE_SLASH: '//';
 READ: 'read';
 WRITE: 'write';
 TOGGLE: 'toggle';
-ANALOG: 'analog';
 SEC: 'sec';
 MILI: 'ms';
 MIN: 'min';

@@ -4,7 +4,7 @@ import node.RootNode;
 import node.expression.type.BooleanType;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AbstractInfixBooleanNode extends AbstractInfixExpressionNode implements BooleanType {
+public abstract class AbstractInfixBooleanNode extends AbstractInfixExpressionNode implements BooleanType {
     public AbstractInfixBooleanNode(RootNode parent) {
         super(parent);
     }

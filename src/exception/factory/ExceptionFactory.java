@@ -2,6 +2,7 @@ package exception.factory;
 
 import exception.ArgumentException;
 import exception.CodeGenTypeException;
+import exception.IllegalIdentifierException;
 import exception.InvalidDASTTopNode;
 import exception.TimedTimeException;
 import exception.pins.IllegalIdentifierType;
@@ -22,7 +23,6 @@ import node.primary.AbstractPrimaryNode;
 import node.primary.IdentifierNode;
 import node.scope.FunctionNode;
 import node.statement.control.AbstractControlNode;
-import node.statement.pins.PinIndexIdentifierNode;
 import node.statement.pins.PinIndexNode;
 import node.statement.pins.PinWriteNode;
 import node.statement.termination.AbstractTerminalNode;
@@ -69,7 +69,10 @@ public class ExceptionFactory {
                 return new CodeGenTypeException(node);
 
             case "PININDEXID":
-                return new IllegalIdentifierType((PinIndexIdentifierNode) node);
+                return new IllegalIdentifierType((PinIndexNode) node);
+
+            case "ILLEGALIDENTIFIER":
+                return new IllegalIdentifierException((IdentifierNode) node);
 
             case "INVALIDTOPNODE":
                 return new InvalidDASTTopNode(node);
@@ -114,7 +117,9 @@ public class ExceptionFactory {
     }
 
     public static SemanticException produce(Throwable throwable) {
-        if (throwable instanceof DuplicateParameterException)
+        if(throwable instanceof FullCollectorException)
+            return new FullCollectorException();
+        else if (throwable instanceof DuplicateParameterException)
             return new DuplicateParameterException(throwable);
         else if (throwable instanceof IllegalOperandException)
             return new IllegalOperandException(throwable);
@@ -152,6 +157,8 @@ public class ExceptionFactory {
             return new CodeGenTypeException(throwable);
         else if (throwable instanceof  IllegalIdentifierType)
             return new IllegalIdentifierType(throwable);
+        else if(throwable instanceof IllegalIdentifierException)
+            return new IllegalIdentifierException(throwable);
         else if (throwable instanceof InvalidDASTTopNode)
             return new InvalidDASTTopNode(throwable);
 

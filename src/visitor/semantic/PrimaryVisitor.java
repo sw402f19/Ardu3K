@@ -1,6 +1,7 @@
 package visitor.semantic;
 
 import exception.factory.ExceptionFactory;
+import exception.factory.FullCollectorException;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
@@ -33,14 +34,13 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
         return visit(node.getExpression());
     }
 
-    public RootNode visit(FunctionStmtNode node) throws SemanticException {
+    public RootNode visit(FunctionStmtNode node) throws SemanticException, FullCollectorException {
         node.st = symbolTable;
-        Symbol funcSym;
-        funcSym = symbolTable.retrieveSymbol(node.getId());
+        Symbol funcSym = symbolTable.retrieveSymbol(node.getId());
         if(funcSym == null)
             throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
         if(funcSym instanceof FunctionSymbol) {
-            if(!((FunctionSymbol)symbolTable.retrieveSymbol(node.getId())).containsImpl(node))
+            if(!((FunctionSymbol)funcSym).containsImpl(node))
                 new SemanticsVisitor(symbolTable).visit(node);
             return ((FunctionSymbol) funcSym).getImpl(node).getReturnType();
         } else

@@ -1,3 +1,5 @@
+import exception.factory.ExceptionCollector;
+import exception.factory.FullCollectorException;
 import exception.factory.SemanticException;
 import gen.Ardu3kLexer;
 import gen.Ardu3kParser;
@@ -20,6 +22,7 @@ public class Main {
         long time = System.currentTimeMillis();
         disableWarning();
         CharStream is = CharStreams.fromFileName("test2.txt");
+        ExceptionCollector collector = ExceptionCollector.getInstance();
         Ardu3kLexer lexer = new Ardu3kLexer(is);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         Ardu3kParser parser = new Ardu3kParser(tokenStream);
@@ -31,10 +34,13 @@ public class Main {
             SymbolTable symbolTable = new SymbolTable();
             ast =  new BuildASTVisitor(symbolTable).visitCompileUnit(cst);
             dast = new SemanticsVisitor(symbolTable).visit(ast);
+            if(collector.throwSize() > 0)
+                collector.throwList();
             CodeGenerator.GenerateCode("testGenCode", dast);
             PrintInfo(System.currentTimeMillis() - time);
-        } catch (SemanticException e){
-            System.out.println(e.getMessage());
+        } catch (FullCollectorException e) {
+            for(SemanticException err: collector.getThrowlist())
+                System.out.println(err.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }

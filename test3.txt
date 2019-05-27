@@ -1,10 +1,19 @@
+#define LED 10
+
 setup = {
+
 }
 
 loop = {
-    func(1, 2, 3);
-}
+    read(A5);
 
+    identifierA = 10;
+    read(5);
+    while(true) do
+       LED = 10;
+
+    identifierA = identifierA + "a";
+}
 func(a) = {
-    return a;
+    a = 10;
 }

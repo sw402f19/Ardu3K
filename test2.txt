@@ -1,17 +1,32 @@
+#define LED 10
+
 setup = {
-    pinMode(8, OUTPUT);
-    pinMode(analog3, OUTPUT);
+    a = 1;
 }
 
 loop = {
-    after 1sec in timerA do {
-        toggle(8);
-        reset;
-    }
+    if true do
+        if true do
+            if true do
+                a = 1;
+            else
+                k = 2;
+        else if false do
+            a = 1;
 
-    after 3sec in timerB do {
-        toggle(analog3);
-        reset;
-    }
+        else
+            a = funcc(2.5, 5.4);
+
+            b = funcc("b", a);
+}
+func(d, h) = {
+    c = d + h;
+    return c;
+}
+funcc(a, b) = {
+    c = func(a, b);
+    d = func(10, 20);
+    h = func("g", "h");
+    return c + d + h;
 }
 

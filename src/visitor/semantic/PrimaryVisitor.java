@@ -1,6 +1,7 @@
 package visitor.semantic;
 
 import exception.factory.ExceptionFactory;
+import exception.factory.FullCollectorException;
 import exception.factory.SemanticException;
 import node.RootNode;
 import node.primary.AbstractPrimaryNode;
@@ -33,7 +34,7 @@ public class PrimaryVisitor extends BaseASTVisitor<RootNode> {
         return visit(node.getExpression());
     }
 
-    public RootNode visit(FunctionStmtNode node) throws SemanticException {
+    public RootNode visit(FunctionStmtNode node) throws SemanticException, FullCollectorException {
         node.st = symbolTable;
         Symbol funcSym = symbolTable.retrieveSymbol(node.getId());
         if(funcSym == null)

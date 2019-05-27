@@ -1,6 +1,8 @@
 package visitor.semantic;
 
+import exception.factory.ExceptionCollector;
 import exception.factory.ExceptionFactory;
+import exception.factory.FullCollectorException;
 import exception.factory.SemanticException;
 import exception.predicate.DuplicateParameterException;
 import node.RootNode;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings("Duplicates")
 public class SemanticsVisitor extends PrimaryVisitor {
+    private ExceptionCollector collector = ExceptionCollector.getInstance();
 
     public SemanticsVisitor(SymbolTable symbolTable) {
         super(symbolTable);
@@ -84,7 +87,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(AbstractDeclAssignNode node)  {
+    public RootNode visit(AbstractDeclAssignNode node) throws SemanticException {
         DeclarationNode declNode;
         ArrayList<RootNode> pChildren = node.parent.children;
         try {
@@ -101,7 +104,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 new AssignmentVisitor(symbolTable).visit(node);
             }
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         return node;
     }
@@ -127,7 +130,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
                     for(FunctionNode fn : ((FunctionSymbol) s).impls)
                         node.getFunctionsNode().children.add(fn);
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         return node;
     }
@@ -200,18 +203,18 @@ public class SemanticsVisitor extends PrimaryVisitor {
         return node;
     }
 
-    public RootNode visit(AbstractScopeNode node) {
+    public RootNode visit(AbstractScopeNode node) throws SemanticException {
         symbolTable.openScope();
         try {
             new ReachabilityVisitor().visit(node);
             visitChildren(node);
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         return node;
     }
 
-    public RootNode visit(IfNode node) {
+    public RootNode visit(IfNode node) throws FullCollectorException {
         symbolTable.openScope();
         try {
             RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
@@ -219,12 +222,12 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
             visitChildren(node);
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(ElifNode node)  {
+    public RootNode visit(ElifNode node) throws SemanticException {
         symbolTable.openScope();
         try {
             RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
@@ -232,13 +235,16 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
             visitChildren(node);
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            if(collector.shouldThrow())
+                throw new FullCollectorException();
+            else
+                collector.appendException(e);
         }
         symbolTable.closeScope();
         return node;
     }
 
-    public RootNode visit(SwitchNode node)  {
+    public RootNode visit(SwitchNode node) throws SemanticException {
         symbolTable.openScope();
         try {
             RootNode type = new ExpressionTypeVisitor(symbolTable).visit(node.getExpression());
@@ -246,13 +252,13 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 System.out.println(node.getLine()+" Expression for Switch cannot evaluate to boolean got :"+type.toString());
             visitChildren(node);
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         symbolTable.closeScope();
         return node;
     }
 
-    public RootNode visit(CaseNode node) {
+    public RootNode visit(CaseNode node) throws SemanticException {
 
         symbolTable.openScope();
         try {
@@ -263,23 +269,23 @@ public class SemanticsVisitor extends PrimaryVisitor {
                 throw ExceptionFactory.produce("incompatibletype", parentType, type);
             visitChildren(node);
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(DefaultNode node) {
+    public RootNode visit(DefaultNode node) throws SemanticException {
         symbolTable.openScope();
         try {
             visitChildren(node);
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         symbolTable.closeScope();
         return node;
     }
 
-    public RootNode visit(WhileNode node) {
+    public RootNode visit(WhileNode node) throws SemanticException {
         symbolTable.openScope();
         try {
             visitChildren(node);
@@ -287,12 +293,12 @@ public class SemanticsVisitor extends PrimaryVisitor {
             if (!(type instanceof BooleanType))
                 throw ExceptionFactory.produce("needsbooleanpredicate", node);
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         symbolTable.closeScope();
         return node;
     }
-    public RootNode visit(FunctionStmtNode node) {
+    public RootNode visit(FunctionStmtNode node) throws SemanticException {
         node.st = symbolTable;
         Symbol funcSym;
         try {
@@ -308,7 +314,7 @@ public class SemanticsVisitor extends PrimaryVisitor {
             } else
                 throw ExceptionFactory.produce("undeclaredidentifier", node.getId());
         } catch (SemanticException e) {
-            System.out.println(e.getMessage());
+            collector.handleException(e);
         }
         return node;
     }

@@ -1,9 +1,7 @@
 package visitor;
 
 import exception.IgnorableInvocationException;
-import exception.factory.ExceptionFactory;
-import exception.factory.NoProductException;
-import exception.factory.SemanticException;
+import exception.factory.*;
 import node.Node;
 import node.RootNode;
 
@@ -12,7 +10,7 @@ import java.lang.reflect.Method;
 
 public abstract class BaseASTVisitor<T> implements ASTVisitor<T> {
 
-    public T visit(Node node) throws SemanticException {
+    public T visit(Node node) throws SemanticException{
         try {
             return this.dispatch(node);
         } catch (NullPointerException | NoProductException n) {

@@ -1,32 +1,16 @@
-#define LED 10
+#define LEDPIN 10
 
 setup = {
-    a = 1;
+
 }
 
 loop = {
-    if true do
-        if true do
-            if true do
-                a = 1;
-            else
-                k = 2;
-        else if false do
-            a = 1;
+    a = func(LEDPIN, 20);
+    a = "a";
+}
+func(a, b) = {
+    a = func(a, b);
+    return a + 10;
+}
 
-        else
-            a = funcc(2.5, 5.4);
-
-            b = funcc("b", a);
-}
-func(d, h) = {
-    c = d + h;
-    return c;
-}
-funcc(a, b) = {
-    c = func(a, b);
-    d = func(10, 20);
-    h = func("g", "h");
-    return c + d + h;
-}
 

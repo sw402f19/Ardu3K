@@ -117,7 +117,9 @@ public class ExceptionFactory {
     }
 
     public static SemanticException produce(Throwable throwable) {
-        if (throwable instanceof DuplicateParameterException)
+        if(throwable instanceof FullCollectorException)
+            return new FullCollectorException();
+        else if (throwable instanceof DuplicateParameterException)
             return new DuplicateParameterException(throwable);
         else if (throwable instanceof IllegalOperandException)
             return new IllegalOperandException(throwable);

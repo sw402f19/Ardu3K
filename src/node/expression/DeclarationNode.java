@@ -20,6 +20,7 @@ public class DeclarationNode extends AbstractDeclAssignNode {
         return getLeft().toString();
     }
     private void isLegalIdentifier(IdentifierNode node) {
+
         switch (node.toString()) {
             case "delay", "A", "do", "setup", "loop",
                     "switch", "case", "default", "OR",

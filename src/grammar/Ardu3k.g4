@@ -212,11 +212,9 @@ keyword
     | XOR
     | TRUE
     | FALSE
-    | FOR
     | WHILE
     | BREAK
     | CONTINUE
-    | TO
     | IF
     | ELSE
     | RETURN

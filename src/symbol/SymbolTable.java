@@ -6,11 +6,13 @@ import node.primary.IdentifierNode;
 import node.scope.DefineNode;
 import node.scope.FunctionNode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SymbolTable implements SymbolTableInterface{
 
     private HashMap<RootNode, Symbol> symTable = new HashMap<>();
+    private ArrayList<String> illegalIdentifiers = new ArrayList<>();
     private int depth;
 
     public SymbolTable() {
@@ -48,5 +50,8 @@ public class SymbolTable implements SymbolTableInterface{
     }
     public HashMap<RootNode, Symbol> getTable(){
         return this.symTable;
+    }
+    public void isLegalIdentifier(IdentifierNode node) {
+
     }
 }
